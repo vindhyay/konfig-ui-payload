@@ -1,0 +1,8 @@
+.error-border{
+    ::ng-deep{
+        .p-inputnumber-input{
+            border-color: red;
+        }
+    }
+
+}

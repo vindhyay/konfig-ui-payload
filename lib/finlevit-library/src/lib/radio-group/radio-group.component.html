@@ -1,0 +1,34 @@
+<div [ngClass]="{ 'p-field': true, 'small-input': isSmall, 'large-input': isLarge }">
+  <div *ngIf="label" class="d-flex flex-row">
+    <div
+      [ngClass]="{
+        'input-label': true,
+        'radio-group-label': true,
+        'input-label-sm': isSmall,
+        'input-label-lg': isLarge,
+        'p-mb-3': true,
+        'p-text-bold': true
+      }"
+    >
+      {{ label }}<span class="required" *ngIf="isRequired"> *</span>
+      <i class="label-tooltip pi pi-info-circle p-pl-2" [pTooltip]="tooltip" *ngIf="tooltip"></i>
+    </div>
+  </div>
+  <div class="radio-options-wrapper">
+    <div *ngFor="let item of items" class="p-field-radiobutton">
+      <p-radioButton
+        [disabled]="isDisabled"
+        [inputId]="_id + (optionValue ? item[optionValue] : item)"
+        name="category"
+        [value]="optionValue ? item[optionValue] : item"
+        [(ngModel)]="_value"
+        (onClick)="onLocalChange(optionValue ? item[optionValue] : item)"
+        [ngClass]="{ 'p-inputtext-sm': isSmall, 'p-inputtext-lg': isLarge, 'error-border': checkError() }"
+      ></p-radioButton>
+      <label [for]="_id + (optionValue ? item[optionValue] : item)">{{ optionLabel ? item[optionLabel] : item }}</label>
+    </div>
+  </div>
+  <div *ngIf="checkError()">
+    <small class="p-error">{{ errorMsg || getErrorMessages()[0] }}</small>
+  </div>
+</div>

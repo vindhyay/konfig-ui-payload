@@ -1,0 +1,30 @@
+<div [ngClass]="{ 'p-field': true, 'small-input': isSmall, 'large-input': isLarge }">
+  <div *ngIf="label" class="d-flex flex-row">
+    <div
+      [ngClass]="{
+        'input-label': true,
+        'checkbox-group-label': true,
+        'input-label-sm': isSmall,
+        'input-label-lg': isLarge,
+        'p-mb-3': true,
+        'p-text-bold': true
+      }"
+    >
+      {{ label }}<span class="required" *ngIf="isRequired"> *</span>
+      <i class="label-tooltip pi pi-info-circle p-pl-2" [pTooltip]="tooltip" *ngIf="tooltip"></i>
+    </div>
+  </div>
+  <div *ngFor="let item of items; let i = index" class="p-field-checkbox">
+    <p-checkbox
+      [inputId]="_id + i"
+      [value]="optionValue ? item[optionValue] : item"
+      [(ngModel)]="_selectedValues"
+      (ngModelChange)="onLocalChange()"
+      [ngClass]="{ 'p-inputtext-sm': isSmall, 'p-inputtext-lg': isLarge, 'error-border': checkError() }"
+    ></p-checkbox>
+    <label [for]="_id + i">{{ optionLabel ? item[optionLabel] : item }}</label>
+  </div>
+  <div *ngIf="checkError()">
+    <small class="p-error">{{ errorMsg || getErrorMessages()[0] }}</small>
+  </div>
+</div>

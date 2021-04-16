@@ -1,0 +1,26 @@
+<div class="p-field">
+  <div *ngIf="label" class="d-flex flex-row">
+    <div [ngClass]="{ 'input-label': true, 'input-label-sm': isSmall, 'input-label-lg': isLarge }">
+      {{ label }}<span *ngIf="isRequired" class="required"> *</span>
+      <i *ngIf="tooltip" [pTooltip]="tooltip" class="label-tooltip pi pi-info-circle p-pl-2"></i>
+    </div>
+  </div>
+  <p-calendar
+    appendTo="body"
+    [placeholder]="placeholder"
+    (ngModelChange)="onLocalChange({ value: $event })"
+    (onFocus)="onLocalFocus($event)"
+    (onBlur)="onLocalTouched($event)"
+    [(ngModel)]="_value"
+    [inputStyleClass]="isSmall ? 'p-inputtext-sm' : isLarge ? 'p-inputtext-lg' : ''"
+    [ngClass]="{ 'error-border': showErrorBorder && checkError() }"
+    [readonlyInput]="isDisabled"
+    [showIcon]="showIcon"
+    [dateFormat]="viewDateFormat"
+    [minDate]="minDate"
+    [maxDate]="maxDate"
+  ></p-calendar>
+  <div *ngIf="checkError()">
+    <small class="p-error">{{ errorMsg || getErrorMessages()[0] }}</small>
+  </div>
+</div>

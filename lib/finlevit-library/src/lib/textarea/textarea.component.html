@@ -1,0 +1,23 @@
+<div [ngClass]="{ 'p-field': true, 'small-input': isSmall, 'large-input': isLarge }">
+  <div *ngIf="label" class="d-flex flex-row">
+    <div [ngClass]="{ 'input-label': true, 'input-label-sm': isSmall, 'input-label-lg': isLarge }">
+      {{ label }}<span class="required" *ngIf="isRequired"> *</span>
+      <i class="label-tooltip pi pi-info-circle p-pl-2" [pTooltip]="tooltip" *ngIf="tooltip"></i>
+    </div>
+  </div>
+  <textarea
+    [placeholder]="placeholder"
+    [ngModel]="_value"
+    (ngModelChange)="onLocalChange({ value: $event })"
+    [ngClass]="{
+      'error-border': showErrorBorder && checkError()
+    }"
+    [disabled]="isDisabled"
+    [rows]="rows"
+    pInputTextarea
+    [autoResize]="autoResize"
+  ></textarea>
+  <div *ngIf="checkError()">
+    <small class="p-error">{{ errorMsg || getErrorMessages()[0] }}</small>
+  </div>
+</div>

@@ -1,0 +1,417 @@
+@mixin clearfix() {
+  &:before,
+  &:after {
+    content: " "; // 1
+    display: table; // 2
+  }
+  &:after {
+    clear: both;
+  }
+}
+//$animVar: cubic-bezier(0.785, 0.135, 0.15, 0.86);
+$animVar: cubic-bezier(0.25, 0.8, 0.25, 1);
+$animationTime: 0.175s;
+@mixin animation($i: $animationTime) {
+  -webkit-transition: all $i $animVar;
+  -moz-transition: all $i $animVar;
+  -o-transition: all $i $animVar;
+  transition: all $i $animVar;
+}
+
+@mixin animationWidth($i: $animationTime) {
+  -webkit-transition: width $i $animVar;
+  -moz-transition: width $i $animVar;
+  -o-transition: width $i $animVar;
+  transition: width $i $animVar;
+}
+
+@mixin animationTop($i: $animationTime) {
+  -webkit-transition: top $i $animVar;
+  -moz-transition: top $i $animVar;
+  -o-transition: top $i $animVar;
+  transition: top $i $animVar;
+}
+
+@mixin animationPaddingTop($i: $animationTime) {
+  -webkit-transition: padding-top $i $animVar;
+  -moz-transition: padding-top $i $animVar;
+  -o-transition: padding-top $i $animVar;
+  transition: padding-top $i $animVar;
+}
+
+@mixin animationBottom($i: $animationTime) {
+  -webkit-transition: bottom $i $animVar;
+  -moz-transition: bottom $i $animVar;
+  -o-transition: bottom $i $animVar;
+  transition: bottom $i $animVar;
+}
+
+@mixin animationHeight($i: $animationTime) {
+  -webkit-transition: height $i $animVar;
+  -moz-transition: height $i $animVar;
+  -o-transition: height $i $animVar;
+  transition: height $i $animVar;
+}
+
+@mixin animationMaxHeight($i: $animationTime) {
+  -webkit-transition: max-height $i $animVar;
+  -moz-transition: max-height $i $animVar;
+  -o-transition: max-height $i $animVar;
+  transition: max-height $i $animVar;
+}
+
+@mixin animationMinHeight($i: $animationTime) {
+  -webkit-transition: min-height $i $animVar;
+  -moz-transition: min-height $i $animVar;
+  -o-transition: min-height $i $animVar;
+  transition: min-height $i $animVar;
+}
+
+$menuAnim: cubic-bezier(0.4, 0, 0.2, 1);
+@mixin animationLeft($i: $animationTime) {
+  -webkit-transition: left $i $menuAnim;
+  -moz-transition: left $i $menuAnim;
+  -o-transition: left $i $menuAnim;
+  transition: left $i $menuAnim;
+}
+
+@mixin animationOpacity($i: $animationTime) {
+  -webkit-transition: opacity $i linear;
+  -moz-transition: opacity $i linear;
+  -o-transition: opacity $i linear;
+  transition: opacity $i linear;
+}
+
+@mixin text-overflow() {
+  display: block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+@mixin icon() {
+  display: block;
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+  text-align: center;
+  font-size: 24px;
+}
+
+@mixin transition($transition) {
+  -webkit-transition: $transition;
+  -moz-transition: $transition;
+  -o-transition: $transition;
+  transition: $transition;
+}
+
+@mixin transform($string) {
+  -webkit-transform: $string;
+  -moz-transform: $string;
+  -ms-transform: $string;
+  -o-transform: $string;
+  transform: $string;
+}
+
+@mixin zoom($_zoom) {
+  @include transition(all 0.5s ease);
+  @include transform(scale($_zoom));
+}
+
+@mixin overflowEllipse() {
+  margin-bottom: 6px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  word-break: break-all;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  white-space: pre-wrap;
+}
+
+@mixin customCard() {
+  .wrapper {
+    flex-wrap: wrap;
+    margin: 20px;
+    display: flex;
+    @media screen and (max-width: 1600px) {
+      justify-content: space-evenly;
+    }
+    @media screen and (min-width: 1601px) {
+      justify-content: space-around;
+    }
+    @media screen and (min-width: 2001px) {
+      justify-content: normal;
+    }
+
+    .card {
+      overflow: hidden;
+      border: none;
+      border-top: 4px solid $accent;
+      &.selected {
+        border-top: 4px solid #f6993f;
+      }
+      &:hover {
+        border-top: 4px solid #f6993f;
+      }
+      border-radius: 16px;
+      width: 230px;
+      height: 220px;
+      margin: 10px 10px;
+      cursor: pointer;
+      background-color: #fff;
+      background-clip: border-box;
+      //box-shadow: 0 10px 15px -3px rgba(0, 0, 0, .1),
+      //0 4px 6px -2px rgba(0, 0, 0, .05);
+      //box-shadow: 0 6px 20px 0 rgba(0,0,0,.1);
+      box-shadow: 1px 3px 10px rgba(0, 0, 0, 0.24);
+      .card-header:first-child {
+        border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
+      }
+      .card-header {
+        font-size: 16px;
+        font-weight: 500;
+        text-transform: capitalize;
+        color: $card-header;
+        background-color: #fff;
+        border-bottom: none;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.7rem;
+
+        .title {
+          display: flex;
+          align-items: center;
+          width: 100%;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 1;
+          overflow: hidden;
+        }
+
+        .type-icon {
+          height: 30px;
+          vertical-align: middle;
+          margin-right: 6px;
+        }
+
+        .rng-menu-button {
+          ::ng-deep i:hover {
+            color: $accent;
+          }
+        }
+      }
+
+      .card-body {
+        display: flex;
+        position: relative;
+        flex: 1 1 auto;
+        padding: 0.5rem 1.25rem 1.25rem;
+        font-size: 13px;
+        justify-content: space-between;
+        .card-text {
+          text-overflow: ellipsis;
+          overflow: hidden;
+          display: -webkit-box;
+          -webkit-line-clamp: 4;
+          -webkit-box-orient: vertical;
+          height: 7em;
+          text-transform: capitalize;
+          margin-bottom: 15px;
+        }
+      }
+      .card-footer {
+        position: relative;
+        background: none;
+        border: none;
+        min-height: 80px;
+        .shortcuts {
+          background-color: #fff;
+          transform: translateY(250px);
+          transition: transform 0.6s cubic-bezier(0.31, 1.21, 0.64, 1.02);
+          display: flex;
+          justify-content: space-evenly;
+          position: absolute;
+          bottom: 10px;
+          width: 83%;
+          z-index: 2;
+          font-size: 12px;
+          .shortcut-icon {
+            text-decoration: underline;
+            img {
+              width: 20px;
+              height: 20px;
+              margin: 0 2px;
+            }
+          }
+        }
+        .card-date {
+          position: absolute;
+          font-size: 11px;
+          right: 20px;
+          bottom: 10px;
+          color: gray;
+        }
+      }
+      &.temp-card {
+        pointer-events: none;
+        box-shadow: none;
+        border: none;
+        background: none;
+        cursor: none;
+      }
+    }
+
+    ul {
+      position: absolute;
+      z-index: 1;
+      top: 50px;
+      right: -5px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      background: rgba(255, 255, 255, 0);
+    }
+
+    ul li {
+      height: 40px;
+      width: 40px;
+      text-align: center;
+      line-height: 40px;
+      transform: perspective(800px) rotateY(90deg);
+      transition: 0.5s;
+      transform-origin: right;
+      .material-icons {
+        font-size: 17px;
+        color: #4153b6;
+        &.add-icon {
+          color: #82b440;
+        }
+        &.edit-icon {
+          color: #fbcf61;
+          //color: #3f51b5;
+        }
+        &.delete-icon {
+          color: #ff6f6f;
+          //color: #3f51b5
+        }
+      }
+
+      &:hover {
+        //background: #159c6e;
+      }
+    }
+    .card:hover .card-footer .shortcuts {
+      transform: translateY(0px);
+    }
+
+    .card:hover ul li {
+      transform: perspective(800px) rotateY(0deg);
+    }
+
+    .card:hover ul li:nth-child(1) {
+      transition-delay: 0.1s;
+    }
+
+    .card:hover ul li:nth-child(2) {
+      transition-delay: 0.2s;
+    }
+
+    .card:hover ul li:nth-child(3) {
+      transition-delay: 0.3s;
+    }
+  }
+}
+
+@mixin customLabel() {
+  margin-bottom: 0.2rem;
+  //color: #5b737b;
+  color: #404a59;
+  font-weight: 400;
+}
+@mixin inputPlaceholder() {
+  ::-webkit-input-placeholder {
+    /* Edge */
+    color: #b1b8c1;
+    font-weight: 400;
+  }
+  :-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: #b1b8c1;
+    font-weight: 400;
+  }
+  ::placeholder {
+    color: #b1b8c1;
+    font-weight: 400;
+  }
+}
+
+@keyframes ani {
+  0% {
+    right: 15px;
+  }
+  50% {
+    right: 25px;
+  }
+  100% {
+    right: 15px;
+  }
+}
+
+@mixin customMatInput() {
+  .mat-form-field {
+    margin-bottom: 0;
+    font-size: 13px;
+    letter-spacing: 0.15px;
+    line-height: 18px;
+
+    ::ng-deep .mat-form-field-wrapper {
+      margin: 0;
+      padding-bottom: 1.034375em;
+    }
+  }
+  ::ng-deep .mat-form-field-infix {
+    padding: 0.5em 0;
+    border-top: 0.24375em solid transparent;
+  }
+}
+
+@mixin customInputs() {
+  .field {
+    .label {
+      font-weight: 600;
+      font-size: 13px;
+      position: relative;
+
+      .help-text {
+        font-size: 8px;
+        position: absolute;
+        top: 15px;
+        font-weight: 400;
+        color: gray;
+      }
+
+      sup {
+        color: red;
+      }
+    }
+
+    .toggle {
+      margin: 0 5px;
+      display: flex;
+      align-items: center;
+    }
+
+    .delete {
+      cursor: pointer;
+    }
+
+    .value {
+      &.disable {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    }
+  }
+}
