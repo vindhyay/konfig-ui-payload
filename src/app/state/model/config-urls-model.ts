@@ -1,9 +1,8 @@
 export interface ConfigUrlsModel {
+  accountOpeningBaseURL: string;
   workflowAdminBaseURL: string;
   alternateWorkflowAdminBaseURL: string;
-  transformationsUiURL: string;
-  serviceDetailerBaseURL: string;
+  accountWorkflowBaseURL: string;
   authBaseUrl: string;
-  currentEnv: string;
-  primaryEnv: string;
+  socketBaseURL: string;
 }

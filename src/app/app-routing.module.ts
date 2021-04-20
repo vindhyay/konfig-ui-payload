@@ -8,6 +8,14 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
+    path: ':workflowId',
+    loadChildren: () => import('./modules/task/task.module').then(mod => mod.TaskModule),
+    data: {
+      actions: []
+    },
+    pathMatch: 'full'
+  },
+  {
     path: 'auth',
     loadChildren: () => import('./modules/auth/auth.module').then(mod => mod.AuthModule),
     data: {
@@ -16,7 +24,6 @@ const routes: Routes = [
     pathMatch: 'full'
   }
 ];
-
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, {

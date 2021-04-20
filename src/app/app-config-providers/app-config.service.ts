@@ -38,15 +38,124 @@ export class AppConfigService {
 
   private appendBaseUrls(config: ConfigUrlsModel = {} as ConfigUrlsModel) {
     const WORKFLOW_ADMIN_BASE_URL = config.workflowAdminBaseURL || '';
+    const ACCOUNT_WORKFLOW_BASE_URL = config.accountWorkflowBaseURL || '';
+    const SOCKET_BASE_URL = config.socketBaseURL || '';
     const AUTH_BASE_URL = config.authBaseUrl || '';
-    const TRANSFORMATIONS_UI_URL = config.transformationsUiURL;
+    const ALTERNATE_WORKFLOW_ADMIN_BASE_URL = config.alternateWorkflowAdminBaseURL || '';
     return {
-      transformationsUiURL: TRANSFORMATIONS_UI_URL,
+      // Token Gen URL
       authenticateUrl: AUTH_BASE_URL + '/authenticate',
+      // LOGOUT URL
       logoutURL: AUTH_BASE_URL + '/logout',
+      // Login URl
       loginURL: WORKFLOW_ADMIN_BASE_URL + '/rest/permissions',
-
-    };
+      // Team Tasks URL
+      getTeamTasksURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/workflow/get-teamQueue',
+      // Followup Tasks URL
+      getFollowupTasksURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/workflow/get/followUpTaskQueue',
+      // Update Followup URL
+      updateFollowupTasksURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/workflow/updateFollowUpStatus/transaction',
+      // History Tasks URL
+      getHistoryTasksURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/workflow/get/history',
+      // Task Details URL
+      workflowTaskDetailsURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/workflow/get/transaction',
+      // History Task Details URL
+      workflowHistoryTaskDetailsURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/workflow/get/history',
+      // Perform Action on Task URL
+      doActionOnTaskURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/workflow/updateStatus/transaction',
+      // Save Task Details URL
+      saveWorkflowTaskURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/workflow/saveWorkflowData',
+      // Assign Task URl
+      assignTaskUrl: ACCOUNT_WORKFLOW_BASE_URL + '/rest/workflow/assign',
+      // My Tasks URL
+      userTasksURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/workflow/get-myQueue',
+      // Post Comment On Task URl
+      postCommentOnTaskURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/workflow/post-comment',
+      // Task Priority URL
+      changeTaskPriorityURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/workflow/change-priority',
+      // SLA Start URL
+      startTaskSlaURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/workflow/start-sla',
+      // SLA suspend URL
+      suspendTaskURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/workflow/suspend-sla',
+      // Document Upload URL
+      fileUploadURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/workflow/uploaddocument',
+      // Documents For Transaction URL
+      getFilesForTransactionURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/workflow/documents',
+      // Documents For History Transaction URL
+      getFilesForHistoryTransactionURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/workflow/archive/documents',
+      // Queue Config URL
+      getQueueColumnsUrl: ACCOUNT_WORKFLOW_BASE_URL + '/rest/workflow/get/queueconfig',
+      // USER associated Workflow & Roles URL
+      getWorkflow: ACCOUNT_WORKFLOW_BASE_URL + '/rest/user/workflow-roles',
+      // set USER preferences URL
+      setPreferences: ACCOUNT_WORKFLOW_BASE_URL + '/rest/user/update-preference',
+      // get USER preferences URL
+      getPreferences: ACCOUNT_WORKFLOW_BASE_URL + '/rest/user/preference',
+      // get USER associated Groups URL
+      getGroups: ACCOUNT_WORKFLOW_BASE_URL + '/rest/workflow/getGroupsForUser',
+      // get My Tasks Stats URL
+      getMyTaskStatsURL: ACCOUNT_WORKFLOW_BASE_URL + '/analytics/getWSUnion-myTask',
+      // get Team Tasks Stats URL
+      getTeamTaskStatsURL: ACCOUNT_WORKFLOW_BASE_URL + '/analytics/getWSUnion-teamTask',
+      // get History Tasks Stats URL
+      getHistoryTaskStatsURL: ACCOUNT_WORKFLOW_BASE_URL + '/analytics/getWSUnion-history',
+      // Task Stats Websocket URL
+      taskStatSocketURL: SOCKET_BASE_URL + '/socket',
+      // Productivity Chart URL
+      getProductivityChartDataURL: ACCOUNT_WORKFLOW_BASE_URL + '/analytics/productivity-chart',
+      // SLa Chart URL
+      getSlaChartDataURL: ACCOUNT_WORKFLOW_BASE_URL + '/analytics/sla-chart',
+      // Productivity Report URL
+      getProductivityReportURL: ACCOUNT_WORKFLOW_BASE_URL + '/analytics/productivity-report',
+      // SLA Report URL
+      getSlaReportURL: ACCOUNT_WORKFLOW_BASE_URL + '/analytics/sla-report',
+      // Modify Task Field URL
+      modifyTaskFieldURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/workflow/update-data-in-details',
+      // Get Fields For Columns Config URL
+      getAvailableColumnsURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/user/get-all-columns',
+      // Get Configured Columns URL
+      getConfiguredColumnsURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/user/get-columns-pref',
+      // Save Columns Config URL
+      saveConfiguredColumnsURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/user/save-columns-pref',
+      // Save Out Of Office URL
+      saveOutOfOfficeURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/user/save-outOfOffice',
+      // Get Out Of Office URl
+      getOutOfOfficeURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/user/get-outOfOffice',
+      // Export Tasks URL
+      exportTasksURL: ACCOUNT_WORKFLOW_BASE_URL + '/export/task-report',
+      // Export Productivity URL
+      exportProductivityURL: ACCOUNT_WORKFLOW_BASE_URL + '/export/prod-report',
+      // Export SLA URL
+      exportSLAURL: ACCOUNT_WORKFLOW_BASE_URL + '/export/sla-report',
+      // Get History columns
+      getAllHistoryColumnsURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/user/get-all-history-columns',
+      // Convert data payload to meta data
+      getConvertPayloadToMetaDataURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/transaction/convert-payload-to-meta-data',
+      // Demo analytics URL
+      getNewAnalyticsURL: ACCOUNT_WORKFLOW_BASE_URL + '/analytics/get-project-summary',
+      // Demo analytics export URl
+      exportDemoTableURL: ACCOUNT_WORKFLOW_BASE_URL + '/export/project-report',
+      // Payload
+      // get all transactions
+      getAllTransactionsURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/transaction/get-all-transactions',
+      // get transaction details
+      getTransactionDetailsURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/transaction/get-pending-transaction',
+      // Submit with files URL
+      submitWithFilesURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/transaction/submit-with-files',
+      // save transaction URL
+      saveTransactionURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/transaction/save-pending-transaction',
+      // get workflow details URL
+      getWorkflowDetailsURL: WORKFLOW_ADMIN_BASE_URL + '/rest/get-workflow-detail',
+      // get payload stats
+      getTransactionCountURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/transaction/get-transaction-count',
+      // data-changes for my-tasks and team-tasks
+      getDataChangesURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/workflow/data-changes',
+      // data-changes for history
+      getHistoryDataChangesURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/workflow/archived-data-changes',
+      // task-table-socket
+      taskTableSocketURL: SOCKET_BASE_URL + '/socket/task-table',
+      // Data list values URL
+      getDataListValuesURL: ALTERNATE_WORKFLOW_ADMIN_BASE_URL + '/resource/query-result'
+    }
   }
-
 }

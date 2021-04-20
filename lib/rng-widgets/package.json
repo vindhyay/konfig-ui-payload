@@ -1,0 +1,23 @@
+{
+  "name": "@rng/widgets",
+  "version": "0.0.1",
+  "peerDependencies": {
+    "@angular/common": "^8.1.2",
+    "@angular/core": "^8.1.2",
+    "@angular/forms": "^8.1.2",
+    "@angular/material": "^8.1.1"
+  },
+  "main": "bundles/rng-widgets.umd.js",
+  "module": "fesm5/rng-widgets.js",
+  "es2015": "fesm2015/rng-widgets.js",
+  "esm5": "esm5/rng-widgets.js",
+  "esm2015": "esm2015/rng-widgets.js",
+  "fesm5": "fesm5/rng-widgets.js",
+  "fesm2015": "fesm2015/rng-widgets.js",
+  "typings": "rng-widgets.d.ts",
+  "metadata": "rng-widgets.metadata.json",
+  "sideEffects": false,
+  "dependencies": {
+    "tslib": "^1.9.0"
+  }
+}

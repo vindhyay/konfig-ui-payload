@@ -1,0 +1,15 @@
+<finlevit-lib-select
+  [placeholder]="item?.metaData?.placeholder"
+  [isDisabled]="viewMode && (!item?.validators?.editable || !editMode)"
+  [isRequired]="item?.validators?.required"
+  [label]="item?.label"
+  [options]="item?.metaData?.options"
+  [optionLabel]="
+    item?.metaData?.isLabelAndValue || item?.metaData?.optionType === 'dataresource' ? item?.metaData?.optionLabel : ''
+  "
+  [optionValue]="
+    item?.metaData?.isLabelAndValue || item?.metaData?.optionType === 'dataresource' ? item?.metaData?.optionValue : ''
+  "
+  [tooltip]="item?.metaData?.tooltip"
+  [(ngModel)]="item.value.value"
+></finlevit-lib-select>

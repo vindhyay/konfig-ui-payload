@@ -1,0 +1,23 @@
+<mat-form-field [ngClass]="fieldCSS" [appearance]="appearance" color="accent">
+  <mat-label>{{ label }}</mat-label>
+  <input
+    matInput
+    [placeholder]="placeholder"
+    [name]="name"
+    [type]="inputType"
+    [prefix]="inputPrefix"
+    [mask]="inputMask"
+    [showMaskTyped]="false"
+    [dropSpecialCharacters]="inputDropSpecialCharacters"
+    [formControl]="valueControl"
+    [errorStateMatcher]="customErrorMatcher || matcher"
+    (blur)="onTouch()"
+  />
+  <i
+    *ngIf="passwordField"
+    matSuffix
+    (click)="password = !password"
+    class="pass-btn rng-icon {{ password ? 'rng-icon-visibility_off' : 'rng-icon-visibility' }}"
+  ></i>
+  <mat-error *ngIf="valueControl.invalid">{{ getErrorMessage() }}</mat-error>
+</mat-form-field>

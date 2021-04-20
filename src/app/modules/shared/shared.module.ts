@@ -6,11 +6,13 @@ import {RouterModule} from "@angular/router";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {FinlevitLibraryModule} from "../../../../lib/finlevit-library/src/lib/finlevit-library.module";
 import {BtnPrimaryComponent} from "./btn-primary/btn-primary.component";
+import {NgxLoadingModule} from "ngx-loading";
+import {LoaderComponent} from "./loader/loader.component";
 
 
 
 @NgModule({
-  declarations: [BaseComponent, BtnPrimaryComponent],
+  declarations: [BaseComponent, BtnPrimaryComponent, LoaderComponent],
   imports: [
     CommonModule,
     MaterialModule,
@@ -18,6 +20,7 @@ import {BtnPrimaryComponent} from "./btn-primary/btn-primary.component";
     FormsModule,
     ReactiveFormsModule,
     FinlevitLibraryModule,
+    NgxLoadingModule.forRoot({}),
   ],
   exports: [
     MaterialModule,
@@ -27,6 +30,7 @@ import {BtnPrimaryComponent} from "./btn-primary/btn-primary.component";
     FormsModule,
     ReactiveFormsModule,
     FinlevitLibraryModule,
-    BtnPrimaryComponent]
+    BtnPrimaryComponent,
+    LoaderComponent]
 })
 export class SharedModule { }

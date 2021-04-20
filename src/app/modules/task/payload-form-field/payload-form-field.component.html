@@ -1,0 +1,197 @@
+<div
+  [ngClass]="{ 'preview-container': true, 'controls-active': showControls }"
+  (mouseleave)="toggleControls(false)"
+  (mouseover)="toggleControls(true)"
+>
+  <ul
+    *ngIf="
+      showEdit &&
+      showControls &&
+      (item?.metaData?.widgetType == TextInput ||
+        item?.metaData?.widgetType == TextArea ||
+        item?.metaData?.widgetType == Number ||
+        item?.metaData?.widgetType == CheckboxGroup ||
+        item?.metaData?.widgetType == RadioGroup ||
+        item?.metaData?.widgetType == DatePicker ||
+        item?.metaData?.widgetType == Dropdown ||
+        item?.metaData?.widgetType == Checkbox)
+    "
+  >
+    <li title="Edit field" *ngIf="!editMode" (click)="onEdit($event, item)">
+      <i class="pi pi-pencil opt-icon"></i>
+    </li>
+    <li title="Save field" *ngIf="editMode" (click)="onSave(item)">
+      <i class="pi pi-save opt-icon"></i>
+    </li>
+    <li title="Cancel" *ngIf="editMode" (click)="onCancel()">
+      <i class="pi pi-times opt-icon"></i>
+    </li>
+  </ul>
+
+  <ng-container *ngIf="item?.metaData?.widgetType === TextInput">
+    <div class="input-container">
+      <finlevit-text
+        [isDisabled]="viewMode && (!item?.validators?.editable || !editMode)"
+        [leftIcon]="item?.metaData?.leftIcon"
+        [rightIcon]="item?.metaData?.rightIcon"
+        [error]="item?.error == true"
+        [errorMsg]="item?.errorMsg"
+        [tooltip]="item?.metaData?.tooltip"
+        [placeholder]="item?.metaData?.placeholder"
+        [(ngModel)]="item.value.value"
+        (ngModelChange)="validateField($event, item)"
+        [isRequired]="item?.validators?.required"
+        [label]="item?.label"
+      ></finlevit-text>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="item?.metaData?.widgetType === TextArea">
+    <div class="input-container">
+      <finlevit-lib-textarea
+        [isDisabled]="viewMode && (!item?.validators?.editable || !editMode)"
+        [rows]="item?.metaData?.rowsCount"
+        [error]="item?.error == true"
+        [errorMsg]="item?.errorMsg"
+        [tooltip]="item?.metaData?.tooltip"
+        [placeholder]="item?.metaData?.placeholder"
+        [(ngModel)]="item.value.value"
+        (ngModelChange)="validateField($event, item)"
+        [isRequired]="item?.validators?.required"
+        [label]="item?.label"
+      ></finlevit-lib-textarea>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="item?.metaData?.widgetType === Number">
+    <div class="input-container">
+      <finlevit-number
+        [isDisabled]="viewMode && (!item?.validators?.editable || !editMode)"
+        [placeholder]="item?.metaData?.placeholder"
+        [tooltip]="item?.metaData?.tooltip"
+        [suffix]="item?.metaData?.suffix"
+        [prefix]="item?.metaData?.prefix"
+        [error]="item?.error == true"
+        [(ngModel)]="item.value.value"
+        (ngModelChange)="validateField($event, item)"
+        [errorMsg]="item?.errorMsg"
+        [label]="item?.label"
+        [isRequired]="item?.validators?.required"
+        [format]="item?.metaData?.format"
+      ></finlevit-number>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="item?.metaData?.widgetType === Text">
+    <div
+      [class]="'text-content text-style-' + item?.metaData?.textStyle"
+      [ngStyle.gt-sm]="{
+        'justify-content': item?.metaData?.horizontalAlign,
+        'align-items': item?.metaData?.verticalAlign
+      }"
+    >
+      {{ item?.metaData?._value }}
+    </div>
+  </ng-container>
+  <ng-container *ngIf="item?.metaData?.widgetType === Image">
+    <div class="image-container">
+      <img [src]="item?.metaData?.url" />
+    </div>
+  </ng-container>
+  <ng-container *ngIf="item?.metaData?.widgetType === Checkbox">
+    <div class="input-container">
+      <finlevit-lib-checkbox
+        [isDisabled]="viewMode && (!item?.validators?.editable || !editMode)"
+        [errorMsg]="item?.errorMsg"
+        [error]="item?.error == true"
+        [isRequired]="item?.validators?.required"
+        [label]="item?.label"
+        [(ngModel)]="item.value.value"
+        (ngModelChange)="validateField($event, item)"
+      ></finlevit-lib-checkbox>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="item?.metaData?.widgetType === CheckboxGroup">
+    <div class="input-container">
+      <app-checkbox-group
+        [item]="item"
+        [viewMode]="true"
+        [editMode]="editMode"
+        [dataListId]="item?.metaData?.datalistId"
+      ></app-checkbox-group>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="item?.metaData?.widgetType === Dropdown">
+    <div class="input-container">
+      <app-dropdown-field
+        [item]="item"
+        [viewMode]="viewMode"
+        [editMode]="editMode"
+        [dataListId]="item?.metaData?.datalistId"
+      ></app-dropdown-field>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="item?.metaData?.widgetType === RadioGroup">
+    <div class="input-container">
+      <finlevit-radio-group
+        [isDisabled]="viewMode && (!item?.validators?.editable || !editMode)"
+        [isRequired]="item?.validators?.required"
+        [items]="item?.metaData?.options"
+        [label]="item?.label"
+        [optionLabel]="item?.metaData?.isLabelAndValue ? item?.metaData?.optionLabel : ''"
+        [optionValue]="item?.metaData?.isLabelAndValue ? item?.metaData?.optionValue : ''"
+        [(ngModel)]="item.value.value"
+        (ngModelChange)="validateField($event, item)"
+        [errorMsg]="item?.errorMsg"
+        [error]="item?.error == true"
+      ></finlevit-radio-group>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="item?.metaData?.widgetType === DatePicker">
+    <div class="input-container">
+      <finlevit-lib-datepicker
+        [isDisabled]="viewMode && (!item?.validators?.editable || !editMode)"
+        [label]="item?.label"
+        [errorMsg]="item?.errorMsg"
+        [error]="item?.error == true"
+        [isRequired]="item?.validators?.required"
+        [tooltip]="item?.metaData?.tooltip"
+        [placeholder]="item?.metaData?.placeholder"
+        [viewDateFormat]="item?.metaData?.viewDateFormat"
+        [returnDateFormat]="item?.metaData?.returnDateFormat"
+        [minDate]="item?.validators?.minDate"
+        [maxDate]="item?.validators?.maxDate"
+        [(ngModel)]="item.value.value"
+        (ngModelChange)="validateField($event, item)"
+      ></finlevit-lib-datepicker>
+    </div>
+  </ng-container>
+  <ng-container
+    *ngIf="
+      item?.metaData?.widgetType === Container ||
+      item?.metaData?.widgetType === Header ||
+      item?.metaData?.widgetType === Footer
+    "
+  >
+    <div
+      [ngClass]="{
+        'nested-grid-container': true,
+        'header-container': item?.metaData?.widgetType === Header,
+        'footer-container': item?.metaData?.widgetType === Footer
+      }"
+    >
+      <div *ngIf="item?.metaData?.title" class="container-title">{{ item?.metaData?.title }}</div>
+      <finlevit-grid
+        [viewMode]="viewMode"
+        [showEdit]="showEdit"
+        [parent]="item"
+        [items]="item.children"
+        [modifyOptions]="{
+          minCols: item?.metaData?.widgetType === Header ? 50 : NESTED_MIN_COLUMNS,
+          maxCols: 5000,
+          minRows: item?.metaData?.widgetType === Header ? 0 : 6,
+          gridType: item?.metaData?.widgetType === Header ? 'fixed' : 'fit',
+          fixedRowHeight: item?.metaData?.widgetType === Header ? 10 : 30,
+          fixedColWidth: item?.metaData?.widgetType === Header ? 10 : 30
+        }"
+      ></finlevit-grid>
+    </div>
+  </ng-container>
+</div>

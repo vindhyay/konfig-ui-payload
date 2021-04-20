@@ -1,4 +1,4 @@
-export interface IResult {
+export interface result {
   data: any;
   error: error;
 }

@@ -1,7 +1,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { BaseService } from 'src/app/services/base.service';
-import { BehaviorSubject, EMPTY, Observable, of, Subject } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, EMPTY, Observable, Subject } from 'rxjs';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { StorageService } from '../../../services/storage.service';
 import { SelectedPreferencesModel } from '../../auth/models';
 import { catchError, tap } from 'rxjs/operators';
@@ -37,7 +37,15 @@ export class UserService extends BaseService implements OnDestroy {
     this.setSelection(this.selection.getValue().selectedGroup, selectedRole, selectedWorkflow);
   }
 
-  setSelection(selectedGroup: any, selectedRole: any, selectedWorkflow? : any) {
+  setSelectedRole(selectedRole: any) {
+    this.setSelection(
+        this.selection.getValue().selectedGroup,
+        selectedRole,
+        this.selection.getValue().selectedWorkflow
+    );
+  }
+
+  setSelection(selectedGroup: any, selectedRole: any, selectedWorkflow?: any) {
     const preferencesIfAny: SelectedPreferencesModel = this.storage.preference;
     const { selectedWorkflowId = '', selectedRoleId = '' } = preferencesIfAny || {};
     this.storage.preference = {
@@ -48,9 +56,9 @@ export class UserService extends BaseService implements OnDestroy {
     this.selection.next({ selectedGroup, selectedWorkflow, selectedRole });
   }
 
-  setWorkflowsAndRoles(data: any[]) {
+  setWorkflowsAndRoles(data: any) {
     this.workflows.next(data);
-    let selectedWorkflow = data.find(workflow => workflow.default === true) || {};
+    let selectedWorkflow = data.find((workflow: any) => workflow.default === true) || {};
     selectedWorkflow = selectedWorkflow.id ? selectedWorkflow : data[0] || {};
     const roles = selectedWorkflow.roles || [];
     let selectedRole = roles.find((role: any) => role.default === true) || {};
@@ -59,9 +67,9 @@ export class UserService extends BaseService implements OnDestroy {
     const preferencesIfAny: SelectedPreferencesModel = this.storage.preference;
     if (preferencesIfAny) {
       const { selectedWorkflowId = '', selectedRoleId = '' } = preferencesIfAny;
-      const selectedWorkflowExists = data.find(workflow => workflow.id == selectedWorkflowId);
+      const selectedWorkflowExists = data.find((workflow: any) => workflow.id == selectedWorkflowId);
       const selectedRoleExist =
-        selectedWorkflowExists && selectedWorkflowExists.roles.find((role: any) => role.id === selectedRoleId);
+          selectedWorkflowExists && selectedWorkflowExists.roles.find((role: any) => role.id === selectedRoleId);
       if (selectedWorkflowExists && selectedRoleExist) {
         this.setSelection(selectedGroup, selectedRoleExist, selectedWorkflowExists);
         return;
@@ -70,14 +78,14 @@ export class UserService extends BaseService implements OnDestroy {
     this.setSelection(selectedGroup, selectedRole, selectedWorkflow);
   }
 
-  setGroups(data: any[]) {
+  setGroups(data: any) {
     if (data && data.length) {
       this.groups.next(data);
       const preferencesIfAny: SelectedPreferencesModel = this.storage.preference;
       let selectedGroup = data[0];
       if (preferencesIfAny) {
         const { selectedGroupId = '' } = preferencesIfAny;
-        selectedGroup = data.find(group => group.id === selectedGroupId) || selectedGroup;
+        selectedGroup = data.find((group: any) => group.id === selectedGroupId) || selectedGroup;
       }
       let selectedWorkflow = this.selection.getValue() && this.selection.getValue().selectedWorkflow;
       let selectedRole = this.selection.getValue() && this.selection.getValue().selectedRole;
@@ -85,9 +93,24 @@ export class UserService extends BaseService implements OnDestroy {
     }
   }
 
+  getUserTasks = (payload: any): Observable<any> => {
+    const url = `${this.config.getApiUrls().userTasksURL}`;
+    return this.postData(url, payload);
+  };
+
+  getHistoryTasks = (payload: any): Observable<any> => {
+    const url = `${this.config.getApiUrls().getHistoryTasksURL}`;
+    return this.postData(url, payload);
+  };
+
   getHistoryQueueColumns = (params: any): Observable<any> => {
     const { workflowId = '' } = params;
     const url = `${this.config.getApiUrls().getAllHistoryColumnsURL}/${workflowId}`;
+    return this.getData(url, params);
+  };
+
+  getConfiguredColumns = (params: any): Observable<any> => {
+    const url: string = `${this.config.getApiUrls().getConfiguredColumnsURL}`;
     return this.getData(url, params);
   };
 
@@ -102,6 +125,44 @@ export class UserService extends BaseService implements OnDestroy {
     return this.postData(url, payload, params, 'blob');
   };
 
+  //Get Transactions
+  getAllTransactions = (params: any): Observable<any> => {
+    const url = `${this.config.getApiUrls().getAllTransactionsURL}`;
+    return this.getData(url, params);
+  };
+  // get Transaction details
+  getTransactionDetails = (transactionId: any): Observable<any> => {
+    const url = `${this.config.getApiUrls().getTransactionDetailsURL}/${transactionId}`;
+    return this.getData(url);
+  };
+
+  //Save Trasnaction
+  saveTransaction = (params: any, payload: any): Observable<any> => {
+    const url = `${this.config.getApiUrls().saveTransactionURL}`;
+    return this.postData(url, payload, params);
+  };
+
+  //Get Workflow Payload To Show Form
+  getWorkflowDetails = (workflowId: any): Observable<any> => {
+    const url = `${this.config.getApiUrls().getWorkflowDetailsURL}/${workflowId}`;
+    return this.getData(url);
+  };
+
+  //Submit transaction
+  submitTransaction = (appId: any, transactionId: any, params: any, payload: any): Observable<any> => {
+    const url = `${this.config.getApiUrls().submitWithFilesURL}`;
+    let headers = new HttpHeaders({
+      finlevitAppId: appId,
+      transactionId: transactionId
+    });
+    return this.postData(url, payload, params, 'json', false, headers);
+  };
+
+  //get transaction count
+  getTransactionCount = (workflowId: any): Observable<any> => {
+    const url = `${this.config.getApiUrls().getTransactionCountURL}`;
+    return this.getData(url, { workflowId });
+  };
 
   /**
    * Creates a new WebSocket subject and send it to the messages subject
@@ -110,10 +171,10 @@ export class UserService extends BaseService implements OnDestroy {
   public connect(params: any): void {
     this.socket$ = this.getNewTaskDataSocket(params);
     const tasks: any = this.socket$.pipe(
-      tap({
-        error: error => console.log(error)
-      }),
-      catchError(_ => EMPTY)
+        tap({
+          error: error => console.log(error)
+        }),
+        catchError(_ => EMPTY)
     );
     this.tasksSubject$.next(tasks);
   }
@@ -130,7 +191,7 @@ export class UserService extends BaseService implements OnDestroy {
    * Return a custom WebSocket subject which reconnects after failure
    */
   private getNewTaskDataSocket(params: any) {
-    const { userId, workflowId, roleId } = params;
+    const {userId, workflowId, roleId} = params;
     const paramsString1 = userId ? `?userId=${userId || ''}` : '';
     const paramsString2 = roleId ? `&roleId=${roleId || ''}` : '';
     const url = `${this.config.getApiUrls().taskTableSocketURL}/${workflowId}${paramsString1}${paramsString2}`;

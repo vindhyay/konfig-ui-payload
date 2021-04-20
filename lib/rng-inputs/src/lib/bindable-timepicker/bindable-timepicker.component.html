@@ -1,0 +1,9 @@
+<mat-form-field [ngClass]="fieldCSS" [appearance]="appearance" [floatLabel]="floatLabel" color="accent">
+  <i matSuffix class="rng-icon rng-icon-schedule"></i>
+  <mat-label *ngIf="label">{{ label }}</mat-label>
+  <input matInput [formControl]="valueControl" [matAutocomplete]="auto" />
+  <mat-autocomplete #auto="matAutocomplete">
+    <mat-option *ngFor="let item of filteredItems" [value]="item">{{ item }}</mat-option>
+  </mat-autocomplete>
+  <mat-error *ngIf="valueControl.invalid">{{ getErrorMessage() }}</mat-error>
+</mat-form-field>

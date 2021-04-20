@@ -1,0 +1,16 @@
+<div class="rng-iconed-menu">
+  <button [disabled]="disabled" mat-flat-button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
+    <div *ngIf="showName; else avatarOnly" class="current-item-wrapper">
+      <rng-iconed-name class="rng-iconed-name" [data]="itemAvatar(currentItem)"></rng-iconed-name>
+      <i class="rng-icon rng-icon-arrow_drop_down"></i>
+    </div>
+    <ng-template #avatarOnly>
+      <rng-image class="rng-image" [data]="itemAvatar(currentItem)"></rng-image>
+    </ng-template>
+  </button>
+  <mat-menu #menu="matMenu" class="rng-iconed-menu-list">
+    <button mat-menu-item class="rng-iconed-menu-item" *ngFor="let item of items" (click)="clickFunction(item)">
+      <rng-iconed-name class="rng-iconed-name" [data]="itemAvatar(item)"></rng-iconed-name>
+    </button>
+  </mat-menu>
+</div>

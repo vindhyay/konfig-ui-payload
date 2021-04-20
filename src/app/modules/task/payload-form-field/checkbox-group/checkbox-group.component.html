@@ -1,0 +1,14 @@
+<finlevit-lib-checkbox-group
+  [isDisabled]="viewMode && (!item?.validators?.editable || !editMode)"
+  [isRequired]="item?.validators?.required"
+  [label]="item?.label"
+  [items]="item?.metaData?.options"
+  [optionLabel]="
+    item?.metaData?.isLabelAndValue || item?.metaData?.optionType === 'dataresource' ? item?.metaData?.optionLabel : ''
+  "
+  [optionValue]="
+    item?.metaData?.isLabelAndValue || item?.metaData?.optionType === 'dataresource' ? item?.metaData?.optionValue : ''
+  "
+  [tooltip]="item?.metaData?.tooltip"
+  [(ngModel)]="item.value.value"
+></finlevit-lib-checkbox-group>

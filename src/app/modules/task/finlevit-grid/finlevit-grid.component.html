@@ -1,0 +1,23 @@
+<gridster
+  [options]="options"
+  [ngClass]="{ 'display-grid': true }"
+  [ngStyle]="{ 'background-color': parent?.metaData?.backgroundColor }"
+>
+  <gridster-item
+    [ngClass]="{
+      'card-container': item?.metaData?.widgetType === Container,
+      'text-container': item?.metaData?.widgetType === Text,
+      'header-container': item?.metaData?.widgetType === Header,
+      'footer-container': item?.metaData?.widgetType === Footer
+    }"
+    [item]="item"
+    *ngFor="let item of items"
+  >
+    <app-payload-form-field
+      [viewMode]="viewMode"
+      [showEdit]="showEdit"
+      (edit)="onEdit($event)"
+      [item]="item"
+    ></app-payload-form-field>
+  </gridster-item>
+</gridster>
