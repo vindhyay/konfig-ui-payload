@@ -1,6 +1,6 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Optional, Output, Self, ViewChild} from '@angular/core';
-import {ControlValueAccessor, NgControl, ValidatorFn, Validators} from "@angular/forms";
-import {hasRequiredField} from "../utils";
+import { Component, ElementRef, EventEmitter, Input, OnInit, Optional, Output, Self, ViewChild } from '@angular/core';
+import { ControlValueAccessor, NgControl, ValidatorFn, Validators } from '@angular/forms';
+import { hasRequiredField } from '../utils';
 
 @Component({
   selector: 'finlevit-text',
@@ -8,11 +8,11 @@ import {hasRequiredField} from "../utils";
   styleUrls: ['./input.component.scss']
 })
 export class InputComponent implements ControlValueAccessor, OnInit {
-
   constructor(@Optional() @Self() public controlDir: NgControl) {
     if (this.controlDir) {
-    this.controlDir.valueAccessor = this;
-  }}
+      this.controlDir.valueAccessor = this;
+    }
+  }
 
   @ViewChild('input', { static: true }) input: ElementRef | undefined;
   @Input() isDisabled: boolean = false;
@@ -26,7 +26,7 @@ export class InputComponent implements ControlValueAccessor, OnInit {
   @Input() tooltip: string = '';
   @Input() pattern: string = '';
   @Input() label: string = '';
-  @Input() placeholder: string= '';
+  @Input() placeholder: string = '';
   @Input() errorMsg: string = '';
   @Input() error: boolean = false;
   @Input() validators: any = [];
@@ -107,7 +107,7 @@ export class InputComponent implements ControlValueAccessor, OnInit {
     this.onChange(value);
   }
 
-  capitalLetter(str : any) {
+  capitalLetter(str: any) {
     str = str.split(' ');
     for (var i = 0, x = str.length; i < x; i++) {
       if (str[i][0]) {

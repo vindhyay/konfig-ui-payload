@@ -1,6 +1,6 @@
-import {Component, Input, OnInit, Optional, Self} from '@angular/core';
-import {ControlValueAccessor, NgControl, ValidatorFn, Validators} from "@angular/forms";
-import {getUniqueId, hasRequiredField} from '../utils';
+import { Component, Input, OnInit, Optional, Self } from '@angular/core';
+import { ControlValueAccessor, NgControl, ValidatorFn, Validators } from '@angular/forms';
+import { getUniqueId, hasRequiredField } from '../utils';
 
 @Component({
   selector: 'finlevit-radio-group',
@@ -32,7 +32,6 @@ export class RadioGroupComponent implements OnInit, ControlValueAccessor {
   @Input() validators: any = [];
 
   _value: any = null;
-
 
   ngOnInit(): void {
     const control = this.controlDir && this.controlDir.control;
@@ -66,7 +65,7 @@ export class RadioGroupComponent implements OnInit, ControlValueAccessor {
     this.onChange(value);
   }
   onLocalFocus($event: any) {}
-  onChange(event : any) {}
+  onChange(event: any) {}
   onTouched() {}
 
   checkError() {

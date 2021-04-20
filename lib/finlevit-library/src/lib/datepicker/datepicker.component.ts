@@ -27,8 +27,8 @@ export class DatepickerComponent implements ControlValueAccessor, OnInit {
   @Input() showIcon = true;
   @Input() isDisabled = false;
   @Input() errorMsg = '';
-  @Input() minDate: Date = new Date;
-  @Input() maxDate: Date = new Date;
+  @Input() minDate: Date = null;
+  @Input() maxDate: Date = null;
 
   _value: any = null;
 
@@ -56,7 +56,7 @@ export class DatepickerComponent implements ControlValueAccessor, OnInit {
   writeValue(obj: any): void {
     let value = obj;
     if (obj) {
-      value = new Date(obj);
+      value = new Date(isNaN(Number(obj)) ? obj : Number(obj));
     }
     this.setInputValue(value);
   }
@@ -83,8 +83,8 @@ export class DatepickerComponent implements ControlValueAccessor, OnInit {
     const returnValue = this.getReturnDateValue(value);
     this.onChange(returnValue);
   }
-  getReturnDateValue(value: any) {
-    return value;
+  getReturnDateValue(value) {
+    return new Date(value).getTime();
   }
   checkError() {
     return (this.controlDir && !this.controlDir.control?.valid && this.controlDir.control?.touched) || this.error;

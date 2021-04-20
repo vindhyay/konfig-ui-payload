@@ -82,7 +82,8 @@ export class LoginComponent extends BaseComponent implements OnInit {
   }
 
   onSuccess(data: UserDataModel) {
-    this.router.navigate(['/user']);
+    console.log('on success')
+    // this.router.navigate(['../']);
   }
 
   handleError(error: HttpErrorResponse | CustomError) {

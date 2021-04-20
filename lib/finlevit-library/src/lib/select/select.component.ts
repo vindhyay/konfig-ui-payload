@@ -13,7 +13,7 @@ export class SelectComponent implements ControlValueAccessor, OnInit {
       this.controlDir.valueAccessor = this;
     }
   }
-  @Input() iconOptions : boolean = false;
+  @Input() iconOptions: boolean = false;
   @Input() filter: boolean = false;
   @Input() showClear: boolean = false;
   @Input()
@@ -46,7 +46,7 @@ export class SelectComponent implements ControlValueAccessor, OnInit {
   @Input() isDisabled = false;
   @Input() errorMsg = '';
 
-  _options : any[] = [];
+  _options = [];
   _value: any = null;
 
   ngOnInit() {

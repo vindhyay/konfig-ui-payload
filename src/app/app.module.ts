@@ -12,6 +12,7 @@ import {GlobalErrorHandlerService} from "./services/global-error-handler.service
 import {JwtInterceptor} from "./interceptors/jwt.interceptor";
 import {SharedModule} from "./modules/shared/shared.module";
 import {AuthModule} from "./modules/auth/auth.module";
+import {TaskModule} from './modules/task/task.module';
 
 export function initConfig(appConfig: AppConfigService) {
   return () => appConfig.loadAppConfig();
@@ -27,7 +28,8 @@ export function initConfig(appConfig: AppConfigService) {
     BrowserAnimationsModule,
     HttpClientModule,
     SharedModule,
-    AuthModule
+    AuthModule,
+    TaskModule
   ],
   providers: [{
     provide: APP_INITIALIZER,
@@ -36,7 +38,6 @@ export function initConfig(appConfig: AppConfigService) {
     multi: true
   },
     { provide: LocationStrategy, useClass: HashLocationStrategy },
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: ErrorHandler, useClass: GlobalErrorHandlerService }, CanDeactivateGuard],
   bootstrap: [AppComponent]
 })

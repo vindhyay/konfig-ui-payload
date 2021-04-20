@@ -22,11 +22,11 @@
     [ngClass]="{ 'error-border': showErrorBorder && checkError() }"
     [styleClass]="isSmall ? 'p-inputtext-sm' : isLarge ? 'p-inputtext-lg' : ''"
   >
-      <ng-container *ngIf="iconOptions">
-          <ng-template let-item pTemplate="item">
-              <i [ngClass]="item.icon"></i><span class="p-pl-2">{{ item.name }}</span>
-          </ng-template>
-      </ng-container>
+    <ng-container *ngIf="iconOptions">
+      <ng-template let-item pTemplate="item">
+        <i [ngClass]="item.icon"></i><span class="p-pl-2">{{ item.name }}</span>
+      </ng-template>
+    </ng-container>
   </p-dropdown>
   <div *ngIf="checkError()">
     <small class="p-error">{{ errorMsg || getErrorMessages()[0] }}</small>

@@ -9,18 +9,13 @@ import {CheckboxGroupComponent} from "./payload-form-field/checkbox-group/checkb
 import {GridsterModule} from "../../../../lib/angular-gridster2/src/lib/gridster.module";
 import {TaskService} from "./services/task.service";
 import {AuthService} from "../auth/services/auth.service";
-import {RouterModule, Routes} from "@angular/router";
 import {SharedModule} from "../shared/shared.module";
 import {ExtendedModule} from "@angular/flex-layout";
 
-const routes: Routes = [{
-    path: '',
-    component: PayloadDetailsComponent
-}];
 
 @NgModule({
     declarations: [PayloadDetailsComponent, PayloadViewFormComponent, PayloadFormFieldComponent, FinlevitGridComponent,DropdownFieldComponent, CheckboxGroupComponent],
-    imports: [CommonModule, GridsterModule, RouterModule.forChild(routes),
+    imports: [CommonModule, GridsterModule,
         SharedModule, ExtendedModule],
     providers: [TaskService, AuthService]
 })

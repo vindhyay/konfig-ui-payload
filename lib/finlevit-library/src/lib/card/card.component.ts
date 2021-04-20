@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'finlevit-card',
@@ -6,13 +6,10 @@ import {Component, Input, OnInit} from '@angular/core';
   styleUrls: ['./card.component.scss']
 })
 export class CardComponent implements OnInit {
+  constructor() {}
 
-  constructor() { }
+  @Input() header: string = '';
+  @Input() footer: string = '';
 
-  @Input() header: string='';
-  @Input() footer: string='';
-
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

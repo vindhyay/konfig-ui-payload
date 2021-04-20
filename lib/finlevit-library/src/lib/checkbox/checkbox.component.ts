@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, Optional, Self } from '@angular/core';
 import { ControlValueAccessor, NgControl, ValidatorFn, Validators } from '@angular/forms';
-import {getUniqueId, hasRequiredField} from '../utils';
+import { getUniqueId, hasRequiredField } from '../utils';
 
 @Component({
   selector: 'finlevit-lib-checkbox',
@@ -58,4 +58,3 @@ export class CheckboxComponent implements ControlValueAccessor, OnInit {
     return (this.controlDir && !this.controlDir?.control?.valid && this.controlDir?.control?.touched) || this.error;
   }
 }
-

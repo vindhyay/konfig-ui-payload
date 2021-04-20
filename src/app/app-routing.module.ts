@@ -1,27 +1,27 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import {PageNotFoundComponent} from './modules/shared/page-not-found/page-not-found.component';
+import {PayloadDetailsComponent} from './modules/task/payload-details/payload-details.component';
+import {QUEUE_TYPES} from './state/model/queue-types-model';
+import {LoginComponent} from './modules/auth/components/login/login.component';
 
 const routes: Routes = [
-  {
-    path: '',
-    redirectTo: 'admin',
-    pathMatch: 'full'
+    {
+    path: ':workflowId/auth',
+    pathMatch: 'full',
+    component: LoginComponent
   },
   {
     path: ':workflowId',
-    loadChildren: () => import('./modules/task/task.module').then(mod => mod.TaskModule),
+    component: PayloadDetailsComponent,
+    pathMatch: 'full',
     data: {
-      actions: []
-    },
-    pathMatch: 'full'
+      queueType: QUEUE_TYPES.NEW
+    }
   },
   {
-    path: 'auth',
-    loadChildren: () => import('./modules/auth/auth.module').then(mod => mod.AuthModule),
-    data: {
-      actions: []
-    },
-    pathMatch: 'full'
+    path: '**',
+    component: PageNotFoundComponent
   }
 ];
 

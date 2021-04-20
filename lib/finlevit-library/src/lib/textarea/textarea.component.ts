@@ -1,6 +1,6 @@
-import {Component, EventEmitter, Input, OnInit, Optional, Output, Self} from '@angular/core';
-import {ControlValueAccessor, NgControl, ValidatorFn, Validators} from "@angular/forms";
-import {hasRequiredField} from "../utils";
+import { Component, EventEmitter, Input, OnInit, Optional, Output, Self } from '@angular/core';
+import { ControlValueAccessor, NgControl, ValidatorFn, Validators } from '@angular/forms';
+import { hasRequiredField } from '../utils';
 
 @Component({
   selector: 'finlevit-lib-textarea',
@@ -8,11 +8,11 @@ import {hasRequiredField} from "../utils";
   styleUrls: ['./textarea.component.css']
 })
 export class TextareaComponent implements ControlValueAccessor, OnInit {
-
   constructor(@Optional() @Self() public controlDir: NgControl) {
     if (this.controlDir) {
       this.controlDir.valueAccessor = this;
-    }}
+    }
+  }
   @Input() autoResize = false;
   @Input() showErrorBorder = true;
   @Input() isSmall = false;
@@ -82,7 +82,6 @@ export class TextareaComponent implements ControlValueAccessor, OnInit {
     this.onChange(value);
   }
 
-
   checkError() {
     return (this.controlDir && !this.controlDir.control?.valid && this.controlDir.control?.touched) || this.error;
   }
@@ -105,5 +104,3 @@ export class TextareaComponent implements ControlValueAccessor, OnInit {
     return errorMessages;
   }
 }
-
-

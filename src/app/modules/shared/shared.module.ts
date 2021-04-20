@@ -8,16 +8,23 @@ import {FinlevitLibraryModule} from "../../../../lib/finlevit-library/src/lib/fi
 import {BtnPrimaryComponent} from "./btn-primary/btn-primary.component";
 import {NgxLoadingModule} from "ngx-loading";
 import {LoaderComponent} from "./loader/loader.component";
+import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
+import {ToastrModule} from 'ngx-toastr';
 
 
 
 @NgModule({
-  declarations: [BaseComponent, BtnPrimaryComponent, LoaderComponent],
+  declarations: [BaseComponent, BtnPrimaryComponent, LoaderComponent, PageNotFoundComponent],
   imports: [
     CommonModule,
     MaterialModule,
     RouterModule,
     FormsModule,
+    ToastrModule.forRoot({
+      timeOut: 3000,
+      positionClass: 'toast-top-center',
+      preventDuplicates: true
+    }),
     ReactiveFormsModule,
     FinlevitLibraryModule,
     NgxLoadingModule.forRoot({}),
