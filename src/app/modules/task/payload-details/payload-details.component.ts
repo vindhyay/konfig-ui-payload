@@ -62,11 +62,11 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
       },
       error => {
         this.loading = false;
-        // if(error.status === 401){
-        //   this.router.navigate(['./auth'], {
-        //     relativeTo: this.activatedRoute
-        //   })
-        // }
+        if(error.status === 401){
+          this.router.navigate(['./auth'], {
+            relativeTo: this.activatedRoute
+          })
+        }
       }
     );
   }
