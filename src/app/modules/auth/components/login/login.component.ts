@@ -19,7 +19,7 @@ import {CustomError} from "../../../../state/model/custom-error";
 })
 export class LoginComponent extends BaseComponent implements OnInit {
   LABELS = AUTH_LABELS;
-  loginError: string | undefined;
+  loginError: string;
   authForm = this.fb.group({
     userName: ['', [Validators.required]],
     passWord: ['', Validators.required],
@@ -27,21 +27,21 @@ export class LoginComponent extends BaseComponent implements OnInit {
   });
 
   constructor(
-    private router: Router,
-    private authService: AuthService,
-    private fb: FormBuilder,
-    private storage: StorageService,
-    protected notificationService: NotificationService,
-    private activatedRoute: ActivatedRoute
+      private router: Router,
+      private authService: AuthService,
+      private fb: FormBuilder,
+      private storage: StorageService,
+      protected notificationService: NotificationService,
+      private activatedRoute: ActivatedRoute
   ) {
     super();
   }
 
   ngOnInit() {
     this.subscribeHandleError(
-      this.authService.onAuthChanged$,
-      data => this.onSuccess(data),
-      error => this.handleError(error)
+        this.authService.onAuthChanged$,
+        data => this.onSuccess(data),
+        error => this.handleError(error)
     );
     this.authService.checkCurrentState();
   }
@@ -51,41 +51,44 @@ export class LoginComponent extends BaseComponent implements OnInit {
     if (this.authForm.valid) {
       this.loading = true;
       this.authService.authenticate(this.authForm.value).subscribe(
-        tokenResponse => {
-          this.getUserDetails();
-        },
-        error => this.handleError(error)
+          tokenResponse => {
+            this.getUserDetails();
+          },
+          error => this.handleError(error)
       );
     }
   }
 
   getUserDetails() {
     this.authService.getUserDetails().subscribe(
-      response => {
-        this.loading = false;
-        const { data, error } = parseApiResponse(response);
-        if (data && !error) {
-          const { userDetails = {} } = data;
-          try {
-            this.storage.user = userDetails;
-            const decodedUserDetails: UserDataModel = JSON.parse(atob(userDetails));
-            console.log(decodedUserDetails);
-            this.authService.authSubject.next(decodedUserDetails);
-          } catch (error) {
-            this.loginError = 'Failed to decode user details';
+        response => {
+          this.loading = false;
+          const { data, error } = parseApiResponse(response);
+          if (data && !error) {
+            const { userDetails = {} } = data;
+            try {
+              this.storage.user = userDetails;
+              const decodedUserDetails: UserDataModel = JSON.parse(atob(userDetails));
+              console.log(decodedUserDetails);
+              this.authService.authSubject.next(decodedUserDetails);
+            } catch (error) {
+              this.loginError = 'Failed to decode user details';
+            }
+          } else {
+            this.notificationService.error(error.errorMessage);
           }
-        } else {
-          this.notificationService.error(error.errorMessage);
-        }
-      },
-      error => this.handleError(error)
+        },
+        error => this.handleError(error)
     );
   }
 
   onSuccess(data: UserDataModel) {
-    this.router.navigate(['../'],{
-      relativeTo: this.activatedRoute
-    });
+    if(data != null){
+      console.log(data);
+      this.router.navigate(['../'],{
+        relativeTo: this.activatedRoute
+      });
+    }
   }
 
   handleError(error: HttpErrorResponse | CustomError) {
