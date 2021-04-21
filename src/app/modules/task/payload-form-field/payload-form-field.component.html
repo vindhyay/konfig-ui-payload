@@ -84,7 +84,9 @@
       [class]="'text-content text-style-' + item?.metaData?.textStyle"
       [ngStyle.gt-sm]="{
         'justify-content': item?.metaData?.horizontalAlign,
-        'align-items': item?.metaData?.verticalAlign
+        'align-items': item?.metaData?.verticalAlign,
+         color: item?.metaData?.color,
+        'font-weight': item?.metaData?.fontWeight
       }"
     >
       {{ item?.metaData?._value }}

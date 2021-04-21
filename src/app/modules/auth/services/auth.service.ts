@@ -1,7 +1,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Subject, Subscription } from 'rxjs';
-import { Router } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { StorageService } from 'src/app/services/storage.service';
 import { BaseService } from '../../../services/base.service';
 import { LoginDataModel, UserDataModel, SelectedPreferencesModel, UserRole } from '../models';
@@ -22,7 +22,8 @@ export class AuthService extends BaseService implements OnDestroy {
     protected http: HttpClient,
     private router: Router,
     protected config: AppConfigService,
-    protected userService: UserService
+    protected userService: UserService,
+    private activatedRoute: ActivatedRoute
   ) {
     super(http);
   }
@@ -56,7 +57,9 @@ export class AuthService extends BaseService implements OnDestroy {
     this.userService.selection.next(null);
     this.authSubject.next(null);
     this.storage.clear();
-    this.router.navigate(['/auth']);
+    this.router.navigate(['./auth'], {
+      relativeTo: this.activatedRoute
+    })
   }
 
   public authenticate(loginData: LoginDataModel) {
