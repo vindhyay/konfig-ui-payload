@@ -37,7 +37,8 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
     this.activatedRoute.paramMap.subscribe(params => {
       this.workflowId = params.get('workflowId');
       if (this.workflowId) {
-        this.getWorkflowFormDetails(this.workflowId);      }
+        this.getWorkflowFormDetails(this.workflowId);
+      }
     });
   }
   getWorkflowFormDetails(workflowId: any) {
@@ -61,6 +62,11 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
       },
       error => {
         this.loading = false;
+        // if(error.status === 401){
+        //   this.router.navigate(['./auth'], {
+        //     relativeTo: this.activatedRoute
+        //   })
+        // }
       }
     );
   }

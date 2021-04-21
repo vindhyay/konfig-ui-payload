@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BaseComponent } from 'src/app/modules/shared/base/base.component';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
-import { Router } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { StorageService } from '../../../../services/storage.service';
 import { get } from 'lodash';
@@ -31,7 +31,8 @@ export class LoginComponent extends BaseComponent implements OnInit {
     private authService: AuthService,
     private fb: FormBuilder,
     private storage: StorageService,
-    protected notificationService: NotificationService
+    protected notificationService: NotificationService,
+    private activatedRoute: ActivatedRoute
   ) {
     super();
   }
@@ -82,8 +83,9 @@ export class LoginComponent extends BaseComponent implements OnInit {
   }
 
   onSuccess(data: UserDataModel) {
-    console.log('on success')
-    // this.router.navigate(['../']);
+    this.router.navigate(['../'],{
+      relativeTo: this.activatedRoute
+    });
   }
 
   handleError(error: HttpErrorResponse | CustomError) {

@@ -11,6 +11,7 @@ import {AuthService} from "./modules/auth/services/auth.service";
 })
 export class AppComponent extends BaseComponent implements OnInit{
   currentUser: UserDataModel | null = null;
+  workflowId: any;
 
   constructor(
     private router: Router,
@@ -28,6 +29,9 @@ export class AppComponent extends BaseComponent implements OnInit{
     this.activatedRoute.params.subscribe(value => {
       console.log('params',value)
     })
+    this.activatedRoute.paramMap.subscribe(params => {
+      this.workflowId = params.get('workflowId');
+    });
   }
 
   logoff() {

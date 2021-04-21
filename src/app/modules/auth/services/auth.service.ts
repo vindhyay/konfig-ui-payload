@@ -53,9 +53,7 @@ export class AuthService extends BaseService implements OnDestroy {
         }
       );
     }
-    // @ts-ignore
     this.userService.selection.next(null);
-    // @ts-ignore
     this.authSubject.next(null);
     this.storage.clear();
     this.router.navigate(['/auth']);
@@ -85,7 +83,6 @@ export class AuthService extends BaseService implements OnDestroy {
         console.log('Failed to parse user details');
       }
     }
-    // @ts-ignore
     return null;
   }
 
@@ -93,7 +90,6 @@ export class AuthService extends BaseService implements OnDestroy {
     if (this.isAuthenticated()) {
       return this.storage.preference;
     }
-    // @ts-ignore
     return null;
   }
 
@@ -131,7 +127,6 @@ export class AuthService extends BaseService implements OnDestroy {
     let isExists = false;
     const currentUser = this.getCurrentUser() || ({} as UserDataModel);
     const permissions = currentUser.permissions || null;
-    // @ts-ignore
     if (permissions && permissions[role] && permissions[role].includes(id)) {
       isExists = true;
     }
