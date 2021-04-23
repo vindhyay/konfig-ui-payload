@@ -12,10 +12,14 @@ COPY . /app
 #COPY lib /app/lib
 
 #Remove the Package-lock.json file
-RUN rm -rf /app/package-lock.json
+#RUN rm -rf /app/package-lock.json
 
 #Install all the required dependencies in the container and Compile Prod build
-RUN npm install && npm install typescript@3.8.3 && node --max_old_space_size=8192 ./node_modules/@angular/cli/bin/ng build --prod
+RUN npm install && npm install @angular/cli@11.2.2 && npm install typescript@4.0.7 && \
+    node --max_old_space_size=8192
+RUN npm run build    
+#RUN npm install @angular/cli@8.3.19
+#RUN npm install -g typescript@3.5.3
 
 #Stage-2 to Run the application in Nginx Container
 FROM nginx:alpine
@@ -26,7 +30,7 @@ RUN chmod g+rwx /var/cache/nginx /var/run /var/log/nginx /usr/share/nginx/html
 RUN sed -i.bak 's/listen\(.*\)80;/listen 8081;/' /etc/nginx/conf.d/default.conf
 
 #Add all the artifacts from builder image
-COPY --from=builder /app/dist/finlevit-payload/ /usr/share/nginx/html
+COPY --from=builder /app/dist/finlevit-admin/ /usr/share/nginx/html
 
 #Expose the Application on specified port
 EXPOSE 8081
