@@ -13,6 +13,7 @@ import {getErrorMessages} from "../../../utils";
 export class PayloadFormFieldComponent implements OnInit {
   _item: BaseWidget = {} as BaseWidget;
   Text: WidgetTypes = WidgetTypes.Text;
+  Button: WidgetTypes = WidgetTypes.Button;
   Container: WidgetTypes = WidgetTypes.Container;
   Dropdown: WidgetTypes = WidgetTypes.Dropdown;
   RadioGroup: WidgetTypes = WidgetTypes.RadioGroup;
@@ -47,6 +48,7 @@ export class PayloadFormFieldComponent implements OnInit {
   @Input() customClass = '';
   dataTypes = DataTypes;
   @Output() edit = new EventEmitter();
+  @Output() onBtnClick = new EventEmitter();
   ngOnInit() {}
   showControls: boolean = false;
   editMode: boolean = false;
@@ -137,4 +139,7 @@ export class PayloadFormFieldComponent implements OnInit {
     });
     return _validators;
   };
+  btnClick($event, type){
+    this.onBtnClick.emit({event: $event, type})
+  }
 }

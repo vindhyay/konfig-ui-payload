@@ -56,7 +56,7 @@ export class DatepickerComponent implements ControlValueAccessor, OnInit {
   writeValue(obj: any): void {
     let value = obj;
     if (obj) {
-      value = new Date(isNaN(Number(obj)) ? obj : Number(obj));
+      value = new Date(obj);
     }
     this.setInputValue(value);
   }

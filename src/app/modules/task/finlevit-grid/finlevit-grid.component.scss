@@ -40,6 +40,9 @@
       color: #ffffff;
       border-radius: 0;
     }
+    &.button-container{
+      position: relative;
+    }
   }
   ::ng-deep {
     .gridster-column {

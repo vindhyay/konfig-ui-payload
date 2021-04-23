@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {
   CompactType,
   DisplayGrid,
@@ -28,10 +28,13 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
   @Input() viewMode: boolean = false;
   @Input() modifyOptions: any = {};
 
+  @Output() onBtnClick = new EventEmitter();
+
   Text: WidgetTypes = WidgetTypes.Text;
   Container: WidgetTypes = WidgetTypes.Container;
   Header: WidgetTypes = WidgetTypes.Header;
   Footer: WidgetTypes = WidgetTypes.Footer;
+  Button: WidgetTypes = WidgetTypes.Button;
   transactionId : any;
   taskId : any;
 

@@ -3,6 +3,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { DataTypes } from '../../model/payload-field.model';
 import {getErrorMessages, getValueFromObjectByPath} from "../../../../utils";
 import {EditorService} from "../../editor.service";
+import {ButtonActions} from '../../model/create-form.models';
 
 @Component({
   selector: 'app-payload-view-form',
@@ -113,5 +114,12 @@ export class PayloadViewFormComponent implements OnInit {
   }
   onEditField($event: any) {
     console.log('i got it', $event);
+  }
+
+  onBtnClick($event){
+    const { type } = $event
+    if(type === ButtonActions.submit){
+      this.submit();
+    }
   }
 }

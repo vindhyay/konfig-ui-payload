@@ -8,7 +8,9 @@
       'card-container': item?.metaData?.widgetType === Container,
       'text-container': item?.metaData?.widgetType === Text,
       'header-container': item?.metaData?.widgetType === Header,
-      'footer-container': item?.metaData?.widgetType === Footer
+      'footer-container': item?.metaData?.widgetType === Footer,
+      'button-container': item?.metaData?.widgetType === Button
+
     }"
     [item]="item"
     *ngFor="let item of items"
@@ -17,6 +19,7 @@
       [viewMode]="viewMode"
       [showEdit]="showEdit"
       (edit)="onEdit($event)"
+      (onBtnClick)="onBtnClick.emit($event)"
       [item]="item"
     ></app-payload-form-field>
   </gridster-item>

@@ -24,6 +24,9 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { RadioGroupComponent } from './radio-group/radio-group.component';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { CheckboxGroupComponent } from './checkbox-group/checkbox-group.component';
+import { ButtonComponent } from './button/button.component';
+import { ButtonModule } from 'primeng/button';
+import { RippleModule } from 'primeng/ripple';
 import { DatepickerComponent } from './datepicker/datepicker.component';
 import { CalendarModule } from 'primeng/calendar';
 
@@ -40,7 +43,8 @@ import { CalendarModule } from 'primeng/calendar';
     MultiSelectComponent,
     CheckboxGroupComponent,
     RadioGroupComponent,
-    DatepickerComponent
+    DatepickerComponent,
+    ButtonComponent
   ],
   imports: [
     CalendarModule,
@@ -58,7 +62,9 @@ import { CalendarModule } from 'primeng/calendar';
     CheckboxModule,
     InputTextareaModule,
     MultiSelectModule,
-    RadioButtonModule
+    RadioButtonModule,
+    ButtonModule,
+    RippleModule
   ],
   exports: [
     FinlevitLibraryComponent,
@@ -72,7 +78,8 @@ import { CalendarModule } from 'primeng/calendar';
     MultiSelectComponent,
     CheckboxGroupComponent,
     RadioGroupComponent,
-    DatepickerComponent
+    DatepickerComponent,
+    ButtonComponent
   ]
 })
 export class FinlevitLibraryModule {}

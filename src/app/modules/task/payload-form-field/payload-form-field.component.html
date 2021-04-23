@@ -92,6 +92,18 @@
       {{ item?.metaData?._value }}
     </div>
   </ng-container>
+  <ng-container *ngIf="item?.metaData?.widgetType === Button">
+    <div class="input-container button-input" [ngStyle]="{ width: '100%' }">
+      <finlevit-button
+              [icon]="item?.metaData?.icon"
+              [iconPos]="item?.metaData?.iconPos"
+              [label]="item?.label"
+              (btnClick)="btnClick($event, item?.metaData?.clickAction)"
+              [variant]="item?.metaData?.variant"
+              [type]="item?.metaData?.type"
+      ></finlevit-button>
+    </div>
+  </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Image">
     <div class="image-container">
       <img [src]="item?.metaData?.url" />

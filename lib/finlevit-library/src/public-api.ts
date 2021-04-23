@@ -17,4 +17,5 @@ export * from './lib/checkbox/checkbox.component';
 export * from './lib/textarea/textarea.component';
 export * from './lib/checkbox-group/checkbox-group.component';
 export * from './lib/tabs/tabs.component';
+export * from './lib/button/button.component';
 export * from './lib/datepicker/datepicker.component';

@@ -6,6 +6,26 @@ export const MIN_ROWS = 30;
 export const NESTED_MIN_COLUMNS = 29;
 export const NESTED_MIN_ROWS = 12;
 
+export enum ButtonTypes {
+  primary = 'primary',
+  info = 'info',
+  success = 'success',
+  secondary = 'secondary'
+}
+
+export enum ButtonVariants {
+  raisedButton = 'raisedButton',
+  roundedButton = 'roundedButton',
+  raisedTextButton = 'raisedTextButton',
+  outlinedButton = 'outlinedButton'
+}
+
+export enum ButtonActions {
+  none = 'none',
+  logout = 'logout',
+  submit = 'submit'
+}
+
 export enum PayloadType {
   NEW_PAYLOAD = 'NEW_PAYLOAD',
   OLD_PAYLOAD = 'OLD_PAYLOAD'
@@ -55,12 +75,14 @@ export interface WidgetItem {
   label: string;
   description: string;
   rows: number;
+  isViewOnly?: boolean;
   widgetType: WidgetTypes;
   dataType: DATA_TYPES;
 }
 
 export enum WidgetTypes {
   Text = 'Text',
+  Button = 'Button',
   TextInput = 'TextInput',
   TextArea = 'TextArea',
   Number = 'Number',
@@ -83,7 +105,7 @@ class Validators {
   maxValue: number;
   minDate: Date;
   maxDate: Date;
-  constructor(validators: any) {
+  constructor(validators) {
     const {
       required = false,
       editable = true,
@@ -107,7 +129,7 @@ class Validators {
 class TextInputValidators extends Validators {
   minLength: number;
   maxLength: number;
-  constructor(validator: any) {
+  constructor(validator) {
     super(validator);
     const { minLength = null, maxLength = null } = validator;
     this.minLength = minLength;
@@ -119,7 +141,7 @@ export class MetaData {
   widgetId: string;
   widgetType: WidgetTypes;
   level: number;
-  constructor(data: any) {
+  constructor(data) {
     const { widgetId, widgetType, level } = data;
     this.widgetId = widgetId || getUniqueId('widget');
     this.widgetType = widgetType;
@@ -137,7 +159,7 @@ export class DropdownMetaData extends MetaData {
   optionValue: string;
   dataResourceId: string;
   datalistId: string;
-  constructor(data: any) {
+  constructor(data) {
     super(data);
     const {
       placeholder = 'Select',
@@ -169,7 +191,7 @@ export class TextInputMetaData extends MetaData {
   tooltip: string;
   leftIcon: string;
   rightIcon: string;
-  constructor(data: any) {
+  constructor(data) {
     super(data);
     const { mask = '', icon = '', tooltip = '', placeholder = '', leftIcon = '', rightIcon = '' } = data;
     this.mask = mask;
@@ -180,12 +202,36 @@ export class TextInputMetaData extends MetaData {
     this.rightIcon = rightIcon;
   }
 }
+
+export class ButtonMetaData extends MetaData {
+  icon: string;
+  iconPos: string;
+  type: ButtonTypes;
+  variant: ButtonVariants;
+  clickAction: ButtonActions;
+  constructor(data) {
+    super(data);
+    const {
+      icon = '',
+      iconPos = 'left',
+      type = ButtonTypes.primary,
+      variant = ButtonVariants.raisedButton,
+      clickAction = ButtonActions.none
+    } = data;
+    this.icon = icon;
+    this.iconPos = iconPos;
+    this.type = type;
+    this.variant = variant;
+    this.clickAction = clickAction;
+  }
+}
+
 export class TextAreaMetaData extends MetaData {
   placeholder: string;
   tooltip: string;
   rowsCount: number;
   autoResize: boolean;
-  constructor(data: any) {
+  constructor(data) {
     super(data);
     const { tooltip = '', placeholder = '', rowsCount = 3, autoResize = false } = data;
     this.tooltip = tooltip;
@@ -200,7 +246,7 @@ export class DatePickerMetaData extends MetaData {
   returnDateFormat: string;
   placeholder: string;
   tooltip: string;
-  constructor(data: any) {
+  constructor(data) {
     super(data);
     const { viewDateFormat = 'mm/dd/yy', returnDateFormat = 'isoTimestamp', tooltip = '', placeholder = '' } = data;
     this.viewDateFormat = viewDateFormat;
@@ -216,7 +262,7 @@ export class NumberMetaData extends MetaData {
   suffix: string;
   placeholder: string;
   tooltip: string;
-  constructor(data: any) {
+  constructor(data) {
     super(data);
     const { prefix = '', suffix = '', tooltip = '', placeholder = '', format = false } = data;
     this.format = format;
@@ -232,14 +278,20 @@ export class TextMetaData extends MetaData {
   textStyle: TextStyles;
   horizontalAlign: AlignTypes;
   verticalAlign: AlignTypes;
-  constructor(data: any) {
+  color: string;
+  fontWeight: number;
+  constructor(data) {
     super(data);
     const {
       _value = 'Hello World',
       textStyle = TextStyles.BODY1,
-      horizontalAlign = AlignTypes.LEFT,
-      verticalAlign = AlignTypes.TOP
+      horizontalAlign = AlignTypes.MIDDLE,
+      verticalAlign = AlignTypes.CENTER,
+      color = '#000000',
+      fontWeight = 400
     } = data;
+    this.color = color;
+    this.fontWeight = fontWeight;
     this._value = _value;
     this.textStyle = textStyle;
     this.horizontalAlign = horizontalAlign;
@@ -249,7 +301,7 @@ export class TextMetaData extends MetaData {
 
 export class ContainerMetaData extends MetaData {
   title: string;
-  constructor(data: any) {
+  constructor(data) {
     super(data);
     const { title = '' } = data;
     this.title = title;
@@ -259,7 +311,7 @@ export class ContainerMetaData extends MetaData {
 export class Value {
   id: string;
   value: any;
-  constructor(data: any) {
+  constructor(data) {
     const { id, value = '' } = data;
     this.id = id;
     this.value = value;
@@ -268,7 +320,7 @@ export class Value {
 
 export class CheckboxMetaData extends MetaData {
   tooltip: string;
-  constructor(data: any) {
+  constructor(data) {
     super(data);
     const { tooltip = '' } = data;
     this.tooltip = tooltip;
@@ -282,7 +334,9 @@ export class CheckboxGroupMetaData extends CheckboxMetaData {
   optionType: string;
   optionLabel: string;
   optionValue: string;
-  constructor(data: any) {
+  dataResourceId: string;
+  datalistId: string;
+  constructor(data) {
     super(data);
     const {
       tooltip = '',
@@ -290,7 +344,9 @@ export class CheckboxGroupMetaData extends CheckboxMetaData {
       optionType = 'manual',
       optionLabel = 'name',
       optionValue = 'value',
-      isLabelAndValue = false
+      isLabelAndValue = false,
+      dataResourceId = '',
+      datalistId = ''
     } = data;
     this.optionType = optionType;
     this.tooltip = tooltip;
@@ -298,6 +354,8 @@ export class CheckboxGroupMetaData extends CheckboxMetaData {
     this.isLabelAndValue = isLabelAndValue;
     this.optionLabel = optionLabel;
     this.optionValue = optionValue;
+    this.datalistId = datalistId;
+    this.dataResourceId = dataResourceId;
   }
 }
 
@@ -308,7 +366,7 @@ export class RadioGroupMetaData extends CheckboxMetaData {
   optionType: string;
   optionLabel: string;
   optionValue: string;
-  constructor(data: any) {
+  constructor(data) {
     super(data);
     const {
       tooltip = '',
@@ -329,7 +387,7 @@ export class RadioGroupMetaData extends CheckboxMetaData {
 
 export class ImageMetaData extends MetaData {
   url: string;
-  constructor(data: any) {
+  constructor(data) {
     super(data);
     const { url = '' } = data;
     this.url = url;
@@ -338,7 +396,7 @@ export class ImageMetaData extends MetaData {
 
 export class HeaderMetaData extends MetaData {
   backgroundColor: string;
-  constructor(data: any) {
+  constructor(data) {
     super(data);
     const { backgroundColor = '#ffffff' } = data;
     this.backgroundColor = backgroundColor;
@@ -346,7 +404,7 @@ export class HeaderMetaData extends MetaData {
 }
 export class FooterMetaData extends MetaData {
   backgroundColor: string;
-  constructor(data: any) {
+  constructor(data) {
     super(data);
     const { backgroundColor = '#fff' } = data;
     this.backgroundColor = backgroundColor;
@@ -359,25 +417,27 @@ export class BaseWidget {
   rows: number;
   x: number;
   y: number;
-  ignoreField: boolean;
+  isViewOnly: boolean;
   metaData:
-    | TextMetaData
-    | ContainerMetaData
-    | TextInputMetaData
-    | NumberMetaData
-    | CheckboxMetaData
-    | ImageMetaData
-    | HeaderMetaData
-    | FooterMetaData
-    | CheckboxGroupMetaData
-    | DropdownMetaData
-    | DatePickerMetaData
-    | RadioGroupMetaData
-    | TextAreaMetaData;
+      | TextMetaData
+      | ContainerMetaData
+      | TextInputMetaData
+      | NumberMetaData
+      | CheckboxMetaData
+      | ImageMetaData
+      | HeaderMetaData
+      | FooterMetaData
+      | CheckboxGroupMetaData
+      | DropdownMetaData
+      | DatePickerMetaData
+      | RadioGroupMetaData
+      | TextAreaMetaData
+      | ButtonMetaData;
+  name: string;
   displayName: string;
   label: string;
   dataType: DATA_TYPES;
-  //TODO duplicate remove later
+  // TODO duplicate remove later
   type?: DATA_TYPES;
   resourceType: ResourceType;
   isPrePopulated: boolean;
@@ -387,11 +447,12 @@ export class BaseWidget {
   children: BaseWidget[];
   validators: Validators;
   value: Value;
-  constructor(data: any) {
+  constructor(data) {
     const {
       id,
-      ignoreField = false,
+      isViewOnly = false,
       displayName = '',
+      name = '',
       label = '',
       dataType,
       widgetType,
@@ -449,6 +510,9 @@ export class BaseWidget {
         case WidgetTypes.TextArea:
           this.metaData = new TextAreaMetaData(data);
           break;
+        case WidgetTypes.Button:
+          this.metaData = new ButtonMetaData(data);
+          break;
         default:
           this.metaData = null;
           break;
@@ -456,14 +520,15 @@ export class BaseWidget {
     } else {
       this.metaData = metaData;
     }
-    this.ignoreField = ignoreField;
+    this.isViewOnly = isViewOnly;
     this.validators = new Validators(validators || {});
     this.cols = cols;
     this.rows = rows;
     this.x = x;
     this.y = y;
     this.id = id;
-    this.displayName = displayName || getUniqueId('widget');
+    this.displayName = displayName;
+    this.name = name;
     this.label = label;
     this.resourceType = resourceType;
     this.isPrePopulated = isPrePopulated;

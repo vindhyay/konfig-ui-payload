@@ -2,7 +2,7 @@
   <ng-content select="[child]"></ng-content>
   <div class="editor-container">
     <div class="editor gridster-container">
-      <finlevit-grid [viewMode]="!showActions" [showEdit]="false" [items]="_payloadFields"></finlevit-grid>
+      <finlevit-grid (onBtnClick)="onBtnClick($event)" [viewMode]="!showActions" [showEdit]="false" [items]="_payloadFields"></finlevit-grid>
     </div>
   </div>
 </div>
