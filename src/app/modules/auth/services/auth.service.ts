@@ -42,7 +42,7 @@ export class AuthService extends BaseService implements OnDestroy {
     return !!this.storage.user;
   }
 
-  public logoff(api: boolean = true) {
+  public logoff(api: boolean = true, activatedRoute?: ActivatedRoute) {
     if (api) {
       const url = this.config.getApiUrls().logoutURL;
       this.getData(url).subscribe(
@@ -58,8 +58,8 @@ export class AuthService extends BaseService implements OnDestroy {
     this.authSubject.next(null);
     this.storage.clear();
     this.router.navigate(['./auth'], {
-      relativeTo: this.activatedRoute
-    })
+      relativeTo: activatedRoute
+    });
   }
 
   public authenticate(loginData: LoginDataModel) {
