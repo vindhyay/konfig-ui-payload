@@ -63,7 +63,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
       error => {
         this.loading = false;
         if(error.status === 401){
-          this.authService.logoff(false);
+          this.authService.logoff(false, this.activatedRoute);
         }
       }
     );

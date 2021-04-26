@@ -4,6 +4,8 @@ import { DataTypes } from '../../model/payload-field.model';
 import {getErrorMessages, getValueFromObjectByPath} from "../../../../utils";
 import {EditorService} from "../../editor.service";
 import {ButtonActions} from '../../model/create-form.models';
+import {ActivatedRoute} from "@angular/router";
+import {AuthService} from "../../../auth/services/auth.service";
 
 @Component({
   selector: 'app-payload-view-form',
@@ -17,7 +19,8 @@ export class PayloadViewFormComponent implements OnInit {
   @Output() onSave = new EventEmitter();
   _payloadFields = [];
 
-  constructor(private editorService: EditorService) {}
+  constructor(private editorService: EditorService, private activatedRoute: ActivatedRoute,
+              private authService: AuthService,) {}
   ngOnInit() {
     this._payloadFields = JSON.parse(JSON.stringify(this.payloadFields));
     this.editorService.setContainerHeight(this._payloadFields);
@@ -120,6 +123,9 @@ export class PayloadViewFormComponent implements OnInit {
     const { type } = $event
     if(type === ButtonActions.submit){
       this.submit();
+    }
+    if(type === ButtonActions.logout){
+      this.authService.logoff(false, this.activatedRoute);
     }
   }
 }
