@@ -13,18 +13,23 @@ import {AuthService} from "../../../auth/services/auth.service";
   styleUrls: ['./payload-view-form.component.scss']
 })
 export class PayloadViewFormComponent implements OnInit {
-  @Input() payloadFields = [];
+  @Input()
+  get payloadFields(){
+    return this._payloadFields
+  }
+  set payloadFields(fields){
+    this._payloadFields = JSON.parse(JSON.stringify(fields));
+    this.editorService.setContainerHeight(this._payloadFields);
+  }
   @Input() showActions = false;
   @Output() onSubmit = new EventEmitter();
   @Output() onSave = new EventEmitter();
+  @Output() onPopulate = new EventEmitter();
   _payloadFields = [];
 
   constructor(private editorService: EditorService, private activatedRoute: ActivatedRoute,
               private authService: AuthService,) {}
-  ngOnInit() {
-    this._payloadFields = JSON.parse(JSON.stringify(this.payloadFields));
-    this.editorService.setContainerHeight(this._payloadFields);
-  }
+  ngOnInit() {}
   files: any = [];
   convertPayload(data : any, isArray = false) {
     let payload: any = isArray ? [] : {};
@@ -120,12 +125,53 @@ export class PayloadViewFormComponent implements OnInit {
   }
 
   onBtnClick($event){
-    const { type } = $event
+    const { data: {metaData: { clickAction: type = '', parameters = []} ={}}, data :{ id} } = $event
     if(type === ButtonActions.submit){
       this.submit();
     }
     if(type === ButtonActions.logout){
       this.authService.logoff(false, this.activatedRoute);
     }
+    if(type === ButtonActions.populate){
+      let error = false;
+      parameters.map(parameter => {
+        const { value } = parameter;
+        const paramField = this.getValueFromField(this._payloadFields, value);
+        const inputValue = paramField?.value?.value
+        if(!paramField){
+          return;
+        }
+        if(!inputValue){
+          error = true;
+          const tempFormControl = new FormControl(inputValue, this.getValidators({...paramField?.validators, required: true}));
+          if (tempFormControl.valid) {
+            paramField.error = false;
+            paramField.errorMsg = '';
+          } else {
+            paramField.error = true;
+            paramField.errorMsg = getErrorMessages(tempFormControl.errors, paramField?.label || paramField?.displayName)[0];
+          }
+        }else{
+          parameter.value = inputValue
+        }
+      })
+      if(!error){
+        this.onPopulate.emit({triggerId: id, parameters, payloadFields: this._payloadFields})
+      }
+    }
+  }
+
+  getValueFromField(fields, fieldId){
+    let paramField = null;
+    fields.forEach(field => {
+      if(field.children && field.children.length){
+        return this.getValueFromField(field.children, fieldId);
+      }else{
+        if(field?.id === fieldId){
+          paramField = field;
+        }
+      }
+    })
+    return paramField;
   }
 }

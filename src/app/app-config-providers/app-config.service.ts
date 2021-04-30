@@ -144,6 +144,8 @@ export class AppConfigService {
       submitWithFilesURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/transaction/submit-with-files',
       // save transaction URL
       saveTransactionURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/transaction/save-pending-transaction',
+      // Populate Transaction Fields URL
+      populateTransactionURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/transaction/populate-data-trigger',
       // get workflow details URL
       getWorkflowDetailsURL: WORKFLOW_ADMIN_BASE_URL + '/rest/get-workflow-detail',
       // get payload stats

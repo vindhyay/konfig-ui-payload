@@ -139,7 +139,7 @@ export class PayloadFormFieldComponent implements OnInit {
     });
     return _validators;
   };
-  btnClick($event, type){
-    this.onBtnClick.emit({event: $event, type})
+  btnClick($event, data){
+    this.onBtnClick.emit({event: $event, data})
   }
 }

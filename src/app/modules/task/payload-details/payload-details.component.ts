@@ -69,15 +69,65 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
     );
   }
 
+  getTransactionDetails(id) {
+    this.loading = true
+    this.userService.getTransactionDetails(id).subscribe(
+        result => {
+          const { data: transactionDetails, error } = parseApiResponse(result);
+          if (transactionDetails && !error) {
+            try {
+              this.transactionDetails = transactionDetails;
+              this.formFields = JSON.parse(transactionDetails.payload) || [];
+              console.log(this.formFields)
+            } catch (e) {
+              console.error('failed to parse payload data');
+            }
+          } else {
+            this.notificationService.error(error.errorMessage);
+          }
+          this.loading = false;
+        },
+        error => {
+          this.loading = false;
+        }
+    );
+  }
+
+  populateTransaction($event){
+    const {payloadFields, triggerId, parameters} = $event
+    this.loading = true;
+    const appId = this.workflow.appId;
+    const params = {
+      finlevitAppId: appId,
+      idPending: this.transactionDetails.id || '',
+    };
+    this.userService.saveTransaction(params, JSON.stringify(payloadFields)).subscribe(
+        result => {
+          const { data, error } = parseApiResponse(result);
+          if (data && !error) {
+            this.userService.populateTransaction(data.id, { triggerId }, { parameters }).subscribe(result => {
+              this.loading = false;
+              this.getTransactionDetails(data.id);
+            }, error => {
+              this.loading = false;
+            })
+          } else {
+            this.loading = false;
+            this.notificationService.error(error.errorMessage);
+          }
+        },
+        error => {
+          this.loading = false;
+        }
+    );
+  }
+
   saveTransaction(payloadMetaData: any) {
     this.loading = true;
     const appId = this.workflow.appId;
     const params = {
-      // @ts-ignore
-      userId: this.currentUser.userId,
       finlevitAppId: appId,
       idPending: this.transactionDetails.id || '',
-      transactionId: this.transactionDetails.transactionId || getUniqueId(appId)
     };
     this.userService.saveTransaction(params, JSON.stringify(payloadMetaData)).subscribe(
       result => {
@@ -95,6 +145,8 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
       }
     );
   }
+
+
 
   submitTransaction(payloadData: any) {
     const { payload: payloadJson, files = [] } = payloadData;
@@ -114,9 +166,9 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
         const { data, error } = parseApiResponse(result);
         if (data && !error) {
           this.notificationService.success('Transaction Submitted Successfully', 'Success');
-          this.redirectTo(QUEUE_TYPES.SUBMITTED_QUEUE);
+          this.getWorkflowFormDetails(this.workflowId);
         } else {
-          this.notificationService.error(error.errorMessage);
+          this.notificationService.error(error.errorMessage, 'Error');
         }
       },
       error => {

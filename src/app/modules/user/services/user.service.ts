@@ -142,6 +142,12 @@ export class UserService extends BaseService implements OnDestroy {
     return this.postData(url, payload, params);
   };
 
+  //Populate Transaction
+  populateTransaction = (transactionId, params: any, payload: any): Observable<any> => {
+    const url = `${this.config.getApiUrls().populateTransactionURL}/${transactionId}`;
+    return this.postData(url, payload, params);
+  };
+
   //Get Workflow Payload To Show Form
   getWorkflowDetails = (workflowId: any): Observable<any> => {
     const url = `${this.config.getApiUrls().getWorkflowDetailsURL}/${workflowId}`;
