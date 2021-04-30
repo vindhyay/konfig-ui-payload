@@ -135,12 +135,9 @@ export class PayloadViewFormComponent implements OnInit {
     if(type === ButtonActions.populate){
       let error = false;
       parameters.map(parameter => {
-        const { value } = parameter;
-        const paramField = this.getValueFromField(this._payloadFields, value);
+        const { valueId } = parameter;
+        const paramField = this.getValueFromField(this._payloadFields, valueId);
         const inputValue = paramField?.value?.value
-        if(!paramField){
-          return;
-        }
         if(!inputValue){
           error = true;
           const tempFormControl = new FormControl(inputValue, this.getValidators({...paramField?.validators, required: true}));
