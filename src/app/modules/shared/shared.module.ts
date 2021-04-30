@@ -23,7 +23,8 @@ import {ToastrModule} from 'ngx-toastr';
     ToastrModule.forRoot({
       timeOut: 3000,
       positionClass: 'toast-top-center',
-      preventDuplicates: true
+      preventDuplicates: true,
+      closeButton: true
     }),
     ReactiveFormsModule,
     FinlevitLibraryModule,

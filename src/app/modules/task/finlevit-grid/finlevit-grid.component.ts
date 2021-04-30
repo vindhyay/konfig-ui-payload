@@ -85,11 +85,13 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
       ...this.modifyOptions
     };
     // @ts-ignore
-    this.subscribe(this.activatedRoute.parent.parent.params, params => {
-      const { transactionId, taskId } = params;
-      this.transactionId = transactionId;
-      this.taskId = taskId;
-    });
+    if(this.activatedRoute?.parent?.parent?.params){
+      this.subscribe(this.activatedRoute?.parent?.parent?.params, params => {
+        const { transactionId, taskId } = params;
+        this.transactionId = transactionId;
+        this.taskId = taskId;
+      });
+    }
   }
 
   ngOnDestroy() {

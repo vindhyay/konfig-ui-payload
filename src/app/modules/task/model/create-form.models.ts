@@ -23,7 +23,8 @@ export enum ButtonVariants {
 export enum ButtonActions {
   none = 'none',
   logout = 'logout',
-  submit = 'submit'
+  submit = 'submit',
+  populate = 'populate'
 }
 
 export enum PayloadType {

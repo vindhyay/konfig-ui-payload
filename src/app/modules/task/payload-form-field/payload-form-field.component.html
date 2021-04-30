@@ -98,7 +98,7 @@
               [icon]="item?.metaData?.icon"
               [iconPos]="item?.metaData?.iconPos"
               [label]="item?.label"
-              (btnClick)="btnClick($event, item?.metaData?.clickAction)"
+              (btnClick)="btnClick($event, item)"
               [variant]="item?.metaData?.variant"
               [type]="item?.metaData?.type"
       ></finlevit-button>
@@ -197,6 +197,7 @@
         [showEdit]="showEdit"
         [parent]="item"
         [items]="item.children"
+        (onBtnClick)="onBtnClick.emit($event)"
         [modifyOptions]="{
           minCols: item?.metaData?.widgetType === Header ? 50 : NESTED_MIN_COLUMNS,
           maxCols: 5000,

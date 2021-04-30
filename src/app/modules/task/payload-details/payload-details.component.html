@@ -6,6 +6,7 @@
       [payloadFields]="formFields"
       (onSubmit)="submitTransaction($event)"
       (onSave)="saveTransaction($event)"
+      (onPopulate)="populateTransaction($event)"
     >
       <div *ngIf="transactionDetails?.errorMessage" class="error-msg" child>
         <span class="material-icons mr-2"> error </span><span>{{ transactionDetails?.errorMessage }}</span>
