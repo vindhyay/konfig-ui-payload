@@ -43,8 +43,8 @@ export class TaskService extends BaseService {
     const url = `${this.config.getApiUrls().getHistoryDataChangesURL}`;
     return this.getData(url, params);
   };
-  getDataListValues = (params: any): Observable<any> => {
+  getDataListValues = (payload): Observable<any> => {
     const url = `${this.config.getApiUrls().getDataListValuesURL}`;
-    return this.getData(url, params);
-  };
+    return this.postData(url, payload);
+  }
 }

@@ -24,8 +24,8 @@ export class DropdownFieldComponent implements OnInit {
   }
   ngOnInit(): void {}
   getValues(listId: any) {
-    const params = { fieldConfigId: listId };
-    this.taskService.getDataListValues(params).subscribe(result => {
+    const payload = { dataListId: listId };
+    this.taskService.getDataListValues(payload).subscribe(result => {
       const { data, error } = parseApiResponse(result);
       if (data && !error) {
         this.metaData.options = data;
