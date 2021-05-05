@@ -18,6 +18,7 @@ export class DropdownFieldComponent implements OnInit {
       this.getValues(listId);
     }
   }
+  dynamicOptions = [];
   constructor(private taskService: TaskService) {}
   get metaData(): DropdownMetaData {
     return this.item.metaData as DropdownMetaData;
@@ -28,7 +29,7 @@ export class DropdownFieldComponent implements OnInit {
     this.taskService.getDataListValues(payload).subscribe(result => {
       const { data, error } = parseApiResponse(result);
       if (data && !error) {
-        this.metaData.options = data;
+        this.dynamicOptions = data
       } else {
         //TODo error handling
       }

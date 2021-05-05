@@ -3,7 +3,7 @@
   [isDisabled]="viewMode && (!item?.validators?.editable || !editMode)"
   [isRequired]="item?.validators?.required"
   [label]="item?.label"
-  [options]="item?.metaData?.options"
+  [options]="item?.metaData?.optionType === 'dataresource' ? dynamicOptions : item?.metaData?.options"
   [optionLabel]="
     item?.metaData?.isLabelAndValue || item?.metaData?.optionType === 'dataresource' ? item?.metaData?.optionLabel : ''
   "
