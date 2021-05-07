@@ -29,9 +29,17 @@ export class DropdownFieldComponent implements OnInit {
     this.taskService.getDataListValues(payload).subscribe(result => {
       const { data, error } = parseApiResponse(result);
       if (data && !error) {
-        this.dynamicOptions = data
+        if (typeof data === "string") {
+          try {
+            this.dynamicOptions = JSON.parse(data);
+          } catch (error) {
+            console.log("Failed to parse options data");
+          }
+        } else {
+          this.dynamicOptions = data;
+        }
       } else {
-        //TODo error handling
+        // TODo error handling
       }
     });
   }

@@ -177,6 +177,41 @@
       ></finlevit-lib-datepicker>
     </div>
   </ng-container>
+  <ng-container *ngIf="item?.metaData?.widgetType === TabContainer">
+    <div class="tab-container">
+      <p-tabView [activeIndex]="tabActiveIndex" (onChange)="onTabChange($event)">
+        <p-tabPanel *ngFor="let child of item.children; let i = index">
+          <ng-template pTemplate="header">
+            <i [class]="child?.metaData?.icon" class="p-pr-1"></i>
+            <span>{{ child.label }}</span>
+          </ng-template>
+          <div
+                  [ngClass]="{
+            'nested-grid-container': true,
+            'empty-child': !child.children.length
+          }"
+          >
+            <div *ngIf="!child.children.length" class="container-help-text">
+              <i class="pi pi-plus"></i>
+              <span>Drag and drop fields to tab container</span>
+            </div>
+            <finlevit-grid
+                    [viewMode]="viewMode"
+                    [showEdit]="showEdit"
+                    [parent]="child"
+                    [items]="child.children"
+                    [modifyOptions]="{
+              minCols: NESTED_MIN_COLUMNS,
+              maxCols: 5000,
+              minRows: 6,
+              gridType: 'fit'
+            }"
+            ></finlevit-grid>
+          </div>
+        </p-tabPanel>
+      </p-tabView>
+    </div>
+  </ng-container>
   <ng-container
     *ngIf="
       item?.metaData?.widgetType === Container ||

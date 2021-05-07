@@ -93,6 +93,7 @@ export enum WidgetTypes {
   CheckboxGroup = 'CheckboxGroup',
   RadioGroup = 'RadioGroup',
   Container = 'Container',
+  TabContainer = "TabContainer",
   Image = 'Image',
   Header = 'Header',
   Footer = 'Footer'

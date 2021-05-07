@@ -11,10 +11,14 @@ import {getErrorMessages} from "../../../utils";
   styleUrls: ['./payload-form-field.component.scss']
 })
 export class PayloadFormFieldComponent implements OnInit {
+
+  tabActiveIndex = 0;
+
   _item: BaseWidget = {} as BaseWidget;
   Text: WidgetTypes = WidgetTypes.Text;
   Button: WidgetTypes = WidgetTypes.Button;
   Container: WidgetTypes = WidgetTypes.Container;
+  TabContainer: WidgetTypes = WidgetTypes.TabContainer;
   Dropdown: WidgetTypes = WidgetTypes.Dropdown;
   RadioGroup: WidgetTypes = WidgetTypes.RadioGroup;
   DatePicker: WidgetTypes = WidgetTypes.DatePicker;
@@ -141,5 +145,11 @@ export class PayloadFormFieldComponent implements OnInit {
   };
   btnClick($event, data){
     this.onBtnClick.emit({event: $event, data})
+  }
+
+  onTabChange($event){
+    const { index = 0 } = $event;
+    this.tabActiveIndex = index;
+    window.dispatchEvent(new Event("resize"));
   }
 }

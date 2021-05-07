@@ -100,6 +100,32 @@
     width: 100%
   }
 }
+.tab-container {
+  height: calc(100% - 4px);
+  padding: 4px;
+  .p-tabview{
+    height: 100%;
+  }
+  .p-tabview-panels{
+    height: calc(100% - 42px);
+    border: 1px solid #dee2e6;
+    border-top: 0;
+    font-size: 14px;
+    color: inherit;
+  }
+  .p-tabview-panel{
+    height: 100%;
+  }
+  .p-tabview .p-tabview-nav li .p-tabview-nav-link{
+    min-height: 42px;
+  }
+  .p-tabview .p-tabview-nav li:not(.p-highlight) .p-tabview-nav-link{
+    border-color: #dee2e6;
+  }
+  .p-tabview .p-tabview-nav li .p-tabview-nav-link:not(.p-disabled):focus{
+    box-shadow: none;
+  }
+}
 /* custom primeng css */
 
 @keyframes focuses {
