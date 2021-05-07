@@ -10,7 +10,7 @@ import {NgxLoadingModule} from "ngx-loading";
 import {LoaderComponent} from "./loader/loader.component";
 import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
 import {ToastrModule} from 'ngx-toastr';
-
+import { TabViewModule } from 'primeng/tabview';
 
 
 @NgModule({
@@ -39,6 +39,8 @@ import {ToastrModule} from 'ngx-toastr';
     ReactiveFormsModule,
     FinlevitLibraryModule,
     BtnPrimaryComponent,
-    LoaderComponent]
+    LoaderComponent,
+    TabViewModule
+  ]
 })
 export class SharedModule { }
