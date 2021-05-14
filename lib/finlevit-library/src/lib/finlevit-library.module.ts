@@ -29,6 +29,9 @@ import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { DatepickerComponent } from './datepicker/datepicker.component';
 import { CalendarModule } from 'primeng/calendar';
+import {TableModule} from "primeng/table";
+
+import { TableComponent } from './table/table.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +47,8 @@ import { CalendarModule } from 'primeng/calendar';
     CheckboxGroupComponent,
     RadioGroupComponent,
     DatepickerComponent,
-    ButtonComponent
+    ButtonComponent,
+    TableComponent
   ],
   imports: [
     CalendarModule,
@@ -64,7 +68,8 @@ import { CalendarModule } from 'primeng/calendar';
     MultiSelectModule,
     RadioButtonModule,
     ButtonModule,
-    RippleModule
+    RippleModule,
+    TableModule
   ],
   exports: [
     FinlevitLibraryComponent,
@@ -79,7 +84,9 @@ import { CalendarModule } from 'primeng/calendar';
     CheckboxGroupComponent,
     RadioGroupComponent,
     DatepickerComponent,
-    ButtonComponent
+    ButtonComponent,
+    TableModule,
+    TableComponent
   ]
 })
 export class FinlevitLibraryModule {}

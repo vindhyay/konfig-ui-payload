@@ -20,6 +20,11 @@ export enum ButtonVariants {
   outlinedButton = 'outlinedButton'
 }
 
+export enum PopulateConfigOptionTypes {
+  onload= "onload",
+  ontrigger = "ontrigger"
+}
+
 export enum ButtonActions {
   none = 'none',
   logout = 'logout',
@@ -83,6 +88,7 @@ export interface WidgetItem {
 
 export enum WidgetTypes {
   Text = 'Text',
+  Table = "Table",
   Button = 'Button',
   TextInput = 'TextInput',
   TextArea = 'TextArea',
@@ -148,6 +154,37 @@ export class MetaData {
     this.widgetId = widgetId || getUniqueId('widget');
     this.widgetType = widgetType;
     this.level = level;
+  }
+}
+
+export class Column {
+  type: string;
+  columnId: string;
+  label: string;
+  name: string;
+  displayName: string;
+  populateResponsePath: string;
+  constructor(data) {
+    const { type = "Text", label = "", name = "", displayName = "", populateResponsePath = "", columnId = "" } = data;
+    this.type = type;
+    this.label = label;
+    this.columnId = columnId || getUniqueId("column");
+    this.name = name;
+    this.displayName = displayName;
+    this.populateResponsePath = populateResponsePath;
+  }
+}
+
+export class TableMetaData extends MetaData {
+  columns: Array<Column>;
+  populateConfigType: string;
+  heading: string;
+  constructor(data) {
+    super(data);
+    const { columns = [], populateConfigType = PopulateConfigOptionTypes.onload, heading = "" } = data;
+    this.columns = columns;
+    this.populateConfigType = populateConfigType;
+    this.heading = heading;
   }
 }
 

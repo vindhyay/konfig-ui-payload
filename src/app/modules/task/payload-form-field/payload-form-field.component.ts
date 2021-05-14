@@ -16,6 +16,7 @@ export class PayloadFormFieldComponent implements OnInit {
 
   _item: BaseWidget = {} as BaseWidget;
   Text: WidgetTypes = WidgetTypes.Text;
+  Table: WidgetTypes = WidgetTypes.Table;
   Button: WidgetTypes = WidgetTypes.Button;
   Container: WidgetTypes = WidgetTypes.Container;
   TabContainer: WidgetTypes = WidgetTypes.TabContainer;
