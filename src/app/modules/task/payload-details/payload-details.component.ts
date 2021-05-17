@@ -27,6 +27,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
   workflowId: string | null = '';
   transactionDetails: any = {};
   workflow: Workflow = {} as Workflow;
+  id: any;
   formFields: any = [];
   currentUser: UserDataModel | undefined;
   showActions: boolean = true;
@@ -36,11 +37,45 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
     this.queueType = getValueFromObjectByPath(this.activatedRoute, 'snapshot.data.queueType');
     this.activatedRoute.paramMap.subscribe(params => {
       this.workflowId = params.get('workflowId');
+      this.id = localStorage.getItem('id') || ''
       if (this.workflowId) {
-        this.getWorkflowFormDetails(this.workflowId);
+        this.createTransaction(this.workflowId, this.id);
       }
     });
   }
+  createTransaction(workflowId: string, id = null){
+    this.loading = true;
+    this.userService.createTransaction({ workflowId, id }).subscribe(
+        workflow => {
+          const { data: workflowDetails, error } = parseApiResponse(workflow);
+          if (workflowDetails && !error) {
+            this.workflow = workflowDetails;
+            this.transactionDetails = workflowDetails;
+              this.id = workflowDetails.id
+              localStorage.setItem('id', this.id)
+            if (workflowDetails && workflowDetails.payload) {
+              try {
+                this.formFields = JSON.parse(workflowDetails.payload) || [];
+                console.log(this.formFields)
+              } catch (e) {
+                console.error('failed to parse payload data');
+              }
+            }
+          } else {
+            this.notificationService.error(error.errorMessage);
+          }
+          this.loading = false;
+        },
+        error => {
+          this.loading = false;
+          if(error.status === 401){
+            this.authService.logoff(false, this.activatedRoute);
+          }
+        }
+    );
+  }
+
+
   getWorkflowFormDetails(workflowId: any) {
     this.loading = true;
     this.userService.getWorkflowDetails(workflowId).subscribe(
@@ -94,32 +129,15 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
   }
 
   populateTransaction($event){
-    const {payloadFields, triggerId, parameters} = $event
+    const {triggerId, parameters} = $event
     this.loading = true;
-    const appId = this.workflow.appId;
-    const params = {
-      finlevitAppId: appId,
-      idPending: this.transactionDetails.id || '',
-    };
-    this.userService.saveTransaction(params, JSON.stringify(payloadFields)).subscribe(
-        result => {
-          const { data, error } = parseApiResponse(result);
-          if (data && !error) {
-            this.userService.populateTransaction(data.id, { triggerId }, { parameters }).subscribe(result => {
-              this.loading = false;
-              this.getTransactionDetails(data.id);
-            }, error => {
-              this.loading = false;
-            })
-          } else {
-            this.loading = false;
-            this.notificationService.error(error.errorMessage);
-          }
-        },
-        error => {
+      this.userService.populateTransaction(this.id, { triggerId }, { parameters }).subscribe(result => {
           this.loading = false;
-        }
-    );
+          this.getTransactionDetails(this.id);
+      }, error => {
+          this.loading = false;
+          this.notificationService.error(error.errorMessage);
+      })
   }
 
   saveTransaction(payloadMetaData: any) {

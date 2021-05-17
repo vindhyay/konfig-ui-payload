@@ -93,6 +93,18 @@
     height: 100%;
   }
 }
+.table-container{
+  height: 100%;
+  ::ng-deep{
+    .p-datatable{
+      height: 100%;
+    }
+    .p-datatable-wrapper {
+      max-height: 80%;
+      overflow: scroll;
+    }
+  }
+}
 .nested-grid-container {
   height: 100%;
   &.empty-child {

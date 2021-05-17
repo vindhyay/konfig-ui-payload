@@ -19,6 +19,7 @@
   [paginator]="pagination"
   [rows]="10"
   [rowsPerPageOptions]="[10, 20, 50]"
+  [paginatorDropdownAppendTo]="'body'"
 >
   <ng-template pTemplate="header">
     <tr>
@@ -28,7 +29,7 @@
   <ng-template pTemplate="body" let-rowData let-columns="columns">
     <tr>
       <td *ngFor="let col of columns" class="p-pb-0">
-        <div class="p-pb-3" *ngIf="col.type == 'Data'">{{ rowData[col.displayName] }}</div>
+        <div class="p-pb-1" *ngIf="col.type == 'Data'">{{ rowData[col.displayName] }}</div>
         <div class="p-pl-1" *ngIf="col.type == 'Text'">
           <finlevit-text [(ngModel)]="rowData[col.displayName]" [isSmall]="true"></finlevit-text>
         </div>

@@ -111,7 +111,7 @@
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Table">
     <div class="input-container table-container">
-      <finlevit-table [addRows]="true" [tableData]='item?.value?.value || [{"name_column_os4hiU": "Vijay", "user_id_column_oVnxMh":"vij", "email_column_uNP82c" : "motupallivijay@gmail.com", "notes_column_3OKeXo": "" }]' [tableHeading]="item?.metaData?.heading"  [columns]="item?.metaData?.columns"></finlevit-table>
+      <finlevit-table [pagination]="true" [addRows]="true" [tableData]='item?.metaData?.options' [tableHeading]="item?.metaData?.heading"  [columns]="item?.metaData?.columns"></finlevit-table>
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Checkbox">
