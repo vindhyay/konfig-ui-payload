@@ -100,7 +100,7 @@
       height: 100%;
     }
     .p-datatable-wrapper {
-      max-height: 80%;
+      max-height: calc(100% - 110px);
       overflow: scroll;
     }
   }

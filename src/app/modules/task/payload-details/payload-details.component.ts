@@ -37,13 +37,12 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
     this.queueType = getValueFromObjectByPath(this.activatedRoute, 'snapshot.data.queueType');
     this.activatedRoute.paramMap.subscribe(params => {
       this.workflowId = params.get('workflowId');
-      this.id = localStorage.getItem('id') || ''
       if (this.workflowId) {
         this.createTransaction(this.workflowId, this.id);
       }
     });
   }
-  createTransaction(workflowId: string, id = null){
+  createTransaction(workflowId: string, id = ''){
     this.loading = true;
     this.userService.createTransaction({ workflowId, id }).subscribe(
         workflow => {
@@ -52,7 +51,6 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
             this.workflow = workflowDetails;
             this.transactionDetails = workflowDetails;
               this.id = workflowDetails.id
-              localStorage.setItem('id', this.id)
             if (workflowDetails && workflowDetails.payload) {
               try {
                 this.formFields = JSON.parse(workflowDetails.payload) || [];
