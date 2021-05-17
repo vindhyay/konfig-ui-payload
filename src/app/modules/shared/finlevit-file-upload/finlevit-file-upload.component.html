@@ -14,9 +14,9 @@
       }"
     >
       <div class="column">
-        <div class="d-flex flex-row">
+        <div class="d-flex flex-row pl-1">
           <span class="fake-btn">Choose file</span>
-          <finlevit-button *ngIf="uploadButton" [isSmall]="true" class="upload-button pl-3" label="Upload" icon="pi pi-upload" (btnClick)="onBtnClick()"></finlevit-button>
+          <finlevit-button *ngIf="uploadButton" [isSmall]="true" class="upload-button pl-4" label="Upload" icon="pi pi-upload" (btnClick)="onBtnClick()"></finlevit-button>
         </div>
         <span class="file-msg">{{ file ? file.name : 'or drag and drop file here' }}</span>
       </div>
