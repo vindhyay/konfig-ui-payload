@@ -47,4 +47,9 @@ export class TaskService extends BaseService {
     const url = `${this.config.getApiUrls().getDataListValuesURL}`;
     return this.postData(url, payload);
   }
+  uploadFile = (formData, transactionId) : Observable<any> => {
+    const params = { transactionId : transactionId}
+    const url = `${this.config.getApiUrls().uploadFile}`;
+    return this.postData(url, formData, params);
+  }
 }

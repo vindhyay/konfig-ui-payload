@@ -1,0 +1,30 @@
+<div [ngClass]="{ 'form-label-group': true }">
+  <label *ngIf="label" [ngClass]="{ 'mr-auto': true }"
+  >{{ label }}
+    <span class="required" *ngIf="isRequired">*</span>
+    <span [matTooltip]="tooltip" [matTooltipPosition]="'right'" class="material-icons tooltip-icon" *ngIf="tooltip"
+    >help_outline</span
+    >
+  </label>
+  <ng-container>
+    <div
+            [ngClass]="{
+        'file-drop-area': true,
+        'error-border': showErrorBorder && checkError()
+      }"
+    >
+      <div class="column">
+        <div class="d-flex flex-row">
+          <span class="fake-btn">Choose file</span>
+          <finlevit-button *ngIf="uploadButton" [isSmall]="true" class="upload-button pl-3" label="Upload" icon="pi pi-upload" (btnClick)="onBtnClick()"></finlevit-button>
+        </div>
+        <span class="file-msg">{{ file ? file.name : 'or drag and drop file here' }}</span>
+      </div>
+      <input class="file-input" type="file" [disabled]="disabled" (change)="uploadImage($event)"/>
+    </div>
+  </ng-container>
+  <div [ngClass]="{ 'd-flex': true }" *ngIf="checkError()">
+    <span class="error-msg">{{ errorMsg || getErrorMessages()[0] }}</span>
+  </div>
+</div>
+

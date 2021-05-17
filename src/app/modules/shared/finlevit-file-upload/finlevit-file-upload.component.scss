@@ -1,0 +1,89 @@
+@import 'src/assets/scss/var';
+
+.file-drop-area {
+  border: 1px dashed #ced4d9;
+  border-radius: 3px;
+  position: relative;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+  transition: 0.2s;
+  &.error-border {
+    border-color: $error;
+  }
+}
+
+.file-drop-area.is-active {
+  background-color: #3f4069;
+}
+
+.fake-btn {
+  border: 1px solid #ced4d9;
+  border-radius: 3px;
+  padding: 8px 15px;
+  margin-right: 8px;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.file-msg {
+  font-size: small;
+  font-weight: 300;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: inline-block;
+  max-width: calc(100% - 130px);
+  padding-top: 10px;
+  padding-left: 3em;
+  text-align: center;
+}
+
+.file-input {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  cursor: pointer;
+  opacity: 0;
+}
+
+.file-input:focus {
+  outline: none;
+}
+
+.form-label-group {
+  .required {
+    color: $error;
+  }
+  .error-msg {
+    color: $error;
+    font-size: 12px;
+  }
+  .error-border {
+    border-color: $red;
+  }
+  .form-control {
+    box-sizing: border-box;
+  }
+  .form-control-sm {
+    height: calc(1.5em + 0.3rem + 2px);
+  }
+  label {
+    @include customLabel();
+  }
+  .tooltip-icon {
+    font-size: 20px;
+    vertical-align: top;
+    display: inline-flex;
+    margin-left: 10px;
+    color: #999;
+  }
+  .char-limit {
+    position: absolute;
+    right: 1em;
+    color: gray;
+    font-size: 11px;
+  }
+}
+@include inputPlaceholder();

@@ -157,7 +157,9 @@ export class AppConfigService {
       // task-table-socket
       taskTableSocketURL: SOCKET_BASE_URL + '/socket/task-table',
       // Data list values URL
-      getDataListValuesURL: ALTERNATE_WORKFLOW_ADMIN_BASE_URL + '/resource/query-result'
+      getDataListValuesURL: ALTERNATE_WORKFLOW_ADMIN_BASE_URL + '/resource/query-result',
+      // Upload files
+      uploadFile: ACCOUNT_WORKFLOW_BASE_URL + '/rest/transaction/upload-file'
     }
   }
 }

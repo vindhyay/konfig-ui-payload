@@ -1,8 +1,8 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
-import { FieldData } from '../model/field-data.model';
-import { DataTypes } from '../model/payload-field.model';
-import { BaseWidget, WidgetTypes, NESTED_MIN_COLUMNS } from '../model/create-form.models';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {FormControl, Validators} from '@angular/forms';
+import {FieldData} from '../model/field-data.model';
+import {DataTypes} from '../model/payload-field.model';
+import {BaseWidget, NESTED_MIN_COLUMNS, WidgetTypes} from '../model/create-form.models';
 import {getErrorMessages} from "../../../utils";
 
 @Component({
@@ -30,6 +30,7 @@ export class PayloadFormFieldComponent implements OnInit {
   Number: WidgetTypes = WidgetTypes.Number;
   Checkbox: WidgetTypes = WidgetTypes.Checkbox;
   CheckboxGroup: WidgetTypes = WidgetTypes.CheckboxGroup;
+  Upload : WidgetTypes = WidgetTypes.Upload;
   NESTED_MIN_COLUMNS: number = NESTED_MIN_COLUMNS;
   @Input()
   get item() {
@@ -146,7 +147,6 @@ export class PayloadFormFieldComponent implements OnInit {
   btnClick($event, data){
     this.onBtnClick.emit({event: $event, data})
   }
-
   onTabChange($event){
     const { index = 0 } = $event;
     this.tabActiveIndex = index;

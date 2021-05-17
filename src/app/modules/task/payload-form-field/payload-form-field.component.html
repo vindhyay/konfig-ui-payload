@@ -104,6 +104,15 @@
       ></finlevit-button>
     </div>
   </ng-container>
+  <ng-container *ngIf="item?.metaData?.widgetType === Upload">
+    <div class="input-container button-input">
+      <app-upload
+              [item]="item"
+              [viewMode]="viewMode"
+              [editMode]="editMode"
+      ></app-upload>
+    </div>
+  </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Image">
     <div class="image-container">
       <img [src]="item?.metaData?.url" />

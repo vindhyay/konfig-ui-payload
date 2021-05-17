@@ -1,0 +1,8 @@
+<finlevit-file-upload
+        [isRequired]="item?.validators?.required"
+        [tooltip]="item?.metaData?.tooltip"
+        [label]="item?.label"
+        [uploadButton]="true"
+        [disabled]="viewMode && (!item?.validators?.editable || !editMode)"
+        (btnClick)="uploadFile($event)"
+></finlevit-file-upload>

@@ -11,10 +11,11 @@ import {LoaderComponent} from "./loader/loader.component";
 import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
 import {ToastrModule} from 'ngx-toastr';
 import { TabViewModule } from 'primeng/tabview';
+import {FinlevitFileUploadComponent} from "./finlevit-file-upload/finlevit-file-upload.component";
 
 
 @NgModule({
-  declarations: [BaseComponent, BtnPrimaryComponent, LoaderComponent, PageNotFoundComponent],
+  declarations: [BaseComponent, BtnPrimaryComponent, LoaderComponent, PageNotFoundComponent, FinlevitFileUploadComponent],
   imports: [
     CommonModule,
     MaterialModule,
@@ -40,7 +41,8 @@ import { TabViewModule } from 'primeng/tabview';
     FinlevitLibraryModule,
     BtnPrimaryComponent,
     LoaderComponent,
-    TabViewModule
+    TabViewModule,
+    FinlevitFileUploadComponent
   ]
 })
 export class SharedModule { }
