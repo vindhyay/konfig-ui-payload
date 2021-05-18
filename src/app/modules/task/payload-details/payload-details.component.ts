@@ -8,6 +8,7 @@ import {BaseComponent} from "../../shared/base/base.component";
 import {NotificationService} from "../../../services/notification.service";
 import {UserDataModel} from "../../auth/models";
 import {getUniqueId, getValueFromObjectByPath, parseApiResponse} from "../../../utils";
+import {TaskService} from '../services/task.service';
 
 @Component({
   selector: 'app-payload-details',
@@ -20,13 +21,13 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private userService: UserService,
     private authService: AuthService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private taskService: TaskService
   ) {
     super();
   }
   workflowId: string | null = '';
   transactionDetails: any = {};
-  workflow: any = {};
   id: any;
   formFields: any = [];
   currentUser: UserDataModel | undefined;
@@ -45,15 +46,15 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
   createTransaction(workflowId: string, id = ''){
     this.loading = true;
     this.userService.createTransaction({ workflowId, id }).subscribe(
-        workflow => {
-          const { data: workflowDetails, error } = parseApiResponse(workflow);
-          if (workflowDetails && !error) {
-            this.workflow = workflowDetails;
-            this.transactionDetails = workflowDetails;
-              this.id = workflowDetails.id
-            if (workflowDetails && workflowDetails.payload) {
+        result => {
+          const { data: transactionDetails, error } = parseApiResponse(result);
+          if (transactionDetails && !error) {
+            this.transactionDetails = transactionDetails;
+            this.taskService.setTransactionDetails(transactionDetails)
+              this.id = transactionDetails.id
+            if (transactionDetails && transactionDetails.payload) {
               try {
-                this.formFields = JSON.parse(workflowDetails.payload) || [];
+                this.formFields = JSON.parse(transactionDetails.payload) || [];
                 console.log(this.formFields)
               } catch (e) {
                 console.error('failed to parse payload data');
@@ -111,7 +112,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
 
   saveTransaction(payloadMetaData: any) {
     this.loading = true;
-    const appId = this.workflow.appId;
+    const appId = this.transactionDetails.appId;
     const params = {
       finlevitAppId: appId,
       idPending: this.transactionDetails.id || '',
@@ -140,7 +141,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
     this.loading = true;
     // @ts-ignore
     const params = { userId: this.currentUser.userId, idPending: this.transactionDetails.id || '' };
-    const appId = this.workflow?.workflowMapping?.appId;
+    const appId = this.transactionDetails?.workflowMapping?.appId;
     const transactionId = getUniqueId(appId);
     const payload = new FormData();
     payload.append('payload', JSON.stringify(payloadJson));

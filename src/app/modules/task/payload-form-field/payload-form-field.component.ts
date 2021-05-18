@@ -31,6 +31,7 @@ export class PayloadFormFieldComponent implements OnInit {
   Number: WidgetTypes = WidgetTypes.Number;
   Checkbox: WidgetTypes = WidgetTypes.Checkbox;
   CheckboxGroup: WidgetTypes = WidgetTypes.CheckboxGroup;
+  Upload : WidgetTypes = WidgetTypes.Upload;
   NESTED_MIN_COLUMNS: number = NESTED_MIN_COLUMNS;
   @Input()
   get item() {
@@ -155,7 +156,6 @@ export class PayloadFormFieldComponent implements OnInit {
   btnClick($event, data){
     this.onBtnClick.emit({event: $event, data})
   }
-
   onTabChange($event){
     const { index = 0 } = $event;
     this.tabActiveIndex = index;

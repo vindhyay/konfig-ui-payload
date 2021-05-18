@@ -102,7 +102,8 @@ export enum WidgetTypes {
   TabContainer = "TabContainer",
   Image = 'Image',
   Header = 'Header',
-  Footer = 'Footer'
+  Footer = 'Footer',
+  Upload = 'Upload'
 }
 class Validators {
   required: boolean;
@@ -480,6 +481,14 @@ export class FooterMetaData extends MetaData {
     this.backgroundColor = backgroundColor;
   }
 }
+export class UploadMetaData extends  MetaData{
+  tooltip: string;
+  constructor(data) {
+    super(data);
+    const { tooltip = "" } = data;
+    this.tooltip = tooltip;
+  }
+}
 
 export class BaseWidget {
   id: any;
@@ -504,6 +513,7 @@ export class BaseWidget {
       | TextAreaMetaData
       | ButtonMetaData
       | TableMetaData
+      | UploadMetaData;
   name: string;
   displayName: string;
   label: string;
@@ -586,6 +596,9 @@ export class BaseWidget {
           break;
         case WidgetTypes.Table:
           this.metaData = new TableMetaData(data);
+          break;
+        case WidgetTypes.Upload:
+          this.metaData = new UploadMetaData(data);
           break;
         default:
           this.metaData = null;
