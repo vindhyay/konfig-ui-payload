@@ -23,7 +23,10 @@
 >
   <ng-template pTemplate="header">
     <tr>
-      <th *ngFor="let column of columns">{{ column.label }}</th>
+      <th [pSortableColumn]="sort ? column.displayName: ''" *ngFor="let column of columns">{{ column.label }}
+        <p-sortIcon *ngIf="sort" [field]="column.displayName"></p-sortIcon>
+        <p-columnFilter *ngIf="filter" [type]="getColType(column.type)" [field]="column.displayName" display="menu"></p-columnFilter>
+      </th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-rowData let-columns="columns">

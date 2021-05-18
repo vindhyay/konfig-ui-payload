@@ -1,9 +1,9 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
-import { FieldData } from '../model/field-data.model';
-import { DataTypes } from '../model/payload-field.model';
-import { BaseWidget, WidgetTypes, NESTED_MIN_COLUMNS } from '../model/create-form.models';
-import {getErrorMessages} from "../../../utils";
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {FormControl, Validators} from '@angular/forms';
+import {FieldData} from '../model/field-data.model';
+import {DataTypes} from '../model/payload-field.model';
+import {BaseWidget, NESTED_MIN_COLUMNS, TableMetaData, WidgetTypes} from '../model/create-form.models';
+import {getErrorMessages} from '../../../utils';
 
 @Component({
   selector: 'app-payload-form-field',
@@ -39,6 +39,14 @@ export class PayloadFormFieldComponent implements OnInit {
   set item(data: BaseWidget) {
     if (typeof data.value != 'object') {
       data.value = { id: '', value: data.value || '' };
+    }
+    if(data?.metaData?.widgetType === WidgetTypes.Table){
+      const metaData = data.metaData as TableMetaData
+      if(metaData.configure){
+        metaData.options = metaData.options || [];
+      }else{
+        data.value = {id: '', value: []}
+      }
     }
     this._item = data;
   }

@@ -36,19 +36,35 @@ export class TableComponent implements OnInit {
   @Input() isSmall = false;
   @Input() isLarge = false;
   @Input() pagination = false;
+  @Input() sort = false;
+  @Input() filter = false;
   @Input() addRows = false;
   @Input() tableHeading = "";
 
   private _styleClass = "p-datatable-gridlines";
 
   ngOnInit(): void {
+    console.log(this.columns);
   }
 
   addRow(){
     const newRow: any = {};
-    Object.keys(this.tableData[0]).forEach( label => {
-      Object.assign(newRow, { [label] : "" });
+    this.columns.forEach( column => {
+      Object.assign(newRow, { [column.displayName] : "" });
     });
     this.tableData.push(newRow);
+  }
+  getColType(type){
+    switch (type){
+      case 'Text':
+      case 'Data':
+        return 'text';
+      case 'Date':
+        return 'date'
+      case 'Number':
+        return 'numeric';
+      default:
+        return 'text'
+    }
   }
 }

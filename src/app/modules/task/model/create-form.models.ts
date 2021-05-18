@@ -149,11 +149,30 @@ export class MetaData {
   widgetId: string;
   widgetType: WidgetTypes;
   level: number;
+  configure: boolean;
+  populateTriggerId: string;
+  populateResponsePath: string;
+  datalistId: string;
+  dataResourceId: string;
   constructor(data) {
-    const { widgetId, widgetType, level } = data;
-    this.widgetId = widgetId || getUniqueId('widget');
+    const {
+      widgetId,
+      widgetType,
+      level,
+      configure = false,
+      datalistId = null,
+      dataResourceId = null,
+      populateTriggerId = null,
+      populateResponsePath = null
+    } = data;
+    this.widgetId = widgetId || getUniqueId("widget");
     this.widgetType = widgetType;
     this.level = level;
+    this.configure = configure;
+    this.populateResponsePath = populateResponsePath;
+    this.populateTriggerId = populateTriggerId;
+    this.datalistId = datalistId;
+    this.dataResourceId = dataResourceId;
   }
 }
 
@@ -174,17 +193,29 @@ export class Column {
     this.populateResponsePath = populateResponsePath;
   }
 }
-
 export class TableMetaData extends MetaData {
   columns: Array<Column>;
   populateConfigType: string;
   heading: string;
+  sort: boolean;
+  filter: boolean;
+  options: Array<any>;
   constructor(data) {
     super(data);
-    const { columns = [], populateConfigType = PopulateConfigOptionTypes.onload, heading = "" } = data;
+    const {
+      columns = [],
+      populateConfigType = PopulateConfigOptionTypes.onload,
+      heading = "",
+      sort = false,
+      filter = false,
+        options = []
+    } = data;
     this.columns = columns;
     this.populateConfigType = populateConfigType;
     this.heading = heading;
+    this.sort = sort;
+    this.filter = filter;
+    this.options = options;
   }
 }
 
@@ -471,7 +502,8 @@ export class BaseWidget {
       | DatePickerMetaData
       | RadioGroupMetaData
       | TextAreaMetaData
-      | ButtonMetaData;
+      | ButtonMetaData
+      | TableMetaData
   name: string;
   displayName: string;
   label: string;
@@ -551,6 +583,9 @@ export class BaseWidget {
           break;
         case WidgetTypes.Button:
           this.metaData = new ButtonMetaData(data);
+          break;
+        case WidgetTypes.Table:
+          this.metaData = new TableMetaData(data);
           break;
         default:
           this.metaData = null;

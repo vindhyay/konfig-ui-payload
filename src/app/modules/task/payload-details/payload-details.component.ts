@@ -26,7 +26,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
   }
   workflowId: string | null = '';
   transactionDetails: any = {};
-  workflow: Workflow = {} as Workflow;
+  workflow: any = {};
   id: any;
   formFields: any = [];
   currentUser: UserDataModel | undefined;
@@ -70,35 +70,6 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
             this.authService.logoff(false, this.activatedRoute);
           }
         }
-    );
-  }
-
-
-  getWorkflowFormDetails(workflowId: any) {
-    this.loading = true;
-    this.userService.getWorkflowDetails(workflowId).subscribe(
-      workflow => {
-        const { data: workflowDetails, error } = parseApiResponse(workflow);
-        if (workflowDetails && !error) {
-          this.workflow = workflowDetails;
-          if (workflowDetails && workflowDetails.newPayload) {
-            try {
-              this.formFields = JSON.parse(workflowDetails.newPayload) || [];
-            } catch (e) {
-              console.error('failed to parse payload data');
-            }
-          }
-        } else {
-          this.notificationService.error(error.errorMessage);
-        }
-        this.loading = false;
-      },
-      error => {
-        this.loading = false;
-        if(error.status === 401){
-          this.authService.logoff(false, this.activatedRoute);
-        }
-      }
     );
   }
 
@@ -169,7 +140,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
     this.loading = true;
     // @ts-ignore
     const params = { userId: this.currentUser.userId, idPending: this.transactionDetails.id || '' };
-    const appId = this.workflow.appId;
+    const appId = this.workflow?.workflowMapping?.appId;
     const transactionId = getUniqueId(appId);
     const payload = new FormData();
     payload.append('payload', JSON.stringify(payloadJson));
@@ -182,7 +153,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
         const { data, error } = parseApiResponse(result);
         if (data && !error) {
           this.notificationService.success('Transaction Submitted Successfully', 'Success');
-          this.getWorkflowFormDetails(this.workflowId);
+          this.createTransaction(this.workflowId);
         } else {
           this.notificationService.error(error.errorMessage, 'Error');
         }
