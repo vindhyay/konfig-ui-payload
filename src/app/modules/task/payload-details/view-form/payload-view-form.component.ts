@@ -61,8 +61,6 @@ export class PayloadViewFormComponent implements OnInit {
       if (field.type !== DataTypes.array && field.type !== DataTypes.object) {
         if (isArray) {
           payload.push(getValueFromObjectByPath(field, 'value.value') || '');
-        } else if (field.type === DataTypes.file) {
-          this.files.push(getValueFromObjectByPath(field, 'value.value') || '');
         } else {
           payload[field.displayName] = getValueFromObjectByPath(field, 'value.value') || '';
         }

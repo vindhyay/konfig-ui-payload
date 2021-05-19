@@ -1,6 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {TaskService} from "../../services/task.service";
 import {BaseWidget, UploadMetaData} from "../../model/create-form.models";
+import {parseApiResponse} from '../../../../utils';
+import {NotificationService} from '../../../../services/notification.service';
 
 @Component({
   selector: 'app-upload',
@@ -9,7 +11,7 @@ import {BaseWidget, UploadMetaData} from "../../model/create-form.models";
 })
 export class UploadComponent implements OnInit {
 
-  constructor(private taskService: TaskService) { }
+  constructor(private taskService: TaskService, private notificationService: NotificationService) { }
 
   ngOnInit(): void {
   }
@@ -27,13 +29,20 @@ export class UploadComponent implements OnInit {
 
   uploadFile(fileData){
     const transactionId = this.taskService.getTransactionDetails()?.transactionId
+    if(!this.file){
+      this.notificationService.info('Please select file for upload', 'Info')
+      return
+    }
     if(transactionId){
       this.loading = true;
       this.taskService.uploadFile(fileData, { transactionId }).subscribe( result => {
         this.loading = false;
-        if(result){
-          this.item.value.value = result;
-          console.log(this.item);
+        const { data, error } = parseApiResponse(result);
+        if (data && !error) {
+          this.notificationService.success('File Uploaded Saved Successfully', 'Success');
+          this.item.value.value = data;
+        } else {
+          this.notificationService.error(error.errorMessage);
         }
       }, error => {
         // TODo error handling
