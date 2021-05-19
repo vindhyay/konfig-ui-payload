@@ -1,0 +1,51 @@
+<div class="p-d-flex p-justify-between p-pb-2">
+  <span [ngStyle]="{ 'font-size': 'large' }"
+    ><b>{{ tableHeading }}</b></span
+  >
+  <button
+    *ngIf="addRows"
+    pButton
+    (click)="addRow()"
+    icon="pi pi-plus-circle"
+    type="button"
+    label="Add Row"
+    class="p-button-primary p-button-text"
+  ></button>
+</div>
+<p-table
+  [columns]="columns"
+  [value]="tableData"
+  [styleClass]="styleClass"
+  [paginator]="pagination"
+  [rows]="10"
+  [rowsPerPageOptions]="[10, 20, 50]"
+  [paginatorDropdownAppendTo]="'body'"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th [pSortableColumn]="sort ? column.displayName: ''" *ngFor="let column of columns">{{ column.label }}
+        <p-sortIcon *ngIf="sort" [field]="column.displayName"></p-sortIcon>
+        <p-columnFilter *ngIf="filter" [type]="getColType(column.type)" [field]="column.displayName" display="menu"></p-columnFilter>
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rowData let-columns="columns">
+    <tr>
+      <td *ngFor="let col of columns" class="p-pb-0">
+        <div class="p-pb-1" *ngIf="col.type == 'Data'">{{ rowData[col.displayName] }}</div>
+        <div class="p-pl-1" *ngIf="col.type == 'Text'">
+          <finlevit-text [(ngModel)]="rowData[col.displayName]" [isSmall]="true"></finlevit-text>
+        </div>
+        <div class="p-pl-1" *ngIf="col.type == 'TextArea'">
+          <finlevit-lib-textarea [(ngModel)]="rowData[col.displayName]" [isSmall]="true"></finlevit-lib-textarea>
+        </div>
+        <div class="p-pl-1" *ngIf="col.type == 'Number'">
+          <finlevit-number [(ngModel)]="rowData[col.displayName]" [isSmall]="true"></finlevit-number>
+        </div>
+        <div class="p-pl-1" *ngIf="col.type == 'Date'">
+          <finlevit-lib-datepicker [(ngModel)]="rowData[col.displayName]" [isSmall]="true"></finlevit-lib-datepicker>
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

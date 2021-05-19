@@ -3,7 +3,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { DataTypes } from '../../model/payload-field.model';
 import {getErrorMessages, getValueFromObjectByPath} from "../../../../utils";
 import {EditorService} from "../../editor.service";
-import {ButtonActions} from '../../model/create-form.models';
+import {ButtonActions, WidgetTypes} from '../../model/create-form.models';
 import {ActivatedRoute} from "@angular/router";
 import {AuthService} from "../../../auth/services/auth.service";
 
@@ -51,6 +51,8 @@ export class PayloadViewFormComponent implements OnInit {
         } else {
           if (field?.children?.length) {
             payload[field.displayName] = this.convertPayload(field.children, field.type === DataTypes.array);
+          } else if(field?.metaData?.widgetType === WidgetTypes.Table){
+            payload[field.displayName] = field?.metaData?.configure ? (getValueFromObjectByPath(field, 'metaData.options') || []) : (getValueFromObjectByPath(field, 'value.value') || []);
           } else {
             payload[field.displayName] = getValueFromObjectByPath(field, 'value.value') || [];
           }
@@ -59,8 +61,6 @@ export class PayloadViewFormComponent implements OnInit {
       if (field.type !== DataTypes.array && field.type !== DataTypes.object) {
         if (isArray) {
           payload.push(getValueFromObjectByPath(field, 'value.value') || '');
-        } else if (field.type === DataTypes.file) {
-          this.files.push(getValueFromObjectByPath(field, 'value.value') || '');
         } else {
           payload[field.displayName] = getValueFromObjectByPath(field, 'value.value') || '';
         }
@@ -113,6 +113,7 @@ export class PayloadViewFormComponent implements OnInit {
     return _validators;
   };
   submit() {
+    console.log(this._payloadFields);
     if (this.validateFields(this._payloadFields)) {
       this.onSubmit.emit({ payload: this.convertPayload(this._payloadFields), files: this.files });
     }

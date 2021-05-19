@@ -148,6 +148,8 @@ export class AppConfigService {
       populateTransactionURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/transaction/populate-data-trigger',
       // get workflow details URL
       getWorkflowDetailsURL: WORKFLOW_ADMIN_BASE_URL + '/rest/get-workflow-detail',
+      // create transaction for  workflow URL
+      createTransactionURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/transaction',
       // get payload stats
       getTransactionCountURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/transaction/get-transaction-count',
       // data-changes for my-tasks and team-tasks

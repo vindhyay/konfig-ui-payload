@@ -18,6 +18,7 @@ export class FinlevitFileUploadComponent implements ControlValueAccessor, OnInit
   @Input() isRequired: boolean = false;
   @Input() errorMsg: string = '';
   @Input() error: boolean = false;
+  @Input() loading: boolean = true;
   @Input() disabled: boolean = false;
   @Input() showErrorBorder: boolean = true;
   @Input() validators: any = [];

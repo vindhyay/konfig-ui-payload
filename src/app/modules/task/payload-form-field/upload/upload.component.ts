@@ -1,7 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
 import {TaskService} from "../../services/task.service";
 import {BaseWidget, UploadMetaData} from "../../model/create-form.models";
+import {parseApiResponse} from '../../../../utils';
+import {NotificationService} from '../../../../services/notification.service';
 
 @Component({
   selector: 'app-upload',
@@ -10,7 +11,7 @@ import {BaseWidget, UploadMetaData} from "../../model/create-form.models";
 })
 export class UploadComponent implements OnInit {
 
-  constructor(private activatedRoute: ActivatedRoute, private taskService: TaskService) { }
+  constructor(private taskService: TaskService, private notificationService: NotificationService) { }
 
   ngOnInit(): void {
   }
@@ -18,23 +19,34 @@ export class UploadComponent implements OnInit {
   @Input() item: BaseWidget = {} as BaseWidget;
   @Input() viewMode = false;
   @Input() editMode = false;
-  transactionId: string;
+  loading = false;
+
+  file: any = null;
 
   get metaData(): UploadMetaData {
     return this.item.metaData as UploadMetaData;
   }
 
-  uploadFile(formData){
-    this.activatedRoute.paramMap.subscribe(params => {
-      this.transactionId = params.get('transactionId');
-    });
-    if(this.transactionId){
-      this.taskService.uploadFile(formData, this.transactionId).subscribe( result => {
-        if(result){
-          this.item.value.value = result;
+  uploadFile(fileData){
+    const transactionId = this.taskService.getTransactionDetails()?.transactionId
+    if(!this.file){
+      this.notificationService.info('Please select file for upload', 'Info')
+      return
+    }
+    if(transactionId){
+      this.loading = true;
+      this.taskService.uploadFile(fileData, { transactionId }).subscribe( result => {
+        this.loading = false;
+        const { data, error } = parseApiResponse(result);
+        if (data && !error) {
+          this.notificationService.success('File Uploaded Saved Successfully', 'Success');
+          this.item.value.value = data;
+        } else {
+          this.notificationService.error(error.errorMessage);
         }
       }, error => {
         // TODo error handling
+        this.loading = false;
       })
     }
   }

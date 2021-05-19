@@ -16,16 +16,21 @@ export class TaskService extends BaseService {
   // TODO add typings
   private taskDetailsSubject = new BehaviorSubject(null);
 
+  // TODO add typings
+  private transactionDetailsSubject = new BehaviorSubject(null);
+
   setTaskDetails(taskDetails : any) {
     this.taskDetailsSubject.next(taskDetails);
+  }
+  setTransactionDetails(transactionDetails : any) {
+    this.transactionDetailsSubject.next(transactionDetails);
+  }
+  getTransactionDetails(){
+    return this.transactionDetailsSubject.getValue();
   }
   modifyTaskField = (payload: any, params: any): Observable<any> => {
     const url = `${this.config.getApiUrls().modifyTaskFieldURL}`;
     return this.postData(url, payload, params);
-  };
-  getWorkflowHistoryTaskData = (transactionId: string) => {
-    const workflowHistoryTaskDetailsUrl = `${this.config.getApiUrls().workflowHistoryTaskDetailsURL}/${transactionId}`;
-    return this.getData(`${workflowHistoryTaskDetailsUrl}`).subscribe(data => this.setTaskDetails(data));
   };
   getWorkflowTaskData = (transactionId: string, taskId?: string) => {
     const url = `${this.config.getApiUrls().workflowTaskDetailsURL}/${transactionId}/${taskId}`;
@@ -47,8 +52,7 @@ export class TaskService extends BaseService {
     const url = `${this.config.getApiUrls().getDataListValuesURL}`;
     return this.postData(url, payload);
   }
-  uploadFile = (formData, transactionId) : Observable<any> => {
-    const params = { transactionId : transactionId}
+  uploadFile = (formData, params) : Observable<any> => {
     const url = `${this.config.getApiUrls().uploadFile}`;
     return this.postData(url, formData, params);
   }

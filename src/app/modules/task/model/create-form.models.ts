@@ -20,6 +20,11 @@ export enum ButtonVariants {
   outlinedButton = 'outlinedButton'
 }
 
+export enum PopulateConfigOptionTypes {
+  onload= "onload",
+  ontrigger = "ontrigger"
+}
+
 export enum ButtonActions {
   none = 'none',
   logout = 'logout',
@@ -83,6 +88,7 @@ export interface WidgetItem {
 
 export enum WidgetTypes {
   Text = 'Text',
+  Table = "Table",
   Button = 'Button',
   TextInput = 'TextInput',
   TextArea = 'TextArea',
@@ -144,11 +150,73 @@ export class MetaData {
   widgetId: string;
   widgetType: WidgetTypes;
   level: number;
+  configure: boolean;
+  populateTriggerId: string;
+  populateResponsePath: string;
+  datalistId: string;
+  dataResourceId: string;
   constructor(data) {
-    const { widgetId, widgetType, level } = data;
-    this.widgetId = widgetId || getUniqueId('widget');
+    const {
+      widgetId,
+      widgetType,
+      level,
+      configure = false,
+      datalistId = null,
+      dataResourceId = null,
+      populateTriggerId = null,
+      populateResponsePath = null
+    } = data;
+    this.widgetId = widgetId || getUniqueId("widget");
     this.widgetType = widgetType;
     this.level = level;
+    this.configure = configure;
+    this.populateResponsePath = populateResponsePath;
+    this.populateTriggerId = populateTriggerId;
+    this.datalistId = datalistId;
+    this.dataResourceId = dataResourceId;
+  }
+}
+
+export class Column {
+  type: string;
+  columnId: string;
+  label: string;
+  name: string;
+  displayName: string;
+  populateResponsePath: string;
+  constructor(data) {
+    const { type = "Text", label = "", name = "", displayName = "", populateResponsePath = "", columnId = "" } = data;
+    this.type = type;
+    this.label = label;
+    this.columnId = columnId || getUniqueId("column");
+    this.name = name;
+    this.displayName = displayName;
+    this.populateResponsePath = populateResponsePath;
+  }
+}
+export class TableMetaData extends MetaData {
+  columns: Array<Column>;
+  populateConfigType: string;
+  heading: string;
+  sort: boolean;
+  filter: boolean;
+  options: Array<any>;
+  constructor(data) {
+    super(data);
+    const {
+      columns = [],
+      populateConfigType = PopulateConfigOptionTypes.onload,
+      heading = "",
+      sort = false,
+      filter = false,
+        options = []
+    } = data;
+    this.columns = columns;
+    this.populateConfigType = populateConfigType;
+    this.heading = heading;
+    this.sort = sort;
+    this.filter = filter;
+    this.options = options;
   }
 }
 
@@ -444,6 +512,7 @@ export class BaseWidget {
       | RadioGroupMetaData
       | TextAreaMetaData
       | ButtonMetaData
+      | TableMetaData
       | UploadMetaData;
   name: string;
   displayName: string;
@@ -524,6 +593,9 @@ export class BaseWidget {
           break;
         case WidgetTypes.Button:
           this.metaData = new ButtonMetaData(data);
+          break;
+        case WidgetTypes.Table:
+          this.metaData = new TableMetaData(data);
           break;
         case WidgetTypes.Upload:
           this.metaData = new UploadMetaData(data);
