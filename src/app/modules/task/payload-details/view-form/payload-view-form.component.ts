@@ -37,8 +37,6 @@ export class PayloadViewFormComponent implements OnInit {
       if (field.type === DataTypes.object) {
         if (isArray) {
           payload.push(this.convertPayload(field.children, field.type === DataTypes.array));
-        } else if(field?.metaData?.widgetType === WidgetTypes.Upload){
-          payload[field.displayName] = getValueFromObjectByPath(field, 'value.value') || null;
         } else {
           payload[field.displayName] = this.convertPayload(field.children, field.type === DataTypes.array);
         }
