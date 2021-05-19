@@ -17,21 +17,27 @@ export class UploadComponent implements OnInit {
   @Input() item: BaseWidget = {} as BaseWidget;
   @Input() viewMode = false;
   @Input() editMode = false;
+  loading = false;
 
+  file: any = null;
 
   get metaData(): UploadMetaData {
     return this.item.metaData as UploadMetaData;
   }
 
-  uploadFile(formData){
-    const transactionId = this.taskService.getTransactionDetails()?.id
+  uploadFile(fileData){
+    const transactionId = this.taskService.getTransactionDetails()?.transactionId
     if(transactionId){
-      this.taskService.uploadFile(formData, { transactionId }).subscribe( result => {
+      this.loading = true;
+      this.taskService.uploadFile(fileData, { transactionId }).subscribe( result => {
+        this.loading = false;
         if(result){
           this.item.value.value = result;
+          console.log(this.item);
         }
       }, error => {
         // TODo error handling
+        this.loading = false;
       })
     }
   }

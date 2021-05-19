@@ -1,7 +1,13 @@
 @import 'src/assets/scss/var';
 
+.upload-button{
+  position: relative;
+  z-index: 1;
+}
+
 .file-drop-area {
   border: 1px dashed #ced4d9;
+  background: #ffffff;
   border-radius: 3px;
   position: relative;
   max-width: 100%;

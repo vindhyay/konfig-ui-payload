@@ -3,6 +3,8 @@
         [tooltip]="item?.metaData?.tooltip"
         [label]="item?.label"
         [uploadButton]="true"
+        [loading]="loading"
         [disabled]="viewMode && (!item?.validators?.editable || !editMode)"
         (btnClick)="uploadFile($event)"
+        [(ngModel)]="file"
 ></finlevit-file-upload>

@@ -21,6 +21,7 @@
         <span class="file-msg">{{ file ? file.name : 'or drag and drop file here' }}</span>
       </div>
       <input class="file-input" type="file" [disabled]="disabled" (change)="uploadImage($event)"/>
+      <app-loader [loading]="loading"></app-loader>
     </div>
   </ng-container>
   <div [ngClass]="{ 'd-flex': true }" *ngIf="checkError()">

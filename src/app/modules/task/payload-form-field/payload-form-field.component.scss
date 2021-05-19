@@ -101,7 +101,9 @@
     }
     .p-datatable-wrapper {
       max-height: calc(100% - 110px);
+      min-height: calc(100% - 110px);
       overflow: scroll;
+      background: #ffff;
     }
   }
 }
