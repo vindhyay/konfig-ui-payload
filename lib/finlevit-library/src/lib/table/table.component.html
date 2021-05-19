@@ -36,6 +36,9 @@
         <div class="p-pl-1" *ngIf="col.type == 'Text'">
           <finlevit-text [(ngModel)]="rowData[col.displayName]" [isSmall]="true"></finlevit-text>
         </div>
+        <div class="p-pl-1" *ngIf="col.type == 'TextArea'">
+          <finlevit-lib-textarea [(ngModel)]="rowData[col.displayName]" [isSmall]="true"></finlevit-lib-textarea>
+        </div>
         <div class="p-pl-1" *ngIf="col.type == 'Number'">
           <finlevit-number [(ngModel)]="rowData[col.displayName]" [isSmall]="true"></finlevit-number>
         </div>
