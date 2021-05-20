@@ -214,6 +214,7 @@
                     [showEdit]="showEdit"
                     [parent]="child"
                     [items]="child.children"
+                    (onBtnClick)="onBtnClick.emit($event)"
                     [modifyOptions]="{
               minCols: NESTED_MIN_COLUMNS,
               maxCols: 5000,

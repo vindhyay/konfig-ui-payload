@@ -163,7 +163,8 @@ export class PayloadViewFormComponent implements OnInit {
     let paramField = null;
     fields.forEach(field => {
       if(field.children && field.children.length){
-        return this.getValueFromField(field.children, fieldId);
+        const nestedParamField = this.getValueFromField(field.children, fieldId);
+        paramField = nestedParamField || paramField
       }else{
         if(field?.id === fieldId){
           paramField = field;
