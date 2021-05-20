@@ -3,6 +3,8 @@
   [isDisabled]="viewMode && (!item?.validators?.editable || !editMode)"
   [isRequired]="item?.validators?.required"
   [label]="item?.label"
+  [errorMsg]="item?.errorMsg"
+  [error]="item?.error == true"
   [options]="item?.metaData?.optionType === 'dataresource' ? dynamicOptions : item?.metaData?.options"
   [optionLabel]="
     item?.metaData?.isLabelAndValue || item?.metaData?.optionType === 'dataresource' ? item?.metaData?.optionLabel : ''
@@ -12,4 +14,5 @@
   "
   [tooltip]="item?.metaData?.tooltip"
   [(ngModel)]="item.value.value"
+  (ngModelChange)="validateField($event, item)"
 ></finlevit-lib-select>
