@@ -200,7 +200,10 @@ export class TableMetaData extends MetaData {
   heading: string;
   sort: boolean;
   filter: boolean;
+  pagination: boolean;
   options: Array<any>;
+  color: string;
+  bgColor: string;
   constructor(data) {
     super(data);
     const {
@@ -209,14 +212,20 @@ export class TableMetaData extends MetaData {
       heading = "",
       sort = false,
       filter = false,
-        options = []
+      pagination = false,
+        options = [],
+        color = "#000000",
+      bgColor = "#ffffff"
     } = data;
     this.columns = columns;
     this.populateConfigType = populateConfigType;
     this.heading = heading;
     this.sort = sort;
     this.filter = filter;
+    this.pagination = pagination;
     this.options = options;
+    this.color = color;
+    this.bgColor = bgColor;
   }
 }
 

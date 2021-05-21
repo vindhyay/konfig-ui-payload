@@ -120,7 +120,7 @@
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Table">
     <div class="input-container table-container">
-      <finlevit-table [addRows]="!item?.metaData?.configure" [sort]="item?.metaData?.sort" [filter]="item?.metaData?.filter" [pagination]="true" [tableData]='item?.metaData?.configure ? item?.metaData?.options : item?.value?.value' [tableHeading]="item?.metaData?.heading"  [columns]="item?.metaData?.columns"></finlevit-table>
+      <finlevit-table [headerColor]="item?.metaData?.color" [headerBgColor]="item?.metaData?.bgColor" [pagination]="item?.metaData?.pagination" [addRows]="!item?.metaData?.configure" [sort]="item?.metaData?.sort" [filter]="item?.metaData?.filter"  [tableData]='item?.metaData?.configure ? item?.metaData?.options : item?.value?.value' [tableHeading]="item?.metaData?.heading"  [columns]="item?.metaData?.columns"></finlevit-table>
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Checkbox">

@@ -20,10 +20,11 @@
   [rows]="10"
   [rowsPerPageOptions]="[10, 20, 50]"
   [paginatorDropdownAppendTo]="'body'"
+  [resizableColumns]="true"
 >
   <ng-template pTemplate="header">
     <tr>
-      <th [pSortableColumn]="sort ? column.displayName: ''" *ngFor="let column of columns">{{ column.label }}
+      <th [ngStyle]="{color: headerColor, backgroundColor: headerBgColor}" pResizableColumn [pSortableColumn]="sort ? column.displayName: ''" *ngFor="let column of columns">{{ column.label }}
         <p-sortIcon *ngIf="sort" [field]="column.displayName"></p-sortIcon>
         <p-columnFilter *ngIf="filter" [type]="getColType(column.type)" [field]="column.displayName" display="menu"></p-columnFilter>
       </th>
@@ -31,7 +32,7 @@
   </ng-template>
   <ng-template pTemplate="body" let-rowData let-columns="columns">
     <tr>
-      <td *ngFor="let col of columns" class="p-pb-0">
+      <td *ngFor="let col of columns">
         <div class="p-pb-1" *ngIf="col.type == 'Data'">{{ rowData[col.displayName] }}</div>
         <div class="p-pl-1" *ngIf="col.type == 'Text'">
           <finlevit-text [(ngModel)]="rowData[col.displayName]" [isSmall]="true"></finlevit-text>
@@ -49,3 +50,6 @@
     </tr>
   </ng-template>
 </p-table>
+<div class="no-table-data-container" *ngIf="!tableData.length">
+  {{noDataMessage}}
+</div>
