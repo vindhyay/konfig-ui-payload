@@ -33,6 +33,7 @@ export class TableComponent implements OnInit {
 
   @Input() columns: column[]  = [];
   @Input() tableData: any[] = [];
+  @Input() noDataMessage: string = "No Data";
   @Input() isSmall = false;
   @Input() isLarge = false;
   @Input() pagination = false;
@@ -40,8 +41,10 @@ export class TableComponent implements OnInit {
   @Input() filter = false;
   @Input() addRows = false;
   @Input() tableHeading = "";
+  @Input() headerColor: string = "#000000";
+  @Input() headerBgColor: string = "#ffffff";
 
-  private _styleClass = "p-datatable-gridlines";
+  private _styleClass = "p-datatable-gridlines p-datatable-sm";
 
   ngOnInit(): void {
     console.log(this.columns);
