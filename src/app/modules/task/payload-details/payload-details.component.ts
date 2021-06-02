@@ -33,9 +33,13 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
   currentUser: UserDataModel | undefined;
   showActions: boolean = true;
   queueType: QUEUE_TYPES = QUEUE_TYPES.NEW;
+  sessionFields = {};
   ngOnInit(): void {
     this.currentUser = this.authService.getCurrentUser();
     this.queueType = getValueFromObjectByPath(this.activatedRoute, 'snapshot.data.queueType');
+    this.activatedRoute.queryParamMap.subscribe((queryParams:any) => {
+        this.sessionFields = queryParams.params || {};
+    })
     this.activatedRoute.paramMap.subscribe(params => {
       this.workflowId = params.get('workflowId');
       if (this.workflowId) {
@@ -45,7 +49,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
   }
   createTransaction(workflowId: string, id = ''){
     this.loading = true;
-    this.userService.createTransaction({ workflowId, id }).subscribe(
+    this.userService.createTransaction({ workflowId, id }, {sessionData: this.sessionFields}).subscribe(
         result => {
           const { data: transactionDetails, error } = parseApiResponse(result);
           if (transactionDetails && !error) {
