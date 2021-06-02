@@ -16,6 +16,7 @@
     *ngFor="let item of items"
   >
     <app-payload-form-field
+      *ngIf="!item?.metaData?.isHidden"
       [viewMode]="viewMode"
       [showEdit]="showEdit"
       (edit)="onEdit($event)"
