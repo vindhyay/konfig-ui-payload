@@ -1,6 +1,7 @@
 import { getUniqueId } from '../../../utils';
 
 export const MIN_COLUMNS = 36;
+export const HEADER_MIN_COLUMNS = 50;
 export const MIN_ROWS = 30;
 
 export const NESTED_MIN_COLUMNS = 29;
@@ -23,6 +24,14 @@ export enum ButtonVariants {
 export enum PopulateConfigOptionTypes {
   onload= "onload",
   ontrigger = "ontrigger"
+}
+
+export enum ColumnTypes {
+  Text = "Text",
+  TextArea = "TextArea",
+  Number = "Number",
+  Date = "Date",
+  Data = "Data"
 }
 
 export enum ButtonActions {
@@ -153,8 +162,11 @@ export class MetaData {
   configure: boolean;
   populateTriggerId: string;
   populateResponsePath: string;
+  populateConfigType: string;
   datalistId: string;
   dataResourceId: string;
+  isHidden: boolean;
+  isSessionField: boolean;
   constructor(data) {
     const {
       widgetId,
@@ -164,16 +176,22 @@ export class MetaData {
       datalistId = null,
       dataResourceId = null,
       populateTriggerId = null,
-      populateResponsePath = null
+      populateResponsePath = null,
+      populateConfigType = PopulateConfigOptionTypes.ontrigger,
+      isHidden = false,
+      isSessionField = false
     } = data;
     this.widgetId = widgetId || getUniqueId("widget");
     this.widgetType = widgetType;
     this.level = level;
     this.configure = configure;
+    this.populateConfigType = populateConfigType;
     this.populateResponsePath = populateResponsePath;
     this.populateTriggerId = populateTriggerId;
     this.datalistId = datalistId;
     this.dataResourceId = dataResourceId;
+    this.isHidden = isHidden;
+    this.isSessionField = isSessionField;
   }
 }
 
@@ -381,10 +399,12 @@ export class TextMetaData extends MetaData {
 
 export class ContainerMetaData extends MetaData {
   title: string;
+  icon: string;
   constructor(data) {
     super(data);
-    const { title = '' } = data;
+    const { title = "", icon = "" } = data;
     this.title = title;
+    this.icon = icon;
   }
 }
 
