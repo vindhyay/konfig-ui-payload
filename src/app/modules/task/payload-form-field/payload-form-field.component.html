@@ -89,7 +89,7 @@
         'font-weight': item?.metaData?.fontWeight
       }"
     >
-      {{ item?.metaData?._value }}
+      {{ item?.value?.value || item?.metaData?._value }}
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Button">
