@@ -24,27 +24,27 @@
 >
   <ng-template pTemplate="header">
     <tr>
-      <th [ngStyle]="{color: headerColor, backgroundColor: headerBgColor}" pResizableColumn [pSortableColumn]="sort ? column.displayName: ''" *ngFor="let column of columns">{{ column.label }}
-        <p-sortIcon *ngIf="sort" [field]="column.displayName"></p-sortIcon>
-        <p-columnFilter *ngIf="filter" [type]="getColType(column.type)" [field]="column.displayName" display="menu"></p-columnFilter>
+      <th [ngStyle]="{color: headerColor, backgroundColor: headerBgColor}" pResizableColumn [pSortableColumn]="sort ? column.columnId: ''" *ngFor="let column of columns">{{ column.label }}
+        <p-sortIcon *ngIf="sort" [field]="column.columnId"></p-sortIcon>
+        <p-columnFilter *ngIf="filter" [type]="getColType(column.type)" [field]="column.columnId" display="menu"></p-columnFilter>
       </th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-rowData let-columns="columns">
     <tr>
       <td *ngFor="let col of columns">
-        <div class="p-pb-1" *ngIf="col.type == 'Data'">{{ rowData[col.displayName] }}</div>
+        <div class="p-pb-1" *ngIf="col.type == 'Data'">{{ rowData[col.columnId] }}</div>
         <div class="p-pl-1" *ngIf="col.type == 'Text'">
-          <finlevit-text [(ngModel)]="rowData[col.displayName]" [isSmall]="true"></finlevit-text>
+          <finlevit-text [(ngModel)]="rowData[col.columnId]" [isSmall]="true"></finlevit-text>
         </div>
         <div class="p-pl-1" *ngIf="col.type == 'TextArea'">
-          <finlevit-lib-textarea [(ngModel)]="rowData[col.displayName]" [isSmall]="true"></finlevit-lib-textarea>
+          <finlevit-lib-textarea [(ngModel)]="rowData[col.columnId]" [isSmall]="true"></finlevit-lib-textarea>
         </div>
         <div class="p-pl-1" *ngIf="col.type == 'Number'">
-          <finlevit-number [(ngModel)]="rowData[col.displayName]" [isSmall]="true"></finlevit-number>
+          <finlevit-number [(ngModel)]="rowData[col.columnId]" [isSmall]="true"></finlevit-number>
         </div>
         <div class="p-pl-1" *ngIf="col.type == 'Date'">
-          <finlevit-lib-datepicker [(ngModel)]="rowData[col.displayName]" [isSmall]="true"></finlevit-lib-datepicker>
+          <finlevit-lib-datepicker [(ngModel)]="rowData[col.columnId]" [isSmall]="true"></finlevit-lib-datepicker>
         </div>
       </td>
     </tr>
