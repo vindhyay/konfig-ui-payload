@@ -15,9 +15,9 @@ export const GridsterConfigService: GridsterConfig = {
   compactType: CompactType.None, // compact items: 'none' | 'compactUp' | 'compactLeft' | 'compactUp&Left' | 'compactLeft&Up'
   mobileBreakpoint: 640, // if the screen is not wider that this, remove the grid layout and stack the items
   minCols: 1, // minimum amount of columns in the grid
-  maxCols: 100, // maximum amount of columns in the grid
+  maxCols: 150, // maximum amount of columns in the grid
   minRows: 1, // minimum amount of rows in the grid
-  maxRows: 100, // maximum amount of rows in the grid
+  maxRows: 150, // maximum amount of rows in the grid
   defaultItemCols: 1, // default width of an item in columns
   defaultItemRows: 1, // default height of an item in rows
   maxItemCols: 50, // max item number of cols
