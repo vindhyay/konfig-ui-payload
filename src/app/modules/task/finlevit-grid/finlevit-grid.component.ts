@@ -49,7 +49,7 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
 
   ngOnInit() {
     this.options = {
-      gridType: GridType.ScrollVertical,
+      gridType: GridType.Fixed,
       displayGrid: DisplayGrid.None,
       compactType: CompactType.None,
       mobileBreakpoint: 0,
@@ -57,8 +57,9 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
       draggable: {
         enabled: false
       },
+      pushItems: true,
       resizable: {
-        enabled: false,
+        enabled: true,
         handles: {
           s: false,
           e: false,
@@ -77,11 +78,16 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
       minItemArea: 1,
       defaultItemCols: 1,
       defaultItemRows: 1,
-      maxRows: 1000,
+      maxRows: 3000,
       minCols: MIN_COLUMNS,
       minRows: MIN_ROWS,
       margin: 0,
       scrollSpeed: 4,
+      fixedRowHeight: 10,
+      fixedColWidth: 10,
+      maxItemCols: 150,
+      maxItemRows: 150,
+      maxItemArea: 7500,
       ...this.modifyOptions
     };
     // @ts-ignore
