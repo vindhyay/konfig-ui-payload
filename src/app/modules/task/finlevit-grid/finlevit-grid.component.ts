@@ -82,7 +82,6 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
       minCols: MIN_COLUMNS,
       minRows: MIN_ROWS,
       margin: 0,
-      disableScrollHorizontal: true,
       scrollSpeed: 4,
       fixedRowHeight: 10,
       fixedColWidth: 10,
