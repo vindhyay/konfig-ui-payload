@@ -8,6 +8,7 @@ export enum columnType{
 }
 export interface column{
   displayName: string;
+  columnId: string;
   label: string;
   type: columnType;
   required: boolean;
@@ -47,13 +48,13 @@ export class TableComponent implements OnInit {
   private _styleClass = "p-datatable-gridlines p-datatable-sm";
 
   ngOnInit(): void {
-    console.log(this.columns);
+    console.log(this.columns, this.tableData);
   }
 
   addRow(){
     const newRow: any = {};
     this.columns.forEach( column => {
-      Object.assign(newRow, { [column.displayName] : "" });
+      Object.assign(newRow, { [column.columnId] : "" });
     });
     this.tableData.push(newRow);
   }
