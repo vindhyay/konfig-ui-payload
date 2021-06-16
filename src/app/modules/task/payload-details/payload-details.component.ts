@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Workflow } from '../../../state/model/table-columns-model';
 import { QUEUE_TYPES } from '../../../state/model/queue-types-model';
 import {UserService} from "../../user/services/user.service";
 import {AuthService} from "../../auth/services/auth.service";
