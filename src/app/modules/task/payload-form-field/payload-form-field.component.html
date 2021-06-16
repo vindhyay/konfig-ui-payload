@@ -249,12 +249,12 @@
         [items]="item.children"
         (onBtnClick)="onBtnClick.emit($event)"
         [modifyOptions]="{
-          minCols: item?.metaData?.widgetType === Header ? 50 : NESTED_MIN_COLUMNS,
-          maxCols: 5000,
-          minRows: item?.metaData?.widgetType === Header ? 0 : 6,
-          gridType: item?.metaData?.widgetType === Header ? 'fixed' : 'fit',
-          fixedRowHeight: item?.metaData?.widgetType === Header ? 10 : 30,
-          fixedColWidth: item?.metaData?.widgetType === Header ? 10 : 30
+          minCols: 50,
+          maxCols: 15000,
+          minRows: 18,
+          gridType: 'fixed',
+          fixedRowHeight: 10,
+          fixedColWidth: 10
         }"
       ></finlevit-grid>
     </div>
