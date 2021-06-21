@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import {BaseWidget} from "./model/create-form.models";
 
@@ -6,7 +6,10 @@ import {BaseWidget} from "./model/create-form.models";
   providedIn: 'root'
 })
 export class EditorService {
-  constructor() {}
+
+  constructor() {
+  }
+
   dragItem: any = null;
   sourceList: any = [];
   dragEvent: any = null;
@@ -38,9 +41,10 @@ export class EditorService {
     if (container && container.getClientRects().length) {
       let rows = 30;
       items.forEach((item: any) => {
-        rows = Math.max(rows, item.y + item.rows);
+        rows = Math.max(rows, (item.y + item.rows)/3);
+        console.log("item row" + item.y + item.rows)
       });
-      container.style.height = rows * 30 + 0 + 'px';
+      container.style.height = rows * 30 + 10 + 'px';
     }
   }
 }

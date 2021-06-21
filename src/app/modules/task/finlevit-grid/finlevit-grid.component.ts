@@ -78,19 +78,19 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
       minItemArea: 1,
       defaultItemCols: 1,
       defaultItemRows: 1,
-      maxRows: 3000,
+      maxRows: 1000,
+      maxCols: 1000,
       minCols: MIN_COLUMNS,
       minRows: MIN_ROWS,
       margin: 0,
       scrollSpeed: 4,
       fixedRowHeight: 10,
       fixedColWidth: 10,
-      maxItemCols: 150,
-      maxItemRows: 150,
-      maxItemArea: 7500,
+      maxItemCols: 200,
+      maxItemRows: 200,
+      maxItemArea: 40000,
       ...this.modifyOptions
     };
-    // @ts-ignore
     if(this.activatedRoute?.parent?.parent?.params){
       this.subscribe(this.activatedRoute?.parent?.parent?.params, params => {
         const { transactionId, taskId } = params;
