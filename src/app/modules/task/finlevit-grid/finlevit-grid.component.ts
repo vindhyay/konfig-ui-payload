@@ -65,10 +65,10 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
           e: false,
           n: false,
           w: false,
-          sw: true,
-          se: true,
-          ne: true,
-          nw: true
+          sw: false,
+          se: false,
+          ne: false,
+          nw: false
         }
       },
       enableOccupiedCellDrop: true,
