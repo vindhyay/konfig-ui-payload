@@ -105,29 +105,28 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
   populateTransaction($event){
     const {triggerId, parameters} = $event
     this.loading = true;
-      this.userService.populateTransaction(this.id, { triggerId }, { parameters }).subscribe(result => {
+      this.userService.saveTransaction(this.transactionDetails.transactionId, this.formFields).subscribe(result => {
+          this.userService.populateTransaction(this.id, { triggerId }, { parameters }).subscribe(result => {
+              this.loading = false;
+              this.getTransactionDetails(this.id);
+          }, error => {
+              this.loading = false;
+              this.notificationService.error(error.errorMessage);
+          })
+      },error => {
           this.loading = false;
-          this.getTransactionDetails(this.id);
-      }, error => {
-          this.loading = false;
-          this.notificationService.error(error.errorMessage);
+          this.notificationService.error('Failed to populate, something went wrong')
       })
   }
 
   saveTransaction(payloadMetaData: any) {
     this.loading = true;
-    const appId = this.transactionDetails.appId;
-    const params = {
-      finlevitAppId: appId,
-      idPending: this.transactionDetails.id || '',
-    };
-    this.userService.saveTransaction(params, JSON.stringify(payloadMetaData)).subscribe(
+    this.userService.saveTransaction(this.transactionDetails.transactionId, payloadMetaData).subscribe(
       result => {
         this.loading = false;
         const { data, error } = parseApiResponse(result);
         if (data && !error) {
           this.notificationService.success('Transaction Saved Successfully', 'Success');
-          this.redirectTo(QUEUE_TYPES.SAVED_QUEUE);
         } else {
           this.notificationService.error(error.errorMessage);
         }

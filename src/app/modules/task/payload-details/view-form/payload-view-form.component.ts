@@ -113,13 +113,12 @@ export class PayloadViewFormComponent implements OnInit {
     return _validators;
   };
   submit() {
-    console.log(this._payloadFields);
     if (this.validateFields(this._payloadFields)) {
-      this.onSubmit.emit({ payload: this.convertPayload(this._payloadFields), files: this.files });
+      this.onSubmit.emit({ payload: this.convertPayload(this._payloadFields) });
     }
   }
   saveForLater() {
-    this.onSave.emit(this._payloadFields);
+    this.onSave.emit({ payload: this.convertPayload(this._payloadFields) });
   }
   onEditField($event: any) {
     console.log('i got it', $event);
@@ -129,6 +128,9 @@ export class PayloadViewFormComponent implements OnInit {
     const { data: {metaData: { clickAction: type = '', parameters = []} ={}}, data :{ id} } = $event
     if(type === ButtonActions.submit){
       this.submit();
+    }
+    if(type === ButtonActions.save){
+      this.saveForLater();
     }
     if(type === ButtonActions.logout){
       this.authService.logoff(false, this.activatedRoute);

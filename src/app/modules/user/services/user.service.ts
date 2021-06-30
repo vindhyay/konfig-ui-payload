@@ -137,9 +137,9 @@ export class UserService extends BaseService implements OnDestroy {
   };
 
   //Save Trasnaction
-  saveTransaction = (params: any, payload: any): Observable<any> => {
-    const url = `${this.config.getApiUrls().saveTransactionURL}`;
-    return this.postData(url, payload, params);
+  saveTransaction = (transactionId: any, payload: any): Observable<any> => {
+    const url = `${this.config.getApiUrls().saveTransactionURL}/${transactionId}`;
+    return this.postData(url, payload);
   };
 
   //Populate Transaction
