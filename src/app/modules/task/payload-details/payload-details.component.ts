@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QUEUE_TYPES } from '../../../state/model/queue-types-model';
 import {UserService} from "../../user/services/user.service";
