@@ -1,8 +1,8 @@
 {
   "accountOpeningBaseURL": "http://10.10.5.160:8083",
-  "workflowAdminBaseURL": "http://workflow-admin.dev.finlevit.io/workflowAdmin",
+  "workflowAdminBaseURL": "http://wf-admin.dev.finlevit.io/wfAdmin",
   "alternateWorkflowAdminBaseURL": "http://wf-admin.dev.finlevit.io/wfAdmin",
-  "accountWorkflowBaseURL": "http://ao-workflow.dev.finlevit.io/accountWorkflow",
+  "accountWorkflowBaseURL": "http://workflow-service.dev.finlevit.io/workflowService",
   "authBaseUrl": "http://security-service.dev.finlevit.io/ss",
   "transformationsUiURL": "http://transformations.dev.finlevit.io",
   "serviceDetailerBaseURL": "http://service-detailer.dev.finlevit.io",

@@ -46,18 +46,18 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
       }
     });
   }
-  createTransaction(workflowId: string, id = ''){
+  createTransaction(applicationId: string, id = ''){
     this.loading = true;
-    this.userService.createTransaction({ workflowId, id }, {sessionData: this.sessionFields}).subscribe(
+    this.userService.createTransaction({ applicationId, ...(id && {id}) }, {sessionData: this.sessionFields}).subscribe(
         result => {
           const { data: transactionDetails, error } = parseApiResponse(result);
           if (transactionDetails && !error) {
             this.transactionDetails = transactionDetails;
             this.taskService.setTransactionDetails(transactionDetails)
               this.id = transactionDetails.id
-            if (transactionDetails && transactionDetails.payload) {
+            if (transactionDetails && transactionDetails.uiPayload) {
               try {
-                this.formFields = JSON.parse(transactionDetails.payload) || [];
+                this.formFields = transactionDetails.uiPayload || [];
                 console.log(this.formFields)
               } catch (e) {
                 console.error('failed to parse payload data');
@@ -104,7 +104,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
   populateTransaction($event){
     const {triggerId, parameters} = $event
     this.loading = true;
-      this.userService.saveTransaction(this.transactionDetails.transactionId, this.formFields).subscribe(result => {
+      this.userService.saveTransaction({ transactionId : this.transactionDetails.transactionId}, this.formFields).subscribe(result => {
           this.userService.populateTransaction(this.id, { triggerId }, { parameters }).subscribe(result => {
               this.loading = false;
               this.getTransactionDetails(this.id);
@@ -120,7 +120,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
 
   saveTransaction(payloadMetaData: any) {
     this.loading = true;
-    this.userService.saveTransaction(this.transactionDetails.transactionId, payloadMetaData).subscribe(
+    this.userService.saveTransaction({transactionId : this.transactionDetails.transactionId}, payloadMetaData).subscribe(
       result => {
         this.loading = false;
         const { data, error } = parseApiResponse(result);
@@ -142,8 +142,8 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
     const { payload: payloadJson, files = [] } = payloadData;
     this.loading = true;
     // @ts-ignore
-    const params = { userId: this.currentUser.userId, idPending: this.transactionDetails.id || '' };
-    const appId = this.transactionDetails?.workflowMapping?.appId;
+    const params = { userId: this.currentUser.userId, transactionId: this.transactionDetails.transactionId || '' };
+    const appId = this.transactionDetails?.application?.appId;
     const transactionId = getUniqueId(appId);
     const payload = new FormData();
     payload.append('payload', JSON.stringify(payloadJson));

@@ -84,7 +84,6 @@ export class LoginComponent extends BaseComponent implements OnInit {
 
   onSuccess(data: UserDataModel) {
     if(data != null){
-      console.log(data);
       this.router.navigate(['../'],{
         relativeTo: this.activatedRoute
       });
@@ -93,6 +92,6 @@ export class LoginComponent extends BaseComponent implements OnInit {
 
   handleError(error: HttpErrorResponse | CustomError) {
     this.loading = false;
-    this.loginError = get(error, 'error.error') || 'Something went wrong, please try again';
+    this.loginError = get(error, 'error.error.errorMessage') || 'Something went wrong, please try again';
   }
 }

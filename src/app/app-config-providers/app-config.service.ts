@@ -48,15 +48,7 @@ export class AppConfigService {
       // LOGOUT URL
       logoutURL: AUTH_BASE_URL + '/logout',
       // Login URl
-      loginURL: WORKFLOW_ADMIN_BASE_URL + '/rest/permissions',
-      // Team Tasks URL
-      getTeamTasksURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/workflow/get-teamQueue',
-      // Followup Tasks URL
-      getFollowupTasksURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/workflow/get/followUpTaskQueue',
-      // Update Followup URL
-      updateFollowupTasksURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/workflow/updateFollowUpStatus/transaction',
-      // History Tasks URL
-      getHistoryTasksURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/workflow/get/history',
+      loginURL: WORKFLOW_ADMIN_BASE_URL + '/user/permissions',
       // Task Details URL
       workflowTaskDetailsURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/workflow/get/transaction',
       // History Task Details URL
@@ -141,15 +133,15 @@ export class AppConfigService {
       // get transaction details
       getTransactionDetailsURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/transaction/get-pending-transaction',
       // Submit with files URL
-      submitWithFilesURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/transaction/submit-with-files',
+      submitWithFilesURL: ACCOUNT_WORKFLOW_BASE_URL + '/transaction/submit-with-files',
       // save transaction URL
-      saveTransactionURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/transaction/save',
+      saveTransactionURL: ACCOUNT_WORKFLOW_BASE_URL + '/transaction/save',
       // Populate Transaction Fields URL
       populateTransactionURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/transaction/populate-data-trigger',
       // get workflow details URL
       getWorkflowDetailsURL: WORKFLOW_ADMIN_BASE_URL + '/rest/get-workflow-detail',
       // create transaction for  workflow URL
-      createTransactionURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/transaction',
+      createTransactionURL: ACCOUNT_WORKFLOW_BASE_URL + '/transaction',
       // get payload stats
       getTransactionCountURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/transaction/get-transaction-count',
       // data-changes for my-tasks and team-tasks

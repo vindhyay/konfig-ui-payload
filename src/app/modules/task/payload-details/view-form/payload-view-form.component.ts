@@ -38,7 +38,7 @@ export class PayloadViewFormComponent implements OnInit {
         if (isArray) {
           payload.push(this.convertPayload(field.children, field.type === DataTypes.array));
         } else {
-          payload[field.displayName] = this.convertPayload(field.children, field.type === DataTypes.array);
+          payload[field.widgetName] = this.convertPayload(field.children, field.type === DataTypes.array);
         }
       }
       if (field.type === DataTypes.array) {
@@ -50,11 +50,11 @@ export class PayloadViewFormComponent implements OnInit {
           }
         } else {
           if (field?.children?.length) {
-            payload[field.displayName] = this.convertPayload(field.children, field.type === DataTypes.array);
+            payload[field.widgetName] = this.convertPayload(field.children, field.type === DataTypes.array);
           } else if(field?.metaData?.widgetType === WidgetTypes.Table){
-            payload[field.displayName] = field?.metaData?.configure ? (getValueFromObjectByPath(field, 'metaData.options') || []) : (getValueFromObjectByPath(field, 'value.value') || []);
+            payload[field.widgetName] = field?.metaData?.configure ? (getValueFromObjectByPath(field, 'metaData.options') || []) : (getValueFromObjectByPath(field, 'value.value') || []);
           } else {
-            payload[field.displayName] = getValueFromObjectByPath(field, 'value.value') || [];
+            payload[field.widgetName] = getValueFromObjectByPath(field, 'value.value') || [];
           }
         }
       }
@@ -62,7 +62,7 @@ export class PayloadViewFormComponent implements OnInit {
         if (isArray) {
           payload.push(getValueFromObjectByPath(field, 'value.value') || '');
         } else {
-          payload[field.displayName] = getValueFromObjectByPath(field, 'value.value') || '';
+          payload[field.widgetName] = getValueFromObjectByPath(field, 'value.value') || '';
         }
       }
     });
@@ -82,7 +82,7 @@ export class PayloadViewFormComponent implements OnInit {
           field.errorMsg = '';
         } else {
           field.error = true;
-          field.errorMsg = getErrorMessages(tempFormControl.errors, field?.label || field?.displayName)[0];
+          field.errorMsg = getErrorMessages(tempFormControl.errors, field?.label || field?.widgetName)[0];
           result = false;
         }
       }
@@ -149,7 +149,7 @@ export class PayloadViewFormComponent implements OnInit {
             paramField.errorMsg = '';
           } else {
             paramField.error = true;
-            paramField.errorMsg = getErrorMessages(tempFormControl.errors, paramField?.label || paramField?.displayName)[0];
+            paramField.errorMsg = getErrorMessages(tempFormControl.errors, paramField?.label || paramField?.widgetName)[0];
           }
         }else{
           parameter.value = inputValue
