@@ -38,6 +38,7 @@ export enum ButtonActions {
   none = 'none',
   logout = 'logout',
   submit = 'submit',
+  save = "save",
   populate = 'populate'
 }
 

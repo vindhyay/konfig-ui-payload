@@ -1,4 +1,4 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QUEUE_TYPES } from '../../../state/model/queue-types-model';
 import {UserService} from "../../user/services/user.service";
@@ -15,7 +15,6 @@ import {TaskService} from '../services/task.service';
   styleUrls: ['./payload-details.component.scss']
 })
 export class PayloadDetailsComponent extends BaseComponent implements OnInit {
-
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -50,16 +49,16 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
       }
     });
   }
-  createTransaction(workflowId: string, id = ''){
+  createTransaction(applicationId: string, id = ''){
     this.loading = true;
-    this.userService.createTransaction({ workflowId, id }, {sessionData: this.sessionFields}).subscribe(
+    this.userService.createTransaction({ applicationId, ...(id && {id}) }, {sessionData: this.sessionFields}).subscribe(
         result => {
           const { data: transactionDetails, error } = parseApiResponse(result);
           if (transactionDetails && !error) {
             this.transactionDetails = transactionDetails;
             this.taskService.setTransactionDetails(transactionDetails)
               this.id = transactionDetails.id
-            if (transactionDetails && transactionDetails.payload) {
+            if (transactionDetails && transactionDetails.uiPayload) {
               try {
                 this.formFields = JSON.parse(transactionDetails.payload) || [];
                 this.formFields.forEach(field => {
@@ -128,29 +127,28 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
   populateTransaction($event){
     const {triggerId, parameters} = $event
     this.loading = true;
-      this.userService.populateTransaction(this.id, { triggerId }, { parameters }).subscribe(result => {
+      this.userService.saveTransaction({ transactionId : this.transactionDetails.transactionId}, this.formFields).subscribe(result => {
+          this.userService.populateTransaction(this.id, { triggerId }, { parameters }).subscribe(result => {
+              this.loading = false;
+              this.getTransactionDetails(this.id);
+          }, error => {
+              this.loading = false;
+              this.notificationService.error(error.errorMessage);
+          })
+      },error => {
           this.loading = false;
-          this.getTransactionDetails(this.id);
-      }, error => {
-          this.loading = false;
-          this.notificationService.error(error.errorMessage);
+          this.notificationService.error('Failed to populate, something went wrong')
       })
   }
 
   saveTransaction(payloadMetaData: any) {
     this.loading = true;
-    const appId = this.transactionDetails.appId;
-    const params = {
-      finlevitAppId: appId,
-      idPending: this.transactionDetails.id || '',
-    };
-    this.userService.saveTransaction(params, JSON.stringify(payloadMetaData)).subscribe(
+    this.userService.saveTransaction({transactionId : this.transactionDetails.transactionId}, payloadMetaData).subscribe(
       result => {
         this.loading = false;
         const { data, error } = parseApiResponse(result);
         if (data && !error) {
           this.notificationService.success('Transaction Saved Successfully', 'Success');
-          this.redirectTo(QUEUE_TYPES.SAVED_QUEUE);
         } else {
           this.notificationService.error(error.errorMessage);
         }
@@ -167,8 +165,8 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
     const { payload: payloadJson, files = [] } = payloadData;
     this.loading = true;
     // @ts-ignore
-    const params = { userId: this.currentUser.userId, idPending: this.transactionDetails.id || '' };
-    const appId = this.transactionDetails?.workflowMapping?.appId;
+    const params = { userId: this.currentUser.userId, transactionId: this.transactionDetails.transactionId || '' };
+    const appId = this.transactionDetails?.application?.appId;
     const transactionId = getUniqueId(appId);
     const payload = new FormData();
     payload.append('payload', JSON.stringify(payloadJson));
