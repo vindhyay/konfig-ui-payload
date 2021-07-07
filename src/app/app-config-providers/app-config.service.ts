@@ -137,7 +137,7 @@ export class AppConfigService {
       // save transaction URL
       saveTransactionURL: ACCOUNT_WORKFLOW_BASE_URL + '/transaction/save',
       // Populate Transaction Fields URL
-      populateTransactionURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/transaction/populate-data-trigger',
+      populateTransactionURL: ACCOUNT_WORKFLOW_BASE_URL + '/transaction/populate-data-trigger',
       // get workflow details URL
       getWorkflowDetailsURL: WORKFLOW_ADMIN_BASE_URL + '/rest/get-workflow-detail',
       // create transaction for  workflow URL
