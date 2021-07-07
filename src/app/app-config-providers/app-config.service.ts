@@ -120,18 +120,18 @@ export class AppConfigService {
       // Export SLA URL
       exportSLAURL: ACCOUNT_WORKFLOW_BASE_URL + '/export/sla-report',
       // Get History columns
-      getAllHistoryColumnsURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/user/get-all-history-columns',
+      getAllHistoryColumnsURL: ACCOUNT_WORKFLOW_BASE_URL + '/user/get-all-history-columns',
       // Convert data payload to meta data
-      getConvertPayloadToMetaDataURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/transaction/convert-payload-to-meta-data',
+      getConvertPayloadToMetaDataURL: ACCOUNT_WORKFLOW_BASE_URL + '/transaction/convert-payload-to-meta-data',
       // Demo analytics URL
       getNewAnalyticsURL: ACCOUNT_WORKFLOW_BASE_URL + '/analytics/get-project-summary',
       // Demo analytics export URl
       exportDemoTableURL: ACCOUNT_WORKFLOW_BASE_URL + '/export/project-report',
       // Payload
       // get all transactions
-      getAllTransactionsURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/transaction/get-all-transactions',
+      getAllTransactionsURL: ACCOUNT_WORKFLOW_BASE_URL + '/transaction/get-all-transactions',
       // get transaction details
-      getTransactionDetailsURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/transaction/get-pending-transaction',
+      getTransactionDetailsURL: ACCOUNT_WORKFLOW_BASE_URL + '/transaction/pending',
       // Submit with files URL
       submitWithFilesURL: ACCOUNT_WORKFLOW_BASE_URL + '/transaction/submit-with-files',
       // save transaction URL
@@ -139,15 +139,15 @@ export class AppConfigService {
       // Populate Transaction Fields URL
       populateTransactionURL: ACCOUNT_WORKFLOW_BASE_URL + '/transaction/populate-data-trigger',
       // get workflow details URL
-      getWorkflowDetailsURL: WORKFLOW_ADMIN_BASE_URL + '/rest/get-workflow-detail',
+      getWorkflowDetailsURL: WORKFLOW_ADMIN_BASE_URL + '/get-workflow-detail',
       // create transaction for  workflow URL
       createTransactionURL: ACCOUNT_WORKFLOW_BASE_URL + '/transaction',
       // get payload stats
-      getTransactionCountURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/transaction/get-transaction-count',
+      getTransactionCountURL: ACCOUNT_WORKFLOW_BASE_URL + '/transaction/get-transaction-count',
       // data-changes for my-tasks and team-tasks
-      getDataChangesURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/workflow/data-changes',
+      getDataChangesURL: ACCOUNT_WORKFLOW_BASE_URL + '/workflow/data-changes',
       // data-changes for history
-      getHistoryDataChangesURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/workflow/archived-data-changes',
+      getHistoryDataChangesURL: ACCOUNT_WORKFLOW_BASE_URL + '/workflow/archived-data-changes',
       // task-table-socket
       taskTableSocketURL: SOCKET_BASE_URL + '/socket/task-table',
       // Data list values URL

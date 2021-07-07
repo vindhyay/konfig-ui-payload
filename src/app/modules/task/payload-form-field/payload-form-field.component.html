@@ -153,6 +153,7 @@
         [viewMode]="viewMode"
         [editMode]="editMode"
         [dataListId]="item?.metaData?.datalistId"
+        (optionChange)="optionChange($event, item)"
       ></app-dropdown-field>
     </div>
   </ng-container>

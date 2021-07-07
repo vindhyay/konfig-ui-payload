@@ -63,6 +63,7 @@ export class PayloadFormFieldComponent implements OnInit {
   dataTypes = DataTypes;
   @Output() edit = new EventEmitter();
   @Output() onBtnClick = new EventEmitter();
+  @Output() onOptionChange = new EventEmitter();
   ngOnInit() {}
   showControls: boolean = false;
   editMode: boolean = false;
@@ -155,6 +156,9 @@ export class PayloadFormFieldComponent implements OnInit {
   };
   btnClick($event, data){
     this.onBtnClick.emit({event: $event, data})
+  }
+  optionChange($event, data){
+    this.onOptionChange.emit({event: $event, data})
   }
   onTabChange($event){
     const { index = 0 } = $event;

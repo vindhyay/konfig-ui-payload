@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { BaseWidget, DropdownMetaData } from '../../model/create-form.models';
 import {TaskService} from "../../services/task.service";
 import {getErrorMessages, parseApiResponse} from '../../../../utils';
@@ -19,6 +19,7 @@ export class DropdownFieldComponent implements OnInit {
       this.getValues(listId);
     }
   }
+  @Output() optionChange = new EventEmitter();
   dynamicOptions = [];
   constructor(private taskService: TaskService) {}
   get metaData(): DropdownMetaData {
@@ -55,6 +56,9 @@ export class DropdownFieldComponent implements OnInit {
       field.error = true;
       field.errorMsg = getErrorMessages(tempFormControl.errors, label);
     }
+  }
+  onOptionChange($event:any){
+    this.optionChange.emit($event)
   }
   getValidators = (validators : any) => {
     const _validators: any = [];

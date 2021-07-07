@@ -14,5 +14,5 @@
   "
   [tooltip]="item?.metaData?.tooltip"
   [(ngModel)]="item.value.value"
-  (ngModelChange)="validateField($event, item)"
+  (ngModelChange)="validateField($event, item); onOptionChange($event)"
 ></finlevit-lib-select>

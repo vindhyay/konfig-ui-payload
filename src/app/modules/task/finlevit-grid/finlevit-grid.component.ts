@@ -29,6 +29,7 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
   @Input() modifyOptions: any = {};
 
   @Output() onBtnClick = new EventEmitter();
+  @Output() onOptionChange = new EventEmitter();
 
   Text: WidgetTypes = WidgetTypes.Text;
   Container: WidgetTypes = WidgetTypes.Container;
