@@ -73,6 +73,9 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
           if(error.status === 401){
             this.authService.logoff(false, this.activatedRoute);
           }
+          if(error.status === 500){
+            this.notificationService.error(error?.error?.error?.errorMessage)
+          }
         }
     );
   }
