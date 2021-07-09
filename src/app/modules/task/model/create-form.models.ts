@@ -252,6 +252,7 @@ export class DropdownMetaData extends MetaData {
   tooltip: string;
   placeholder: string;
   options: Array<any>;
+  parameters: Array<any>;
   isLabelAndValue: boolean;
   optionType: string;
   optionLabel: string;
@@ -269,7 +270,8 @@ export class DropdownMetaData extends MetaData {
       optionValue = 'value',
       isLabelAndValue = false,
       dataResourceId = '',
-      datalistId = ''
+      datalistId = '',
+      parameters = []
     } = data;
     this.placeholder = placeholder;
     this.optionType = optionType;
@@ -280,6 +282,7 @@ export class DropdownMetaData extends MetaData {
     this.optionValue = optionValue;
     this.datalistId = datalistId;
     this.dataResourceId = dataResourceId;
+    this.parameters = parameters;
   }
 }
 

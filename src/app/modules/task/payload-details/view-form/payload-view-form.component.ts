@@ -129,8 +129,8 @@ export class PayloadViewFormComponent implements OnInit {
     if(type === ButtonActions.populate){
       let error = false;
       parameters.map(parameter => {
-        const { valueId } = parameter;
-        const paramField = this.getValueFromField(this._payloadFields, valueId);
+        const { value } = parameter;
+        const paramField = this.getValueFromField(this._payloadFields, value);
         const inputValue = paramField?.value?.value
         if(!inputValue){
           error = true;
@@ -166,21 +166,23 @@ export class PayloadViewFormComponent implements OnInit {
     if(type === ButtonActions.populate){
       let error = false;
       parameters.map(parameter => {
-        const { valueId } = parameter;
-        const paramField = this.getValueFromField(this._payloadFields, valueId);
-        const inputValue = paramField?.value?.value
-        if(!inputValue){
-          error = true;
-          const tempFormControl = new FormControl(inputValue, this.getValidators({...paramField?.validators, required: true}));
-          if (tempFormControl.valid) {
-            paramField.error = false;
-            paramField.errorMsg = '';
-          } else {
-            paramField.error = true;
-            paramField.errorMsg = getErrorMessages(tempFormControl.errors, paramField?.label || paramField?.widgetName)[0];
+        const { value, valueType } = parameter;
+        if(valueType === 'ref'){
+          const paramField = this.getValueFromField(this._payloadFields, value);
+          const inputValue = paramField?.value?.value
+          if(!inputValue){
+            error = true;
+            const tempFormControl = new FormControl(inputValue, this.getValidators({...paramField?.validators, required: true}));
+            if (tempFormControl.valid) {
+              paramField.error = false;
+              paramField.errorMsg = '';
+            } else {
+              paramField.error = true;
+              paramField.errorMsg = getErrorMessages(tempFormControl.errors, paramField?.label || paramField?.widgetName)[0];
+            }
+          }else{
+            parameter.value = inputValue
           }
-        }else{
-          parameter.value = inputValue
         }
       })
       if(!error){

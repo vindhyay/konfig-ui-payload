@@ -16,7 +16,7 @@ export class DropdownFieldComponent implements OnInit {
   @Input()
   set dataListId(listId: string) {
     if (listId) {
-      this.getValues(listId);
+      this.getValues(listId, this.metaData.parameters);
     }
   }
   @Output() optionChange = new EventEmitter();
@@ -26,8 +26,8 @@ export class DropdownFieldComponent implements OnInit {
     return this.item.metaData as DropdownMetaData;
   }
   ngOnInit(): void {}
-  getValues(listId: any) {
-    const payload = { dataListId: listId };
+  getValues(listId: any, params) {
+    const payload = { dataListId: listId, parameters: params };
     this.taskService.getDataListValues(payload).subscribe(result => {
       const { data, error } = parseApiResponse(result);
       if (data && !error) {
