@@ -18,7 +18,7 @@ export class PayloadViewFormComponent implements OnInit {
     return this._payloadFields
   }
   set payloadFields(fields){
-    this._payloadFields = JSON.parse(JSON.stringify(fields));
+    this._payloadFields = fields;
     this.editorService.setContainerHeight(this._payloadFields);
   }
   @Input() showActions = false;
@@ -170,7 +170,7 @@ export class PayloadViewFormComponent implements OnInit {
         if(valueType === 'ref'){
           const paramField = this.getValueFromField(this._payloadFields, value);
           const inputValue = paramField?.value?.value
-          if(!inputValue){
+          if(!inputValue && paramField){
             error = true;
             const tempFormControl = new FormControl(inputValue, this.getValidators({...paramField?.validators, required: true}));
             if (tempFormControl.valid) {

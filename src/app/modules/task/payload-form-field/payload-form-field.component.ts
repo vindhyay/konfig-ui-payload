@@ -38,7 +38,7 @@ export class PayloadFormFieldComponent implements OnInit {
     return this._item;
   }
   set item(data: BaseWidget) {
-    if (typeof data.value != 'object') {
+    if ( !data.value || typeof data.value != 'object') {
       data.value = { id: '', value: data.value || '' };
     }
     if(data?.metaData?.widgetType === WidgetTypes.Table){

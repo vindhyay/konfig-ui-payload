@@ -88,8 +88,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
           if (transactionDetails && !error) {
             try {
               this.transactionDetails = transactionDetails;
-              this.formFields = JSON.parse(transactionDetails.payload) || [];
-              console.log(this.formFields)
+              this.formFields = transactionDetails.uiPayload || [];
             } catch (e) {
               console.error('failed to parse payload data');
             }
