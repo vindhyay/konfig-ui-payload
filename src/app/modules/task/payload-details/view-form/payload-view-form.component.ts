@@ -6,6 +6,7 @@ import {EditorService} from "../../editor.service";
 import {ButtonActions, WidgetTypes} from '../../model/create-form.models';
 import {ActivatedRoute} from "@angular/router";
 import {AuthService} from "../../../auth/services/auth.service";
+import {NotificationService} from '../../../../services/notification.service';
 
 @Component({
   selector: 'app-payload-view-form',
@@ -28,7 +29,7 @@ export class PayloadViewFormComponent implements OnInit {
   _payloadFields = [];
 
   constructor(private editorService: EditorService, private activatedRoute: ActivatedRoute,
-              private authService: AuthService,) {}
+              private authService: AuthService, private notificationService: NotificationService) {}
   ngOnInit() {}
   files: any = [];
   convertPayload(data : any, isArray = false) {
@@ -115,6 +116,8 @@ export class PayloadViewFormComponent implements OnInit {
   submit() {
     if (this.validateFields(this._payloadFields)) {
       this.onSubmit.emit({ payload: this.convertPayload(this._payloadFields) });
+    }else{
+      this.notificationService.error('Failed to validate','Submit Error')
     }
   }
   saveForLater() {
@@ -165,7 +168,8 @@ export class PayloadViewFormComponent implements OnInit {
     }
     if(type === ButtonActions.populate){
       let error = false;
-      parameters.map(parameter => {
+      const reqParams  = JSON.parse(JSON.stringify(parameters))
+      reqParams.map(parameter => {
         const { value, valueType } = parameter;
         if(valueType === 'ref'){
           const paramField = this.getValueFromField(this._payloadFields, value);
@@ -186,7 +190,7 @@ export class PayloadViewFormComponent implements OnInit {
         }
       })
       if(!error){
-        this.onPopulate.emit({triggerId: id, parameters, payloadFields: this._payloadFields})
+        this.onPopulate.emit({triggerId: id, parameters: reqParams, payloadFields: this._payloadFields})
       }
     }
   }

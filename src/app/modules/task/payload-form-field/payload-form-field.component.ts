@@ -155,6 +155,7 @@ export class PayloadFormFieldComponent implements OnInit {
     return _validators;
   };
   btnClick($event, data){
+    console.log('data',data)
     this.onBtnClick.emit({event: $event, data})
   }
   optionChange($event, data){
