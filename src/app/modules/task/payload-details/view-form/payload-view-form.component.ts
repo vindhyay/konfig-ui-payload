@@ -128,29 +128,32 @@ export class PayloadViewFormComponent implements OnInit {
   }
 
   onOptionChange($event){
-    const { data: {metaData: { onChangeAction: type = '', changeActionParameters:parameters = []} ={}}, data :{ id} } = $event
+    const { data: {metaData: {onChangeConfig: {action: type = '', parameters = []} = {}} = {}, id}} = $event
     if(type === ButtonActions.populate){
       let error = false;
-      parameters.map(parameter => {
-        const { value } = parameter;
-        const paramField = this.getValueFromField(this._payloadFields, value);
-        const inputValue = paramField?.value?.value
-        if(!inputValue){
-          error = true;
-          const tempFormControl = new FormControl(inputValue, this.getValidators({...paramField?.validators, required: true}));
-          if (tempFormControl.valid) {
-            paramField.error = false;
-            paramField.errorMsg = '';
-          } else {
-            paramField.error = true;
-            paramField.errorMsg = getErrorMessages(tempFormControl.errors, paramField?.label || paramField?.widgetName)[0];
+      const reqParams  = JSON.parse(JSON.stringify(parameters))
+      reqParams.map(parameter => {
+        const { value, valueType } = parameter;
+        if(valueType === 'ref'){
+          const paramField = this.getValueFromField(this._payloadFields, value);
+          const inputValue = paramField?.value?.value
+          if(!inputValue && paramField){
+            error = true;
+            const tempFormControl = new FormControl(inputValue, this.getValidators({...paramField?.validators, required: true}));
+            if (tempFormControl.valid) {
+              paramField.error = false;
+              paramField.errorMsg = '';
+            } else {
+              paramField.error = true;
+              paramField.errorMsg = getErrorMessages(tempFormControl.errors, paramField?.label || paramField?.widgetName)[0];
+            }
+          }else{
+            parameter.value = inputValue
           }
-        }else{
-          parameter.value = inputValue
         }
       })
       if(!error){
-        this.onPopulate.emit({triggerId: id, parameters, payloadFields: this._payloadFields})
+        this.onPopulate.emit({triggerId: id, parameters: reqParams, payloadFields: this._payloadFields})
       }
     }
   }

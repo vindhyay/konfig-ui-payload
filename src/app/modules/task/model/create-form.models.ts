@@ -248,41 +248,83 @@ export class TableMetaData extends MetaData {
   }
 }
 
+export class OptionConfig {
+  dataResourceId: string;
+  datalistId: string;
+  parameters: Array<any>;
+  populateConfigType: string;
+  populateTriggerId: string;
+  optionLabel: string;
+  optionValue: string;
+  showDisplayField: boolean;
+  constructor(data) {
+    const {
+      dataResourceId = null,
+      datalistId = null,
+      parameters = [],
+      populateConfigType = null,
+      populateTriggerId = null,
+      optionLabel = "",
+      optionValue = "",
+      showDisplayField = false
+    } = data;
+    this.dataResourceId = dataResourceId;
+    this.datalistId = datalistId;
+    this.parameters = parameters;
+    this.populateConfigType = populateConfigType;
+    this.populateTriggerId = populateTriggerId;
+    this.optionLabel = optionLabel;
+    this.optionValue = optionValue;
+    this.showDisplayField = showDisplayField;
+  }
+}
+
+export class OnChangeTriggerConfig {
+  action: string;
+  dataResourceId: string;
+  datalistId: string;
+  parameters: Array<any>;
+  constructor(data) {
+    const { action = "none", dataResourceId = null, datalistId = null, parameters = [] } = data;
+    this.action = action;
+    this.dataResourceId = dataResourceId;
+    this.datalistId = datalistId;
+    this.parameters = parameters;
+  }
+}
+
 export class DropdownMetaData extends MetaData {
   tooltip: string;
   placeholder: string;
   options: Array<any>;
-  parameters: Array<any>;
-  isLabelAndValue: boolean;
-  optionType: string;
   optionLabel: string;
   optionValue: string;
-  dataResourceId: string;
-  datalistId: string;
+  isLabelAndValue: boolean;
+  optionType: string;
+  optionPopulateConfig: Array<OptionConfig>;
+  onChangeConfig: OnChangeTriggerConfig;
   constructor(data) {
     super(data);
     const {
-      placeholder = 'Select',
-      tooltip = '',
+      placeholder = "Select",
+      tooltip = "",
+      optionLabel = "",
+      optionValue = "",
       options = [],
-      optionType = 'manual',
-      optionLabel = 'name',
-      optionValue = 'value',
+      optionType = "manual",
       isLabelAndValue = false,
-      dataResourceId = '',
-      datalistId = '',
-      parameters = []
+      optionPopulateConfig = [],
+      onChangeConfig = {}
     } = data;
     this.placeholder = placeholder;
     this.optionType = optionType;
+    this.optionLabel = optionLabel;
+    this.optionValue = optionValue;
     this.tooltip = tooltip;
     this.options = options;
     this.isLabelAndValue = isLabelAndValue;
-    this.optionLabel = optionLabel;
-    this.optionValue = optionValue;
-    this.datalistId = datalistId;
-    this.dataResourceId = dataResourceId;
-    this.parameters = parameters;
+    this.optionPopulateConfig = optionPopulateConfig;
+    this.onChangeConfig = new OnChangeTriggerConfig(onChangeConfig);
   }
 }
 
