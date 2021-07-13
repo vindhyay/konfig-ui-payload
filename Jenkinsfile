@@ -14,9 +14,9 @@ agent any
         //bitbucketPush()
     }
 environment {
-   NAME = "finlevit-payload"
+   NAME = "finlevit-payload-m"
    REPO = "harbor.tabner.us/finlevit"
-   DNAME = "finlevit-payload"
+   DNAME = "finlevit-payload-m"
 }
   stages {
      stage('Checkout Source')
@@ -70,7 +70,7 @@ environment {
       stage('Publish'){
          when {
     expression {
-        return env.BRANCH_NAME == 'dev';
+        return env.BRANCH_NAME == 'dev-mongo';
         }
     }
          steps {
@@ -81,78 +81,13 @@ environment {
 		stage('Deploy to Dev'){
 			when {
 			expression {
-			return env.BRANCH_NAME == 'dev';
+			return env.BRANCH_NAME == 'dev-mongo';
 			}
-			}
-        steps{
-            echo"Deploying the latest version"
-			sh 'ssh root@10.10.5.24 "kubectl -n design set image deployments/${DNAME} ${NAME}=${REPO}/${NAME}:${BUILD_NUMBER}"'
-            sh 'ssh root@10.10.5.24 "kubectl -n design rollout restart deployment ${DNAME}"'
-            echo"Successfully deployed the latest version of the Application"
-			}
-		}
-		stage('Deploy to SIT'){
-			when {
-			expression {
-			return env.BRANCH_NAME == 'dev';
-			}
-			}
-        steps{
-            echo"Deploying the latest version"
-			sh 'ssh root@10.10.5.24 "kubectl -n sit set image deployments/${DNAME} ${NAME}=${REPO}/${NAME}:${BUILD_NUMBER}"'
-            sh 'ssh root@10.10.5.24 "kubectl -n sit rollout restart deployment ${DNAME}"'
-            echo"Successfully deployed the latest version of the Application"
-			}
-		}
-	    stage('Approve deployment on DEMO')
-		{
-/*			when {
-			expression { return params.DEPLOYS }
-			} */
-
-		steps
-			{
-				script
-				{
-					env.DEPLOY_DEMO = input message: 'Approve deployment', parameters: [
-					[$class: 'BooleanParameterDefinition', defaultValue: false, description: '', label: 'Approve deployment on DEMO']
-					]
-				}
-			}
-		}
-		stage('Deploy on DEMO')
-		{
-			when {
-			environment name: 'DEPLOY_DEMO', value: "true"
-			}
-			steps {
-			echo"Deploying the latest version"
-			sh 'ssh root@10.10.5.192 "kubectl -n design set image deployments/${DNAME} ${NAME}=${REPO}/${NAME}:${BUILD_NUMBER}"'
-			sh 'ssh root@10.10.5.192 "kubectl -n design rollout restart deployment ${DNAME}"'
-			echo"Successfully deployed the latest version of the Application"
-            sh 'ssh root@10.10.5.192 "kubectl -n prod set image deployments/${DNAME} ${NAME}=${REPO}/${NAME}:${BUILD_NUMBER}"'
-			sh 'ssh root@10.10.5.192 "kubectl -n prod rollout restart deployment ${DNAME}"'
-			echo"Successfully deployed the latest version of the Application"
 			}
 		}
 	}
 
    post {
-      /*failure {
-         emailext attachLog: true,
-         compressLog: true,
-         subject: "Failed Build Notification: ${JOB_NAME}-Build# ${BUILD_NUMBER} ${currentBuild.IResult}: ${currentBuild.fullDisplayName}",
-         body: "Build Pipeline ${currentBuild.IResult}: something is wrong with ${env.BUILD_URL}",
-         recipientProviders: [developers(), brokenBuildSuspects(), culprits()],
-         to: 'projectwf@tabnergc.com'
-      }*/
-      /*success {
-         emailext attachLog: true,
-         compressLog: true,
-         subject: "Sucess Build Notification: ${JOB_NAME}-Build# ${BUILD_NUMBER} ${currentBuild.IResult}: ${currentBuild.fullDisplayName}",
-         body: "Build completed successfully ${currentBuild.IResult}: ${env.BUILD_URL}",
-         to: 'projectwf@tabnergc.com'
-      }*/
       always {
             cleanWs()
         }
