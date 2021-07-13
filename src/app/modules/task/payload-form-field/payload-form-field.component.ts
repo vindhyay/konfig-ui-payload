@@ -49,6 +49,12 @@ export class PayloadFormFieldComponent implements OnInit {
         data.value = {id: '', value: []}
       }
     }
+    if(data?.validators?.minDate){
+      data.validators.minDate = new Date(data?.validators?.minDate)
+    }
+    if(data?.validators?.maxDate){
+      data.validators.maxDate = new Date(data?.validators?.maxDate)
+    }
     this._item = data;
   }
   @Input() parent: FieldData = {} as FieldData;
