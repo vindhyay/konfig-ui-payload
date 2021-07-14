@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QUEUE_TYPES } from '../../../state/model/queue-types-model';
 import {UserService} from "../../user/services/user.service";
@@ -21,10 +21,13 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
     private userService: UserService,
     private authService: AuthService,
     private notificationService: NotificationService,
-    private taskService: TaskService
+    private taskService: TaskService,
   ) {
     super();
+    this.getScreenSize();
   }
+  screenHeight: number;
+  screenWidth: number;
   workflowId: string | null = '';
   transactionDetails: any = {};
   id: any;
@@ -57,7 +60,27 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
               this.id = transactionDetails.id
             if (transactionDetails && transactionDetails.uiPayload) {
               try {
-                this.formFields = transactionDetails.uiPayload || [];
+                this.formFields = JSON.parse(transactionDetails.payload) || [];
+                this.formFields.forEach(field => {
+                    if(field.metaData.widgetType == "Header"){
+                        if(Math.round(this.screenWidth/10) > field.cols){
+                            field.cols = Math.round(this.screenWidth/10);
+                        }
+                        console.log(field);
+                    }
+                    if(field.metaData.widgetType == "Footer"){
+                        if(Math.round(this.screenWidth/10) > field.cols){
+                            field.cols = Math.round(this.screenWidth/10);
+                        }
+                        console.log(field.y);
+                        console.log(field.rows);
+                        console.log(this.screenHeight/10);
+                        if(field.y + field.rows < this.screenHeight/11){
+                            field.y = Math.round(this.screenHeight/11);
+                        }
+                        console.log(field);
+                    }
+                })
                 console.log(this.formFields)
               } catch (e) {
                 console.error('failed to parse payload data');
@@ -174,4 +197,11 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
       relativeTo: this.activatedRoute
     });
   }
+
+    @HostListener('window:resize', ['$event'])
+    getScreenSize(event?) {
+        this.screenHeight = window.innerHeight;
+        this.screenWidth = window.innerWidth;
+        console.log(this.screenHeight, this.screenWidth);
+    }
 }
