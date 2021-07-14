@@ -60,28 +60,22 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
               this.id = transactionDetails.id
             if (transactionDetails && transactionDetails.uiPayload) {
               try {
-                this.formFields = JSON.parse(transactionDetails.payload) || [];
+                this.formFields = transactionDetails.uiPayload || [];
                 this.formFields.forEach(field => {
                     if(field.metaData.widgetType == "Header"){
                         if(Math.round(this.screenWidth/10) > field.cols){
                             field.cols = Math.round(this.screenWidth/10);
                         }
-                        console.log(field);
                     }
                     if(field.metaData.widgetType == "Footer"){
                         if(Math.round(this.screenWidth/10) > field.cols){
                             field.cols = Math.round(this.screenWidth/10);
                         }
-                        console.log(field.y);
-                        console.log(field.rows);
-                        console.log(this.screenHeight/10);
                         if(field.y + field.rows < this.screenHeight/11){
                             field.y = Math.round(this.screenHeight/11);
                         }
-                        console.log(field);
                     }
                 })
-                console.log(this.formFields)
               } catch (e) {
                 console.error('failed to parse payload data');
               }

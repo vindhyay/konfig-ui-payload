@@ -121,7 +121,7 @@ export class PayloadViewFormComponent implements OnInit {
     }
   }
   saveForLater() {
-    this.onSave.emit({ payload: this.convertPayload(this._payloadFields) });
+    this.onSave.emit(this._payloadFields);
   }
   onEditField($event: any) {
     console.log('i got it', $event);
