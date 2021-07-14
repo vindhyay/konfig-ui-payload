@@ -16,7 +16,7 @@
   [columns]="columns"
   [value]="tableData"
   [styleClass]="styleClass"
-  [paginator]="pagination"
+  [paginator]="pagination && !!tableData.length"
   [rows]="10"
   [rowsPerPageOptions]="[10, 20, 50]"
   [paginatorDropdownAppendTo]="'body'"
