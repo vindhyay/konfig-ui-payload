@@ -84,7 +84,14 @@ environment {
 			return env.BRANCH_NAME == 'dev-mongo';
 			}
 			}
+        steps{
+            echo"Deploying the latest version"
+			sh 'ssh root@10.10.5.24 "kubectl -n design set image deployments/${DNAME} ${NAME}=${REPO}/${NAME}:${BUILD_NUMBER}"'
+            sh 'ssh root@10.10.5.24 "kubectl -n design rollout restart deployment ${DNAME}"'
+            echo"Successfully deployed the latest version of the Application"
+			}
 		}
+
 	}
 
    post {
