@@ -161,7 +161,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
     const { payload: payloadJson, files = [] } = payloadData;
     this.loading = true;
     // @ts-ignore
-    const params = { userId: this.currentUser.userId, transactionId: this.transactionDetails.transactionId || '' };
+    const params = { userId: this.currentUser?.userId, transactionId: this.transactionDetails.transactionId || '' };
     const appId = this.transactionDetails?.application?.appId;
     const transactionId = getUniqueId(appId);
     const payload = new FormData();

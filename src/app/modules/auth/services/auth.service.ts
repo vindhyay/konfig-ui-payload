@@ -23,7 +23,7 @@ export class AuthService extends BaseService implements OnDestroy {
     private router: Router,
     protected config: AppConfigService,
     protected userService: UserService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
   ) {
     super(http);
   }
@@ -57,9 +57,11 @@ export class AuthService extends BaseService implements OnDestroy {
     this.userService.selection.next(null);
     this.authSubject.next(null);
     this.storage.clear();
-    this.router.navigate(['./auth'], {
-      relativeTo: activatedRoute
-    });
+    this.activatedRoute.firstChild.queryParams.subscribe(params => {
+      const queryParams = params;
+      const pathParams = this.activatedRoute.snapshot.firstChild.params
+      this.router.navigate([pathParams?.workflowId+'/auth'],{queryParams: queryParams, relativeTo: this.activatedRoute});
+    })
   }
 
   public authenticate(loginData: LoginDataModel) {

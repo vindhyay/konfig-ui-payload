@@ -37,8 +37,7 @@ export function initConfig(appConfig: AppConfigService) {
     deps: [AppConfigService],
     multi: true
   },
-    // {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
-
+    {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     { provide: ErrorHandler, useClass: GlobalErrorHandlerService }, CanDeactivateGuard],
   bootstrap: [AppComponent]

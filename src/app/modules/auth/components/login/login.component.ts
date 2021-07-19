@@ -25,6 +25,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
     passWord: ['', Validators.required],
     remember: [false]
   });
+  queryParams = {};
 
   constructor(
       private router: Router,
@@ -44,6 +45,9 @@ export class LoginComponent extends BaseComponent implements OnInit {
         error => this.handleError(error)
     );
     this.authService.checkCurrentState();
+    this.activatedRoute.queryParams.subscribe(params => {
+      this.queryParams = params
+    })
   }
 
   onSubmit() {
@@ -85,7 +89,8 @@ export class LoginComponent extends BaseComponent implements OnInit {
   onSuccess(data: UserDataModel) {
     if(data != null){
       this.router.navigate(['../'],{
-        relativeTo: this.activatedRoute
+        relativeTo: this.activatedRoute,
+        queryParams: this.queryParams
       });
     }
   }
