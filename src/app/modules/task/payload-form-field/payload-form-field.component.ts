@@ -70,6 +70,7 @@ export class PayloadFormFieldComponent implements OnInit {
   @Output() edit = new EventEmitter();
   @Output() onBtnClick = new EventEmitter();
   @Output() onOptionChange = new EventEmitter();
+  @Output() onTableDataChange = new EventEmitter();
   ngOnInit() {}
   showControls: boolean = false;
   editMode: boolean = false;
@@ -171,5 +172,8 @@ export class PayloadFormFieldComponent implements OnInit {
     const { index = 0 } = $event;
     this.tabActiveIndex = index;
     window.dispatchEvent(new Event("resize"));
+  }
+  onColDataChange($event) {
+    this.onTableDataChange.emit({tableData: this.item, event: $event})
   }
 }

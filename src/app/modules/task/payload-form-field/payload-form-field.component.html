@@ -136,7 +136,9 @@
               [filter]="item?.metaData?.filter"
               [tableData]='item?.metaData?.configure ? item?.metaData?.options : item?.value?.value'
               [tableHeading]="item?.metaData?.heading"
-              [columns]="item?.metaData?.columns"></finlevit-table>
+              [columns]="item?.metaData?.columns"
+              (onColDataChange)="onColDataChange($event)"
+      ></finlevit-table>
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Checkbox">

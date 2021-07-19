@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from "@angular/core";
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 export enum columnType{
   text= "Text",
@@ -30,7 +30,8 @@ export class TableComponent implements OnInit {
     return this._styleClass;
   }
 
-  constructor() { }
+  constructor() {
+  }
 
   @Input() columns: column[]  = [];
   @Input() tableData: any[] = [];
@@ -45,10 +46,11 @@ export class TableComponent implements OnInit {
   @Input() headerColor: string = "#000000";
   @Input() headerBgColor: string = "#ffffff";
 
+  @Output() onColDataChange = new EventEmitter();
+
   private _styleClass = "p-datatable-gridlines p-datatable-sm";
 
   ngOnInit(): void {
-    console.log(this.columns, this.tableData);
   }
 
   addRow(){

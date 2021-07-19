@@ -35,13 +35,13 @@
       <td *ngFor="let col of columns">
         <div class="p-pb-1" *ngIf="col.type == 'Data'">{{ rowData[col.columnId] }}</div>
         <div class="p-pl-1" *ngIf="col.type == 'Text'">
-          <finlevit-text [(ngModel)]="rowData[col.columnId]" [isSmall]="true"></finlevit-text>
+          <finlevit-text (onBlur)="onColDataChange.emit({column:col, data: rowData[col.columnId]})" [(ngModel)]="rowData[col.columnId]"  [isSmall]="true"></finlevit-text>
         </div>
         <div class="p-pl-1" *ngIf="col.type == 'TextArea'">
           <finlevit-lib-textarea [(ngModel)]="rowData[col.columnId]" [isSmall]="true"></finlevit-lib-textarea>
         </div>
         <div class="p-pl-1" *ngIf="col.type == 'Number'">
-          <finlevit-number [(ngModel)]="rowData[col.columnId]" [isSmall]="true"></finlevit-number>
+          <finlevit-number (onBlur)="onColDataChange.emit({column:col, data: rowData[col.columnId]})" [(ngModel)]="rowData[col.columnId]" [isSmall]="true"></finlevit-number>
         </div>
         <div class="p-pl-1" *ngIf="col.type == 'Date'">
           <finlevit-lib-datepicker [(ngModel)]="rowData[col.columnId]" [isSmall]="true"></finlevit-lib-datepicker>

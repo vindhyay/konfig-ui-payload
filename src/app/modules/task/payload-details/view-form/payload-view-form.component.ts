@@ -212,4 +212,19 @@ export class PayloadViewFormComponent implements OnInit {
     })
     return paramField;
   }
+
+  onTableDataChange($event){
+    const {event: {column: {columnId = '', onChange = '', resultField = ''} = {}}, tableData: {value: {value = []} = {}, metaData: {optionPopulateConfig = [], options = []}}} = $event
+    const valueData = optionPopulateConfig.length ? options : value
+    if(onChange === 'sum' && resultField){
+     const resultFieldData = this.getValueFromField(this._payloadFields, resultField)
+     let sum = 0;
+      valueData.forEach(column => {
+       if(column[columnId]){
+         sum = sum + column[columnId];
+       }
+     });
+     resultFieldData.value.value = sum;
+   }
+  }
 }
