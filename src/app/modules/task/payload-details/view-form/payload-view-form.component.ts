@@ -159,7 +159,7 @@ export class PayloadViewFormComponent implements OnInit {
   }
 
   onBtnClick($event){
-    const { data: {metaData: { clickAction: type = '', parameters = []} ={}}, data :{ id} } = $event
+    const { data: {metaData: { onClickConfig:{ action : type = '', parameters = []} ={} }}, data :{ id} } = $event
     if(type === ButtonActions.submit){
       this.submit();
     }
