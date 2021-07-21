@@ -120,21 +120,37 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
     );
   }
 
-  populateTransaction($event){
-    const {triggerId, parameters} = $event
+    uniqueFieldChange($event) {
+        this.userService.uniqueKeyTransaction(this.id, { uniqueField: $event }).subscribe(result => {
+            const { data, error } = parseApiResponse(result);
+            this.loading = false;
+            if(data){
+                console.log('data',data)
+                this.formFields = data.uiPayload || [];
+            }
+        }, error => {
+            this.loading = false;
+            this.notificationService.error(error.errorMessage);
+        })
+  }
+
+  async populateTransaction($event){
+    const {triggerId, parameters, isUnique = false} = $event
     this.loading = true;
-      this.userService.saveTransaction({ transactionId : this.transactionDetails.transactionId}, this.formFields).subscribe(result => {
-          this.userService.populateTransaction(this.id, { triggerId }, { parameters }).subscribe(result => {
-              this.loading = false;
-              this.getTransactionDetails(this.id);
-          }, error => {
-              this.loading = false;
-              this.notificationService.error(error.errorMessage);
-          })
-      },error => {
+    if(!isUnique){
+      const saveResult = await this.userService.saveTransaction({ transactionId : this.transactionDetails.transactionId}, this.formFields).toPromise();
+    }
+      this.userService.populateTransaction(this.id, { triggerId }, { parameters }).subscribe(result => {
+          const { data, error } = parseApiResponse(result);
           this.loading = false;
-          this.notificationService.error('Failed to populate, something went wrong')
+          if(data){
+           this.formFields = data.uiPayload || [];
+          }
+      }, error => {
+          this.loading = false;
+          this.notificationService.error(error.errorMessage);
       })
+
   }
 
   saveTransaction(payloadMetaData: any) {
@@ -196,6 +212,5 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
     getScreenSize(event?) {
         this.screenHeight = window.innerHeight;
         this.screenWidth = window.innerWidth;
-        console.log(this.screenHeight, this.screenWidth);
     }
 }
