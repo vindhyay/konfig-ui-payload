@@ -92,4 +92,15 @@
     font-size: 11px;
   }
 }
+.file-name{
+  display: inline-block;
+  padding: 1rem 0 0;
+}
+.upload-status-icon{
+  vertical-align: middle;
+  padding: 0 1rem;
+}
+.completed-icon{
+  color: green;
+}
 @include inputPlaceholder();

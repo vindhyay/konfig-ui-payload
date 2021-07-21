@@ -7,4 +7,5 @@
         [disabled]="viewMode && (!item?.validators?.editable || !editMode)"
         (btnClick)="uploadFile($event)"
         [(ngModel)]="file"
+        [uploadStatus]="uploadStatus"
 ></finlevit-file-upload>

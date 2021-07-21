@@ -15,6 +15,7 @@ export class FinlevitFileUploadComponent implements ControlValueAccessor, OnInit
   }
   @Input() label: string = '';
   @Input() tooltip: string = '';
+  @Input() uploadStatus: 'completed' | 'failed' | 'pending' | '' = '';
   @Input() isRequired: boolean = false;
   @Input() errorMsg: string = '';
   @Input() error: boolean = false;

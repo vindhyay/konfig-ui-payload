@@ -20,7 +20,7 @@ export class UploadComponent implements OnInit {
   @Input() viewMode = false;
   @Input() editMode = false;
   loading = false;
-
+  uploadStatus = "";
   file: any = null;
 
   get metaData(): UploadMetaData {
@@ -35,12 +35,14 @@ export class UploadComponent implements OnInit {
     }
     if(transactionId){
       this.loading = true;
+      this.uploadStatus = 'pending';
       this.taskService.uploadFile(fileData, { transactionId }).subscribe( result => {
         this.loading = false;
         const { data, error } = parseApiResponse(result);
         if (data && !error) {
           this.notificationService.success('File Uploaded Saved Successfully', 'Success');
           this.item.value.value = data;
+          this.uploadStatus = 'completed';
         } else {
           this.notificationService.error(error.errorMessage);
         }

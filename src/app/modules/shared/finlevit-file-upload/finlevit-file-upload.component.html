@@ -18,10 +18,14 @@
           <span class="fake-btn">Choose file</span>
           <finlevit-button *ngIf="uploadButton" [isSmall]="true" class="upload-button pl-4" label="Upload" icon="pi pi-upload" (btnClick)="onBtnClick()"></finlevit-button>
         </div>
-        <span class="file-msg">{{ file ? file.name : 'or drag and drop file here' }}</span>
+        <span *ngIf="!file" class="file-msg">or drag and drop file here</span>
+        <div>
+          <span *ngIf="file" class="file-name">{{file.name}}</span>
+          <i *ngIf="uploadStatus === 'pending'" class="pi pi-spin pi-spinner upload-status-icon pending-icon" ></i>
+          <i *ngIf="uploadStatus === 'completed'" class="pi pi-check-circle upload-status-icon completed-icon"></i>
+        </div>
       </div>
       <input class="file-input" type="file" [disabled]="disabled" (change)="uploadImage($event)"/>
-      <app-loader [loading]="loading"></app-loader>
     </div>
   </ng-container>
   <div [ngClass]="{ 'd-flex': true }" *ngIf="checkError()">
