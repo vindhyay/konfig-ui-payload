@@ -19,8 +19,8 @@
           <finlevit-button *ngIf="uploadButton" [isSmall]="true" class="upload-button pl-4" label="Upload" icon="pi pi-upload" (btnClick)="onBtnClick()"></finlevit-button>
         </div>
         <span *ngIf="!file" class="file-msg">or drag and drop file here</span>
-        <div>
-          <span *ngIf="file" class="file-name">{{file.name}}</span>
+        <div *ngIf="file">
+          <span class="file-name">{{file.name}}</span>
           <i *ngIf="uploadStatus === 'pending'" class="pi pi-spin pi-spinner upload-status-icon pending-icon" ></i>
           <i *ngIf="uploadStatus === 'completed'" class="pi pi-check-circle upload-status-icon completed-icon"></i>
         </div>

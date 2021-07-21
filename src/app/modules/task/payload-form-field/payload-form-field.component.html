@@ -234,11 +234,13 @@
                     [items]="child.children"
                     (onBtnClick)="onBtnClick.emit($event)"
                     [modifyOptions]="{
-              minCols: NESTED_MIN_COLUMNS,
-              maxCols: 5000,
-              minRows: 12,
-              gridType: 'fit'
-            }"
+          minCols: 50,
+          maxCols: 1500,
+          minRows: 9,
+          gridType: 'fixed',
+          fixedRowHeight: 10,
+          fixedColWidth: 10
+        }"
             ></finlevit-grid>
           </div>
         </p-tabPanel>
