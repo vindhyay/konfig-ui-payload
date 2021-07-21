@@ -125,7 +125,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
             const { data, error } = parseApiResponse(result);
             this.loading = false;
             if(data){
-                console.log('data',data)
+                this.transactionDetails = data;
                 this.formFields = data.uiPayload || [];
             }
         }, error => {
@@ -144,7 +144,8 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
           const { data, error } = parseApiResponse(result);
           this.loading = false;
           if(data){
-           this.formFields = data.uiPayload || [];
+              this.transactionDetails = data;
+              this.formFields = data.uiPayload || [];
           }
       }, error => {
           this.loading = false;
