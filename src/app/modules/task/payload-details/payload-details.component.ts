@@ -121,7 +121,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
   }
 
     uniqueFieldChange($event) {
-        this.userService.uniqueKeyTransaction(this.id, { uniqueField: $event }).subscribe(result => {
+        this.userService.uniqueKeyTransaction(this.transactionDetails.transactionId, { uniqueField: $event }).subscribe(result => {
             const { data, error } = parseApiResponse(result);
             this.loading = false;
             if(data){
