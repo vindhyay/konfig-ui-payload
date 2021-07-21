@@ -40,7 +40,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
     this.currentUser = this.authService.getCurrentUser();
     this.queueType = getValueFromObjectByPath(this.activatedRoute, 'snapshot.data.queueType');
     this.activatedRoute.queryParamMap.subscribe((queryParams:any) => {
-        this.sessionFields = queryParams.params || {};
+        this.sessionFields = Object.keys(queryParams.params).length ? queryParams.params : {name: this.currentUser.name, userId: this.currentUser.userId, email: this.currentUser.emailId};
     })
     this.activatedRoute.paramMap.subscribe(params => {
       this.workflowId = params.get('workflowId');
