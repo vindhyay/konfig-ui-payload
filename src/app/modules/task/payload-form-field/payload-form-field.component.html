@@ -233,6 +233,7 @@
                     [parent]="child"
                     [items]="child.children"
                     (onBtnClick)="onBtnClick.emit($event)"
+                    (onTableDataChange)="onTableDataChange.emit($event)"
                     [modifyOptions]="{
           minCols: 50,
           maxCols: 1500,
