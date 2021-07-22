@@ -223,6 +223,7 @@ export class PayloadViewFormComponent implements OnInit {
     const valueData = optionPopulateConfig.length ? options : value
     if(onChange === 'sum' && resultField){
      const resultFieldData = this.getValueFromField(this._payloadFields, resultField)
+      console.log('result field data',resultFieldData)
      let sum = 0;
       valueData.forEach(column => {
        if(column[columnId]){
