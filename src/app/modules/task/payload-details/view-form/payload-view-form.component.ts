@@ -26,6 +26,7 @@ export class PayloadViewFormComponent implements OnInit {
   @Output() onSubmit = new EventEmitter();
   @Output() onSave = new EventEmitter();
   @Output() onPopulate = new EventEmitter();
+  @Output() onUniqueFieldChange = new EventEmitter();
   _payloadFields = [];
 
   constructor(private editorService: EditorService, private activatedRoute: ActivatedRoute,
@@ -128,7 +129,11 @@ export class PayloadViewFormComponent implements OnInit {
   }
 
   onOptionChange($event){
-    const { data: {metaData: {onChangeConfig: {action: type = '', parameters = []} = {}} = {}, id}} = $event
+    const {  data: {isUnique = false, value: {value = null}, metaData: { onChangeConfig: {action: type = '', parameters = []} = {}} = {}, id}} = $event
+    if(isUnique){
+      this.onUniqueFieldChange.emit({id, value})
+      return;
+    }
     if(type === ButtonActions.populate){
       let error = false;
       const reqParams  = JSON.parse(JSON.stringify(parameters))
@@ -153,13 +158,13 @@ export class PayloadViewFormComponent implements OnInit {
         }
       })
       if(!error){
-        this.onPopulate.emit({triggerId: id, parameters: reqParams, payloadFields: this._payloadFields})
+        this.onPopulate.emit({isUnique, triggerId: id, parameters: reqParams, payloadFields: this._payloadFields})
       }
     }
   }
 
   onBtnClick($event){
-    const { data: {metaData: { onClickConfig:{ action : type = '', parameters = []} ={} }}, data :{ id} } = $event
+    const { data: { isUnique = false, metaData: { onClickConfig:{ action : type = '', parameters = []} ={} }}, data :{ id} } = $event
     if(type === ButtonActions.submit){
       this.submit();
     }
