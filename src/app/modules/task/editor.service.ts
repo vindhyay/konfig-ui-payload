@@ -40,11 +40,12 @@ export class EditorService {
     const container: any = document.querySelector('.gridster-container');
     if (container && container.getClientRects().length) {
       let rows = 30;
-      items.forEach((item: any) => {
-        rows = Math.max(rows, (item.y + item.rows)/3);
-        console.log("item row" + item.y + item.rows)
+      items.forEach(item => {
+        rows = Math.max(rows, (item.y + item.rows));
       });
-      container.style.height = rows * 30 + 10 + 'px';
+      container.style.height = rows * 10 + 40 + "px";
+      console.log(container.style.height);
     }
+
   }
 }

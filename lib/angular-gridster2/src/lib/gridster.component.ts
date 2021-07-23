@@ -381,7 +381,7 @@ export class GridsterComponent implements OnInit, OnChanges, OnDestroy, Gridster
     this.gridColumns.length = GridsterComponent.getNewArrayLength(this.columns, this.curWidth, this.curColWidth);
     this.gridRows.length = GridsterComponent.getNewArrayLength(this.rows, this.curHeight, this.curRowHeight);
     if (this.$options.gridType !== 'fixed') {
-      this.curRowHeight = 30;
+      this.curRowHeight = 10;
     }
     this.cdRef.markForCheck();
   }
