@@ -64,7 +64,8 @@ export class PayloadViewFormComponent implements OnInit {
         if (isArray) {
           payload.push(getValueFromObjectByPath(field, 'value.value') || '');
         } else {
-          payload[field.widgetName] = getValueFromObjectByPath(field, 'value.value') || '';
+          const defaultValue = field?.metaData?.widgetType === WidgetTypes.Upload ? {} : ''
+          payload[field.widgetName] = getValueFromObjectByPath(field, 'value.value') || defaultValue;
         }
       }
     });
