@@ -1,11 +1,11 @@
 import { getUniqueId } from '../../../utils';
 
-export const MIN_COLUMNS = 36;
+export const MIN_COLUMNS = 100;
 export const HEADER_MIN_COLUMNS = 50;
-export const MIN_ROWS = 30;
+export const MIN_ROWS = 50;
 
-export const NESTED_MIN_COLUMNS = 29;
-export const NESTED_MIN_ROWS = 12;
+export const NESTED_MIN_COLUMNS = 60;
+export const NESTED_MIN_ROWS = 20;
 
 export enum ButtonTypes {
   primary = 'primary',

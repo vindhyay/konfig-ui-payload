@@ -24,7 +24,6 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
     private taskService: TaskService,
   ) {
     super();
-    this.getScreenSize();
   }
   screenHeight: number;
   screenWidth: number;
@@ -56,30 +55,9 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
           const { data: transactionDetails, error } = parseApiResponse(result);
           if (transactionDetails && !error) {
             this.transactionDetails = transactionDetails;
-            this.taskService.setTransactionDetails(transactionDetails)
+              this.formFields = transactionDetails.uiPayload || [];
+              this.taskService.setTransactionDetails(transactionDetails)
               this.id = transactionDetails.id
-            if (transactionDetails && transactionDetails.uiPayload) {
-              try {
-                this.formFields = transactionDetails.uiPayload || [];
-                this.formFields.forEach(field => {
-                    if(field.metaData.widgetType == "Header"){
-                        if(Math.round(this.screenWidth/10) > field.cols){
-                            field.cols = Math.round(this.screenWidth/10);
-                        }
-                    }
-                    if(field.metaData.widgetType == "Footer"){
-                        if(Math.round(this.screenWidth/10) > field.cols){
-                            field.cols = Math.round(this.screenWidth/10);
-                        }
-                        if(field.y + field.rows < this.screenHeight/11){
-                            field.y = Math.round(this.screenHeight/11);
-                        }
-                    }
-                })
-              } catch (e) {
-                console.error('failed to parse payload data');
-              }
-            }
           } else {
             this.notificationService.error(error.errorMessage);
           }
@@ -208,10 +186,4 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
       relativeTo: this.activatedRoute
     });
   }
-
-    @HostListener('window:resize', ['$event'])
-    getScreenSize(event?) {
-        this.screenHeight = window.innerHeight;
-        this.screenWidth = window.innerWidth;
-    }
 }

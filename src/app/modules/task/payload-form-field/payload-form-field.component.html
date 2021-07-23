@@ -234,14 +234,6 @@
                     [items]="child.children"
                     (onBtnClick)="onBtnClick.emit($event)"
                     (onTableDataChange)="onTableDataChange.emit($event)"
-                    [modifyOptions]="{
-          minCols: 50,
-          maxCols: 1500,
-          minRows: 9,
-          gridType: 'fixed',
-          fixedRowHeight: 10,
-          fixedColWidth: 10
-        }"
             ></finlevit-grid>
           </div>
         </p-tabPanel>
@@ -270,14 +262,6 @@
         [items]="item.children"
         (onBtnClick)="onBtnClick.emit($event)"
         (onTableDataChange)="onTableDataChange.emit($event)"
-        [modifyOptions]="{
-          minCols: 50,
-          maxCols: 1500,
-          minRows: 9,
-          gridType: 'fixed',
-          fixedRowHeight: 10,
-          fixedColWidth: 10
-        }"
       ></finlevit-grid>
     </div>
   </ng-container>
