@@ -14,15 +14,17 @@
       }"
     >
       <div class="column">
-        <div class="d-flex flex-row pl-1">
+        <div class="d-flex flex-row pl-1 align-items-center">
           <span class="fake-btn">Choose file</span>
           <finlevit-button *ngIf="uploadButton" [isSmall]="true" class="upload-button pl-4" label="Upload" icon="pi pi-upload" (btnClick)="onBtnClick()"></finlevit-button>
-        </div>
-        <span *ngIf="!file" class="file-msg">or drag and drop file here</span>
-        <div *ngIf="file">
-          <span class="file-name">{{file.name}}</span>
-          <i *ngIf="uploadStatus === 'pending'" class="pi pi-spin pi-spinner upload-status-icon pending-icon" ></i>
-          <i *ngIf="uploadStatus === 'completed'" class="pi pi-check-circle upload-status-icon completed-icon"></i>
+          <span *ngIf="!file" class="file-msg">or drag and drop file here</span>
+          <ng-container *ngIf="file">
+            <span class="file-name">{{file.name}}</span>
+            <span>
+                 <i *ngIf="uploadStatus === 'pending'" class="pi pi-spin pi-spinner upload-status-icon pending-icon" ></i>
+            <i *ngIf="uploadStatus === 'completed'" class="pi pi-check-circle upload-status-icon completed-icon"></i>
+            </span>
+          </ng-container>
         </div>
       </div>
       <input class="file-input" type="file" [disabled]="disabled" (change)="uploadImage($event)"/>

@@ -2,7 +2,7 @@
         [isRequired]="item?.validators?.required"
         [tooltip]="item?.metaData?.tooltip"
         [label]="item?.label"
-        [uploadButton]="true"
+        [uploadButton]="false"
         [loading]="loading"
         [disabled]="viewMode && (!item?.validators?.editable || !editMode)"
         (btnClick)="uploadFile($event)"

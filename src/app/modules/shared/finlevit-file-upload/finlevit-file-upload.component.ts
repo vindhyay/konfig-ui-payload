@@ -93,5 +93,10 @@ export class FinlevitFileUploadComponent implements ControlValueAccessor, OnInit
   uploadImage($event) {
     const [file] = $event.target.files;
     this.form.append('file', file);
+    setTimeout(()=>{
+      if(!this.uploadButton){
+        this.btnClick.emit(this.form)
+      }
+    })
   }
 }

@@ -43,8 +43,7 @@ export class EditorService {
       items.forEach(item => {
         rows = Math.max(rows, (item.y + item.rows));
       });
-      container.style.height = rows * 10 + 40 + "px";
-      console.log(container.style.height);
+      container.style.height = rows * 10 + 20 + "px";
     }
 
   }

@@ -39,7 +39,6 @@
   text-overflow: ellipsis;
   display: inline-block;
   max-width: calc(100% - 130px);
-  padding-top: 10px;
   padding-left: 3em;
   text-align: center;
 }
@@ -94,7 +93,7 @@
 }
 .file-name{
   display: inline-block;
-  padding: 1rem 0 0;
+  padding-left: 1rem;
 }
 .upload-status-icon{
   vertical-align: middle;
