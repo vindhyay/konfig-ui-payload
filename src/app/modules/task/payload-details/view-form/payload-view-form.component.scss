@@ -26,6 +26,7 @@
 }
 .gridster-container {
   height: 1500px;
+  min-height: 100vh;
   position: relative;
 }
 .grid-item-preview-overlay {
