@@ -105,6 +105,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
             this.loading = false;
             if(data){
                 this.transactionDetails = data;
+                this.taskService.setTransactionDetails(data);
                 this.formFields = data.uiPayload || [];
             }
         }, error => {
@@ -124,6 +125,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
           this.loading = false;
           if(data){
               this.transactionDetails = data;
+              this.taskService.setTransactionDetails(data);
               this.formFields = data.uiPayload || [];
           }
       }, error => {
