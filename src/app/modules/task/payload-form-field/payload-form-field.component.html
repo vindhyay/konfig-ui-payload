@@ -134,7 +134,7 @@
               [addRows]="!item?.metaData?.configure"
               [sort]="item?.metaData?.sort"
               [filter]="item?.metaData?.filter"
-              [tableData]='item?.metaData?.configure ? item?.metaData?.options : item?.value?.value'
+              [tableData]='item?.value?.value ? item?.value?.value : (item?.metaData?.configure ? item?.metaData?.options : item?.value?.value)'
               [tableHeading]="item?.metaData?.heading"
               [columns]="item?.metaData?.columns"
               (onColDataChange)="onColDataChange($event)"

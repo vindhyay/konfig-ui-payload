@@ -14,6 +14,9 @@ export class UploadComponent implements OnInit {
   constructor(private taskService: TaskService, private notificationService: NotificationService) { }
 
   ngOnInit(): void {
+    if(this.item?.value?.value){
+      this.file = this.item?.value?.value
+    }
   }
 
   @Input() item: BaseWidget = {} as BaseWidget;
