@@ -56,4 +56,8 @@ export class TaskService extends BaseService {
     const url = `${this.config.getApiUrls().uploadFile}`;
     return this.postData(url, formData, params);
   }
+  getTransactionTableData = (params): Observable<any> => {
+    const url = `${this.config.getApiUrls().transactionTableURL}`;
+    return this.getData(url, params);
+  }
 }

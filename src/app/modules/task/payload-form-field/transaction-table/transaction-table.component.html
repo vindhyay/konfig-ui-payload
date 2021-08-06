@@ -1,0 +1,19 @@
+<div
+        [ngClass]="{
+        'input-container': true,
+        'table-container': true,
+        'paginated-table-container': item?.metaData?.pagination,
+        'no-data-table': item?.metaData?.configure ? !item?.metaData?.options?.length : !item?.value?.value?.length
+        }">
+    <finlevit-table
+            noDataMessage="No Data Found"
+            [headerColor]="item?.metaData?.color"
+            [headerBgColor]="item?.metaData?.bgColor"
+            [pagination]="item?.metaData?.pagination"
+            [sort]="item?.metaData?.sort"
+            [filter]="item?.metaData?.filter"
+            [tableData]='item?.value?.value ? item?.value?.value : tableData'
+            [tableHeading]="item?.metaData?.heading"
+            [columns]="columns"
+    ></finlevit-table>
+</div>

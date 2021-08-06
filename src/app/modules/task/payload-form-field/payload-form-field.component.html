@@ -42,6 +42,7 @@
         (ngModelChange)="validateField($event, item)"
         [isRequired]="item?.validators?.required"
         [label]="item?.label"
+        (onBlur)="optionChange($event, item)"
       ></finlevit-text>
     </div>
   </ng-container>
@@ -76,6 +77,7 @@
         [label]="item?.label"
         [isRequired]="item?.validators?.required"
         [format]="item?.metaData?.format"
+        (onBlur)="optionChange($event, item)"
       ></finlevit-number>
     </div>
   </ng-container>
@@ -140,6 +142,11 @@
               (onColDataChange)="onColDataChange($event)"
       ></finlevit-table>
     </div>
+  </ng-container>
+  <ng-container *ngIf="item?.metaData?.widgetType === TransactionTable">
+    <app-transaction-table [item]="item"
+                           [viewMode]="viewMode"
+                           [editMode]="editMode"></app-transaction-table>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Checkbox">
     <div class="input-container">
@@ -262,6 +269,7 @@
         [items]="item.children"
         (onBtnClick)="onBtnClick.emit($event)"
         (onTableDataChange)="onTableDataChange.emit($event)"
+        (onOptionChange)="optionChange($event, $event.data)"
       ></finlevit-grid>
     </div>
   </ng-container>

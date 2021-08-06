@@ -131,6 +131,7 @@ export class PayloadViewFormComponent implements OnInit {
 
   onOptionChange($event){
     const {  data: {isUnique = false, value: {value = null}, metaData: { onChangeConfig: {action: type = '', parameters = []} = {}} = {}, id}} = $event
+    console.log('iam here in check unique', $event)
     if(isUnique){
       this.onUniqueFieldChange.emit({id, value})
       return;
