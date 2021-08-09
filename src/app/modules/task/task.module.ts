@@ -12,10 +12,11 @@ import {AuthService} from "../auth/services/auth.service";
 import {SharedModule} from "../shared/shared.module";
 import {ExtendedModule} from "@angular/flex-layout";
 import {UploadComponent} from "./payload-form-field/upload/upload.component";
+import { TransactionTableComponent } from './payload-form-field/transaction-table/transaction-table.component';
 
 
 @NgModule({
-    declarations: [PayloadDetailsComponent, PayloadViewFormComponent, PayloadFormFieldComponent, FinlevitGridComponent,DropdownFieldComponent, CheckboxGroupComponent, UploadComponent],
+    declarations: [PayloadDetailsComponent, PayloadViewFormComponent, PayloadFormFieldComponent, FinlevitGridComponent,DropdownFieldComponent, CheckboxGroupComponent, UploadComponent, TransactionTableComponent],
     imports: [CommonModule, GridsterModule,
         SharedModule, ExtendedModule],
     providers: [TaskService, AuthService]

@@ -31,21 +31,39 @@
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-rowData let-columns="columns">
-    <tr>
+    <tr (click)="onRowClick.emit(rowData)">
       <td *ngFor="let col of columns">
-        <div class="p-pb-1" *ngIf="col.type == 'Data'">{{ rowData[col.columnId] }}</div>
-        <div class="p-pl-1" *ngIf="col.type == 'Text'">
-          <finlevit-text (onBlur)="onColDataChange.emit({column:col, data: rowData[col.columnId]})" [(ngModel)]="rowData[col.columnId]"  [isSmall]="true"></finlevit-text>
-        </div>
-        <div class="p-pl-1" *ngIf="col.type == 'TextArea'">
-          <finlevit-lib-textarea [(ngModel)]="rowData[col.columnId]" [isSmall]="true"></finlevit-lib-textarea>
-        </div>
-        <div class="p-pl-1" *ngIf="col.type == 'Number'">
-          <finlevit-number (onBlur)="onColDataChange.emit({column:col, data: rowData[col.columnId]})" [(ngModel)]="rowData[col.columnId]" [isSmall]="true"></finlevit-number>
-        </div>
-        <div class="p-pl-1" *ngIf="col.type == 'Date'">
-          <finlevit-lib-datepicker [(ngModel)]="rowData[col.columnId]" [isSmall]="true"></finlevit-lib-datepicker>
-        </div>
+        <ng-container *ngIf="viewMode">
+          <ng-container [ngSwitch]="col.type">
+            <div class="p-pb-1" *ngSwitchCase="'Data'">{{ rowData[col.columnId] }}</div>
+            <div class="p-pl-1" *ngSwitchCase="'Date'">
+              {{ rowData[col.columnId] | date: 'medium' }}
+            </div>
+            <div *ngSwitchDefault>
+              {{ rowData[col.columnId] }}
+            </div>
+          </ng-container>
+        </ng-container>
+        <ng-container *ngIf="!viewMode">
+          <ng-container [ngSwitch]="col.type">
+            <div class="p-pb-1" *ngSwitchCase="'Data'">{{ rowData[col.columnId] }}</div>
+            <div class="p-pl-1" *ngSwitchCase="'Text'">
+              <finlevit-text (onBlur)="onColDataChange.emit({column:col, data: rowData[col.columnId]})" [(ngModel)]="rowData[col.columnId]"  [isSmall]="true"></finlevit-text>
+            </div>
+            <div class="p-pl-1" *ngSwitchCase="'TextArea'">
+              <finlevit-lib-textarea [(ngModel)]="rowData[col.columnId]" [isSmall]="true"></finlevit-lib-textarea>
+            </div>
+            <div class="p-pl-1" *ngSwitchCase="'Number'">
+              <finlevit-number (onBlur)="onColDataChange.emit({column:col, data: rowData[col.columnId]})" [(ngModel)]="rowData[col.columnId]" [isSmall]="true"></finlevit-number>
+            </div>
+            <div class="p-pl-1" *ngSwitchCase="'Date'">
+              <finlevit-lib-datepicker [(ngModel)]="rowData[col.columnId]" [isSmall]="true"></finlevit-lib-datepicker>
+            </div>
+            <div *ngSwitchDefault>
+              {{ rowData[col.columnId] }}
+            </div>
+          </ng-container>
+        </ng-container>
       </td>
     </tr>
   </ng-template>

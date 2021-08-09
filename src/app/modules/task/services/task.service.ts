@@ -17,7 +17,7 @@ export class TaskService extends BaseService {
   private taskDetailsSubject = new BehaviorSubject(null);
 
   // TODO add typings
-  private transactionDetailsSubject = new BehaviorSubject(null);
+  public transactionDetailsSubject = new BehaviorSubject(null);
 
   setTaskDetails(taskDetails : any) {
     this.taskDetailsSubject.next(taskDetails);
@@ -55,5 +55,9 @@ export class TaskService extends BaseService {
   uploadFile = (formData, params) : Observable<any> => {
     const url = `${this.config.getApiUrls().uploadFile}`;
     return this.postData(url, formData, params);
+  }
+  getTransactionTableData = (params): Observable<any> => {
+    const url = `${this.config.getApiUrls().transactionTableURL}`;
+    return this.getData(url, params);
   }
 }

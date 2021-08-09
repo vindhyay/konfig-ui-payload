@@ -99,6 +99,7 @@ export interface WidgetItem {
 export enum WidgetTypes {
   Text = 'Text',
   Table = "Table",
+  TransactionTable = "SavedTable",
   Button = 'Button',
   TextInput = 'TextInput',
   TextArea = 'TextArea',
@@ -292,6 +293,46 @@ export class OnChangeTriggerConfig {
     this.parameters = parameters;
   }
 }
+
+export class SavedColumn {
+  name: string;
+  path: string;
+  type: string;
+  columnId: string;
+}
+
+export class SavedTransactionMetaData extends MetaData {
+  color: string;
+  bgColor: string;
+  heading: string;
+  sort: boolean;
+  filter: boolean;
+  pagination: boolean;
+  columns: Array<SavedColumn>;
+  statusIds: Array<string>;
+  constructor(data) {
+    super(data);
+    const {
+      heading = "",
+      sort = false,
+      filter = false,
+      pagination = false,
+      color = "#000000",
+      bgColor = "#ffffff",
+      columns = [],
+      statusIds = []
+    } = data;
+    this.columns = columns;
+    this.heading = heading;
+    this.sort = sort;
+    this.filter = filter;
+    this.pagination = pagination;
+    this.color = color;
+    this.bgColor = bgColor;
+    this.statusIds = statusIds;
+  }
+}
+
 
 export class DropdownMetaData extends MetaData {
   tooltip: string;
