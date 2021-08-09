@@ -47,6 +47,12 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
         this.createTransaction(this.workflowId, this.id);
       }
     });
+    this.taskService.transactionDetailsSubject.subscribe(value => {
+        if(value){
+            this.transactionDetails = value;
+            this.formFields = value?.uiPayload || [];
+        }
+    })
   }
   createTransaction(applicationId: string, id = ''){
     this.loading = true;
@@ -55,7 +61,6 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
           const { data: transactionDetails, error } = parseApiResponse(result);
           if (transactionDetails && !error) {
             this.transactionDetails = transactionDetails;
-              this.formFields = transactionDetails.uiPayload || [];
               this.taskService.setTransactionDetails(transactionDetails)
               this.id = transactionDetails.id
           } else {
@@ -76,29 +81,6 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
     );
   }
 
-  getTransactionDetails(id) {
-    this.loading = true
-    this.userService.getTransactionDetails(id).subscribe(
-        result => {
-          const { data: transactionDetails, error } = parseApiResponse(result);
-          if (transactionDetails && !error) {
-            try {
-              this.transactionDetails = transactionDetails;
-              this.formFields = transactionDetails.uiPayload || [];
-            } catch (e) {
-              console.error('failed to parse payload data');
-            }
-          } else {
-            this.notificationService.error(error.errorMessage);
-          }
-          this.loading = false;
-        },
-        error => {
-          this.loading = false;
-        }
-    );
-  }
-
     uniqueFieldChange($event) {
         this.userService.uniqueKeyTransaction(this.transactionDetails.transactionId, { uniqueField: $event }).subscribe(result => {
             const { data, error } = parseApiResponse(result);
@@ -106,7 +88,6 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
             if(data){
                 this.transactionDetails = data;
                 this.taskService.setTransactionDetails(data);
-                this.formFields = data.uiPayload || [];
             }
         }, error => {
             this.loading = false;
@@ -126,7 +107,6 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
           if(data){
               this.transactionDetails = data;
               this.taskService.setTransactionDetails(data);
-              this.formFields = data.uiPayload || [];
           }
       }, error => {
           this.loading = false;
@@ -142,7 +122,8 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
         this.loading = false;
         const { data, error } = parseApiResponse(result);
         if (data && !error) {
-          this.notificationService.success('Transaction Saved Successfully', 'Success');
+            this.taskService.setTransactionDetails(data);
+            this.notificationService.success('Transaction Saved Successfully', 'Success');
         } else {
           this.notificationService.error(error.errorMessage);
         }
@@ -156,10 +137,10 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
 
 
   submitTransaction(payloadData: any) {
-    const { payload: payloadJson, files = [] } = payloadData;
+    const { payload: payloadJson, files = [], data: {metaData: {status:statusId = ''} = {}} = {} } = payloadData;
     this.loading = true;
     // @ts-ignore
-    const params = { userId: this.currentUser?.userId, transactionId: this.transactionDetails.transactionId || '' };
+    const params = { userId: this.currentUser?.userId, statusId, transactionId: this.transactionDetails.transactionId || '' };
     const appId = this.transactionDetails?.application?.appId;
     const transactionId = getUniqueId(appId);
     const payload = new FormData();

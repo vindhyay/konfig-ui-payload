@@ -12,8 +12,11 @@
             [pagination]="item?.metaData?.pagination"
             [sort]="item?.metaData?.sort"
             [filter]="item?.metaData?.filter"
-            [tableData]='item?.value?.value ? item?.value?.value : tableData'
+            [tableData]='tableData'
             [tableHeading]="item?.metaData?.heading"
-            [columns]="columns"
+            [columns]="item?.metaData?.columns"
+            (onRowClick)="onRowClick($event)"
+            [viewMode]="true"
     ></finlevit-table>
 </div>
+<app-loader [loading]="loading"></app-loader>

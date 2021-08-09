@@ -131,8 +131,8 @@ export class UserService extends BaseService implements OnDestroy {
     return this.getData(url, params);
   };
   // get Transaction details
-  getTransactionDetails = (transactionId: any): Observable<any> => {
-    const url = `${this.config.getApiUrls().getTransactionDetailsURL}/${transactionId}`;
+  getTransactionDetails = (transactionDbId: any): Observable<any> => {
+    const url = `${this.config.getApiUrls().getTransactionURL}/${transactionDbId}`;
     return this.getData(url);
   };
 

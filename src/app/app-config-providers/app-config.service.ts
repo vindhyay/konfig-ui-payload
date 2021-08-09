@@ -131,7 +131,7 @@ export class AppConfigService {
       // get all transactions
       getAllTransactionsURL: ACCOUNT_WORKFLOW_BASE_URL + '/transaction/get-all-transactions',
       // get transaction details
-      getTransactionDetailsURL: ACCOUNT_WORKFLOW_BASE_URL + '/transaction/pending',
+      getTransactionURL: ACCOUNT_WORKFLOW_BASE_URL + '/transaction',
       // Submit with files URL
       submitWithFilesURL: ACCOUNT_WORKFLOW_BASE_URL + '/transaction/submit-with-files',
       // save transaction URL

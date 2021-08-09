@@ -47,6 +47,8 @@ export class TableComponent implements OnInit {
   @Input() headerBgColor: string = "#ffffff";
 
   @Output() onColDataChange = new EventEmitter();
+  @Output() onRowClick = new EventEmitter();
+  @Input() viewMode = false;
 
   private _styleClass = "p-datatable-gridlines p-datatable-sm";
 

@@ -15,4 +15,10 @@
  .p-field{
    margin-bottom: 0;
  }
+ .p-datatable .p-datatable-tbody > tr{
+  &:hover {
+   background: #fafafa;
+   cursor: pointer;
+  }
+ }
 }

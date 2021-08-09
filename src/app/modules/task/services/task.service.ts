@@ -17,7 +17,7 @@ export class TaskService extends BaseService {
   private taskDetailsSubject = new BehaviorSubject(null);
 
   // TODO add typings
-  private transactionDetailsSubject = new BehaviorSubject(null);
+  public transactionDetailsSubject = new BehaviorSubject(null);
 
   setTaskDetails(taskDetails : any) {
     this.taskDetailsSubject.next(taskDetails);

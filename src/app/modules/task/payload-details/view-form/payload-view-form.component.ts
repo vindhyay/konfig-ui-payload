@@ -115,9 +115,9 @@ export class PayloadViewFormComponent implements OnInit {
     });
     return _validators;
   };
-  submit() {
+  submit(data) {
     if (this.validateFields(this._payloadFields)) {
-      this.onSubmit.emit({ payload: this.convertPayload(this._payloadFields) });
+      this.onSubmit.emit({ payload: this.convertPayload(this._payloadFields), data });
     }else{
       this.notificationService.error('Failed to validate','Submit Error')
     }
@@ -168,7 +168,7 @@ export class PayloadViewFormComponent implements OnInit {
   onBtnClick($event){
     const { data: { isUnique = false, metaData: { onClickConfig:{ action : type = '', parameters = []} ={} }}, data :{ id} } = $event
     if(type === ButtonActions.submit){
-      this.submit();
+      this.submit($event?.data);
     }
     if(type === ButtonActions.save){
       this.saveForLater();
