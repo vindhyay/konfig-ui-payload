@@ -15,8 +15,9 @@ export class UploadComponent implements OnInit {
 
   ngOnInit(): void {
     if(this.item?.value?.value){
-      this.file = this.item?.value?.value
-      console.log(this.file);
+      this.file = {
+        name: this.item?.value?.value?.fileName
+      };
     }
   }
 
