@@ -122,8 +122,8 @@ export class PayloadViewFormComponent implements OnInit {
       this.notificationService.error('Failed to validate','Submit Error')
     }
   }
-  saveForLater() {
-    this.onSave.emit(this._payloadFields);
+  saveForLater(data) {
+    this.onSave.emit({payloadFields: this._payloadFields, data});
   }
   onEditField($event: any) {
     console.log('i got it', $event);
@@ -171,7 +171,7 @@ export class PayloadViewFormComponent implements OnInit {
       this.submit($event?.data);
     }
     if(type === ButtonActions.save){
-      this.saveForLater();
+      this.saveForLater($event?.data);
     }
     if(type === ButtonActions.logout){
       this.authService.logoff(false, this.activatedRoute);

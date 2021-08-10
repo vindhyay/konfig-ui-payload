@@ -115,9 +115,10 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
 
   }
 
-  saveTransaction(payloadMetaData: any) {
+  saveTransaction(event: any) {
+      const { payloadFields: payloadMetaData, data: {metaData: {status:statusId = ''} = {}} = {} } = event;
     this.loading = true;
-    this.userService.saveTransaction({transactionId : this.transactionDetails.transactionId}, payloadMetaData).subscribe(
+    this.userService.saveTransaction({statusId, transactionId : this.transactionDetails.transactionId}, payloadMetaData).subscribe(
       result => {
         this.loading = false;
         const { data, error } = parseApiResponse(result);
