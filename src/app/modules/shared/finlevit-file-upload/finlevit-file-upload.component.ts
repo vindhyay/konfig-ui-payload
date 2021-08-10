@@ -55,7 +55,7 @@ export class FinlevitFileUploadComponent implements ControlValueAccessor, OnInit
 
   writeValue(value: null) {
     this.host.nativeElement.value = '';
-    this.file = null;
+    this.file = value;
   }
 
   registerOnChange(fn: Function) {
