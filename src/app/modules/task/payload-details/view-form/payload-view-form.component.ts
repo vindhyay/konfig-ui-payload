@@ -122,8 +122,25 @@ export class PayloadViewFormComponent implements OnInit {
       this.notificationService.error('Failed to validate','Submit Error')
     }
   }
+  updateValuesFromOptions(data : any){
+    let payload = [];
+    data.forEach(field => {
+      if(field?.metaData?.widgetType === WidgetTypes.Table){
+        if(field?.value){
+          field.value.value = field.value.value ? field.value.value : field.metaData.options;
+        } else{
+          field.value = {id: null, value: field.metaData.options}
+        }
+      }
+      if(field.children.length){
+        field.children = this.updateValuesFromOptions(field.children);
+      }
+      payload.push(field);
+    })
+    return payload;
+  }
   saveForLater(data) {
-    this.onSave.emit({payloadFields: this._payloadFields, data});
+    this.onSave.emit({payloadFields: this.updateValuesFromOptions(this._payloadFields), data});
   }
   onEditField($event: any) {
     console.log('i got it', $event);
@@ -222,10 +239,9 @@ export class PayloadViewFormComponent implements OnInit {
 
   onTableDataChange($event){
     const {event: {column: {columnId = '', onChange = '', resultField = ''} = {}}, tableData: {value: {value = []} = {}, metaData: {optionPopulateConfig = [], options = []}}} = $event
-    const valueData = optionPopulateConfig.length ? options : value
+    const valueData = value ? value : optionPopulateConfig.length ? options : value
     if(onChange === 'sum' && resultField){
      const resultFieldData = this.getValueFromField(this._payloadFields, resultField)
-      console.log('result field data',resultFieldData)
      let sum = 0;
       valueData.forEach(column => {
        if(column[columnId]){

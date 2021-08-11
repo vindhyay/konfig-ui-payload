@@ -131,6 +131,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
       },
       error => {
         this.loading = false;
+        this.notificationService.error(error?.error?.error?.errorMessage);
       }
     );
   }
