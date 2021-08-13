@@ -5,7 +5,6 @@ import {DataTypes} from '../model/payload-field.model';
 import {BaseWidget, NESTED_MIN_COLUMNS, TableMetaData, WidgetTypes} from '../model/create-form.models';
 import {getErrorMessages} from '../../../utils';
 import {TaskService} from '../services/task.service';
-import {UserDataModel} from '../../auth/models';
 import {AuthService} from '../../auth/services/auth.service';
 
 @Component({
@@ -39,7 +38,6 @@ export class PayloadFormFieldComponent implements OnInit {
   NESTED_MIN_COLUMNS: number = NESTED_MIN_COLUMNS;
 
   transactionStatus = null;
-  fieldPermissions = [];
   hide = false;
   disable = false;
   constructor(
@@ -88,7 +86,6 @@ export class PayloadFormFieldComponent implements OnInit {
   ngOnInit() {
     this.taskService.transactionDetailsSubject.subscribe(value => {
       if(value){
-        this.fieldPermissions = value?.uiPayload || [];
         this.transactionStatus = value?.transactionStatus || null;
         const {id = ""} = this.authService.getAgentRole() || {};
         if(this.item.permissions && this.item?.permissions[id]){

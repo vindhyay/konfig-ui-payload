@@ -98,6 +98,7 @@
   <ng-container *ngIf="item?.metaData?.widgetType === Button">
     <div class="input-container button-input" [ngStyle]="{ width: '100%' }">
       <finlevit-button
+              [isDisabled]="disable"
               [icon]="item?.metaData?.icon"
               [iconPos]="item?.metaData?.iconPos"
               [label]="item?.label"

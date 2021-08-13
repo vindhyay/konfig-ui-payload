@@ -35,6 +35,7 @@ export class ButtonComponent {
   @Input() type: ButtonTypes = ButtonTypes.primary;
   @Input() isSmall = false;
   @Input() isLarge = false;
+  @Input() isDisabled = false;
   @Input() label = '';
   @Input() icon = '';
   @Input() iconPos = 'left';
