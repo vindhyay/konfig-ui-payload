@@ -70,9 +70,9 @@ export class AuthService extends BaseService implements OnDestroy {
     return this.postData(url, loginData);
   }
 
-  public getUserDetails() {
-    const url = this.config.getApiUrls().loginURL;
-    return this.getData(url);
+  public getUserDetails(appId) {
+    const url = `${this.config.getApiUrls().permissionsURL}/${appId}`;
+    return this.getData(url)
   }
 
   public checkCurrentState() {
@@ -105,6 +105,11 @@ export class AuthService extends BaseService implements OnDestroy {
     };
     const url = this.config.getApiUrls().authenticateUrl;
     return this.postData(url, authData, {});
+  }
+
+  getAgentRole(){
+    const roles = this.getCurrentUser()?.roles || [];
+    return roles.find(role => role.originalName === UserRole.Agent);
   }
 
   isAgent(workflowId: any) {

@@ -1,5 +1,5 @@
 <finlevit-lib-checkbox-group
-  [isDisabled]="viewMode && (!item?.validators?.editable || !editMode)"
+  [isDisabled]="(viewMode && (!item?.validators?.editable || !editMode)) || isDisabled"
   [isRequired]="item?.validators?.required"
   [label]="item?.label"
   [items]="item?.metaData?.options"

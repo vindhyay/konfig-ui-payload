@@ -644,6 +644,7 @@ export class BaseWidget {
   children: BaseWidget[];
   validators: Validators;
   value: Value;
+  permissions?: any;
   constructor(data) {
     const {
       id,

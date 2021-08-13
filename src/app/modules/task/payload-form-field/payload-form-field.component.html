@@ -2,6 +2,7 @@
   [ngClass]="{ 'preview-container': true, 'controls-active': showControls }"
   (mouseleave)="toggleControls(false)"
   (mouseover)="toggleControls(true)"
+  *ngIf="!hide"
 >
   <ul
     *ngIf="
@@ -31,7 +32,7 @@
   <ng-container *ngIf="item?.metaData?.widgetType === TextInput">
     <div class="input-container">
       <finlevit-text
-        [isDisabled]="viewMode && (!item?.validators?.editable || !editMode)"
+        [isDisabled]="(viewMode && (!item?.validators?.editable || !editMode)) || disable"
         [leftIcon]="item?.metaData?.leftIcon"
         [rightIcon]="item?.metaData?.rightIcon"
         [error]="item?.error == true"
@@ -49,7 +50,7 @@
   <ng-container *ngIf="item?.metaData?.widgetType === TextArea">
     <div class="input-container">
       <finlevit-lib-textarea
-        [isDisabled]="viewMode && (!item?.validators?.editable || !editMode)"
+        [isDisabled]="(viewMode && (!item?.validators?.editable || !editMode)) || disable"
         [rows]="item?.metaData?.rowsCount"
         [error]="item?.error == true"
         [errorMsg]="item?.errorMsg"
@@ -65,7 +66,7 @@
   <ng-container *ngIf="item?.metaData?.widgetType === Number">
     <div class="input-container">
       <finlevit-number
-        [isDisabled]="viewMode && (!item?.validators?.editable || !editMode)"
+        [isDisabled]="(viewMode && (!item?.validators?.editable || !editMode)) || disable"
         [placeholder]="item?.metaData?.placeholder"
         [tooltip]="item?.metaData?.tooltip"
         [suffix]="item?.metaData?.suffix"
@@ -112,6 +113,7 @@
               [item]="item"
               [viewMode]="viewMode"
               [editMode]="editMode"
+              [isDisabled]="disable"
       ></app-upload>
     </div>
   </ng-container>
@@ -151,7 +153,7 @@
   <ng-container *ngIf="item?.metaData?.widgetType === Checkbox">
     <div class="input-container">
       <finlevit-lib-checkbox
-        [isDisabled]="viewMode && (!item?.validators?.editable || !editMode)"
+        [isDisabled]="(viewMode && (!item?.validators?.editable || !editMode)) || disable"
         [errorMsg]="item?.errorMsg"
         [error]="item?.error == true"
         [isRequired]="item?.validators?.required"
@@ -168,6 +170,7 @@
         [viewMode]="true"
         [editMode]="editMode"
         [dataListId]="item?.metaData?.datalistId"
+        [isDisabled]="disable"
       ></app-checkbox-group>
     </div>
   </ng-container>
@@ -176,6 +179,7 @@
       <app-dropdown-field
         [item]="item"
         [viewMode]="viewMode"
+        [isDisabled]="disable"
         [editMode]="editMode"
         (optionChange)="optionChange($event, item)"
       ></app-dropdown-field>
@@ -184,7 +188,7 @@
   <ng-container *ngIf="item?.metaData?.widgetType === RadioGroup">
     <div class="input-container">
       <finlevit-radio-group
-        [isDisabled]="viewMode && (!item?.validators?.editable || !editMode)"
+        [isDisabled]="(viewMode && (!item?.validators?.editable || !editMode)) || disable"
         [isRequired]="item?.validators?.required"
         [items]="item?.metaData?.options"
         [label]="item?.label"
@@ -200,7 +204,7 @@
   <ng-container *ngIf="item?.metaData?.widgetType === DatePicker">
     <div class="input-container">
       <finlevit-lib-datepicker
-        [isDisabled]="viewMode && (!item?.validators?.editable || !editMode)"
+        [isDisabled]="(viewMode && (!item?.validators?.editable || !editMode)) || disable"
         [label]="item?.label"
         [errorMsg]="item?.errorMsg"
         [error]="item?.error == true"

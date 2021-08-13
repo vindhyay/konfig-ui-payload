@@ -4,6 +4,9 @@ import {FieldData} from '../model/field-data.model';
 import {DataTypes} from '../model/payload-field.model';
 import {BaseWidget, NESTED_MIN_COLUMNS, TableMetaData, WidgetTypes} from '../model/create-form.models';
 import {getErrorMessages} from '../../../utils';
+import {TaskService} from '../services/task.service';
+import {UserDataModel} from '../../auth/models';
+import {AuthService} from '../../auth/services/auth.service';
 
 @Component({
   selector: 'app-payload-form-field',
@@ -34,6 +37,16 @@ export class PayloadFormFieldComponent implements OnInit {
   CheckboxGroup: WidgetTypes = WidgetTypes.CheckboxGroup;
   Upload : WidgetTypes = WidgetTypes.Upload;
   NESTED_MIN_COLUMNS: number = NESTED_MIN_COLUMNS;
+
+  transactionStatus = null;
+  fieldPermissions = [];
+  hide = false;
+  disable = false;
+  constructor(
+      private taskService: TaskService,
+      private authService: AuthService
+  ) {
+  }
   @Input()
   get item() {
     return this._item;
@@ -72,7 +85,19 @@ export class PayloadFormFieldComponent implements OnInit {
   @Output() onBtnClick = new EventEmitter();
   @Output() onOptionChange = new EventEmitter();
   @Output() onTableDataChange = new EventEmitter();
-  ngOnInit() {}
+  ngOnInit() {
+    this.taskService.transactionDetailsSubject.subscribe(value => {
+      if(value){
+        this.fieldPermissions = value?.uiPayload || [];
+        this.transactionStatus = value?.transactionStatus || null;
+        const {id = ""} = this.authService.getAgentRole() || {};
+        if(this.item.permissions && this.item?.permissions[id]){
+          this.hide = this.item?.permissions[id].hide ? this.item?.permissions[id].hide.indexOf(this.transactionStatus) > -1: false;
+          this.disable = this.item?.permissions[id].disable ? this.item?.permissions[id].disable.indexOf(this.transactionStatus) > -1: false;
+        }
+      }
+    })
+  }
   showControls: boolean = false;
   editMode: boolean = false;
   originalValue: any = '';
@@ -163,7 +188,6 @@ export class PayloadFormFieldComponent implements OnInit {
     return _validators;
   };
   btnClick($event, data){
-    console.log('data',data)
     this.onBtnClick.emit({event: $event, data})
   }
   optionChange($event, data){

@@ -31,7 +31,7 @@ export interface Permissions {
 }
 
 export interface UserDataModel {
-  roles: UserRole[];
+  roles: Array<{originalName: string, id: string}>;
   permissions: Permissions;
   userId: string;
   name: string;

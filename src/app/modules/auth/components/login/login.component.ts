@@ -26,6 +26,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
     remember: [false]
   });
   queryParams = {};
+  appId = null;
 
   constructor(
       private router: Router,
@@ -45,6 +46,9 @@ export class LoginComponent extends BaseComponent implements OnInit {
         error => this.handleError(error)
     );
     this.authService.checkCurrentState();
+    this.activatedRoute.params.subscribe(params => {
+     this.appId = params?.workflowId
+    })
     this.activatedRoute.queryParams.subscribe(params => {
       this.queryParams = params
     })
@@ -64,7 +68,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
   }
 
   getUserDetails() {
-    this.authService.getUserDetails().subscribe(
+    this.authService.getUserDetails(this.appId).subscribe(
         response => {
           this.loading = false;
           const { data, error } = parseApiResponse(response);
@@ -84,6 +88,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
         },
         error => this.handleError(error)
     );
+
   }
 
   onSuccess(data: UserDataModel) {

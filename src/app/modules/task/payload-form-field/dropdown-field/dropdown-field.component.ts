@@ -9,6 +9,7 @@ import { BaseWidget, DropdownMetaData } from '../../model/create-form.models';
 export class DropdownFieldComponent implements OnInit {
   @Input() item: BaseWidget = {} as BaseWidget;
   @Input() viewMode: boolean = false;
+  @Input() isDisabled: boolean = false;
   @Input() editMode: boolean = false;
   @Output() optionChange = new EventEmitter();
   get metaData(): DropdownMetaData {

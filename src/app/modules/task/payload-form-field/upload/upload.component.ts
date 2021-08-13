@@ -24,6 +24,7 @@ export class UploadComponent implements OnInit {
   @Input() item: BaseWidget = {} as BaseWidget;
   @Input() viewMode = false;
   @Input() editMode = false;
+  @Input() isDisabled = false;
   loading = false;
   uploadStatus = "";
   file: any = null;

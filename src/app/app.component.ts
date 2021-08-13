@@ -22,13 +22,6 @@ export class AppComponent extends BaseComponent implements OnInit{
   }
 
   ngOnInit() {
-    this.currentUser = this.authService.getCurrentUser() ? this.authService.getCurrentUser() : null;
-    if (this.currentUser) {
-      this.authService.getUserDetails();
-    }
-    this.activatedRoute.params.subscribe(value => {
-      console.log('params',value)
-    })
     this.activatedRoute.paramMap.subscribe(params => {
       this.workflowId = params.get('workflowId');
     });

@@ -47,8 +47,8 @@ export class AppConfigService {
       authenticateUrl: AUTH_BASE_URL + '/authenticate',
       // LOGOUT URL
       logoutURL: AUTH_BASE_URL + '/logout',
-      // Login URl
-      loginURL: WORKFLOW_ADMIN_BASE_URL + '/user/permissions',
+      // Permissions URl
+      permissionsURL: WORKFLOW_ADMIN_BASE_URL + '/user/permissions',
       // Task Details URL
       workflowTaskDetailsURL: ACCOUNT_WORKFLOW_BASE_URL + '/rest/workflow/get/transaction',
       // History Task Details URL

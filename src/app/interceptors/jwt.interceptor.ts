@@ -20,7 +20,7 @@ export class JwtInterceptor implements HttpInterceptor {
       request.url.indexOf('/assets/config/config.json') > -1 ||
       request.url === this.apiUrls.logoutURL ||
       request.url === this.apiUrls.authenticateUrl ||
-      request.url === this.apiUrls.loginURL
+      request.url.indexOf('/user/permissions')
     ) {
       const cloneRequest = request.clone({
         setHeaders: {

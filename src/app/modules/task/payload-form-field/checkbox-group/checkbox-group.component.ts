@@ -9,6 +9,7 @@ import { BaseWidget, DropdownMetaData } from '../../model/create-form.models';
 export class CheckboxGroupComponent implements OnInit {
   _value = [];
   @Input() item: BaseWidget = {} as BaseWidget;
+  @Input() isDisabled = false;
   @Input() viewMode = false;
   @Input() editMode = false;
   @Input() dataListId = "";

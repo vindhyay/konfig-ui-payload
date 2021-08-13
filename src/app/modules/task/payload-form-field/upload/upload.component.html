@@ -4,7 +4,7 @@
         [label]="item?.label"
         [uploadButton]="false"
         [loading]="loading"
-        [disabled]="viewMode && (!item?.validators?.editable || !editMode)"
+        [disabled]="(viewMode && (!item?.validators?.editable || !editMode)) || isDisabled"
         (btnClick)="uploadFile($event)"
         [(ngModel)]="file"
         [uploadStatus]="uploadStatus"
