@@ -1,0 +1,127 @@
+@import '../../../../../assets/scss/var';
+
+.input-container,
+.select-container {
+  padding: 2px;
+}
+.table-container{
+  height: 100%;
+  &.paginated-table-container{
+    ::ng-deep {
+      .p-datatable-wrapper {
+        max-height: calc(100% - 70px);
+        min-height: calc(100% - 70px);
+        overflow: scroll;
+        background: #ffff;
+        border: 1px solid #dee2e6;
+      }
+    }
+  }
+  ::ng-deep{
+    .p-datatable{
+      height: 100%;
+      overflow: scroll;
+    }
+    .p-datatable-wrapper {
+      height: calc(100% - 6px);
+      overflow: scroll;
+      background: #ffff;
+      border: 1px solid #dee2e6;
+    }
+    .p-datatable-thead{
+      th {
+        border-top: none
+      }
+      th:first-child{
+        border-left: none
+      }
+      th:last-child{
+        border-right: none;
+      }
+    }
+    .p-datatable-tbody{
+      tr:last-child{
+        td{
+          //border-bottom: none;
+        }
+      }
+      td:first-child{
+        border-left: none;
+      }
+      td:last-child{
+        border-right: none;
+      }
+    }
+  }
+  &.no-data-table{
+    ::ng-deep {
+      .p-datatable {
+        height: auto;
+      }
+      .p-datatable-thead {
+        th {
+          border-bottom: none
+        }
+      }
+    }
+  }
+}
+.nested-grid-container {
+  height: 100%;
+  &.empty-child {
+    position: relative;
+    ::ng-deep {
+      .container-help-text {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        font-size: 13px;
+        justify-content: center;
+        color: gray;
+        position: absolute;
+        z-index: 1;
+        height: 100%;
+        left: 0;
+        right: 0;
+        pointer-events: none;
+      }
+    }
+  }
+  .container-title {
+    height: 40px;
+    background-color: lightgray;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    line-height: 16px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: gray;
+    padding-left: 18px;
+    padding-right: 18px;
+    border-radius: 4px 4px 0 0;
+  }
+  ::ng-deep {
+    gridster {
+      background: #ffffff;
+    }
+    .card-container {
+      height: 100%;
+      background: #ffffff;
+      border: 1px solid #dddddd;
+      gridster {
+        background: #ffffff;
+      }
+    }
+  }
+  &.footer-container {
+    ::ng-deep {
+      gridster {
+        background: #31383e;
+        color: #ffffff;
+      }
+    }
+  }
+}
