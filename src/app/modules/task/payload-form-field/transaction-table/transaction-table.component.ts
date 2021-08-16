@@ -17,6 +17,7 @@ export class TransactionTableComponent extends BaseComponent implements OnInit {
   @Input() editMode: boolean = false;
   @Output() optionChange = new EventEmitter();
   tableData = [];
+  totalRecords = 0;
   columns = [];
   constructor(private taskService: TaskService,
               private userService: UserService,
@@ -27,15 +28,16 @@ export class TransactionTableComponent extends BaseComponent implements OnInit {
     return this.item.metaData
   }
   ngOnInit(): void {
-    this.getTransactionTableData();
-  }
-  getTransactionTableData(){
     const { applicationId } = this.taskService.getTransactionDetails();
     const {id:fieldId} = this.item
     const params = {applicationId, fieldId, pageNo: 0, recordNo:10}
+    this.getTransactionTableData(params);
+  }
+  getTransactionTableData(params){
     this.taskService.getTransactionTableData(params).subscribe(result => {
       const {data, error} = parseApiResponse(result);
       if(!error && data){
+        this.totalRecords = data.totalRecordCount;
         this.tableData = (data.data || []).map(transaction => {
           return {
             ...transaction,
@@ -54,6 +56,13 @@ export class TransactionTableComponent extends BaseComponent implements OnInit {
     }else{
       this.notificationService.error('Transaction not found');
     }
+  }
+  onPageChange($event){
+    const { page = 1, rows = 10} = $event || {}
+    const { applicationId } = this.taskService.getTransactionDetails();
+    const {id:fieldId} = this.item
+    const params = {applicationId, fieldId, pageNo: page -1, recordNo:rows}
+    this.getTransactionTableData(params);
   }
   getTransactionDetails(id) {
     this.loading = true;

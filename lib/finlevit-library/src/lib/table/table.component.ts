@@ -35,6 +35,8 @@ export class TableComponent implements OnInit {
 
   @Input() columns: column[]  = [];
   @Input() tableData: any[] = [];
+  @Input() totalRecords = 0;
+  @Input() loading = false;
   @Input() noDataMessage: string = "No Data";
   @Input() isSmall = false;
   @Input() isLarge = false;
@@ -48,6 +50,7 @@ export class TableComponent implements OnInit {
 
   @Output() onColDataChange = new EventEmitter();
   @Output() onRowClick = new EventEmitter();
+  @Output() onPageChange = new EventEmitter();
   @Input() viewMode = false;
 
   private _styleClass = "p-datatable-gridlines p-datatable-sm";
@@ -74,5 +77,9 @@ export class TableComponent implements OnInit {
       default:
         return 'text'
     }
+  }
+  onPage($event){
+    const {first, rows} = $event
+    this.onPageChange.emit({page:Math.ceil((first+1)/rows), rows })
   }
 }

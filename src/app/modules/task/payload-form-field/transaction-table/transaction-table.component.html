@@ -13,9 +13,11 @@
             [sort]="item?.metaData?.sort"
             [filter]="item?.metaData?.filter"
             [tableData]='tableData'
+            [totalRecords]="totalRecords"
             [tableHeading]="item?.metaData?.heading"
             [columns]="item?.metaData?.columns"
             (onRowClick)="onRowClick($event)"
+            (onPageChange)="onPageChange($event)"
             [viewMode]="true"
     ></finlevit-table>
 </div>

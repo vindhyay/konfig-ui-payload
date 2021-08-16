@@ -13,14 +13,18 @@
   ></button>
 </div>
 <p-table
+  [lazy]="true"
+  (onLazyLoad)="onPage($event)"
   [columns]="columns"
   [value]="tableData"
   [styleClass]="styleClass"
   [paginator]="pagination && !!tableData.length"
-  [rows]="10"
   [rowsPerPageOptions]="[10, 20, 50]"
+  [rows]="10"
+  [totalRecords]="totalRecords"
   [paginatorDropdownAppendTo]="'body'"
   [resizableColumns]="true"
+  [loading]="loading"
 >
   <ng-template pTemplate="header">
     <tr>
