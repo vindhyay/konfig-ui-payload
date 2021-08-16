@@ -21,10 +21,12 @@
   [paginator]="pagination && !!tableData.length"
   [rowsPerPageOptions]="[10, 20, 50]"
   [rows]="10"
-  [totalRecords]="totalRecords"
+  [totalRecords]="totalRecords || tableData.length"
   [paginatorDropdownAppendTo]="'body'"
   [resizableColumns]="true"
   [loading]="loading"
+  [showCurrentPageReport]="true"
+  currentPageReportTemplate="{first} to {last} of {totalRecords}"
 >
   <ng-template pTemplate="header">
     <tr>
