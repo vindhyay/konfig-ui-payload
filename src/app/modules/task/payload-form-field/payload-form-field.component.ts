@@ -23,6 +23,7 @@ export class PayloadFormFieldComponent implements OnInit {
   Button: WidgetTypes = WidgetTypes.Button;
   Container: WidgetTypes = WidgetTypes.Container;
   TabContainer: WidgetTypes = WidgetTypes.TabContainer;
+  StepperContainer: WidgetTypes = WidgetTypes.StepperContainer;
   Dropdown: WidgetTypes = WidgetTypes.Dropdown;
   RadioGroup: WidgetTypes = WidgetTypes.RadioGroup;
   DatePicker: WidgetTypes = WidgetTypes.DatePicker;

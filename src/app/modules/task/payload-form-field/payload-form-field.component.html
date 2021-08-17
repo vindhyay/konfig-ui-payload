@@ -98,7 +98,7 @@
   <ng-container *ngIf="item?.metaData?.widgetType === Button">
     <div class="input-container button-input" [ngStyle]="{ width: '100%' }">
       <finlevit-button
-              [isDisabled]="disable"
+              [isDisabled]="item?.metaData?.isEnable === false || disable"
               [icon]="item?.metaData?.icon"
               [iconPos]="item?.metaData?.iconPos"
               [label]="item?.label"
@@ -220,6 +220,43 @@
         (ngModelChange)="validateField($event, item)"
       ></finlevit-lib-datepicker>
     </div>
+  </ng-container>
+  <ng-container *ngIf="item?.metaData?.widgetType === StepperContainer">
+    <mat-horizontal-stepper
+            [ngClass]="{ 'stepper-container': true, 'no-stepper-child-container': item.children.length === 0 }"
+            labelPosition="bottom"
+            #stepper
+    >
+      <mat-step *ngFor="let child of item.children; let i = index;">
+        <ng-template matStepLabel
+        ><i [class]="child.metaData.icon"></i> <span class="mat-step-label-text">{{ child.label }}</span></ng-template
+        >
+        <div
+                [ngClass]="{
+          'nested-grid-container': true,
+          'empty-child': !child.children.length
+        }"
+        >
+          <div *ngIf="!child.children.length" class="container-help-text">
+            <span>No Data Found</span>
+          </div>
+          <finlevit-grid [viewMode]="viewMode"
+                         [showEdit]="showEdit"
+                         [parent]="child"
+                         [items]="child.children"
+                         (onBtnClick)="onBtnClick.emit($event)"
+                         (onTableDataChange)="onTableDataChange.emit($event)"></finlevit-grid>
+        </div>
+        <div class="stepper-btn-container">
+          <div>
+            <button *ngIf="i > 0" matStepperPrevious class="step-btn" >Previous</button>
+          </div>
+          <div>
+            <button *ngIf="i != item.children.length - 1" matStepperNext class="step-btn" >Next</button>
+          </div>
+        </div>
+      </mat-step>
+    </mat-horizontal-stepper>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === TabContainer">
     <div class="tab-container">

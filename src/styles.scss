@@ -147,3 +147,53 @@
     box-shadow: 0 0 10px #ff9212;
   }
 }
+/* Mat stepper widget css */
+.mat-stepper-horizontal{
+  display: flex !important;
+  flex-direction: column;
+  height: 100%;
+}
+.mat-horizontal-content-container {
+  flex-grow: 1;
+}
+.mat-horizontal-stepper-content{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.mat-stepper-label-position-bottom .mat-horizontal-stepper-header {
+  min-width: 200px;
+}
+.mat-step-text-label {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  justify-content: center;
+}
+.mat-step-label-text{
+  padding: 0 0.3rem;
+}
+.mat-step-header.cdk-keyboard-focused, .mat-step-header.cdk-program-focused, .mat-step-header:hover {
+  background-color: rgb(169 167 167 / 4%);
+}
+.stepper-btn-container{
+  display: flex;
+  justify-content: space-between;
+  padding: 0 2rem;
+}
+.step-btn{
+  color: #ffffff;
+  background: #007bff;
+  border: 1px solid #007bff;
+  padding: 0.2rem 1rem;
+  font-size: 1rem;
+  transition: background-color 0.15s, border-color 0.15s, box-shadow 0.15s;
+  border-radius: 30px;
+}
+.mat-step-header .mat-step-icon-selected, .mat-step-header .mat-step-icon-state-done, .mat-step-header .mat-step-icon-state-edit {
+  background-color: #007bfe;
+  color: white;
+}
+/* Mat stepper widget css */

@@ -111,6 +111,7 @@ export enum WidgetTypes {
   RadioGroup = 'RadioGroup',
   Container = 'Container',
   TabContainer = "TabContainer",
+  StepperContainer = "StepperContainer",
   Image = 'Image',
   Header = 'Header',
   Footer = 'Footer',
