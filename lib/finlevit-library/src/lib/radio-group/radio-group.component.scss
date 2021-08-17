@@ -1,0 +1,8 @@
+.radio-options-wrapper{
+  &.horizontal{
+    display: flex;
+  }
+  .p-field-radiobutton {
+    margin: 0 1rem 1rem 0;
+  }
+}

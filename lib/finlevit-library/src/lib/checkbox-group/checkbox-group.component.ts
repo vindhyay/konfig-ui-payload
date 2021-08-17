@@ -15,6 +15,7 @@ export class CheckboxGroupComponent implements OnInit, ControlValueAccessor {
     }
     this._id = getUniqueId('checkbox');
   }
+  @Input() alignOptions: "Horizontal" | "Vertical" = "Horizontal";
 
   @ViewChild('input', { static: true }) input: ElementRef | undefined;
   @Input() showErrorBorder = true;

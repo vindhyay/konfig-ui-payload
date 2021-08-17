@@ -1,11 +1,11 @@
-import { Component, Input, OnInit, Optional, Self } from '@angular/core';
-import { ControlValueAccessor, NgControl, ValidatorFn, Validators } from '@angular/forms';
-import { getUniqueId, hasRequiredField } from '../utils';
+import {Component, Input, OnInit, Optional, Self} from "@angular/core";
+import {ControlValueAccessor, NgControl, ValidatorFn, Validators} from "@angular/forms";
+import {getUniqueId, hasRequiredField} from "../utils";
 
 @Component({
-  selector: 'finlevit-radio-group',
-  templateUrl: './radio-group.component.html',
-  styleUrls: ['./radio-group.component.scss']
+  selector: "finlevit-radio-group",
+  templateUrl: "./radio-group.component.html",
+  styleUrls: ["./radio-group.component.scss"]
 })
 export class RadioGroupComponent implements OnInit, ControlValueAccessor {
   _id: string;
@@ -13,25 +13,27 @@ export class RadioGroupComponent implements OnInit, ControlValueAccessor {
     if (this.controlDir) {
       this.controlDir.valueAccessor = this;
     }
-    this._id = getUniqueId('radio');
+    this._id = getUniqueId("radio");
   }
 
+  @Input() alignOptions: "Horizontal" | "Vertical" = "Horizontal";
   @Input() showErrorBorder = true;
   @Input() isSmall = false;
   @Input() isLarge = false;
   @Input() items: any[] = [];
-  @Input() optionLabel: string = '';
-  @Input() optionValue: any = '';
+  @Input() optionLabel = "";
+  @Input() optionValue: any = "";
   @Input() isDisabled = false;
   @Input() isRequired = false;
-  @Input() tooltip = '';
-  @Input() label = '';
-  @Input() placeholder = '';
-  @Input() errorMsg = '';
+  @Input() tooltip = "";
+  @Input() label = "";
+  @Input() placeholder = "";
+  @Input() errorMsg = "";
   @Input() error = false;
   @Input() validators: any = [];
 
   _value: any = null;
+
 
   ngOnInit(): void {
     const control = this.controlDir && this.controlDir.control;
@@ -77,10 +79,10 @@ export class RadioGroupComponent implements OnInit, ControlValueAccessor {
     const errorMessages: string[] = [];
     Object.keys(errors || {}).forEach(error => {
       switch (error) {
-        case 'required':
+        case "required":
           errorMessages.push(`${this.label} is required`);
           break;
-        case 'custom':
+        case "custom":
           if (errors) {
             errorMessages.push(errors[error]);
           }

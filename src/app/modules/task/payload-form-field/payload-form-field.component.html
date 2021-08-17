@@ -199,6 +199,7 @@
         (ngModelChange)="validateField($event, item)"
         [errorMsg]="item?.errorMsg"
         [error]="item?.error == true"
+        [alignOptions]="item?.metaData?.alignOptions"
       ></finlevit-radio-group>
     </div>
   </ng-container>

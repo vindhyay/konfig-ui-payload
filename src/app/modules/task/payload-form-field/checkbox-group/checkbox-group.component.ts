@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { BaseWidget, DropdownMetaData } from '../../model/create-form.models';
+import {BaseWidget, MetaData} from '../../model/create-form.models';
 
 @Component({
   selector: 'app-checkbox-group',
@@ -14,8 +14,8 @@ export class CheckboxGroupComponent implements OnInit {
   @Input() editMode = false;
   @Input() dataListId = "";
   constructor() {}
-  get metaData(): DropdownMetaData {
-    return this.item.metaData as DropdownMetaData;
+  get metaData(): MetaData {
+    return this.item.metaData as MetaData;
   }
   ngOnInit(): void {}
 }

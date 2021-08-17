@@ -554,6 +554,7 @@ export class RadioGroupMetaData extends CheckboxMetaData {
   optionType: string;
   optionLabel: string;
   optionValue: string;
+  alignOptions: string;
   constructor(data) {
     super(data);
     const {
@@ -562,7 +563,8 @@ export class RadioGroupMetaData extends CheckboxMetaData {
       optionType = 'manual',
       optionLabel = 'name',
       optionValue = 'value',
-      isLabelAndValue = false
+      isLabelAndValue = false,
+      alignOptions = 'Horizontal',
     } = data;
     this.optionType = optionType;
     this.tooltip = tooltip;
@@ -570,6 +572,7 @@ export class RadioGroupMetaData extends CheckboxMetaData {
     this.isLabelAndValue = isLabelAndValue;
     this.optionLabel = optionLabel;
     this.optionValue = optionValue;
+    this.alignOptions = alignOptions;
   }
 }
 
