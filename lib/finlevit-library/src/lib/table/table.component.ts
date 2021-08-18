@@ -47,6 +47,7 @@ export class TableComponent implements OnInit {
   @Input() tableHeading = "";
   @Input() headerColor: string = "#000000";
   @Input() headerBgColor: string = "#ffffff";
+  @Input() lazyLoad: boolean = false;
 
   @Output() onColDataChange = new EventEmitter();
   @Output() onRowClick = new EventEmitter();

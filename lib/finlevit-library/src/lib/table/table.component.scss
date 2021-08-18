@@ -12,8 +12,51 @@
  border-top: none;
 }
 ::ng-deep{
+ table{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+ }
+ thead, tbody{
+  tr {
+   display: flex;
+   th, td{
+    width: 100%;
+   }
+  }
+ }
+ tbody{
+  height: 100%;
+  overflow: scroll;
+  display: flex;
+  flex-direction: column;
+ }
+ .p-datatable-tfoot{
+  display: flex;
+ }
  .p-field{
    margin-bottom: 0;
+ }
+ .p-datatable .p-datatable-tbody > tr > td {
+  border: none;
+  border-bottom: 1px solid #dee2e6;
+  border-right: 1px solid #dee2e6;
+ }
+ .p-paginator{
+  padding: 0.1rem;
+ }
+ .p-paginator .p-paginator-current{
+  border: none;
+ }
+ .p-paginator .p-paginator-first,
+ .p-paginator .p-paginator-prev,
+ .p-paginator .p-paginator-next,
+ .p-paginator .p-paginator-last{
+  border: none
+ }
+ .p-paginator .p-paginator-pages .p-paginator-page{
+  border: none
  }
  .p-datatable .p-datatable-tbody > tr{
   &:hover {

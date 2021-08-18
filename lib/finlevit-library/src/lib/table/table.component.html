@@ -1,19 +1,5 @@
-<div class="p-d-flex p-justify-between p-pb-2">
-  <span [ngStyle]="{ 'font-size': 'large' }"
-    ><b>{{ tableHeading }}</b></span
-  >
-  <button
-    *ngIf="addRows"
-    pButton
-    (click)="addRow()"
-    icon="pi pi-plus-circle"
-    type="button"
-    label="Add Row"
-    class="p-button-primary p-button-text"
-  ></button>
-</div>
 <p-table
-  [lazy]="true"
+  [lazy]="lazyLoad"
   (onLazyLoad)="onPage($event)"
   [columns]="columns"
   [value]="tableData"
@@ -73,7 +59,14 @@
       </td>
     </tr>
   </ng-template>
+  <ng-template pTemplate="footer" class="table-footer" >
+    <div class="table-footer" *ngIf="addRows && !tableData.length">
+      <p-button (click)="addRow()" type="button" icon="pi pi-plus" styleClass="p-button-text"></p-button>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="paginatorright">
+    <p-button *ngIf="addRows" (click)="addRow()" type="button" icon="pi pi-plus" styleClass="p-button-text"></p-button>
+  </ng-template>
+  <ng-template pTemplate="paginatorleft">
+  </ng-template>
 </p-table>
-<div class="no-table-data-container" *ngIf="!tableData.length">
-  {{noDataMessage}}
-</div>
