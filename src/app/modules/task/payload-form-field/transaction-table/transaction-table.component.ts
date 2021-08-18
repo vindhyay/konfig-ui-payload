@@ -27,12 +27,7 @@ export class TransactionTableComponent extends BaseComponent implements OnInit {
   get metaData(): any {
     return this.item.metaData
   }
-  ngOnInit(): void {
-    const { applicationId } = this.taskService.getTransactionDetails();
-    const {id:fieldId} = this.item
-    const params = {applicationId, fieldId, pageNo: 0, recordNo:10}
-    this.getTransactionTableData(params);
-  }
+  ngOnInit(): void {}
   getTransactionTableData(params){
     this.taskService.getTransactionTableData(params).subscribe(result => {
       const {data, error} = parseApiResponse(result);
