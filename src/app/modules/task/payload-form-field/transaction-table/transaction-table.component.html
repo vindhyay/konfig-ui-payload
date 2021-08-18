@@ -1,11 +1,9 @@
 <div
         [ngClass]="{
-        'input-container': true,
-        'table-container': true,
-        'paginated-table-container': item?.metaData?.pagination,
-        'no-data-table': !tableData.length
+        'input-container': true
         }">
     <finlevit-table
+            class="table-container"
             noDataMessage="No Data Found"
             [headerColor]="item?.metaData?.color"
             [headerBgColor]="item?.metaData?.bgColor"
