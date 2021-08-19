@@ -54,7 +54,7 @@ export class PayloadViewFormComponent implements OnInit {
           if (field?.children?.length) {
             payload[field.widgetName] = this.convertPayload(field.children, field.type === DataTypes.array);
           } else if(field?.metaData?.widgetType === WidgetTypes.Table){
-            payload[field.widgetName] = field?.metaData?.configure ? (getValueFromObjectByPath(field, 'metaData.options') || []) : (getValueFromObjectByPath(field, 'value.value') || []);
+            payload[field.widgetName] = field?.value?.value ? (getValueFromObjectByPath(field, 'value.value') || []) : (getValueFromObjectByPath(field, 'metaData.options') || []);
           } else {
             payload[field.widgetName] = getValueFromObjectByPath(field, 'value.value') || [];
           }
@@ -117,6 +117,7 @@ export class PayloadViewFormComponent implements OnInit {
   };
   submit(data) {
     if (this.validateFields(this._payloadFields)) {
+      console.log(this.convertPayload(this._payloadFields));
       this.onSubmit.emit({ payload: this.convertPayload(this._payloadFields), data });
     }else{
       this.notificationService.error('Failed to validate','Submit Error')
