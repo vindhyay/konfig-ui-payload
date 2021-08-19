@@ -1,18 +1,18 @@
-import {Component, OnInit} from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { QUEUE_TYPES } from '../../../state/model/queue-types-model';
-import {UserService} from "../../user/services/user.service";
-import {AuthService} from "../../auth/services/auth.service";
-import {BaseComponent} from "../../shared/base/base.component";
-import {NotificationService} from "../../../services/notification.service";
-import {UserDataModel} from "../../auth/models";
-import {getUniqueId, getValueFromObjectByPath, parseApiResponse} from "../../../utils";
-import {TaskService} from '../services/task.service';
+import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { QUEUE_TYPES } from "../../../state/model/queue-types-model";
+import { UserService } from "../../user/services/user.service";
+import { AuthService } from "../../auth/services/auth.service";
+import { BaseComponent } from "../../shared/base/base.component";
+import { NotificationService } from "../../../services/notification.service";
+import { UserDataModel } from "../../auth/models";
+import { getUniqueId, getValueFromObjectByPath, parseApiResponse } from "../../../utils";
+import { TaskService } from "../services/task.service";
 
 @Component({
-  selector: 'app-payload-details',
-  templateUrl: './payload-details.component.html',
-  styleUrls: ['./payload-details.component.scss']
+  selector: "app-payload-details",
+  templateUrl: "./payload-details.component.html",
+  styleUrls: ["./payload-details.component.scss"]
 })
 export class PayloadDetailsComponent extends BaseComponent implements OnInit {
   constructor(
@@ -21,13 +21,13 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
     private userService: UserService,
     private authService: AuthService,
     private notificationService: NotificationService,
-    private taskService: TaskService,
+    private taskService: TaskService
   ) {
     super();
   }
   screenHeight: number;
   screenWidth: number;
-  workflowId: string | null = '';
+  workflowId: string | null = "";
   transactionDetails: any = {};
   id: any;
   formFields: any = [];
@@ -37,32 +37,36 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
   sessionFields = {};
   ngOnInit(): void {
     this.currentUser = this.authService.getCurrentUser();
-    this.queueType = getValueFromObjectByPath(this.activatedRoute, 'snapshot.data.queueType');
-    this.activatedRoute.queryParamMap.subscribe((queryParams:any) => {
-        this.sessionFields = Object.keys(queryParams.params).length ? queryParams.params : {name: this.currentUser.name, userId: this.currentUser.userId, email: this.currentUser.emailId};
-    })
+    this.queueType = getValueFromObjectByPath(this.activatedRoute, "snapshot.data.queueType");
+    this.activatedRoute.queryParamMap.subscribe((queryParams: any) => {
+      this.sessionFields = Object.keys(queryParams.params).length
+        ? queryParams.params
+        : { name: this.currentUser.name, userId: this.currentUser.userId, email: this.currentUser.emailId };
+    });
     this.activatedRoute.paramMap.subscribe(params => {
-      this.workflowId = params.get('workflowId');
+      this.workflowId = params.get("workflowId");
       if (this.workflowId) {
         this.createTransaction(this.workflowId, this.id);
       }
     });
     this.taskService.transactionDetailsSubject.subscribe(value => {
-        if(value){
-            this.transactionDetails = value;
-            this.formFields = value?.uiPayload || [];
-        }
-    })
+      if (value) {
+        this.transactionDetails = value;
+        this.formFields = value?.uiPayload || [];
+      }
+    });
   }
-  createTransaction(applicationId: string, id = ''){
+  createTransaction(applicationId: string, id = "") {
     this.loading = true;
-    this.userService.createTransaction({ applicationId, ...(id && {id}) }, {sessionData: this.sessionFields}).subscribe(
+    this.userService
+      .createTransaction({ applicationId, ...(id && { id }) }, { sessionData: this.sessionFields })
+      .subscribe(
         result => {
           const { data: transactionDetails, error } = parseApiResponse(result);
           if (transactionDetails && !error) {
             this.transactionDetails = transactionDetails;
-              this.taskService.setTransactionDetails(transactionDetails)
-              this.id = transactionDetails.id
+            this.taskService.setTransactionDetails(transactionDetails);
+            this.id = transactionDetails.id;
           } else {
             this.notificationService.error(error.errorMessage);
           }
@@ -70,95 +74,109 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
         },
         error => {
           this.loading = false;
-          if(error.status === 401){
+          if (error.status === 401) {
             this.authService.logoff(false, this.activatedRoute);
           }
-          if(error.status === 500){
-            this.notificationService.error(error?.error?.error?.errorMessage)
+          if (error.status === 500) {
+            this.notificationService.error(error?.error?.error?.errorMessage);
             this.authService.logoff(false, this.activatedRoute);
           }
         }
-    );
+      );
   }
 
-    uniqueFieldChange($event) {
-        this.userService.uniqueKeyTransaction(this.transactionDetails.transactionId, { uniqueField: $event }).subscribe(result => {
-            const { data, error } = parseApiResponse(result);
-            this.loading = false;
-            if(data){
-                this.transactionDetails = data;
-                this.taskService.setTransactionDetails(data);
-            }
-        }, error => {
-            this.loading = false;
-            this.notificationService.error(error.errorMessage);
-        })
-  }
-
-  async populateTransaction($event){
-    const {triggerId, parameters, isUnique = false} = $event
-    this.loading = true;
-    if(!isUnique){
-      const saveResult = await this.userService.saveTransaction({ transactionId : this.transactionDetails.transactionId}, this.formFields).toPromise();
-    }
-      this.userService.populateTransaction(this.id, { triggerId }, { parameters }).subscribe(result => {
-          const { data, error } = parseApiResponse(result);
-          this.loading = false;
-          if(data){
-              this.transactionDetails = data;
-              this.taskService.setTransactionDetails(data);
-          }
-      }, error => {
-          this.loading = false;
-          this.notificationService.error(error.errorMessage);
-      })
-
-  }
-
-  saveTransaction(event: any) {
-      const { payloadFields: payloadMetaData, data: {metaData: {status:statusId = ''} = {}} = {} } = event;
-    this.loading = true;
-    this.userService.saveTransaction({statusId, transactionId : this.transactionDetails.transactionId}, payloadMetaData).subscribe(
+  uniqueFieldChange($event) {
+    this.userService.uniqueKeyTransaction(this.transactionDetails.transactionId, { uniqueField: $event }).subscribe(
       result => {
-        this.loading = false;
         const { data, error } = parseApiResponse(result);
-        if (data && !error) {
-            this.taskService.setTransactionDetails(data);
-            this.notificationService.success('Transaction Saved Successfully', 'Success');
-        } else {
-          this.notificationService.error(error.errorMessage);
+        this.loading = false;
+        if (data) {
+          this.transactionDetails = data;
+          this.taskService.setTransactionDetails(data);
         }
       },
       error => {
         this.loading = false;
-        this.notificationService.error(error?.error?.error?.errorMessage);
+        this.notificationService.error(error.errorMessage);
       }
     );
   }
 
+  async populateTransaction($event) {
+    const { triggerId, parameters, isUnique = false } = $event;
+    this.loading = true;
+    if (!isUnique) {
+      const saveResult = await this.userService
+        .saveTransaction({ transactionId: this.transactionDetails.transactionId }, this.formFields)
+        .toPromise();
+    }
+    this.userService.populateTransaction(this.id, { triggerId }, { parameters }).subscribe(
+      result => {
+        const { data, error } = parseApiResponse(result);
+        this.loading = false;
+        if (data) {
+          this.transactionDetails = data;
+          this.taskService.setTransactionDetails(data);
+        }
+      },
+      error => {
+        this.loading = false;
+        this.notificationService.error(error.errorMessage);
+      }
+    );
+  }
 
+  saveTransaction(event: any) {
+    const { payloadFields: payloadMetaData, data: { metaData: { status: statusId = "" } = {} } = {} } = event;
+    this.loading = true;
+    this.userService
+      .saveTransaction({ statusId, transactionId: this.transactionDetails.transactionId }, payloadMetaData)
+      .subscribe(
+        result => {
+          this.loading = false;
+          const { data, error } = parseApiResponse(result);
+          if (data && !error) {
+            this.taskService.setTransactionDetails(data);
+            this.notificationService.success("Transaction Saved Successfully", "Success");
+          } else {
+            this.notificationService.error(error.errorMessage);
+          }
+        },
+        error => {
+          this.loading = false;
+          this.notificationService.error(error?.error?.error?.errorMessage);
+        }
+      );
+  }
 
   submitTransaction(payloadData: any) {
-    const { payload: payloadJson, files = [], data: {metaData: {status:statusId = ''} = {}} = {} } = payloadData;
-    this.loading = true;
+    const { payload: payloadJson, files = [], data: { metaData: { status: statusId = "" } = {} } = {} } = payloadData;
     // @ts-ignore
-    const params = { userId: this.currentUser?.userId, statusId, transactionId: this.transactionDetails.transactionId || '' };
+    const params = {
+      userId: this.currentUser?.userId,
+      statusId,
+      transactionId: this.transactionDetails.transactionId || ""
+    };
     const appId = this.transactionDetails?.application?.appId;
-    const transactionId = getUniqueId(appId);
+    if (!appId) {
+      this.notificationService.error("Application not found", "Failed to submit");
+      return;
+    }
+    this.loading = true;
     const payload = new FormData();
-    payload.append('payload', JSON.stringify(payloadJson));
-    files.forEach((file : any) => {
-      payload.append('files', file);
+    payload.append("payload", JSON.stringify(payloadJson));
+    files.forEach((file: any) => {
+      payload.append("files", file);
     });
-    this.userService.submitTransaction(appId, transactionId, params, payload).subscribe(
+    this.userService.submitTransaction(appId, params, payload).subscribe(
       result => {
         this.loading = false;
         const { data, error } = parseApiResponse(result);
         if (data && !error) {
-          this.notificationService.success('Transaction Submitted Successfully', 'Success');
+          this.notificationService.success("Transaction Submitted Successfully", "Success");
           this.createTransaction(this.workflowId);
         } else {
-          this.notificationService.error(error.errorMessage, 'Error');
+          this.notificationService.error(error.errorMessage, "Error");
         }
       },
       error => {
@@ -168,7 +186,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
   }
 
   redirectTo(QUEUE_TYPE?: any) {
-    this.router.navigate(['../../'], {
+    this.router.navigate(["../../"], {
       relativeTo: this.activatedRoute
     });
   }
