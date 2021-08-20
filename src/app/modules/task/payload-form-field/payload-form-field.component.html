@@ -83,12 +83,14 @@
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Text">
+    <app-text-field *ngIf="item?.metaData?.advanced" [item]="item"></app-text-field>
     <div
+      *ngIf="!item?.metaData?.advanced"
       [class]="'text-content text-style-' + item?.metaData?.textStyle"
       [ngStyle.gt-sm]="{
         'justify-content': item?.metaData?.horizontalAlign,
         'align-items': item?.metaData?.verticalAlign,
-         color: item?.metaData?.color,
+        color: item?.metaData?.color,
         'font-weight': item?.metaData?.fontWeight
       }"
     >
@@ -98,24 +100,19 @@
   <ng-container *ngIf="item?.metaData?.widgetType === Button">
     <div class="input-container button-input" [ngStyle]="{ width: '100%' }">
       <finlevit-button
-              [isDisabled]="item?.metaData?.isEnable === false || disable"
-              [icon]="item?.metaData?.icon"
-              [iconPos]="item?.metaData?.iconPos"
-              [label]="item?.label"
-              (btnClick)="btnClick($event, item)"
-              [variant]="item?.metaData?.variant"
-              [type]="item?.metaData?.type"
+        [isDisabled]="item?.metaData?.isEnable === false || disable"
+        [icon]="item?.metaData?.icon"
+        [iconPos]="item?.metaData?.iconPos"
+        [label]="item?.label"
+        (btnClick)="btnClick($event, item)"
+        [variant]="item?.metaData?.variant"
+        [type]="item?.metaData?.type"
       ></finlevit-button>
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Upload">
     <div class="input-container button-input">
-      <app-upload
-              [item]="item"
-              [viewMode]="viewMode"
-              [editMode]="editMode"
-              [isDisabled]="disable"
-      ></app-upload>
+      <app-upload [item]="item" [viewMode]="viewMode" [editMode]="editMode" [isDisabled]="disable"></app-upload>
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Image">
@@ -125,31 +122,36 @@
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Table">
     <div
-            [ngClass]="{
-            'input-container': true,
-            'paginated-table-container': item?.metaData?.pagination,
-            'no-data-table': item?.metaData?.configure ? !item?.metaData?.options?.length : !item?.value?.value?.length
-            }">
+      [ngClass]="{
+        'input-container': true,
+        'paginated-table-container': item?.metaData?.pagination,
+        'no-data-table': item?.metaData?.configure ? !item?.metaData?.options?.length : !item?.value?.value?.length
+      }"
+    >
       <finlevit-table
-              class="table-container"
-              noDataMessage="No Data Found"
-              [headerColor]="item?.metaData?.color"
-              [headerBgColor]="item?.metaData?.bgColor"
-              [pagination]="item?.metaData?.pagination"
-              [addRows]="!item?.metaData?.configure"
-              [sort]="item?.metaData?.sort"
-              [filter]="item?.metaData?.filter"
-              [tableData]='item?.value?.value ? item?.value?.value : (item?.metaData?.configure ? item?.metaData?.options : item?.value?.value)'
-              [tableHeading]="item?.metaData?.heading"
-              [columns]="item?.metaData?.columns"
-              (onColDataChange)="onColDataChange($event)"
+        class="table-container"
+        noDataMessage="No Data Found"
+        [headerColor]="item?.metaData?.color"
+        [headerBgColor]="item?.metaData?.bgColor"
+        [pagination]="item?.metaData?.pagination"
+        [addRows]="!item?.metaData?.configure"
+        [sort]="item?.metaData?.sort"
+        [filter]="item?.metaData?.filter"
+        [tableData]="
+          item?.value?.value
+            ? item?.value?.value
+            : item?.metaData?.configure
+            ? item?.metaData?.options
+            : item?.value?.value
+        "
+        [tableHeading]="item?.metaData?.heading"
+        [columns]="item?.metaData?.columns"
+        (onColDataChange)="onColDataChange($event)"
       ></finlevit-table>
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === TransactionTable">
-    <app-transaction-table [item]="item"
-                           [viewMode]="viewMode"
-                           [editMode]="editMode"></app-transaction-table>
+    <app-transaction-table [item]="item" [viewMode]="viewMode" [editMode]="editMode"></app-transaction-table>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Checkbox">
     <div class="input-container">
@@ -224,36 +226,38 @@
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === StepperContainer">
     <mat-horizontal-stepper
-            [ngClass]="{ 'stepper-container': true, 'no-stepper-child-container': item.children.length === 0 }"
-            labelPosition="bottom"
-            #stepper
+      [ngClass]="{ 'stepper-container': true, 'no-stepper-child-container': item.children.length === 0 }"
+      labelPosition="bottom"
+      #stepper
     >
-      <mat-step *ngFor="let child of item.children; let i = index;">
+      <mat-step *ngFor="let child of item.children; let i = index">
         <ng-template matStepLabel
-        ><i [class]="child.metaData.icon"></i> <span class="mat-step-label-text">{{ child.label }}</span></ng-template
+          ><i [class]="child.metaData.icon"></i> <span class="mat-step-label-text">{{ child.label }}</span></ng-template
         >
         <div
-                [ngClass]="{
-          'nested-grid-container': true,
-          'empty-child': !child.children.length
-        }"
+          [ngClass]="{
+            'nested-grid-container': true,
+            'empty-child': !child.children.length
+          }"
         >
           <div *ngIf="!child.children.length" class="container-help-text">
             <span>No Data Found</span>
           </div>
-          <finlevit-grid [viewMode]="viewMode"
-                         [showEdit]="showEdit"
-                         [parent]="child"
-                         [items]="child.children"
-                         (onBtnClick)="onBtnClick.emit($event)"
-                         (onTableDataChange)="onTableDataChange.emit($event)"></finlevit-grid>
+          <finlevit-grid
+            [viewMode]="viewMode"
+            [showEdit]="showEdit"
+            [parent]="child"
+            [items]="child.children"
+            (onBtnClick)="onBtnClick.emit($event)"
+            (onTableDataChange)="onTableDataChange.emit($event)"
+          ></finlevit-grid>
         </div>
         <div class="stepper-btn-container">
           <div>
-            <button *ngIf="i > 0" matStepperPrevious class="step-btn" >Previous</button>
+            <button *ngIf="i > 0" matStepperPrevious class="step-btn">Previous</button>
           </div>
           <div>
-            <button *ngIf="i != item.children.length - 1" matStepperNext class="step-btn" >Next</button>
+            <button *ngIf="i != item.children.length - 1" matStepperNext class="step-btn">Next</button>
           </div>
         </div>
       </mat-step>
@@ -268,22 +272,22 @@
             <span>{{ child.label }}</span>
           </ng-template>
           <div
-                  [ngClass]="{
-            'nested-grid-container': true,
-            'empty-child': !child.children.length
-          }"
+            [ngClass]="{
+              'nested-grid-container': true,
+              'empty-child': !child.children.length
+            }"
           >
             <div *ngIf="!child.children.length" class="container-help-text">
               <i class="pi pi-plus"></i>
               <span>Drag and drop fields to tab container</span>
             </div>
             <finlevit-grid
-                    [viewMode]="viewMode"
-                    [showEdit]="showEdit"
-                    [parent]="child"
-                    [items]="child.children"
-                    (onBtnClick)="onBtnClick.emit($event)"
-                    (onTableDataChange)="onTableDataChange.emit($event)"
+              [viewMode]="viewMode"
+              [showEdit]="showEdit"
+              [parent]="child"
+              [items]="child.children"
+              (onBtnClick)="onBtnClick.emit($event)"
+              (onTableDataChange)="onTableDataChange.emit($event)"
             ></finlevit-grid>
           </div>
         </p-tabPanel>

@@ -1,0 +1,11 @@
+<div
+  [class]="'text-content text-style-' + item?.metaData?.textStyle"
+  [ngStyle]="{
+    'display': 'flex',
+    'height': '100%',
+    'justify-content': item?.metaData?.horizontalAlign,
+    'align-items': item?.metaData?.verticalAlign
+  }"
+>
+  <div *ngIf="html" [innerHtml]="html">Hello World</div>
+</div>
