@@ -184,8 +184,22 @@
         [viewMode]="viewMode"
         [isDisabled]="disable"
         [editMode]="editMode"
-        (optionChange)="optionChange($event, item)"
+        (optionChange)="optionChange($event, item); validateField($event, item)"
       ></app-dropdown-field>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="item?.metaData?.widgetType === Modal">
+    <div class="input-container">
+      <app-modal
+        [item]="item"
+        [showEdit]="showEdit"
+        [viewMode]="viewMode"
+        [isDisabled]="disable"
+        [editMode]="editMode"
+        (onBtnClick)="onBtnClick.emit($event)"
+        (onTableDataChange)="onTableDataChange.emit($event)"
+        (onOptionChange)="optionChange($event, $event.data)"
+      ></app-modal>
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === RadioGroup">
@@ -226,6 +240,7 @@
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === StepperContainer">
     <mat-horizontal-stepper
+      [selectedIndex]="selectedStep"
       [ngClass]="{ 'stepper-container': true, 'no-stepper-child-container': item.children.length === 0 }"
       labelPosition="bottom"
       #stepper
@@ -257,7 +272,9 @@
             <button *ngIf="i > 0" matStepperPrevious class="step-btn">Previous</button>
           </div>
           <div>
-            <button *ngIf="i != item.children.length - 1" matStepperNext class="step-btn">Next</button>
+            <button *ngIf="i != item.children.length - 1" class="step-btn" (click)="onNext($event, child, stepper)">
+              Next
+            </button>
           </div>
         </div>
       </mat-step>

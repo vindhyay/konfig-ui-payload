@@ -14,6 +14,7 @@ import { ExtendedModule } from "@angular/flex-layout";
 import { UploadComponent } from "./payload-form-field/upload/upload.component";
 import { TransactionTableComponent } from "./payload-form-field/transaction-table/transaction-table.component";
 import { TextFieldComponent } from "./payload-form-field/text-field/text-field.component";
+import { ModalComponent } from './payload-form-field/modal/modal.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { TextFieldComponent } from "./payload-form-field/text-field/text-field.c
     CheckboxGroupComponent,
     UploadComponent,
     TransactionTableComponent,
-    TextFieldComponent
+    TextFieldComponent,
+    ModalComponent
   ],
   imports: [CommonModule, GridsterModule, SharedModule, ExtendedModule],
   providers: [TaskService, AuthService]

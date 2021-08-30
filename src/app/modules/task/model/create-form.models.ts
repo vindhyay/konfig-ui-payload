@@ -1,4 +1,4 @@
-import { getUniqueId } from '../../../utils';
+import { getUniqueId } from "../../../utils";
 
 export const MIN_COLUMNS = 100;
 export const HEADER_MIN_COLUMNS = 50;
@@ -8,21 +8,21 @@ export const NESTED_MIN_COLUMNS = 60;
 export const NESTED_MIN_ROWS = 20;
 
 export enum ButtonTypes {
-  primary = 'primary',
-  info = 'info',
-  success = 'success',
-  secondary = 'secondary'
+  primary = "primary",
+  info = "info",
+  success = "success",
+  secondary = "secondary"
 }
 
 export enum ButtonVariants {
-  raisedButton = 'raisedButton',
-  roundedButton = 'roundedButton',
-  raisedTextButton = 'raisedTextButton',
-  outlinedButton = 'outlinedButton'
+  raisedButton = "raisedButton",
+  roundedButton = "roundedButton",
+  raisedTextButton = "raisedTextButton",
+  outlinedButton = "outlinedButton"
 }
 
 export enum PopulateConfigOptionTypes {
-  onload= "onload",
+  onload = "onload",
   ontrigger = "ontrigger"
 }
 
@@ -35,42 +35,42 @@ export enum ColumnTypes {
 }
 
 export enum ButtonActions {
-  none = 'none',
-  logout = 'logout',
-  submit = 'submit',
+  none = "none",
+  logout = "logout",
+  submit = "submit",
   save = "save",
-  populate = 'populate'
+  populate = "populate"
 }
 
 export enum PayloadType {
-  NEW_PAYLOAD = 'NEW_PAYLOAD',
-  OLD_PAYLOAD = 'OLD_PAYLOAD'
+  NEW_PAYLOAD = "NEW_PAYLOAD",
+  OLD_PAYLOAD = "OLD_PAYLOAD"
 }
 
 export enum AlignTypes {
-  TOP = 'flex-start',
-  BOTTOM = 'flex-end',
-  CENTER = 'center',
-  LEFT = 'flex-start',
-  MIDDLE = 'center',
-  RIGHT = 'flex-end'
+  TOP = "flex-start",
+  BOTTOM = "flex-end",
+  CENTER = "center",
+  LEFT = "flex-start",
+  MIDDLE = "center",
+  RIGHT = "flex-end"
 }
 
 export enum TextStyles {
-  HEADING1 = 'h1',
-  HEADING2 = 'h2',
-  HEADING3 = 'h3',
-  HEADING4 = 'h4',
-  HEADING5 = 'h5',
-  HEADING6 = 'h6',
-  SUBTITLE1 = 'subtitle1',
-  SUBTITLE2 = 'subtitle2',
-  BODY1 = 'body1',
-  BODY2 = 'body2'
+  HEADING1 = "h1",
+  HEADING2 = "h2",
+  HEADING3 = "h3",
+  HEADING4 = "h4",
+  HEADING5 = "h5",
+  HEADING6 = "h6",
+  SUBTITLE1 = "subtitle1",
+  SUBTITLE2 = "subtitle2",
+  BODY1 = "body1",
+  BODY2 = "body2"
 }
 
 export enum ResourceType {
-  PAYLOAD_FIELD = 'payload-field'
+  PAYLOAD_FIELD = "payload-field"
 }
 
 export const PayloadTypes = {
@@ -79,11 +79,11 @@ export const PayloadTypes = {
 };
 
 export enum DATA_TYPES {
-  STRING = 'string',
-  NUMBER = 'number',
-  BOOLEAN = 'boolean',
-  OBJECT = 'object',
-  ARRAY = 'array'
+  STRING = "string",
+  NUMBER = "number",
+  BOOLEAN = "boolean",
+  OBJECT = "object",
+  ARRAY = "array"
 }
 
 export interface WidgetItem {
@@ -97,25 +97,26 @@ export interface WidgetItem {
 }
 
 export enum WidgetTypes {
-  Text = 'Text',
+  Text = "Text",
   Table = "Table",
   TransactionTable = "SavedTable",
-  Button = 'Button',
-  TextInput = 'TextInput',
-  TextArea = 'TextArea',
-  Number = 'Number',
-  Dropdown = 'Dropdown',
-  DatePicker = 'DatePicker',
-  Checkbox = 'Checkbox',
-  CheckboxGroup = 'CheckboxGroup',
-  RadioGroup = 'RadioGroup',
-  Container = 'Container',
+  Button = "Button",
+  Modal = "Modal",
+  TextInput = "TextInput",
+  TextArea = "TextArea",
+  Number = "Number",
+  Dropdown = "Dropdown",
+  DatePicker = "DatePicker",
+  Checkbox = "Checkbox",
+  CheckboxGroup = "CheckboxGroup",
+  RadioGroup = "RadioGroup",
+  Container = "Container",
   TabContainer = "TabContainer",
   StepperContainer = "StepperContainer",
-  Image = 'Image',
-  Header = 'Header',
-  Footer = 'Footer',
-  Upload = 'Upload'
+  Image = "Image",
+  Header = "Header",
+  Footer = "Footer",
+  Upload = "Upload"
 }
 class Validators {
   required: boolean;
@@ -234,8 +235,8 @@ export class TableMetaData extends MetaData {
       sort = false,
       filter = false,
       pagination = false,
-        options = [],
-        color = "#000000",
+      options = [],
+      color = "#000000",
       bgColor = "#ffffff"
     } = data;
     this.columns = columns;
@@ -334,7 +335,6 @@ export class SavedTransactionMetaData extends MetaData {
   }
 }
 
-
 export class DropdownMetaData extends MetaData {
   tooltip: string;
   placeholder: string;
@@ -379,7 +379,7 @@ export class TextInputMetaData extends MetaData {
   rightIcon: string;
   constructor(data) {
     super(data);
-    const { mask = '', icon = '', tooltip = '', placeholder = '', leftIcon = '', rightIcon = '' } = data;
+    const { mask = "", icon = "", tooltip = "", placeholder = "", leftIcon = "", rightIcon = "" } = data;
     this.mask = mask;
     this.icon = icon;
     this.tooltip = tooltip;
@@ -398,8 +398,8 @@ export class ButtonMetaData extends MetaData {
   constructor(data) {
     super(data);
     const {
-      icon = '',
-      iconPos = 'left',
+      icon = "",
+      iconPos = "left",
       type = ButtonTypes.primary,
       variant = ButtonVariants.raisedButton,
       clickAction = ButtonActions.none
@@ -419,7 +419,7 @@ export class TextAreaMetaData extends MetaData {
   autoResize: boolean;
   constructor(data) {
     super(data);
-    const { tooltip = '', placeholder = '', rowsCount = 3, autoResize = false } = data;
+    const { tooltip = "", placeholder = "", rowsCount = 3, autoResize = false } = data;
     this.tooltip = tooltip;
     this.placeholder = placeholder;
     this.rowsCount = rowsCount;
@@ -434,7 +434,7 @@ export class DatePickerMetaData extends MetaData {
   tooltip: string;
   constructor(data) {
     super(data);
-    const { viewDateFormat = 'mm/dd/yy', returnDateFormat = 'isoTimestamp', tooltip = '', placeholder = '' } = data;
+    const { viewDateFormat = "mm/dd/yy", returnDateFormat = "isoTimestamp", tooltip = "", placeholder = "" } = data;
     this.viewDateFormat = viewDateFormat;
     this.returnDateFormat = returnDateFormat;
     this.tooltip = tooltip;
@@ -450,7 +450,7 @@ export class NumberMetaData extends MetaData {
   tooltip: string;
   constructor(data) {
     super(data);
-    const { prefix = '', suffix = '', tooltip = '', placeholder = '', format = false } = data;
+    const { prefix = "", suffix = "", tooltip = "", placeholder = "", format = false } = data;
     this.format = format;
     this.prefix = prefix;
     this.suffix = suffix;
@@ -469,11 +469,11 @@ export class TextMetaData extends MetaData {
   constructor(data) {
     super(data);
     const {
-      _value = 'Hello World',
+      _value = "Hello World",
       textStyle = TextStyles.BODY1,
       horizontalAlign = AlignTypes.MIDDLE,
       verticalAlign = AlignTypes.CENTER,
-      color = '#000000',
+      color = "#000000",
       fontWeight = 400
     } = data;
     this.color = color;
@@ -500,7 +500,7 @@ export class Value {
   id: string;
   value: any;
   constructor(data) {
-    const { id, value = '' } = data;
+    const { id, value = "" } = data;
     this.id = id;
     this.value = value;
   }
@@ -510,7 +510,7 @@ export class CheckboxMetaData extends MetaData {
   tooltip: string;
   constructor(data) {
     super(data);
-    const { tooltip = '' } = data;
+    const { tooltip = "" } = data;
     this.tooltip = tooltip;
   }
 }
@@ -527,14 +527,14 @@ export class CheckboxGroupMetaData extends CheckboxMetaData {
   constructor(data) {
     super(data);
     const {
-      tooltip = '',
+      tooltip = "",
       options = [],
-      optionType = 'manual',
-      optionLabel = 'name',
-      optionValue = 'value',
+      optionType = "manual",
+      optionLabel = "name",
+      optionValue = "value",
       isLabelAndValue = false,
-      dataResourceId = '',
-      datalistId = ''
+      dataResourceId = "",
+      datalistId = ""
     } = data;
     this.optionType = optionType;
     this.tooltip = tooltip;
@@ -558,13 +558,13 @@ export class RadioGroupMetaData extends CheckboxMetaData {
   constructor(data) {
     super(data);
     const {
-      tooltip = '',
+      tooltip = "",
       options = [],
-      optionType = 'manual',
-      optionLabel = 'name',
-      optionValue = 'value',
+      optionType = "manual",
+      optionLabel = "name",
+      optionValue = "value",
       isLabelAndValue = false,
-      alignOptions = 'Horizontal',
+      alignOptions = "Horizontal"
     } = data;
     this.optionType = optionType;
     this.tooltip = tooltip;
@@ -580,7 +580,7 @@ export class ImageMetaData extends MetaData {
   url: string;
   constructor(data) {
     super(data);
-    const { url = '' } = data;
+    const { url = "" } = data;
     this.url = url;
   }
 }
@@ -589,7 +589,7 @@ export class HeaderMetaData extends MetaData {
   backgroundColor: string;
   constructor(data) {
     super(data);
-    const { backgroundColor = '#ffffff' } = data;
+    const { backgroundColor = "#ffffff" } = data;
     this.backgroundColor = backgroundColor;
   }
 }
@@ -597,16 +597,35 @@ export class FooterMetaData extends MetaData {
   backgroundColor: string;
   constructor(data) {
     super(data);
-    const { backgroundColor = '#fff' } = data;
+    const { backgroundColor = "#fff" } = data;
     this.backgroundColor = backgroundColor;
   }
 }
-export class UploadMetaData extends  MetaData{
+export class UploadMetaData extends MetaData {
   tooltip: string;
   constructor(data) {
     super(data);
     const { tooltip = "" } = data;
     this.tooltip = tooltip;
+  }
+}
+
+export class ModalMetaData extends MetaData {
+  title: string;
+  icon: string;
+  height: string;
+  width: string;
+  color: string;
+  bgColor: string;
+  constructor(data) {
+    super(data);
+    const { title = "", icon = "", height = "400px", width = "500px", color = "#000000", bgColor = "#ffffff" } = data;
+    this.title = title;
+    this.icon = icon;
+    this.height = height;
+    this.width = width;
+    this.color = color;
+    this.bgColor = bgColor;
   }
 }
 
@@ -618,22 +637,22 @@ export class BaseWidget {
   y: number;
   isViewOnly: boolean;
   metaData:
-      | TextMetaData
-      | ContainerMetaData
-      | TextInputMetaData
-      | NumberMetaData
-      | CheckboxMetaData
-      | ImageMetaData
-      | HeaderMetaData
-      | FooterMetaData
-      | CheckboxGroupMetaData
-      | DropdownMetaData
-      | DatePickerMetaData
-      | RadioGroupMetaData
-      | TextAreaMetaData
-      | ButtonMetaData
-      | TableMetaData
-      | UploadMetaData;
+    | TextMetaData
+    | ContainerMetaData
+    | TextInputMetaData
+    | NumberMetaData
+    | CheckboxMetaData
+    | ImageMetaData
+    | HeaderMetaData
+    | FooterMetaData
+    | CheckboxGroupMetaData
+    | DropdownMetaData
+    | DatePickerMetaData
+    | RadioGroupMetaData
+    | TextAreaMetaData
+    | ButtonMetaData
+    | TableMetaData
+    | UploadMetaData;
   name: string;
   displayName: string;
   label: string;
@@ -653,16 +672,16 @@ export class BaseWidget {
     const {
       id,
       isViewOnly = false,
-      displayName = '',
-      name = '',
-      label = '',
+      displayName = "",
+      name = "",
+      label = "",
       dataType,
       widgetType,
       isPrePopulated = false,
       status = true,
       resourceType = ResourceType.PAYLOAD_FIELD,
       children,
-      error = '',
+      error = "",
       metaData,
       validators,
       cols = 5,

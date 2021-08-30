@@ -1,10 +1,10 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import { BaseWidget, DropdownMetaData } from '../../model/create-form.models';
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { BaseWidget, DropdownMetaData } from "../../model/create-form.models";
 
 @Component({
-  selector: 'app-dropdown-field',
-  templateUrl: './dropdown-field.component.html',
-  styleUrls: ['./dropdown-field.component.scss']
+  selector: "app-dropdown-field",
+  templateUrl: "./dropdown-field.component.html",
+  styleUrls: ["./dropdown-field.component.scss"]
 })
 export class DropdownFieldComponent implements OnInit {
   @Input() item: BaseWidget = {} as BaseWidget;
@@ -16,7 +16,7 @@ export class DropdownFieldComponent implements OnInit {
     return this.item.metaData as DropdownMetaData;
   }
   ngOnInit(): void {}
-  onOptionChange($event:any){
-    this.optionChange.emit($event)
+  onOptionChange($event: any) {
+    this.optionChange.emit($event);
   }
 }
