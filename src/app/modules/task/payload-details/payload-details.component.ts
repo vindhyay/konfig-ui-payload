@@ -41,7 +41,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
     this.activatedRoute.queryParamMap.subscribe((queryParams: any) => {
       this.sessionFields = Object.keys(queryParams.params).length
         ? queryParams.params
-        : { name: this.currentUser.name, userId: this.currentUser.userId, email: this.currentUser.emailId };
+        : { name: this.currentUser?.name, userId: this.currentUser?.userId, email: this.currentUser?.emailId };
     });
     this.activatedRoute.paramMap.subscribe(params => {
       this.workflowId = params.get("workflowId");
@@ -174,7 +174,9 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
         const { data, error } = parseApiResponse(result);
         if (data && !error) {
           this.notificationService.success("Transaction Submitted Successfully", "Success");
-          this.createTransaction(this.workflowId);
+          this.transactionDetails = data;
+          this.taskService.setTransactionDetails(data);
+          this.id = data.id;
         } else {
           this.notificationService.error(error.errorMessage, "Error");
         }

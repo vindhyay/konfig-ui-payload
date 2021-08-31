@@ -1,15 +1,15 @@
-import { Injectable, OnDestroy } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Subject, Subscription } from 'rxjs';
-import {ActivatedRoute, Router} from '@angular/router';
-import { StorageService } from 'src/app/services/storage.service';
-import { BaseService } from '../../../services/base.service';
-import { LoginDataModel, UserDataModel, SelectedPreferencesModel, UserRole } from '../models';
-import {AppConfigService} from "../../../app-config-providers/app-config.service";
-import {UserService} from "../../user/services/user.service";
+import { Injectable, OnDestroy } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { Subject, Subscription } from "rxjs";
+import { ActivatedRoute, Router } from "@angular/router";
+import { StorageService } from "src/app/services/storage.service";
+import { BaseService } from "../../../services/base.service";
+import { LoginDataModel, UserDataModel, SelectedPreferencesModel, UserRole } from "../models";
+import { AppConfigService } from "../../../app-config-providers/app-config.service";
+import { UserService } from "../../user/services/user.service";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class AuthService extends BaseService implements OnDestroy {
   private subscription = new Subscription();
@@ -23,7 +23,7 @@ export class AuthService extends BaseService implements OnDestroy {
     private router: Router,
     protected config: AppConfigService,
     protected userService: UserService,
-    private activatedRoute: ActivatedRoute,
+    private activatedRoute: ActivatedRoute
   ) {
     super(http);
   }
@@ -47,7 +47,7 @@ export class AuthService extends BaseService implements OnDestroy {
       const url = this.config.getApiUrls().logoutURL;
       this.getData(url).subscribe(
         result => {
-          console.log('result', result);
+          console.log("result", result);
         },
         error => {
           console.log(error);
@@ -59,9 +59,12 @@ export class AuthService extends BaseService implements OnDestroy {
     this.storage.clear();
     this.activatedRoute.firstChild.queryParams.subscribe(params => {
       const queryParams = params;
-      const pathParams = this.activatedRoute.snapshot.firstChild.params
-      this.router.navigate([pathParams?.workflowId+'/auth'],{queryParams: queryParams, relativeTo: this.activatedRoute});
-    })
+      const pathParams = this.activatedRoute.snapshot.firstChild.params;
+      this.router.navigate([pathParams?.workflowId + "/auth"], {
+        queryParams: queryParams,
+        relativeTo: this.activatedRoute
+      });
+    });
   }
 
   public authenticate(loginData: LoginDataModel) {
@@ -72,7 +75,7 @@ export class AuthService extends BaseService implements OnDestroy {
 
   public getUserDetails(appId) {
     const url = `${this.config.getApiUrls().permissionsURL}/${appId}`;
-    return this.getData(url)
+    return this.getData(url);
   }
 
   public checkCurrentState() {
@@ -85,7 +88,7 @@ export class AuthService extends BaseService implements OnDestroy {
       try {
         return JSON.parse(atob(this.storage.user));
       } catch (error) {
-        console.log('Failed to parse user details');
+        console.log("Failed to parse user details");
       }
     }
     return null;
@@ -100,14 +103,14 @@ export class AuthService extends BaseService implements OnDestroy {
 
   getAppAuthToken() {
     const authData = {
-      userName: 'AccountOpening',
-      passWord: 'acctOpening'
+      userName: "AccountOpening",
+      passWord: "acctOpening"
     };
     const url = this.config.getApiUrls().authenticateUrl;
     return this.postData(url, authData, {});
   }
 
-  getAgentRole(){
+  getAgentRole() {
     const roles = this.getCurrentUser()?.roles || [];
     return roles.find(role => role.originalName === UserRole.Agent);
   }
@@ -126,7 +129,7 @@ export class AuthService extends BaseService implements OnDestroy {
 
   checkCurrentRole(role: string) {
     let isExists = false;
-    const { selectedRole: { originalName = '' } = {} } = this.userService.selection.value || {};
+    const { selectedRole: { originalName = "" } = {} } = this.userService.selection.value || {};
     if (originalName.toLowerCase() === role.toLowerCase()) {
       isExists = true;
     }

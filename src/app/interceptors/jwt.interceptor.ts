@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
-import { EMPTY, Observable } from 'rxjs';
-import { StorageService } from 'src/app/services/storage.service';
-import { AuthService } from '../modules/auth/services/auth.service';
-import { AppConfigService } from '../app-config-providers/app-config.service';
+import { Injectable } from "@angular/core";
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from "@angular/common/http";
+import { EMPTY, Observable } from "rxjs";
+import { StorageService } from "src/app/services/storage.service";
+import { AuthService } from "../modules/auth/services/auth.service";
+import { AppConfigService } from "../app-config-providers/app-config.service";
 
 /**
  * To add token to every http request except config.json URL
@@ -17,16 +17,16 @@ export class JwtInterceptor implements HttpInterceptor {
     this.apiUrls = this.config.getApiUrls();
     if (
       this.authService.isAuthenticated() ||
-      request.url.indexOf('/assets/config/config.json') > -1 ||
+      request.url.indexOf("/assets/config/config.json") > -1 ||
       request.url === this.apiUrls.logoutURL ||
       request.url === this.apiUrls.authenticateUrl ||
-      request.url.indexOf('/user/permissions')
+      request.url.indexOf("/user/permissions") > -1
     ) {
       const cloneRequest = request.clone({
         setHeaders: {
-          'Cache-Control': 'no-cache, no-store, must-revalidate, post-check=0, pre-check=0',
-          Pragma: 'no-cache',
-          Expires: '0'
+          "Cache-Control": "no-cache, no-store, must-revalidate, post-check=0, pre-check=0",
+          Pragma: "no-cache",
+          Expires: "0"
         }
       });
       return next.handle(cloneRequest);

@@ -60,7 +60,7 @@
     </tr>
   </ng-template>
   <ng-template pTemplate="footer" class="table-footer" >
-    <div class="table-footer" *ngIf="addRows && !tableData.length">
+    <div class="table-footer" *ngIf="addRows && (!tableData.length || !pagination)">
       <p-button (click)="addRow()" type="button" icon="pi pi-plus" styleClass="p-button-text"></p-button>
     </div>
   </ng-template>

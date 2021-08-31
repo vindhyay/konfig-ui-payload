@@ -223,6 +223,7 @@ export class TableMetaData extends MetaData {
   sort: boolean;
   filter: boolean;
   pagination: boolean;
+  addRows: boolean;
   options: Array<any>;
   color: string;
   bgColor: string;
@@ -235,6 +236,7 @@ export class TableMetaData extends MetaData {
       sort = false,
       filter = false,
       pagination = false,
+      addRows = false,
       options = [],
       color = "#000000",
       bgColor = "#ffffff"
@@ -248,6 +250,7 @@ export class TableMetaData extends MetaData {
     this.options = options;
     this.color = color;
     this.bgColor = bgColor;
+    this.addRows = addRows;
   }
 }
 
