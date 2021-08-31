@@ -87,9 +87,10 @@
     <div
       *ngIf="!item?.metaData?.advanced"
       [class]="'text-content text-style-' + item?.metaData?.textStyle"
-      [ngStyle.gt-sm]="{
+      [ngStyle]="{
         'justify-content': item?.metaData?.horizontalAlign,
         'align-items': item?.metaData?.verticalAlign,
+        'text-align': item?.metaData?.horizontalAlign,
         color: item?.metaData?.color,
         'font-weight': item?.metaData?.fontWeight
       }"

@@ -1,7 +1,12 @@
 <gridster
   [options]="options"
   [ngClass]="{ 'display-grid': false }"
-  [ngStyle]="{ 'background-color': parent?.metaData?.backgroundColor }"
+  [ngStyle]="{
+    'background-color': parent?.metaData?.backgroundColor,
+    backgroundImage: parent?.metaData?.bgImageUrl ? 'url(' + parent?.metaData?.bgImageUrl + ')' : 'none',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center'
+  }"
 >
   <gridster-item
     [ngClass]="{
