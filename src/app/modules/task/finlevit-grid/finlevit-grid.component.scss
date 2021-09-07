@@ -40,6 +40,20 @@
       color: #ffffff;
       border-radius: 0;
     }
+    &.hidden-item{
+      border: 1px dashed #add8f7;
+      overflow: visible;
+      z-index: 2;
+      display: block;
+      .hide-item-field{
+        position: absolute;
+        top: -18px;
+        color: #add8f7;
+        border: 1px solid #add8f7;
+        line-height: 1;
+        padding: 0 5px;
+      }
+    }
   }
   ::ng-deep {
     .gridster-column {

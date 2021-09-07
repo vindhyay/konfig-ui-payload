@@ -1,4 +1,5 @@
 <gridster
+  #gridsterComponent
   [options]="options"
   [ngClass]="{ 'display-grid': false }"
   [ngStyle]="{
@@ -15,7 +16,6 @@
       'header-container': item?.metaData?.widgetType === Header,
       'footer-container': item?.metaData?.widgetType === Footer,
       'button-container': item?.metaData?.widgetType === Button
-
     }"
     [item]="item"
     *ngFor="let item of items"
