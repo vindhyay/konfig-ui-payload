@@ -100,6 +100,7 @@ export enum WidgetTypes {
   Text = "Text",
   Table = "Table",
   TransactionTable = "SavedTable",
+  CollapseContainer = "CollapseContainer",
   Button = "Button",
   Modal = "Modal",
   TextInput = "TextInput",
@@ -171,6 +172,7 @@ export class MetaData {
   dataResourceId: string;
   isHidden: boolean;
   isSessionField: boolean;
+  movement: "UP" | "DOWN" | null;
   constructor(data) {
     const {
       widgetId,
@@ -183,7 +185,8 @@ export class MetaData {
       populateResponsePath = null,
       populateConfigType = PopulateConfigOptionTypes.ontrigger,
       isHidden = false,
-      isSessionField = false
+      isSessionField = false,
+      movement = null
     } = data;
     this.widgetId = widgetId || getUniqueId("widget");
     this.widgetType = widgetType;
@@ -196,6 +199,7 @@ export class MetaData {
     this.dataResourceId = dataResourceId;
     this.isHidden = isHidden;
     this.isSessionField = isSessionField;
+    this.movement = movement;
   }
 }
 
@@ -499,6 +503,12 @@ export class ContainerMetaData extends MetaData {
   }
 }
 
+export class CollapseContainerMetaData extends ContainerMetaData {
+  constructor(data) {
+    super(data);
+  }
+}
+
 export class Value {
   id: string;
   value: any;
@@ -638,6 +648,17 @@ export class BaseWidget {
   rows: number;
   x: number;
   y: number;
+
+  minItemCols: number;
+  maxItemCols: number;
+  minItemRows: number;
+  maxItemRows: number;
+
+  hideRows: number;
+  defaultRows: number;
+  defaultMinItemRows: number;
+  defaultMinItemCols: number;
+
   isViewOnly: boolean;
   metaData:
     | TextMetaData
@@ -655,7 +676,8 @@ export class BaseWidget {
     | TextAreaMetaData
     | ButtonMetaData
     | TableMetaData
-    | UploadMetaData;
+    | UploadMetaData
+    | CollapseContainerMetaData;
   name: string;
   displayName: string;
   label: string;
@@ -742,6 +764,9 @@ export class BaseWidget {
           break;
         case WidgetTypes.Upload:
           this.metaData = new UploadMetaData(data);
+          break;
+        case WidgetTypes.CollapseContainer:
+          this.metaData = new CollapseContainerMetaData(data);
           break;
         default:
           this.metaData = null;

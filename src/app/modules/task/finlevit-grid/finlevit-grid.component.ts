@@ -103,46 +103,61 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
       });
     }
     this.editorService.widgetChange$.subscribe(widget => {
-      console.log("iam here");
       this.checkItemSize(widget);
     });
+  }
+
+  getEligibleItems(items, baseGridItem, prevItems) {
+    const eligibleItems = items.filter(eachItem => {
+      const item = eachItem.item;
+      const baseItem = baseGridItem.$item;
+      return (
+        item.metaData.widgetId !== baseGridItem.item.metaData.widgetId &&
+        item.y >= baseItem.y + baseItem.rows &&
+        item.x + item.cols >= (baseItem.x || baseItem.x + baseItem.cols) &&
+        baseItem.x + baseItem.cols > item.x &&
+        !prevItems.find(prevItem => prevItem.item.metaData.widgetId === item.metaData.widgetId)
+      );
+    });
+    const itemEligibleItems = eligibleItems.flatMap(elgItem => this.getEligibleItems(items, elgItem, eligibleItems));
+    return [...eligibleItems, ...itemEligibleItems];
   }
 
   checkItemSize(widget) {
     const gridItems = (this.gridsterRef?.grid || []).sort((a, b) => a?.item?.y - b?.item?.y);
     if (widget) {
+      const widgetGridItem = gridItems.find(item => item.item.metaData.widgetId === widget.metaData.widgetId);
+      if (!widgetGridItem) {
+        return;
+      }
+      const eligibleItems = this.getEligibleItems(gridItems, widgetGridItem, []);
       const changeGridItemData = widget;
-      const x = changeGridItemData?.x;
-      const y = changeGridItemData?.y;
-      gridItems.forEach(gridItem => {
-        const eachGridItem = gridItem.item;
-        if (
-          x + changeGridItemData.cols > eachGridItem.x &&
-          eachGridItem.x + eachGridItem.cols > x &&
-          eachGridItem.y >= y &&
-          eachGridItem?.metaData?.widgetId !== changeGridItemData?.metaData?.widgetId
-        ) {
-          if (changeGridItemData?.metaData?.isHidden) {
-            eachGridItem.y = eachGridItem.y - changeGridItemData?.defaultRows;
-            // console.log("hidden", eachGridItem, this.checkCollision(eachGridItem, gridItems));
+      const hideRows = changeGridItemData?.hideRows || 0;
+      if (eligibleItems.length) {
+        eligibleItems.forEach(gridItem => {
+          const eachGridItem = gridItem.item;
+          if (changeGridItemData?.metaData?.movement === "UP") {
+            eachGridItem.y = eachGridItem.y - changeGridItemData?.defaultRows + hideRows;
             if (this.checkCollision(eachGridItem, gridItems)) {
               eachGridItem.y = eachGridItem.y + changeGridItemData?.defaultRows;
             }
-          } else {
+          } else if (changeGridItemData?.metaData?.movement === "DOWN") {
             const collisionItem: any = this.checkCollision(changeGridItemData, gridItems);
-            // console.log("not hidden", eachGridItem, collisionItem);
             if (collisionItem) {
-              eachGridItem.y = eachGridItem.y + changeGridItemData?.defaultRows;
-              this.checkItemSize(eachGridItem);
+              eachGridItem.y = eachGridItem.y + changeGridItemData?.defaultRows - hideRows;
+            } else if (this.checkCollision(eachGridItem, gridItems)) {
+              eachGridItem.y = eachGridItem.y + changeGridItemData?.defaultRows - hideRows;
             }
           }
-        }
-        if (eachGridItem?.metaData?.widgetId === changeGridItemData?.metaData?.widgetId) {
-          eachGridItem.rows = changeGridItemData.rows;
-        }
-        gridItem.updateOptions();
-        gridItem.setSize();
-      });
+          widgetGridItem.updateOptions();
+          widgetGridItem.setSize();
+          gridItem.updateOptions();
+          gridItem.setSize();
+        });
+      } else {
+        widgetGridItem.updateOptions();
+        widgetGridItem.setSize();
+      }
     }
   }
 

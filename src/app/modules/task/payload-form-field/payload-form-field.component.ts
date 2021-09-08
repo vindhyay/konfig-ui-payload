@@ -6,6 +6,7 @@ import { BaseWidget, NESTED_MIN_COLUMNS, TableMetaData, WidgetTypes } from "../m
 import { getErrorMessages, validateFields } from "../../../utils";
 import { TaskService } from "../services/task.service";
 import { AuthService } from "../../auth/services/auth.service";
+import { EditorService } from "../editor.service";
 
 @Component({
   selector: "app-payload-form-field",
@@ -20,6 +21,7 @@ export class PayloadFormFieldComponent implements OnInit {
   Table: WidgetTypes = WidgetTypes.Table;
   TransactionTable: WidgetTypes = WidgetTypes.TransactionTable;
   Button: WidgetTypes = WidgetTypes.Button;
+  CollapseContainer: WidgetTypes = WidgetTypes.CollapseContainer;
   Container: WidgetTypes = WidgetTypes.Container;
   TabContainer: WidgetTypes = WidgetTypes.TabContainer;
   StepperContainer: WidgetTypes = WidgetTypes.StepperContainer;
@@ -43,7 +45,12 @@ export class PayloadFormFieldComponent implements OnInit {
   transactionStatus = null;
   hide = false;
   disable = false;
-  constructor(private taskService: TaskService, private authService: AuthService) {}
+  collapseContainerStatus = true;
+  constructor(
+    private taskService: TaskService,
+    private authService: AuthService,
+    private editorService: EditorService
+  ) {}
   @Input()
   get item() {
     return this._item;
@@ -212,5 +219,19 @@ export class PayloadFormFieldComponent implements OnInit {
 
   selectionChange($event) {
     console.log($event);
+  }
+  onCollapse(status, item) {
+    if (!status) {
+      this.item.rows = item.hideRows || 0;
+      this.item.minItemRows = item.hideRows || 0;
+      this.item.metaData.movement = "UP";
+    } else {
+      this.item.rows = item.defaultRows;
+      this.item.minItemRows = item.defaultMinItemRows;
+      this.item.minItemCols = item.defaultMinItemCols;
+      this.item.metaData.movement = "DOWN";
+    }
+    this.editorService.widgetChange.next(item);
+    this.editorService.setContainerHeight(this.taskService.transactionDetailsSubject.value?.uiPayload);
   }
 }
