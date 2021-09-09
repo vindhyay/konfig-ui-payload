@@ -9,7 +9,7 @@
       (onPopulate)="populateTransaction($event)"
       (onUniqueFieldChange)="uniqueFieldChange($event)"
     >
-      <div *ngIf="transactionDetails?.errorMessage" class="error-msg" child>
+      <div *ngIf="transactionDetails?.errorMessage?.length" class="error-msg" child>
         <span class="material-icons mr-2"> error </span><span>{{ transactionDetails?.errorMessage }}</span>
       </div>
     </app-payload-view-form>
