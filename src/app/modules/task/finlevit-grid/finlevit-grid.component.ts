@@ -38,6 +38,7 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
   Header: WidgetTypes = WidgetTypes.Header;
   Footer: WidgetTypes = WidgetTypes.Footer;
   Button: WidgetTypes = WidgetTypes.Button;
+  ErrorContainer: WidgetTypes = WidgetTypes.ErrorContainer;
   transactionId: any;
   taskId: any;
   @ViewChild("gridsterComponent", { static: false }) gridsterRef: any;
@@ -103,6 +104,7 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
       });
     }
     this.editorService.widgetChange$.subscribe(widget => {
+      console.log(widget);
       this.checkItemSize(widget);
     });
   }
@@ -114,7 +116,8 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
       return (
         item.metaData.widgetId !== baseGridItem.item.metaData.widgetId &&
         item.y >= baseItem.y + baseItem.rows &&
-        item.x + item.cols >= (baseItem.x || baseItem.x + baseItem.cols) &&
+        (item.x + item.cols >= (baseItem.x || baseItem.x + baseItem.cols) ||
+          (item.x > baseItem.x && item.x + item.cols < baseItem.x + baseItem.cols)) &&
         baseItem.x + baseItem.cols > item.x &&
         !prevItems.find(prevItem => prevItem.item.metaData.widgetId === item.metaData.widgetId)
       );

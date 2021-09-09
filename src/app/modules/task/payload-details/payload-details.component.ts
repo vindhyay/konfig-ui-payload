@@ -6,8 +6,10 @@ import { AuthService } from "../../auth/services/auth.service";
 import { BaseComponent } from "../../shared/base/base.component";
 import { NotificationService } from "../../../services/notification.service";
 import { UserDataModel } from "../../auth/models";
-import { getUniqueId, getValueFromObjectByPath, parseApiResponse } from "../../../utils";
+import { getValueFromObjectByPath, parseApiResponse } from "../../../utils";
 import { TaskService } from "../services/task.service";
+import { BaseWidget, DATA_TYPES, WidgetTypes } from "../model/create-form.models";
+import { EditorService } from "../editor.service";
 
 @Component({
   selector: "app-payload-details",
@@ -21,7 +23,8 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
     private userService: UserService,
     private authService: AuthService,
     private notificationService: NotificationService,
-    private taskService: TaskService
+    private taskService: TaskService,
+    private editorService: EditorService
   ) {
     super();
   }
@@ -53,6 +56,35 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
       if (value) {
         this.transactionDetails = value;
         this.formFields = value?.uiPayload || [];
+        const header = this.formFields.find(item => item?.metaData?.widgetType === WidgetTypes.Header);
+        const errorContainer = this.formFields.find(item => item?.metaData?.widgetType === WidgetTypes.ErrorContainer);
+        if (header && value?.errorMessage?.length && !errorContainer) {
+          const errorRows = value?.errorMessage.length * 3 + 5;
+          const errorContainer = new BaseWidget({
+            label: "Container",
+            description: "To hold error components",
+            widgetType: WidgetTypes.ErrorContainer,
+            cols: header.cols,
+            rows: 2,
+            x: header.x,
+            y: header.y + header.rows,
+            minItemCols: 20,
+            minItemRows: 0,
+            hideRows: 2,
+            defaultRows: errorRows,
+            defaultMinItemRows: 0,
+            defaultMinItemCols: 20,
+            dataType: DATA_TYPES.OBJECT,
+            movement: null,
+            value: { value: this.transactionDetails.errorMessage }
+          });
+          this.formFields.push(errorContainer);
+          setTimeout(() => {
+            errorContainer.rows = errorRows;
+            errorContainer.metaData.movement = "DOWN";
+            this.editorService.widgetChange.next(errorContainer);
+          });
+        }
       }
     });
   }

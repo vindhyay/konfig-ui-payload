@@ -99,6 +99,7 @@ export interface WidgetItem {
 export enum WidgetTypes {
   Text = "Text",
   Table = "Table",
+  ErrorContainer = "ErrorContainer",
   TransactionTable = "SavedTable",
   CollapseContainer = "CollapseContainer",
   Button = "Button",
@@ -503,6 +504,12 @@ export class ContainerMetaData extends MetaData {
   }
 }
 
+export class ErrorContainerMetadata extends ContainerMetaData {
+  constructor(data) {
+    super(data);
+  }
+}
+
 export class CollapseContainerMetaData extends ContainerMetaData {
   constructor(data) {
     super(data);
@@ -677,7 +684,8 @@ export class BaseWidget {
     | ButtonMetaData
     | TableMetaData
     | UploadMetaData
-    | CollapseContainerMetaData;
+    | CollapseContainerMetaData
+    | ErrorContainerMetadata;
   name: string;
   displayName: string;
   label: string;
@@ -713,7 +721,12 @@ export class BaseWidget {
       rows = 3,
       x,
       y,
-      value
+      value,
+      minItemCols,
+      minItemRows,
+      maxItemCols,
+      maxItemRows,
+      defaultRows
     } = data;
     if (!metaData) {
       switch (widgetType) {
@@ -768,6 +781,9 @@ export class BaseWidget {
         case WidgetTypes.CollapseContainer:
           this.metaData = new CollapseContainerMetaData(data);
           break;
+        case WidgetTypes.ErrorContainer:
+          this.metaData = new ErrorContainerMetadata(data);
+          break;
         default:
           this.metaData = null;
           break;
@@ -793,5 +809,10 @@ export class BaseWidget {
     this.error = error;
     this.children = children || [];
     this.value = new Value(value || {});
+    this.minItemCols = minItemCols;
+    this.minItemRows = minItemRows;
+    this.maxItemCols = maxItemCols;
+    this.maxItemRows = maxItemRows;
+    this.defaultRows = defaultRows;
   }
 }

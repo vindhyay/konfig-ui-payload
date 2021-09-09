@@ -15,7 +15,8 @@
       'text-container': item?.metaData?.widgetType === Text,
       'header-container': item?.metaData?.widgetType === Header,
       'footer-container': item?.metaData?.widgetType === Footer,
-      'button-container': item?.metaData?.widgetType === Button
+      'button-container': item?.metaData?.widgetType === Button,
+      'error-container': item?.metaData?.widgetType === ErrorContainer
     }"
     [item]="item"
     *ngFor="let item of items"

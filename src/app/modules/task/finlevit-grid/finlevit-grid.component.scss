@@ -30,6 +30,9 @@
     &.selected {
       border: 1px solid orange;
     }
+    &.error-container{
+      padding: 2rem 10rem;
+    }
     &.header-container {
       padding: 0;
       border-radius: 0;
