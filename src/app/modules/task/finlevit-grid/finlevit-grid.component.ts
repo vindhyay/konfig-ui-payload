@@ -104,7 +104,6 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
       });
     }
     this.editorService.widgetChange$.subscribe(widget => {
-      console.log(widget);
       this.checkItemSize(widget);
     });
   }
@@ -129,27 +128,27 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
   checkItemSize(widget) {
     const gridItems = (this.gridsterRef?.grid || []).sort((a, b) => a?.item?.y - b?.item?.y);
     if (widget) {
-      const widgetGridItem = gridItems.find(item => item.item.metaData.widgetId === widget.metaData.widgetId);
+      const widgetGridItem = gridItems.find(item => item?.item?.metaData?.widgetId === widget?.metaData?.widgetId);
       if (!widgetGridItem) {
         return;
       }
       const eligibleItems = this.getEligibleItems(gridItems, widgetGridItem, []);
       const changeGridItemData = widget;
-      const hideRows = changeGridItemData?.hideRows || 0;
+      const hideRows = changeGridItemData?.metaData?.hideRows || 0;
       if (eligibleItems.length) {
         eligibleItems.forEach(gridItem => {
           const eachGridItem = gridItem.item;
           if (changeGridItemData?.metaData?.movement === "UP") {
-            eachGridItem.y = eachGridItem.y - changeGridItemData?.defaultRows + hideRows;
+            eachGridItem.y = eachGridItem.y - changeGridItemData?.metaData?.defaultRows - hideRows;
             if (this.checkCollision(eachGridItem, gridItems)) {
-              eachGridItem.y = eachGridItem.y + changeGridItemData?.defaultRows;
+              eachGridItem.y = eachGridItem.y + changeGridItemData?.metaData?.defaultRows + hideRows;
             }
           } else if (changeGridItemData?.metaData?.movement === "DOWN") {
             const collisionItem: any = this.checkCollision(changeGridItemData, gridItems);
             if (collisionItem) {
-              eachGridItem.y = eachGridItem.y + changeGridItemData?.defaultRows - hideRows;
+              eachGridItem.y = eachGridItem.y + changeGridItemData?.metaData?.defaultRows - hideRows;
             } else if (this.checkCollision(eachGridItem, gridItems)) {
-              eachGridItem.y = eachGridItem.y + changeGridItemData?.defaultRows - hideRows;
+              eachGridItem.y = eachGridItem.y + changeGridItemData?.metaData?.defaultRows - hideRows;
             }
           }
           widgetGridItem.updateOptions();

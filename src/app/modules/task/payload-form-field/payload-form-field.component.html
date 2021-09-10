@@ -154,7 +154,12 @@
               <i class="pi pi-folder"></i>
               <span>No Items</span>
             </div>
-            <finlevit-grid [viewMode]="viewMode" [parent]="item" [items]="item.children"></finlevit-grid>
+            <finlevit-grid
+              [viewMode]="viewMode"
+              [showEdit]="showEdit"
+              [parent]="item"
+              [items]="item.children"
+            ></finlevit-grid>
           </div>
         </p-accordionTab>
       </p-accordion>

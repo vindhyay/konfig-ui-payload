@@ -173,7 +173,12 @@ export class MetaData {
   dataResourceId: string;
   isHidden: boolean;
   isSessionField: boolean;
+
   movement: "UP" | "DOWN" | null;
+  hideRows: number;
+  defaultRows: number;
+  defaultMinItemRows: number;
+
   constructor(data) {
     const {
       widgetId,
@@ -187,7 +192,10 @@ export class MetaData {
       populateConfigType = PopulateConfigOptionTypes.ontrigger,
       isHidden = false,
       isSessionField = false,
-      movement = null
+      movement = null,
+      defaultRows,
+      defaultMinItemRows,
+      hideRows
     } = data;
     this.widgetId = widgetId || getUniqueId("widget");
     this.widgetType = widgetType;
@@ -201,6 +209,9 @@ export class MetaData {
     this.isHidden = isHidden;
     this.isSessionField = isSessionField;
     this.movement = movement;
+    this.defaultMinItemRows = defaultMinItemRows;
+    this.defaultRows = defaultRows;
+    this.hideRows = hideRows;
   }
 }
 
@@ -725,8 +736,7 @@ export class BaseWidget {
       minItemCols,
       minItemRows,
       maxItemCols,
-      maxItemRows,
-      defaultRows
+      maxItemRows
     } = data;
     if (!metaData) {
       switch (widgetType) {
@@ -813,6 +823,5 @@ export class BaseWidget {
     this.minItemRows = minItemRows;
     this.maxItemCols = maxItemCols;
     this.maxItemRows = maxItemRows;
-    this.defaultRows = defaultRows;
   }
 }

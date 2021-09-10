@@ -106,6 +106,11 @@ export class PayloadFormFieldComponent implements OnInit {
       }
     });
   }
+  ngAfterViewInit() {
+    if (this.item?.metaData?.movement === "UP") {
+      this.collapseContainerStatus = false;
+    }
+  }
   showControls: boolean = false;
   editMode: boolean = false;
   originalValue: any = "";
@@ -223,13 +228,13 @@ export class PayloadFormFieldComponent implements OnInit {
   }
   onCollapse(status, item) {
     if (!status) {
-      this.item.rows = item.hideRows || 0;
-      this.item.minItemRows = item.hideRows || 0;
+      this.item.rows = item?.metaData?.hideRows || 0;
+      this.item.minItemRows = item?.metaData?.hideRows || 0;
       this.item.metaData.movement = "UP";
     } else {
-      this.item.rows = item.defaultRows;
-      this.item.minItemRows = item.defaultMinItemRows;
-      this.item.minItemCols = item.defaultMinItemCols;
+      this.item.rows = item.metaData?.defaultRows;
+      this.item.minItemRows = item.metaData?.defaultMinItemRows;
+      this.item.minItemCols = item.metaData?.defaultMinItemCols;
       this.item.metaData.movement = "DOWN";
     }
     this.editorService.widgetChange.next(item);
