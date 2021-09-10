@@ -6,6 +6,7 @@ import { BaseWidget, NESTED_MIN_COLUMNS, TableMetaData, WidgetTypes } from "../m
 import { getErrorMessages, validateFields } from "../../../utils";
 import { TaskService } from "../services/task.service";
 import { AuthService } from "../../auth/services/auth.service";
+import { EditorService } from "../editor.service";
 
 @Component({
   selector: "app-payload-form-field",
@@ -20,6 +21,7 @@ export class PayloadFormFieldComponent implements OnInit {
   Table: WidgetTypes = WidgetTypes.Table;
   TransactionTable: WidgetTypes = WidgetTypes.TransactionTable;
   Button: WidgetTypes = WidgetTypes.Button;
+  CollapseContainer: WidgetTypes = WidgetTypes.CollapseContainer;
   Container: WidgetTypes = WidgetTypes.Container;
   TabContainer: WidgetTypes = WidgetTypes.TabContainer;
   StepperContainer: WidgetTypes = WidgetTypes.StepperContainer;
@@ -30,6 +32,7 @@ export class PayloadFormFieldComponent implements OnInit {
   Footer: WidgetTypes = WidgetTypes.Footer;
   Image: WidgetTypes = WidgetTypes.Image;
   TextInput: WidgetTypes = WidgetTypes.TextInput;
+  ErrorContainer: WidgetTypes = WidgetTypes.ErrorContainer;
   TextArea: WidgetTypes = WidgetTypes.TextArea;
   Number: WidgetTypes = WidgetTypes.Number;
   Checkbox: WidgetTypes = WidgetTypes.Checkbox;
@@ -43,7 +46,12 @@ export class PayloadFormFieldComponent implements OnInit {
   transactionStatus = null;
   hide = false;
   disable = false;
-  constructor(private taskService: TaskService, private authService: AuthService) {}
+  collapseContainerStatus = true;
+  constructor(
+    private taskService: TaskService,
+    private authService: AuthService,
+    private editorService: EditorService
+  ) {}
   @Input()
   get item() {
     return this._item;
@@ -97,6 +105,11 @@ export class PayloadFormFieldComponent implements OnInit {
         }
       }
     });
+  }
+  ngAfterViewInit() {
+    if (this.item?.metaData?.movement === "UP") {
+      this.collapseContainerStatus = false;
+    }
   }
   showControls: boolean = false;
   editMode: boolean = false;
@@ -212,5 +225,19 @@ export class PayloadFormFieldComponent implements OnInit {
 
   selectionChange($event) {
     console.log($event);
+  }
+  onCollapse(status, item) {
+    if (!status) {
+      this.item.rows = item?.metaData?.hideRows || 0;
+      this.item.minItemRows = item?.metaData?.hideRows || 0;
+      this.item.metaData.movement = "UP";
+    } else {
+      this.item.rows = item.metaData?.defaultRows;
+      this.item.minItemRows = item.metaData?.defaultMinItemRows;
+      this.item.minItemCols = item.metaData?.defaultMinItemCols;
+      this.item.metaData.movement = "DOWN";
+    }
+    this.editorService.widgetChange.next(item);
+    this.editorService.setContainerHeight(this.taskService.transactionDetailsSubject.value?.uiPayload);
   }
 }

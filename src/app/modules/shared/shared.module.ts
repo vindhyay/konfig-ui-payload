@@ -14,6 +14,7 @@ import { TabViewModule } from "primeng/tabview";
 import { FinlevitFileUploadComponent } from "./finlevit-file-upload/finlevit-file-upload.component";
 import { DialogModule } from "primeng/dialog";
 import { ButtonModule } from "primeng/button";
+import { AccordionModule } from "primeng/accordion";
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { ButtonModule } from "primeng/button";
     }),
     ReactiveFormsModule,
     FinlevitLibraryModule,
+    AccordionModule,
     NgxLoadingModule.forRoot({})
   ],
   exports: [
@@ -51,7 +53,8 @@ import { ButtonModule } from "primeng/button";
     TabViewModule,
     DialogModule,
     ButtonModule,
-    FinlevitFileUploadComponent
+    FinlevitFileUploadComponent,
+    AccordionModule
   ]
 })
 export class SharedModule {}

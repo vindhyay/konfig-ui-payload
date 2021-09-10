@@ -1,14 +1,12 @@
-import {Injectable} from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import {BaseWidget} from "./model/create-form.models";
+import { Injectable } from "@angular/core";
+import { BehaviorSubject } from "rxjs";
+import { BaseWidget } from "./model/create-form.models";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class EditorService {
-
-  constructor() {
-  }
+  constructor() {}
 
   dragItem: any = null;
   sourceList: any = [];
@@ -19,6 +17,9 @@ export class EditorService {
 
   public widgetConfigTabIndex = new BehaviorSubject<number>(0);
   public widgetConfigTabIndexChange$ = this.widgetConfigTabIndex.asObservable();
+
+  public widgetChange = new BehaviorSubject<any>(null);
+  public widgetChange$ = this.widgetChange.asObservable();
 
   public setSelectedWidget(widget: BaseWidget, source: BaseWidget[] = []) {
     this.selectedWidget.next(widget);
@@ -37,14 +38,14 @@ export class EditorService {
   }
 
   public setContainerHeight(items: any) {
-    const container: any = document.querySelector('.gridster-container');
+    const container: any = document.querySelector(".gridster-container");
     if (container && container.getClientRects().length) {
       let rows = 30;
-      items.forEach(item => {
-        rows = Math.max(rows, (item.y + item.rows));
+      const filterItems = items.filter(item => !item?.metaData?.isHidden);
+      filterItems.forEach(item => {
+        rows = Math.max(rows, item.y + item.rows);
       });
       container.style.height = rows * 10 + 20 + "px";
     }
-
   }
 }

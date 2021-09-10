@@ -1,23 +1,24 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from "@angular/core";
 import {
   CompactType,
   DisplayGrid,
   GridsterConfig,
   GridsterItem,
+  GridsterItemComponentInterface,
   GridType
-} from '../../../../../lib/angular-gridster2/src/public_api';
-import { BaseWidget, MIN_COLUMNS, MIN_ROWS, WidgetTypes } from '../model/create-form.models';
-import { ActivatedRoute } from '@angular/router';
-import {EditorService} from "../editor.service";
-import {parseApiResponse} from "../../../utils";
-import {NotificationService} from "../../../services/notification.service";
-import {BaseComponent} from "../../shared/base/base.component";
-import {TaskService} from "../services/task.service";
+} from "../../../../../lib/angular-gridster2/src/public_api";
+import { BaseWidget, MIN_COLUMNS, MIN_ROWS, WidgetTypes } from "../model/create-form.models";
+import { ActivatedRoute } from "@angular/router";
+import { EditorService } from "../editor.service";
+import { parseApiResponse } from "../../../utils";
+import { NotificationService } from "../../../services/notification.service";
+import { BaseComponent } from "../../shared/base/base.component";
+import { TaskService } from "../services/task.service";
 
 @Component({
-  selector: 'finlevit-grid',
-  templateUrl: './finlevit-grid.component.html',
-  styleUrls: ['./finlevit-grid.component.scss']
+  selector: "finlevit-grid",
+  templateUrl: "./finlevit-grid.component.html",
+  styleUrls: ["./finlevit-grid.component.scss"]
 })
 export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDestroy {
   options: GridsterConfig | undefined;
@@ -37,8 +38,10 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
   Header: WidgetTypes = WidgetTypes.Header;
   Footer: WidgetTypes = WidgetTypes.Footer;
   Button: WidgetTypes = WidgetTypes.Button;
-  transactionId : any;
-  taskId : any;
+  ErrorContainer: WidgetTypes = WidgetTypes.ErrorContainer;
+  transactionId: any;
+  taskId: any;
+  @ViewChild("gridsterComponent", { static: false }) gridsterRef: any;
 
   constructor(
     private editorService: EditorService,
@@ -56,6 +59,7 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
       compactType: CompactType.None,
       mobileBreakpoint: 0,
       pushResizeItems: false,
+      disableAutoPositionOnConflict: true,
       draggable: {
         enabled: false
       },
@@ -92,12 +96,75 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
       maxItemArea: 40000,
       ...this.modifyOptions
     };
-    if(this.activatedRoute?.parent?.parent?.params){
+    if (this.activatedRoute?.parent?.parent?.params) {
       this.subscribe(this.activatedRoute?.parent?.parent?.params, params => {
         const { transactionId, taskId } = params;
         this.transactionId = transactionId;
         this.taskId = taskId;
       });
+    }
+    this.editorService.widgetChange$.subscribe(widget => {
+      this.checkItemSize(widget);
+    });
+  }
+
+  getEligibleItems(items, baseGridItem, prevItems) {
+    const eligibleItems = items.filter(eachItem => {
+      const item = eachItem.item;
+      const baseItem = baseGridItem.$item;
+      return (
+        item.metaData.widgetId !== baseGridItem.item.metaData.widgetId &&
+        item.y >= baseItem.y + baseItem.rows &&
+        (item.x + item.cols >= (baseItem.x || baseItem.x + baseItem.cols) ||
+          (item.x > baseItem.x && item.x + item.cols < baseItem.x + baseItem.cols)) &&
+        baseItem.x + baseItem.cols > item.x &&
+        !prevItems.find(prevItem => prevItem.item.metaData.widgetId === item.metaData.widgetId)
+      );
+    });
+    const itemEligibleItems = eligibleItems.flatMap(elgItem => this.getEligibleItems(items, elgItem, eligibleItems));
+    return [...eligibleItems, ...itemEligibleItems];
+  }
+
+  checkItemSize(widget) {
+    const gridItems = (this.gridsterRef?.grid || []).sort((a, b) => a?.item?.y - b?.item?.y);
+    if (widget) {
+      const widgetGridItem = gridItems.find(item => item?.item?.metaData?.widgetId === widget?.metaData?.widgetId);
+      if (!widgetGridItem) {
+        return;
+      }
+      const eligibleItems = this.getEligibleItems(gridItems, widgetGridItem, []);
+      const changeGridItemData = widget;
+      const hideRows = changeGridItemData?.metaData?.hideRows || 0;
+      const collisionItems = [];
+      if (eligibleItems.length) {
+        eligibleItems.forEach(gridItem => {
+          const eachGridItem = gridItem.item;
+          if (changeGridItemData?.metaData?.movement === "UP") {
+            if (!collisionItems.length || collisionItems.find(colItem => colItem.y >= eachGridItem.y)) {
+              eachGridItem.y = eachGridItem.y - changeGridItemData?.metaData?.defaultRows + hideRows;
+              const collisionItem = this.checkCollision(eachGridItem, gridItems);
+              if (collisionItem) {
+                eachGridItem.y = eachGridItem.y + changeGridItemData?.metaData?.defaultRows - hideRows;
+                collisionItems.push(eachGridItem);
+              }
+            }
+          } else if (changeGridItemData?.metaData?.movement === "DOWN") {
+            const collisionItem: any = this.checkCollision(changeGridItemData, gridItems);
+            if (collisionItem) {
+              eachGridItem.y = eachGridItem.y + changeGridItemData?.metaData?.defaultRows - hideRows;
+            } else if (this.checkCollision(eachGridItem, gridItems)) {
+              eachGridItem.y = eachGridItem.y + changeGridItemData?.metaData?.defaultRows - hideRows;
+            }
+          }
+          widgetGridItem.updateOptions();
+          widgetGridItem.setSize();
+          gridItem.updateOptions();
+          gridItem.setSize();
+        });
+      } else {
+        widgetGridItem.updateOptions();
+        widgetGridItem.setSize();
+      }
     }
   }
 
@@ -112,18 +179,38 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
     const payload = { newValue: value };
     const params = { dataId: id, transactionTaskId: this.taskId };
     this.taskService.modifyTaskField(payload, params).subscribe(
-        (result: any) => {
+      (result: any) => {
         const { data, error } = parseApiResponse(result);
         if (data && !error) {
-          this.notificationService.success('Saved Successfully', 'Success');
+          this.notificationService.success("Saved Successfully", "Success");
           this.taskService.getWorkflowTaskData(this.transactionId, this.taskId);
         } else {
           this.notificationService.error(error.errorMessage);
         }
       },
-        () => {
-        this.notificationService.error('Failed to modify data', 'Fail');
+      () => {
+        this.notificationService.error("Failed to modify data", "Fail");
       }
+    );
+  }
+  checkCollision(item: GridsterItem, items: any[]): GridsterItemComponentInterface | boolean {
+    let widgetsIndex: number = items.length - 1;
+    let widget: GridsterItemComponentInterface;
+    for (; widgetsIndex > -1; widgetsIndex--) {
+      widget = items[widgetsIndex];
+      if (widget.item !== item && this.checkCollisionTwoItems(widget.item, item)) {
+        return widget;
+      }
+    }
+    return false;
+  }
+
+  checkCollisionTwoItems(item: GridsterItem, item2: GridsterItem): boolean {
+    return (
+      item.x < item2.x + item2.cols &&
+      item.x + item.cols > item2.x &&
+      item.y < item2.y + item2.rows &&
+      item.y + item.rows > item2.y
     );
   }
 }
