@@ -135,13 +135,18 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
       const eligibleItems = this.getEligibleItems(gridItems, widgetGridItem, []);
       const changeGridItemData = widget;
       const hideRows = changeGridItemData?.metaData?.hideRows || 0;
+      const collisionItems = [];
       if (eligibleItems.length) {
         eligibleItems.forEach(gridItem => {
           const eachGridItem = gridItem.item;
           if (changeGridItemData?.metaData?.movement === "UP") {
-            eachGridItem.y = eachGridItem.y - changeGridItemData?.metaData?.defaultRows - hideRows;
-            if (this.checkCollision(eachGridItem, gridItems)) {
-              eachGridItem.y = eachGridItem.y + changeGridItemData?.metaData?.defaultRows + hideRows;
+            if (!collisionItems.length || collisionItems.find(colItem => colItem.y >= eachGridItem.y)) {
+              eachGridItem.y = eachGridItem.y - changeGridItemData?.metaData?.defaultRows + hideRows;
+              const collisionItem = this.checkCollision(eachGridItem, gridItems);
+              if (collisionItem) {
+                eachGridItem.y = eachGridItem.y + changeGridItemData?.metaData?.defaultRows - hideRows;
+                collisionItems.push(eachGridItem);
+              }
             }
           } else if (changeGridItemData?.metaData?.movement === "DOWN") {
             const collisionItem: any = this.checkCollision(changeGridItemData, gridItems);
