@@ -19,6 +19,9 @@
     [dateFormat]="viewDateFormat"
     [minDate]="minDate"
     [maxDate]="maxDate"
+    [yearNavigator]="yearNavigator"
+    [monthNavigator]="monthNavigator"
+    yearRange="1920:2120"
   ></p-calendar>
   <div *ngIf="checkError()">
     <small class="p-error">{{ errorMsg || getErrorMessages()[0] }}</small>

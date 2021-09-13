@@ -26,8 +26,12 @@
             </span>
           </ng-container>
         </div>
+        <div class="d-flex flex-row align-items-center pt-1" *ngIf="acceptedFiles !== ''">
+          <span class="pi pi-info-circle info-icon mr-1"></span>
+          <span class="file-type-text">Only {{acceptedFiles}} file types can be uploaded</span>
+        </div>
       </div>
-      <input class="file-input" type="file" [disabled]="disabled" (change)="uploadImage($event)"/>
+      <input class="file-input" type="file" [disabled]="disabled" (change)="uploadImage($event)" [accept]="acceptedFiles"/>
     </div>
   </ng-container>
   <div [ngClass]="{ 'd-flex': true }" *ngIf="checkError()">

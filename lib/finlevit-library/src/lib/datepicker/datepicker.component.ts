@@ -29,6 +29,8 @@ export class DatepickerComponent implements ControlValueAccessor, OnInit {
   @Input() errorMsg = '';
   @Input() minDate: Date = null;
   @Input() maxDate: Date = null;
+  @Input() yearNavigator: boolean = false;
+  @Input() monthNavigator: boolean = false;
 
   _value: any = null;
 
