@@ -1,11 +1,11 @@
-import { Component, Input, OnInit, Optional, Self, ViewChild } from '@angular/core';
-import { ControlValueAccessor, NgControl, ValidatorFn, Validators } from '@angular/forms';
-import { hasRequiredField } from '../utils';
+import { Component, Input, OnInit, Optional, Self, ViewChild } from "@angular/core";
+import { ControlValueAccessor, NgControl, ValidatorFn, Validators } from "@angular/forms";
+import { hasRequiredField } from "../utils";
 
 @Component({
-  selector: 'finlevit-lib-datepicker',
-  templateUrl: './datepicker.component.html',
-  styleUrls: ['./datepicker.component.css']
+  selector: "finlevit-lib-datepicker",
+  templateUrl: "./datepicker.component.html",
+  styleUrls: ["./datepicker.component.css"]
 })
 export class DatepickerComponent implements ControlValueAccessor, OnInit {
   constructor(@Optional() @Self() public controlDir: NgControl) {
@@ -15,22 +15,22 @@ export class DatepickerComponent implements ControlValueAccessor, OnInit {
   }
   @Input() isRequired = false;
   @Input() validators: any = [];
-  @Input() placeholder = '';
-  @Input() viewDateFormat = 'dd/mm/yy';
-  @Input() returnDateFormat = 'isoTimestamp';
+  @Input() placeholder = "";
+  @Input() viewDateFormat = "dd/mm/yy";
+  @Input() returnDateFormat = "isoTimestamp";
   @Input() isSmall = false;
   @Input() isLarge = false;
-  @Input() tooltip = '';
-  @Input() label = '';
+  @Input() tooltip = "";
+  @Input() label = "";
   @Input() error = false;
   @Input() showErrorBorder = true;
   @Input() showIcon = true;
   @Input() isDisabled = false;
-  @Input() errorMsg = '';
+  @Input() errorMsg = "";
   @Input() minDate: Date = null;
   @Input() maxDate: Date = null;
-  @Input() yearNavigator: boolean = false;
-  @Input() monthNavigator: boolean = false;
+  @Input() yearNavigator: boolean = true;
+  @Input() monthNavigator: boolean = true;
 
   _value: any = null;
 
@@ -97,10 +97,10 @@ export class DatepickerComponent implements ControlValueAccessor, OnInit {
     const errorMessages: string[] = [];
     Object.keys(errors || {}).forEach(error => {
       switch (error) {
-        case 'required':
+        case "required":
           errorMessages.push(`${this.label} is required`);
           break;
-        case 'custom':
+        case "custom":
           if (errors) {
             errorMessages.push(errors[error]);
           }
