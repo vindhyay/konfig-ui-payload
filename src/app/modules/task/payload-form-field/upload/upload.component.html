@@ -8,4 +8,5 @@
         (btnClick)="uploadFile($event)"
         [(ngModel)]="file"
         [uploadStatus]="uploadStatus"
+        [acceptedFiles]="item?.metaData?.acceptedFileTypes"
 ></finlevit-file-upload>

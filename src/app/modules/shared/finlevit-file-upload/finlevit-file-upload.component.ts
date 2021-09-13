@@ -25,6 +25,8 @@ export class FinlevitFileUploadComponent implements ControlValueAccessor, OnInit
   @Input() validators: any = [];
   @Input() uploadButton : boolean = false;
   @Output() btnClick = new EventEmitter();
+  @Input() acceptedFiles = "";
+
   onChange: Function;
   form: FormData = new FormData();
 

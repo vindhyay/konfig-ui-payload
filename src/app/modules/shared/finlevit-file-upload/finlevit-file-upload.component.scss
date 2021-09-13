@@ -102,4 +102,12 @@
 .completed-icon{
   color: green;
 }
+.file-type-text{
+  font-size: xx-small;
+  color: gray;
+}
+.info-icon{
+  font-size: small;
+  color: gray;
+}
 @include inputPlaceholder();

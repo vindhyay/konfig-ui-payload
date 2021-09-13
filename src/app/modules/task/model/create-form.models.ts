@@ -634,10 +634,14 @@ export class FooterMetaData extends MetaData {
 }
 export class UploadMetaData extends MetaData {
   tooltip: string;
+  acceptedFileTypes: string;
+  acceptedFiles: any[];
   constructor(data) {
     super(data);
-    const { tooltip = "" } = data;
+    const { tooltip = "", acceptedFileTypes = "",  acceptedFiles = [] } = data;
     this.tooltip = tooltip;
+    this.acceptedFiles = acceptedFiles;
+    this.acceptedFileTypes = acceptedFileTypes;
   }
 }
 
