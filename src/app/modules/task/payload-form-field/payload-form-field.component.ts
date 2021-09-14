@@ -102,6 +102,11 @@ export class PayloadFormFieldComponent implements OnInit {
           this.disable = this.item?.permissions[id].disable
             ? this.item?.permissions[id].disable.indexOf(this.transactionStatus) > -1
             : false;
+          if (this.hide) {
+            setTimeout(() => {
+              this.onCollapse(false, this.item);
+            });
+          }
         }
       }
     });

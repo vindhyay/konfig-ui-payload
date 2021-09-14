@@ -14,6 +14,7 @@ import { parseApiResponse } from "../../../utils";
 import { NotificationService } from "../../../services/notification.service";
 import { BaseComponent } from "../../shared/base/base.component";
 import { TaskService } from "../services/task.service";
+import { AuthService } from "../../auth/services/auth.service";
 
 @Component({
   selector: "finlevit-grid",
@@ -47,7 +48,8 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
     private editorService: EditorService,
     private notificationService: NotificationService,
     private activatedRoute: ActivatedRoute,
-    private taskService: TaskService
+    private taskService: TaskService,
+    private authService: AuthService
   ) {
     super();
   }
@@ -123,6 +125,25 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
     });
     const itemEligibleItems = eligibleItems.flatMap(elgItem => this.getEligibleItems(items, elgItem, eligibleItems));
     return [...eligibleItems, ...itemEligibleItems];
+  }
+
+  checkIsHidden(item) {
+    let hide = false;
+    const transactionStatus = this.taskService.transactionDetailsSubject.value?.transactionStatus || null;
+    const { id = "" } = this.authService.getAgentRole() || {};
+    if (item.permissions && item?.permissions[id]) {
+      hide = item?.permissions[id].hide ? item?.permissions[id].hide.indexOf(transactionStatus) > -1 : false;
+      if (hide) {
+        item.rows = item?.metaData?.hideRows || 0;
+        item.minItemRows = item?.metaData?.hideRows || 0;
+        item.metaData.movement = "UP";
+        setTimeout(() => {
+          this.editorService.widgetChange.next(item);
+          this.editorService.setContainerHeight(this.taskService.transactionDetailsSubject.value?.uiPayload);
+        });
+      }
+    }
+    return hide;
   }
 
   checkItemSize(widget) {
