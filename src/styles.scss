@@ -84,10 +84,14 @@
   .label-tooltip {
     color: gray;
   }
-  font-weight: 500;
+  font-family: 'Muli';
+  font-weight: 400;
   .required {
     color: $red;
   }
+}
+.radio-group-label{
+  font-weight: 400 !important;
 }
 .p-field-checkbox > label,
 .p-field-radiobutton > label {

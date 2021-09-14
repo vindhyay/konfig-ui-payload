@@ -9,27 +9,28 @@
     backgroundPosition: 'center'
   }"
 >
-  <gridster-item
-    [ngClass]="{
-      'card-container': item?.metaData?.widgetType === Container,
-      'text-container': item?.metaData?.widgetType === Text,
-      'header-container': item?.metaData?.widgetType === Header,
-      'footer-container': item?.metaData?.widgetType === Footer,
-      'button-container': item?.metaData?.widgetType === Button,
-      'error-container': item?.metaData?.widgetType === ErrorContainer
-    }"
-    [item]="item"
-    *ngFor="let item of items"
-  >
-    <app-payload-form-field
-      *ngIf="!item?.metaData?.isHidden"
-      [viewMode]="viewMode"
-      [showEdit]="showEdit"
-      (edit)="onEdit($event)"
-      (onBtnClick)="onBtnClick.emit($event)"
-      (onOptionChange)="onOptionChange.emit($event)"
-      (onTableDataChange)="onTableDataChange.emit($event)"
+  <ng-container *ngFor="let item of items">
+    <gridster-item
+      [ngClass]="{
+        'card-container': item?.metaData?.widgetType === Container && !checkIsHidden,
+        'text-container': item?.metaData?.widgetType === Text,
+        'header-container': item?.metaData?.widgetType === Header,
+        'footer-container': item?.metaData?.widgetType === Footer,
+        'button-container': item?.metaData?.widgetType === Button,
+        'error-container': item?.metaData?.widgetType === ErrorContainer
+      }"
       [item]="item"
-    ></app-payload-form-field>
-  </gridster-item>
+    >
+      <app-payload-form-field
+        *ngIf="!item?.metaData?.isHidden"
+        [viewMode]="viewMode"
+        [showEdit]="showEdit"
+        (edit)="onEdit($event)"
+        (onBtnClick)="onBtnClick.emit($event)"
+        (onOptionChange)="onOptionChange.emit($event)"
+        (onTableDataChange)="onTableDataChange.emit($event)"
+        [item]="item"
+      ></app-payload-form-field>
+    </gridster-item>
+  </ng-container>
 </gridster>
