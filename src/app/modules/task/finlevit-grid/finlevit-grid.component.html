@@ -12,7 +12,7 @@
   <ng-container *ngFor="let item of items">
     <gridster-item
       [ngClass]="{
-        'card-container': item?.metaData?.widgetType === Container && !checkIsHidden,
+        'card-container': item?.metaData?.widgetType === Container,
         'text-container': item?.metaData?.widgetType === Text,
         'header-container': item?.metaData?.widgetType === Header,
         'footer-container': item?.metaData?.widgetType === Footer,
