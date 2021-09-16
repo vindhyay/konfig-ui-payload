@@ -127,25 +127,6 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
     return [...eligibleItems, ...itemEligibleItems];
   }
 
-  checkIsHidden(item) {
-    let hide = false;
-    const transactionStatus = this.taskService.transactionDetailsSubject.value?.transactionStatus || null;
-    const { id = "" } = this.authService.getAgentRole() || {};
-    if (item.permissions && item?.permissions[id]) {
-      hide = item?.permissions[id].hide ? item?.permissions[id].hide.indexOf(transactionStatus) > -1 : false;
-      if (hide) {
-        item.rows = item?.metaData?.hideRows || 0;
-        item.minItemRows = item?.metaData?.hideRows || 0;
-        item.metaData.movement = "UP";
-        setTimeout(() => {
-          this.editorService.widgetChange.next(item);
-          this.editorService.setContainerHeight(this.taskService.transactionDetailsSubject.value?.uiPayload);
-        });
-      }
-    }
-    return hide;
-  }
-
   checkItemSize(widget) {
     const gridItems = (this.gridsterRef?.grid || []).sort((a, b) => a?.item?.y - b?.item?.y);
     if (widget) {
