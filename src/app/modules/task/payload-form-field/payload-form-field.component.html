@@ -338,31 +338,33 @@
   <ng-container *ngIf="item?.metaData?.widgetType === TabContainer">
     <div class="tab-container">
       <p-tabView [activeIndex]="tabActiveIndex" (onChange)="onTabChange($event)">
-        <p-tabPanel *ngFor="let child of item.children; let i = index">
-          <ng-template pTemplate="header">
-            <i [class]="child?.metaData?.icon" class="p-pr-1"></i>
-            <span>{{ child.label }}</span>
-          </ng-template>
-          <div
-            [ngClass]="{
+        <ng-container *ngFor="let child of item.children; let i = index">
+          <p-tabPanel *ngIf="!child?.metaData?.isHidden" [header]="child.label">
+            <ng-template pTemplate="header">
+              <i [class]="child?.metaData?.icon" class="p-pr-1"></i>
+              <span>{{ child.label }}</span>
+            </ng-template>
+            <div
+              [ngClass]="{
               'nested-grid-container': true,
               'empty-child': !child.children.length
             }"
-          >
-            <div *ngIf="!child.children.length" class="container-help-text">
-              <i class="pi pi-plus"></i>
-              <span>Drag and drop fields to tab container</span>
+            >
+              <div *ngIf="!child.children.length" class="container-help-text">
+                <i class="pi pi-plus"></i>
+                <span>Drag and drop fields to tab container</span>
+              </div>
+              <finlevit-grid
+                [viewMode]="viewMode"
+                [showEdit]="showEdit"
+                [parent]="child"
+                [items]="child.children"
+                (onBtnClick)="onBtnClick.emit($event)"
+                (onTableDataChange)="onTableDataChange.emit($event)"
+              ></finlevit-grid>
             </div>
-            <finlevit-grid
-              [viewMode]="viewMode"
-              [showEdit]="showEdit"
-              [parent]="child"
-              [items]="child.children"
-              (onBtnClick)="onBtnClick.emit($event)"
-              (onTableDataChange)="onTableDataChange.emit($event)"
-            ></finlevit-grid>
-          </div>
-        </p-tabPanel>
+          </p-tabPanel>
+        </ng-container>
       </p-tabView>
     </div>
   </ng-container>
