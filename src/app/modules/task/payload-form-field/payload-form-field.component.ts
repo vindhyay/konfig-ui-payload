@@ -115,6 +115,12 @@ export class PayloadFormFieldComponent implements OnInit {
     if (this.item?.metaData?.movement === "UP") {
       this.collapseContainerStatus = false;
     }
+    // Apply conditions based on default value
+    if (this.item?.value?.value) {
+      setTimeout(() => {
+        this.onChange(this.item.value.value);
+      });
+    }
   }
   showControls: boolean = false;
   editMode: boolean = false;
@@ -244,5 +250,9 @@ export class PayloadFormFieldComponent implements OnInit {
     }
     this.editorService.widgetChange.next(item);
     this.editorService.setContainerHeight(this.taskService.transactionDetailsSubject.value?.uiPayload);
+  }
+  onChange($event) {
+    const ifConditions = this.item.metaData?.conditions?.ifConditions || [];
+    this.taskService.checkCondition(ifConditions);
   }
 }

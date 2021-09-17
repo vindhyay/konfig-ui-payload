@@ -178,6 +178,7 @@ export class MetaData {
   hideRows: number;
   defaultRows: number;
   defaultMinItemRows: number;
+  conditions: any;
 
   constructor(data) {
     const {
@@ -195,7 +196,8 @@ export class MetaData {
       movement = null,
       defaultRows,
       defaultMinItemRows,
-      hideRows
+      hideRows,
+      conditions
     } = data;
     this.widgetId = widgetId || getUniqueId("widget");
     this.widgetType = widgetType;
@@ -212,6 +214,7 @@ export class MetaData {
     this.defaultMinItemRows = defaultMinItemRows;
     this.defaultRows = defaultRows;
     this.hideRows = hideRows;
+    this.conditions = conditions;
   }
 }
 
@@ -638,7 +641,7 @@ export class UploadMetaData extends MetaData {
   acceptedFiles: any[];
   constructor(data) {
     super(data);
-    const { tooltip = "", acceptedFileTypes = "",  acceptedFiles = [] } = data;
+    const { tooltip = "", acceptedFileTypes = "", acceptedFiles = [] } = data;
     this.tooltip = tooltip;
     this.acceptedFiles = acceptedFiles;
     this.acceptedFileTypes = acceptedFileTypes;

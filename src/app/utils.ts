@@ -87,3 +87,18 @@ export const getValidators = (validators: any) => {
   });
   return _validators;
 };
+
+export const getFieldFromFields = (fields, fieldId) => {
+  let paramField = null;
+  fields.forEach(field => {
+    if (field.children && field.children.length) {
+      const nestedParamField = getFieldFromFields(field.children, fieldId);
+      paramField = nestedParamField || paramField;
+    } else {
+      if (field?.id === fieldId) {
+        paramField = field;
+      }
+    }
+  });
+  return paramField;
+};
