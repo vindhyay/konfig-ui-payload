@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, AfterViewInit } from "@angular/core";
 import { EditorService } from "../../editor.service";
 import { BaseWidget, CollapseContainerMetaData } from "../../model/create-form.models";
+import { TaskService } from "../../services/task.service";
 
 @Component({
   selector: "app-collapse-container",
@@ -21,7 +22,7 @@ export class CollapseContainerComponent implements OnInit, AfterViewInit {
       this.collapseContainerStatus = false;
     }
   }
-  constructor(private editorService: EditorService) {}
+  constructor(private editorService: EditorService, private taskService: TaskService) {}
   get metaData(): CollapseContainerMetaData {
     return this.item.metaData as CollapseContainerMetaData;
   }
@@ -37,5 +38,6 @@ export class CollapseContainerComponent implements OnInit, AfterViewInit {
       this.item.metaData.movement = "DOWN";
     }
     this.editorService.widgetChange.next(item);
+    this.editorService.setContainerHeight(this.taskService.transactionDetailsSubject.value?.uiPayload);
   }
 }

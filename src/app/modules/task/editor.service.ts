@@ -45,7 +45,7 @@ export class EditorService {
       filterItems.forEach(item => {
         rows = Math.max(rows, item.y + item.rows);
       });
-      container.style.height = rows * 10 + 20 + "px";
+      container.style.height = rows * 10 + 50 + "px";
     }
   }
 }
