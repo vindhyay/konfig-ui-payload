@@ -122,48 +122,13 @@
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === CollapseContainer">
-    <div [ngClass]="{ 'collapse-container': true }">
-      <p-accordion expandIcon="" collapseIcon="" (onOpen)="onCollapse(true, item)" (onClose)="onCollapse(false, item)">
-        <p-accordionTab [selected]="true">
-          <ng-template pTemplate="header">
-            <div
-              [ngStyle]="{
-                padding: '0.70rem 1.25rem',
-                color: item?.metaData?.color,
-                width: '100%',
-                backgroundColor: item?.metaData?.bgColor
-              }"
-              class="collapse-container-tab"
-            >
-              <span [ngStyle]="{ marginRight: '0.5rem' }">
-                <i *ngIf="!collapseContainerStatus" class="pi pi-chevron-right"></i>
-                <i *ngIf="collapseContainerStatus" class="pi pi-chevron-down"></i>
-              </span>
-              {{ item?.metaData?.title }}
-            </div>
-          </ng-template>
-          <div
-            [ngClass]="{
-              'nested-grid-container': true,
-              'empty-child': !item.children.length,
-              'header-container': item?.metaData?.widgetType === Header,
-              'footer-container': item?.metaData?.widgetType === Footer
-            }"
-          >
-            <div *ngIf="!item.children.length" class="container-help-text">
-              <i class="pi pi-folder"></i>
-              <span>No Items</span>
-            </div>
-            <finlevit-grid
-              [viewMode]="viewMode"
-              [showEdit]="showEdit"
-              [parent]="item"
-              [items]="item.children"
-            ></finlevit-grid>
-          </div>
-        </p-accordionTab>
-      </p-accordion>
-    </div>
+    <app-collapse-container
+      [item]="item"
+      [showEdit]="showEdit"
+      [viewMode]="viewMode"
+      [isDisabled]="disable"
+      [editMode]="editMode"
+    ></app-collapse-container>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Upload">
     <div class="input-container button-input">
@@ -217,7 +182,7 @@
         [isRequired]="item?.validators?.required"
         [label]="item?.label"
         [(ngModel)]="item.value.value"
-        (ngModelChange)="validateField($event, item);onChange($event)"
+        (ngModelChange)="validateField($event, item); onChange($event)"
       ></finlevit-lib-checkbox>
     </div>
   </ng-container>
