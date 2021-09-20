@@ -115,11 +115,15 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
       const item = eachItem.item;
       const baseItem = baseGridItem.$item;
       return (
+        // Dont get same item
         item.metaData.widgetId !== baseGridItem.item.metaData.widgetId &&
-        item.y >= baseItem.y + baseItem.rows &&
+        // Get only below items
+        (baseItem.rows ? item.y >= baseItem.y + baseItem.rows : item.y > baseItem.y + baseItem.rows) &&
+        // Get only under items
         (item.x + item.cols >= (baseItem.x || baseItem.x + baseItem.cols) ||
           (item.x > baseItem.x && item.x + item.cols < baseItem.x + baseItem.cols)) &&
         baseItem.x + baseItem.cols > item.x &&
+        // Dont get if item found in prev round
         !prevItems.find(prevItem => prevItem.item.metaData.widgetId === item.metaData.widgetId)
       );
     });

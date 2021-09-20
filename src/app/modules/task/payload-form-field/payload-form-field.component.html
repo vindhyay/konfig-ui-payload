@@ -122,48 +122,13 @@
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === CollapseContainer">
-    <div [ngClass]="{ 'collapse-container': true }">
-      <p-accordion expandIcon="" collapseIcon="" (onOpen)="onCollapse(true, item)" (onClose)="onCollapse(false, item)">
-        <p-accordionTab [selected]="true">
-          <ng-template pTemplate="header">
-            <div
-              [ngStyle]="{
-                padding: '0.70rem 1.25rem',
-                color: item?.metaData?.color,
-                width: '100%',
-                backgroundColor: item?.metaData?.bgColor
-              }"
-              class="collapse-container-tab"
-            >
-              <span [ngStyle]="{ marginRight: '0.5rem' }">
-                <i *ngIf="!collapseContainerStatus" class="pi pi-chevron-right"></i>
-                <i *ngIf="collapseContainerStatus" class="pi pi-chevron-down"></i>
-              </span>
-              {{ item?.metaData?.title }}
-            </div>
-          </ng-template>
-          <div
-            [ngClass]="{
-              'nested-grid-container': true,
-              'empty-child': !item.children.length,
-              'header-container': item?.metaData?.widgetType === Header,
-              'footer-container': item?.metaData?.widgetType === Footer
-            }"
-          >
-            <div *ngIf="!item.children.length" class="container-help-text">
-              <i class="pi pi-folder"></i>
-              <span>No Items</span>
-            </div>
-            <finlevit-grid
-              [viewMode]="viewMode"
-              [showEdit]="showEdit"
-              [parent]="item"
-              [items]="item.children"
-            ></finlevit-grid>
-          </div>
-        </p-accordionTab>
-      </p-accordion>
-    </div>
+    <app-collapse-container
+      [item]="item"
+      [showEdit]="showEdit"
+      [viewMode]="viewMode"
+      [isDisabled]="disable"
+      [editMode]="editMode"
+    ></app-collapse-container>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Upload">
     <div class="input-container button-input">
@@ -217,7 +182,7 @@
         [isRequired]="item?.validators?.required"
         [label]="item?.label"
         [(ngModel)]="item.value.value"
-        (ngModelChange)="validateField($event, item)"
+        (ngModelChange)="validateField($event, item); onChange($event)"
       ></finlevit-lib-checkbox>
     </div>
   </ng-container>
@@ -239,7 +204,7 @@
         [viewMode]="viewMode"
         [isDisabled]="disable"
         [editMode]="editMode"
-        (optionChange)="optionChange($event, item); validateField($event, item)"
+        (optionChange)="optionChange($event, item); validateField($event, item); onChange($event)"
       ></app-dropdown-field>
     </div>
   </ng-container>
@@ -267,7 +232,7 @@
         [optionLabel]="item?.metaData?.isLabelAndValue ? item?.metaData?.optionLabel : ''"
         [optionValue]="item?.metaData?.isLabelAndValue ? item?.metaData?.optionValue : ''"
         [(ngModel)]="item.value.value"
-        (ngModelChange)="validateField($event, item)"
+        (ngModelChange)="validateField($event, item); onChange($event)"
         [errorMsg]="item?.errorMsg"
         [error]="item?.error == true"
         [alignOptions]="item?.metaData?.alignOptions"
@@ -338,31 +303,33 @@
   <ng-container *ngIf="item?.metaData?.widgetType === TabContainer">
     <div class="tab-container">
       <p-tabView [activeIndex]="tabActiveIndex" (onChange)="onTabChange($event)">
-        <p-tabPanel *ngFor="let child of item.children; let i = index">
-          <ng-template pTemplate="header">
-            <i [class]="child?.metaData?.icon" class="p-pr-1"></i>
-            <span>{{ child.label }}</span>
-          </ng-template>
-          <div
-            [ngClass]="{
+        <ng-container *ngFor="let child of item.children; let i = index">
+          <p-tabPanel *ngIf="!child?.metaData?.isHidden" [header]="child.label">
+            <ng-template pTemplate="header">
+              <i [class]="child?.metaData?.icon" class="p-pr-1"></i>
+              <span>{{ child.label }}</span>
+            </ng-template>
+            <div
+              [ngClass]="{
               'nested-grid-container': true,
               'empty-child': !child.children.length
             }"
-          >
-            <div *ngIf="!child.children.length" class="container-help-text">
-              <i class="pi pi-plus"></i>
-              <span>Drag and drop fields to tab container</span>
+            >
+              <div *ngIf="!child.children.length" class="container-help-text">
+                <i class="pi pi-plus"></i>
+                <span>Drag and drop fields to tab container</span>
+              </div>
+              <finlevit-grid
+                [viewMode]="viewMode"
+                [showEdit]="showEdit"
+                [parent]="child"
+                [items]="child.children"
+                (onBtnClick)="onBtnClick.emit($event)"
+                (onTableDataChange)="onTableDataChange.emit($event)"
+              ></finlevit-grid>
             </div>
-            <finlevit-grid
-              [viewMode]="viewMode"
-              [showEdit]="showEdit"
-              [parent]="child"
-              [items]="child.children"
-              (onBtnClick)="onBtnClick.emit($event)"
-              (onTableDataChange)="onTableDataChange.emit($event)"
-            ></finlevit-grid>
-          </div>
-        </p-tabPanel>
+          </p-tabPanel>
+        </ng-container>
       </p-tabView>
     </div>
   </ng-container>
