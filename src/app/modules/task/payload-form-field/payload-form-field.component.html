@@ -285,6 +285,7 @@
             [items]="child.children"
             (onBtnClick)="onBtnClick.emit($event)"
             (onTableDataChange)="onTableDataChange.emit($event)"
+            (onOptionChange)="optionChange($event, $event.data)"
           ></finlevit-grid>
         </div>
         <div class="stepper-btn-container">
@@ -326,6 +327,7 @@
                 [items]="child.children"
                 (onBtnClick)="onBtnClick.emit($event)"
                 (onTableDataChange)="onTableDataChange.emit($event)"
+                (onOptionChange)="optionChange($event, $event.data)"
               ></finlevit-grid>
             </div>
           </p-tabPanel>
