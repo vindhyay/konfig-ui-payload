@@ -3,10 +3,11 @@ import { FormControl, Validators } from "@angular/forms";
 import { FieldData } from "../model/field-data.model";
 import { DataTypes } from "../model/payload-field.model";
 import { BaseWidget, NESTED_MIN_COLUMNS, TableMetaData, WidgetTypes } from "../model/create-form.models";
-import { getErrorMessages, validateFields } from "../../../utils";
+import {getErrorMessages, getFieldFromFields, validateFields} from "../../../utils";
 import { TaskService } from "../services/task.service";
 import { AuthService } from "../../auth/services/auth.service";
 import { EditorService } from "../editor.service";
+import * as moment from "moment";
 
 @Component({
   selector: "app-payload-form-field",
@@ -90,9 +91,15 @@ export class PayloadFormFieldComponent implements OnInit {
   @Output() onBtnClick = new EventEmitter();
   @Output() onOptionChange = new EventEmitter();
   @Output() onTableDataChange = new EventEmitter();
+  private _payloadFields: any;
+  get payloadFields(): any {
+    return this._payloadFields;
+  }
+
   ngOnInit() {
     this.taskService.transactionDetailsSubject.subscribe(value => {
       if (value) {
+        this._payloadFields = value.uiPayload;
         this.transactionStatus = value?.transactionStatus || null;
         const { id = "" } = this.authService.getAgentRole() || {};
         if (this.item.permissions && this.item?.permissions[id]) {
@@ -255,4 +262,76 @@ export class PayloadFormFieldComponent implements OnInit {
     const ifConditions = this.item.metaData?.conditions?.ifConditions || [];
     this.taskService.checkCondition(ifConditions);
   }
+  calculateFormulaValue(itemMetaData) : any{
+    let textInput = '';
+    let formula = [];
+    itemMetaData.formula.forEach(field => {
+      if (field.resourceType === resourceType.PAYLOAD_FIELD) {
+        // this.payloadFields.forEach(fld => {
+        //   if(field.id === fld.id){
+        //     formula.push(fld)
+        //   }
+        // })
+        formula.push(getFieldFromFields(this.payloadFields, field.id));
+      }else {
+        formula.push(field)
+      }
+    })
+    let firstField = formula.find(field => field.resourceType === resourceType.PAYLOAD_FIELD);
+    switch (firstField.dataType){
+      case 'number':
+        let expression = '';
+        formula.forEach(field => {
+          if (field.resourceType === resourceType.PAYLOAD_FIELD) {
+            expression = expression + ' ' + field.value.value;
+          }
+          if (field.resourceType === resourceType.BRACKET) {
+            expression = expression + ' ' + field.displayName;
+          }
+          if (field.resourceType === resourceType.FUNCTION) {
+            expression = expression + ' ' + field.expression;
+          }
+        })
+        textInput = eval(expression);
+        return textInput;
+      case 'string':
+        const fields = formula.filter(field => {
+          return field.resourceType === resourceType.PAYLOAD_FIELD;
+        })
+        textInput = fields.map(fld => { return fld.value.value }).join(" ");
+        return textInput;
+      case 'date':
+        const dateFunc = formula.filter(field => {
+          return field.resourceType === resourceType.FUNCTION
+        })
+        let date1;
+        let date2;
+        const dateIndex = formula.indexOf(dateFunc[0]);
+        if(itemMetaData.formula[dateIndex - 1].displayName === "Current Date"){
+          date1 = new Date()
+        }else {
+          date1 = moment.utc(formula[dateIndex - 1].value.value).toDate();
+        }
+        if(formula[dateIndex + 1].displayName === "Current Date"){
+          date2 = new Date()
+        }else {
+          date2 = moment.utc(formula[dateIndex + 1].value.value).toDate();
+        }
+        let d = moment(date2);
+        let years = d.diff(date1, 'years');
+        d.add(-years, 'years');
+        let months = d.diff(date1, 'months');
+        d.add(-months, 'months');
+        let days = d.diff(date1, 'days');
+        textInput = years + " years  " + months + " months  " + days + " days";
+        return textInput;
+    }
+    return textInput;
+  }
+}
+
+export enum resourceType {
+  PAYLOAD_FIELD = 'payload-field',
+  FUNCTION = 'function',
+  BRACKET = 'bracket'
 }

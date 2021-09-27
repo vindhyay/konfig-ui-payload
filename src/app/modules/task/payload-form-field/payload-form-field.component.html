@@ -40,6 +40,7 @@
   <ng-container *ngIf="item?.metaData?.widgetType === TextInput">
     <div class="input-container">
       <finlevit-text
+        *ngIf="!item?.metaData?.isFormulaField"
         [isDisabled]="(viewMode && (!item?.validators?.editable || !editMode)) || disable"
         [leftIcon]="item?.metaData?.leftIcon"
         [rightIcon]="item?.metaData?.rightIcon"
@@ -52,6 +53,21 @@
         [isRequired]="item?.validators?.required"
         [label]="item?.label"
         (onBlur)="optionChange($event, item)"
+      ></finlevit-text>
+      <finlevit-text
+              *ngIf="item?.metaData?.isFormulaField"
+              [isDisabled]="(viewMode && (!item?.validators?.editable || !editMode)) || disable"
+              [leftIcon]="item?.metaData?.leftIcon"
+              [rightIcon]="item?.metaData?.rightIcon"
+              [error]="item?.error == true"
+              [errorMsg]="item?.errorMsg"
+              [tooltip]="item?.metaData?.tooltip"
+              [placeholder]="item?.metaData?.placeholder"
+              [ngModel]="calculateFormulaValue(item?.metaData)"
+              (ngModelChange)="validateField($event, item)"
+              [isRequired]="item?.validators?.required"
+              [label]="item?.label"
+              (onBlur)="optionChange($event, item)"
       ></finlevit-text>
     </div>
   </ng-container>
@@ -73,7 +89,7 @@
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Number">
     <div class="input-container">
-      <finlevit-number
+      <finlevit-number *ngIf="!item?.metaData?.isFormulaField"
         [isDisabled]="(viewMode && (!item?.validators?.editable || !editMode)) || disable"
         [placeholder]="item?.metaData?.placeholder"
         [tooltip]="item?.metaData?.tooltip"
@@ -87,6 +103,21 @@
         [isRequired]="item?.validators?.required"
         [format]="item?.metaData?.format"
         (onBlur)="optionChange($event, item)"
+      ></finlevit-number>
+      <finlevit-number *ngIf="item?.metaData?.isFormulaField"
+                       [isDisabled]="(viewMode && (!item?.validators?.editable || !editMode)) || disable"
+                       [placeholder]="item?.metaData?.placeholder"
+                       [tooltip]="item?.metaData?.tooltip"
+                       [suffix]="item?.metaData?.suffix"
+                       [prefix]="item?.metaData?.prefix"
+                       [error]="item?.error == true"
+                       [ngModel]="calculateFormulaValue(item?.metaData)"
+                       (ngModelChange)="validateField($event, item)"
+                       [errorMsg]="item?.errorMsg"
+                       [label]="item?.label"
+                       [isRequired]="item?.validators?.required"
+                       [format]="item?.metaData?.format"
+                       (onBlur)="optionChange($event, item)"
       ></finlevit-number>
     </div>
   </ng-container>
