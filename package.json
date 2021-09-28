@@ -25,6 +25,7 @@
     "angular-material": "^1.2.2",
     "bootstrap": "^4.6.0",
     "lodash": "^4.17.21",
+    "moment": "2.24.0",
     "ngx-loading": "^8.0.0",
     "ngx-toastr": "^13.2.1",
     "primeflex": "^2.0.0",

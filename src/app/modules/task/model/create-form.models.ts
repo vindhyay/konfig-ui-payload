@@ -399,15 +399,19 @@ export class TextInputMetaData extends MetaData {
   tooltip: string;
   leftIcon: string;
   rightIcon: string;
+  isFormulaField: boolean;
+  formula = [];
   constructor(data) {
     super(data);
-    const { mask = "", icon = "", tooltip = "", placeholder = "", leftIcon = "", rightIcon = "" } = data;
+    const { mask = "", icon = "", tooltip = "", placeholder = "", leftIcon = "", rightIcon = "", isFormulaField, formula } = data;
     this.mask = mask;
     this.icon = icon;
     this.tooltip = tooltip;
     this.placeholder = placeholder;
     this.leftIcon = leftIcon;
     this.rightIcon = rightIcon;
+    this.isFormulaField = isFormulaField;
+    this.formula = formula;
   }
 }
 
@@ -470,14 +474,18 @@ export class NumberMetaData extends MetaData {
   suffix: string;
   placeholder: string;
   tooltip: string;
+  isFormulaField: boolean;
+  formula = [];
   constructor(data) {
     super(data);
-    const { prefix = "", suffix = "", tooltip = "", placeholder = "", format = false } = data;
+    const { prefix = "", suffix = "", tooltip = "", placeholder = "", format = false, isFormulaField, formula } = data;
     this.format = format;
     this.prefix = prefix;
     this.suffix = suffix;
     this.tooltip = tooltip;
     this.placeholder = placeholder;
+    this.isFormulaField = isFormulaField;
+    this.formula = formula;
   }
 }
 
