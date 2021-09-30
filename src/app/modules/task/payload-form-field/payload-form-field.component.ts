@@ -263,20 +263,17 @@ export class PayloadFormFieldComponent implements OnInit {
     this.taskService.checkCondition(ifConditions);
   }
   calculateFormulaValue(itemMetaData) : any{
-    let textInput = '';
+    let formulaValue = '';
     let formula = [];
-    itemMetaData.formula.forEach(field => {
-      if (field.resourceType === resourceType.PAYLOAD_FIELD) {
-        // this.payloadFields.forEach(fld => {
-        //   if(field.id === fld.id){
-        //     formula.push(fld)
-        //   }
-        // })
-        formula.push(getFieldFromFields(this.payloadFields, field.id));
-      }else {
-        formula.push(field)
-      }
-    })
+    if(itemMetaData.formula.length > 0){
+      itemMetaData.formula.forEach(field => {
+        if (field.resourceType === resourceType.PAYLOAD_FIELD) {
+          formula.push(getFieldFromFields(this.payloadFields, field.id));
+        }else {
+          formula.push(field)
+        }
+      })
+    }
     let firstField = formula.find(field => field.resourceType === resourceType.PAYLOAD_FIELD);
     switch (firstField.dataType){
       case 'number':
@@ -292,14 +289,14 @@ export class PayloadFormFieldComponent implements OnInit {
             expression = expression + ' ' + field.expression;
           }
         })
-        textInput = eval(expression);
-        return textInput;
+        formulaValue = eval(expression);
+        return formulaValue;
       case 'string':
         const fields = formula.filter(field => {
           return field.resourceType === resourceType.PAYLOAD_FIELD;
         })
-        textInput = fields.map(fld => { return fld.value.value }).join(" ");
-        return textInput;
+        formulaValue = fields.map(fld => { return fld.value.value }).join(" ");
+        return formulaValue;
       case 'date':
         const dateFunc = formula.filter(field => {
           return field.resourceType === resourceType.FUNCTION
@@ -323,10 +320,42 @@ export class PayloadFormFieldComponent implements OnInit {
         let months = d.diff(date1, 'months');
         d.add(-months, 'months');
         let days = d.diff(date1, 'days');
-        textInput = years + " years  " + months + " months  " + days + " days";
-        return textInput;
+        formulaValue = years + " years  " + months + " months  " + days + " days";
+        return formulaValue;
+      case 'array':
+        if(firstField.metaData.widgetType === WidgetTypes.CheckboxGroup){
+          if(firstField.value.value){
+            formulaValue = firstField.value.value.join(" ");
+          }
+        }
+        if(firstField.metaData.widgetType !== WidgetTypes.CheckboxGroup){
+          const values = [];
+          if(formula[1].column.type === 'Text'){
+            if(formula[0].value.value){
+              formula[0].value.value.forEach(value => {
+                values.push(value[formula[1].column.columnId])
+              })
+              formulaValue = values.join("");
+            }
+          }
+          if(formula[1].column.type === 'Number'){
+            if(formula[0].value.value){
+              formula[0].value.value.forEach(value => {
+                if(value[formula[1].column.columnId] !== '' && value[formula[1].column.columnId] !== null){
+                  values.push(value[formula[1].column.columnId])
+                }
+              })
+              if(values.length > 1){
+                formulaValue = eval(values.join(" + "))
+              }else {
+                formulaValue = values[0] || ''
+              }
+            }
+          }
+        }
+        return formulaValue
     }
-    return textInput;
+    return formulaValue;
   }
 }
 
