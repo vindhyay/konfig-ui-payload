@@ -198,6 +198,12 @@
         [tableHeading]="item?.metaData?.heading"
         [columns]="item?.metaData?.columns"
         (onColDataChange)="onColDataChange($event)"
+        [editRow]="item?.metaData?.actions?.editRow"
+        [hideHeader]="item?.metaData?.hideHeader"
+        [cellBorder]="item?.metaData?.cellBorder"
+        [deleteRow]="item?.metaData?.actions?.deleteRow"
+        [actionWidth]="item?.metaData?.actions?.width"
+        [actionLabel]="item?.metaData?.actions?.label"
       ></finlevit-table>
     </div>
   </ng-container>
