@@ -63,7 +63,7 @@
           <ng-container [ngSwitch]="col.type">
             <div class="p-pb-1" *ngSwitchCase="'Data'">{{ rowData[col.columnId] }}</div>
             <div class="p-pl-1" *ngSwitchCase="'Date'">
-              {{ rowData[col.columnId] | date: "medium" }}
+              {{ rowData[col.columnId] | date }}
             </div>
             <div *ngSwitchDefault>
               {{ rowData[col.columnId] }}
@@ -107,7 +107,7 @@
             </div>
             <div class="p-pl-1" *ngSwitchCase="'Date'">
               <ng-container *ngIf="!(col.editable && editRows[rowIndex])">
-                {{ rowData[col.columnId] }}
+                {{ rowData[col.columnId] | date }}
               </ng-container>
               <finlevit-lib-datepicker
                 *ngIf="col.editable && editRows[rowIndex]"
