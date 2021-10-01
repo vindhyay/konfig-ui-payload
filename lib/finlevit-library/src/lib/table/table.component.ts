@@ -1,4 +1,6 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
+import {getUniqueId} from "../utils";
+import {scrollToBottom} from "../../../../../src/app/utils";
 
 export enum columnType{
   text= "Text",
@@ -12,6 +14,7 @@ export interface column{
   label: string;
   type: columnType;
   required: boolean;
+  width: string;
 }
 
 @Component({
@@ -37,50 +40,84 @@ export class TableComponent implements OnInit {
   @Input() tableData: any[] = [];
   @Input() totalRecords = 0;
   @Input() loading = false;
-  @Input() noDataMessage: string = "No Data";
+  @Input() noDataMessage = "No Data";
   @Input() isSmall = false;
   @Input() isLarge = false;
   @Input() pagination = false;
   @Input() sort = false;
   @Input() filter = false;
   @Input() addRows = false;
+  @Input() hideHeader = false;
+  @Input() cellBorder = true;
+  @Input() editRow = false;
+  @Input() deleteRow = false;
+  @Input() actionWidth = 10;
+  @Input() actionLabel = "Actions";
   @Input() tableHeading = "";
-  @Input() headerColor: string = "#000000";
-  @Input() headerBgColor: string = "#ffffff";
-  @Input() lazyLoad: boolean = false;
+  @Input() headerColor = "#000000";
+  @Input() headerBgColor = "#ffffff";
+  @Input() lazyLoad = false;
 
   @Output() onColDataChange = new EventEmitter();
   @Output() onRowClick = new EventEmitter();
   @Output() onPageChange = new EventEmitter();
+
+  @Output() handleRowSave = new EventEmitter();
+  @Output() handleRowDelete = new EventEmitter();
+
   @Input() viewMode = false;
+  tableId: any = null;
+  editRows = {};
 
   private _styleClass = "p-datatable-gridlines p-datatable-sm";
 
   ngOnInit(): void {
+    this.tableId = getUniqueId("table");
   }
 
-  addRow(){
-    const newRow: any = {};
-    this.columns.forEach( column => {
-      Object.assign(newRow, { [column.columnId] : "" });
-    });
-    this.tableData.push(newRow);
-  }
   getColType(type){
     switch (type){
-      case 'Text':
-      case 'Data':
-        return 'text';
-      case 'Date':
-        return 'date'
-      case 'Number':
-        return 'numeric';
+      case "Text":
+      case "Data":
+        return "text";
+      case "Date":
+        return "date";
+      case "Number":
+        return "numeric";
       default:
-        return 'text'
+        return "text";
     }
   }
   onPage($event){
-    const {first, rows} = $event
-    this.onPageChange.emit({page:Math.ceil((first+1)/rows), rows })
+    const {first, rows} = $event;
+    this.onPageChange.emit({page: Math.ceil((first + 1) / rows), rows });
+  }
+  onDelete(index, rowData){
+    this.tableData.splice(index, 1);
+    this.handleRowDelete.emit({index, rowData});
+  }
+  onEdit(index, data: Array<any>) {
+    this.editRows[index] = JSON.parse(JSON.stringify(data));
+  }
+  onRowSave(index, rowData){
+    this.handleRowSave.emit({index, rowData});
+    delete this.editRows[index];
+  }
+  onRowEditCancel(index, rowData){
+    this.tableData[index] = this.editRows[index];
+    delete this.editRows[index];
+  }
+  addRow(){
+    const newRow: any = {};
+    this.columns.forEach( eachColumn => {
+      Object.assign(newRow, { [eachColumn.columnId] : "" });
+    });
+    this.tableData.push(newRow);
+    const tableBodyElement = document.querySelector(`#${this.tableId} .p-datatable-tbody`);
+    this.onEdit(this.tableData.length - 1, newRow);
+    scrollToBottom(tableBodyElement);
+  }
+  handleColResize($event){
+    console.log($event);
   }
 }

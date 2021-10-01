@@ -13,23 +13,57 @@
   [loading]="loading"
   [showCurrentPageReport]="true"
   currentPageReportTemplate="{first} to {last} of {totalRecords}"
+  [id]="tableId"
 >
   <ng-template pTemplate="header">
-    <tr>
-      <th [ngStyle]="{color: headerColor, backgroundColor: headerBgColor}" pResizableColumn [pSortableColumn]="sort ? column.columnId: ''" *ngFor="let column of columns">{{ column.label }}
+    <tr *ngIf="!hideHeader">
+      <th
+        [ngStyle]="{
+          color: headerColor,
+          backgroundColor: headerBgColor,
+          border: !cellBorder ? 'none' : '',
+          width: (column?.width || 100) + '%'
+        }"
+        pResizableColumn
+        [pSortableColumn]="sort ? column.columnId : ''"
+        *ngFor="let column of columns"
+      >
+        {{ column.label }}
         <p-sortIcon *ngIf="sort" [field]="column.columnId"></p-sortIcon>
-        <p-columnFilter *ngIf="filter" [type]="getColType(column.type)" [field]="column.columnId" display="menu"></p-columnFilter>
+        <p-columnFilter
+          *ngIf="filter"
+          [type]="getColType(column.type)"
+          [field]="column.columnId"
+          display="menu"
+        ></p-columnFilter>
       </th>
+      <ng-container *ngIf="editRow || deleteRow">
+        <th
+          [ngStyle]="{
+            color: headerColor,
+            backgroundColor: headerBgColor,
+            width: (actionWidth || 100) + '%',
+            border: !cellBorder ? 'none' : '',
+            textAlign: 'center'
+          }"
+          [pSortableColumn]="''"
+        >
+          {{ actionLabel }}
+        </th>
+      </ng-container>
     </tr>
   </ng-template>
-  <ng-template pTemplate="body" let-rowData let-columns="columns">
+  <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex">
     <tr (click)="onRowClick.emit(rowData)">
-      <td *ngFor="let col of columns">
+      <td
+        [ngStyle]="{ width: (col?.width || 100) + '%', border: !cellBorder ? 'none' : '' }"
+        *ngFor="let col of columns"
+      >
         <ng-container *ngIf="viewMode">
           <ng-container [ngSwitch]="col.type">
             <div class="p-pb-1" *ngSwitchCase="'Data'">{{ rowData[col.columnId] }}</div>
             <div class="p-pl-1" *ngSwitchCase="'Date'">
-              {{ rowData[col.columnId] | date: 'medium' }}
+              {{ rowData[col.columnId] | date: "medium" }}
             </div>
             <div *ngSwitchDefault>
               {{ rowData[col.columnId] }}
@@ -40,16 +74,46 @@
           <ng-container [ngSwitch]="col.type">
             <div class="p-pb-1" *ngSwitchCase="'Data'">{{ rowData[col.columnId] }}</div>
             <div class="p-pl-1" *ngSwitchCase="'Text'">
-              <finlevit-text (onBlur)="onColDataChange.emit({column:col, data: rowData[col.columnId]})" [(ngModel)]="rowData[col.columnId]"  [isSmall]="true"></finlevit-text>
+              <ng-container *ngIf="!(col.editable && editRows[rowIndex])">
+                {{ rowData[col.columnId] }}
+              </ng-container>
+              <finlevit-text
+                *ngIf="col.editable && editRows[rowIndex]"
+                (onBlur)="onColDataChange.emit({ column: col, data: rowData[col.columnId] })"
+                [(ngModel)]="rowData[col.columnId]"
+                [isSmall]="true"
+              ></finlevit-text>
             </div>
             <div class="p-pl-1" *ngSwitchCase="'TextArea'">
-              <finlevit-lib-textarea [(ngModel)]="rowData[col.columnId]" [isSmall]="true"></finlevit-lib-textarea>
+              <ng-container *ngIf="!(col.editable && editRows[rowIndex])">
+                {{ rowData[col.columnId] }}
+              </ng-container>
+              <finlevit-lib-textarea
+                *ngIf="col.editable && editRows[rowIndex]"
+                [(ngModel)]="rowData[col.columnId]"
+                [isSmall]="true"
+              ></finlevit-lib-textarea>
             </div>
             <div class="p-pl-1" *ngSwitchCase="'Number'">
-              <finlevit-number (onBlur)="onColDataChange.emit({column:col, data: rowData[col.columnId]})" [(ngModel)]="rowData[col.columnId]" [isSmall]="true"></finlevit-number>
+              <ng-container *ngIf="!(col.editable && editRows[rowIndex])">
+                {{ rowData[col.columnId] }}
+              </ng-container>
+              <finlevit-number
+                *ngIf="col.editable && editRows[rowIndex]"
+                (onBlur)="onColDataChange.emit({ column: col, data: rowData[col.columnId] })"
+                [(ngModel)]="rowData[col.columnId]"
+                [isSmall]="true"
+              ></finlevit-number>
             </div>
             <div class="p-pl-1" *ngSwitchCase="'Date'">
-              <finlevit-lib-datepicker [(ngModel)]="rowData[col.columnId]" [isSmall]="true"></finlevit-lib-datepicker>
+              <ng-container *ngIf="!(col.editable && editRows[rowIndex])">
+                {{ rowData[col.columnId] }}
+              </ng-container>
+              <finlevit-lib-datepicker
+                *ngIf="col.editable && editRows[rowIndex]"
+                [(ngModel)]="rowData[col.columnId]"
+                [isSmall]="true"
+              ></finlevit-lib-datepicker>
             </div>
             <div *ngSwitchDefault>
               {{ rowData[col.columnId] }}
@@ -57,9 +121,29 @@
           </ng-container>
         </ng-container>
       </td>
+      <td
+        *ngIf="editRow || deleteRow"
+        [ngStyle]="{ width: actionWidth + '%', border: !cellBorder ? 'none' : '' }"
+        class="table-actions"
+      >
+        <ng-container *ngIf="editRows[rowIndex]">
+          <div class="edit-action-mode">
+            <i class="pi pi-check save-icon" (click)="onRowSave(rowIndex, rowData)"></i>
+            <i class="pi pi-times cancel-icon" (click)="onRowEditCancel(rowIndex, rowData)"></i>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="!editRows[rowIndex]">
+          <div class="edit-action" *ngIf="editRow" (click)="onEdit(rowIndex, rowData)">
+            <i class="pi pi-pencil"></i>
+          </div>
+          <div class="delete-action" *ngIf="deleteRow" (click)="onDelete(rowIndex, rowData)">
+            <i class="pi pi-trash delete-icon"></i>
+          </div>
+        </ng-container>
+      </td>
     </tr>
   </ng-template>
-  <ng-template pTemplate="footer" class="table-footer" >
+  <ng-template pTemplate="footer" class="table-footer">
     <div class="table-footer" *ngIf="addRows && (!tableData.length || !pagination)">
       <p-button (click)="addRow()" type="button" icon="pi pi-plus" styleClass="p-button-text"></p-button>
     </div>
@@ -67,6 +151,5 @@
   <ng-template pTemplate="paginatorright">
     <p-button *ngIf="addRows" (click)="addRow()" type="button" icon="pi pi-plus" styleClass="p-button-text"></p-button>
   </ng-template>
-  <ng-template pTemplate="paginatorleft">
-  </ng-template>
+  <ng-template pTemplate="paginatorleft"> </ng-template>
 </p-table>

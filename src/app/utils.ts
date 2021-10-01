@@ -102,3 +102,9 @@ export const getFieldFromFields = (fields, fieldId) => {
   });
   return paramField;
 };
+export const scrollToBottom = element => {
+  if (!element) {
+    return;
+  }
+  element.scroll({ top: element.scrollHeight, behavior: "smooth" });
+};
