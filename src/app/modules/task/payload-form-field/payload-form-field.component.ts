@@ -278,7 +278,7 @@ export class PayloadFormFieldComponent implements OnInit {
       }
     })
     let firstField = formula.find(field => field.resourceType === resourceType.PAYLOAD_FIELD);
-    switch (firstField.dataType){
+    switch (firstField?.dataType){
       case 'number':
         let expression = '';
         formula.forEach(field => {
