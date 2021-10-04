@@ -118,7 +118,7 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
         // Dont get same item
         item.metaData.widgetId !== baseGridItem.item.metaData.widgetId &&
         // Get only below items
-        (baseItem.rows ? item.y >= baseItem.y + baseItem.rows : item.y > baseItem.y + baseItem.rows) &&
+        item.y >= (baseItem.y + baseItem.rows) &&
         // Get only under items
         (item.x + item.cols >= (baseItem.x || baseItem.x + baseItem.cols) ||
           (item.x > baseItem.x && item.x + item.cols < baseItem.x + baseItem.cols)) &&
@@ -138,7 +138,9 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
       if (!widgetGridItem) {
         return;
       }
-      const eligibleItems = this.getEligibleItems(gridItems, widgetGridItem, []);
+      const eligibleItems = this.getEligibleItems(gridItems, widgetGridItem, []).filter(
+        (thing, index, self) => index === self.findIndex(t => t?.item?.metaData?.widgetId === thing?.item?.metaData?.widgetId)
+      );
       const changeGridItemData = widget;
       const hideRows = changeGridItemData?.metaData?.hideRows || 0;
       const collisionItems = [];

@@ -96,15 +96,6 @@ export class TaskService extends BaseService {
     if (result) {
       const showFields = result?.showFields || [];
       const hideFields = result?.hideFields || [];
-      hideFields.forEach(hideField => {
-        const hideFieldRef = getFieldFromFields(allFields, hideField?.value);
-        if (hideFieldRef) {
-          hideFieldRef.rows = hideFieldRef?.metaData?.hideRows || 0;
-          hideFieldRef.minItemRows = hideFieldRef?.metaData?.hideRows || 0;
-          hideFieldRef.metaData.movement = "UP";
-          this.editorService.widgetChange.next(hideFieldRef);
-        }
-      });
       showFields.forEach(showField => {
         const showFieldRef = getFieldFromFields(allFields, showField?.value);
         if (showFieldRef) {
@@ -115,7 +106,16 @@ export class TaskService extends BaseService {
           this.editorService.widgetChange.next(showFieldRef);
         }
       });
-      this.editorService.setContainerHeight(allFields);
+        hideFields.forEach(hideField => {
+          const hideFieldRef = getFieldFromFields(allFields, hideField?.value);
+          if (hideFieldRef) {
+            hideFieldRef.rows = hideFieldRef?.metaData?.hideRows || 0;
+            hideFieldRef.minItemRows = hideFieldRef?.metaData?.hideRows || 0;
+            hideFieldRef.metaData.movement = "UP";
+            this.editorService.widgetChange.next(hideFieldRef);
+          }
+        });
+        this.editorService.setContainerHeight(allFields);
     }
     return result;
   }
