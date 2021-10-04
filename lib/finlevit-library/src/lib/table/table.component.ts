@@ -25,10 +25,10 @@ export class TableComponent implements OnInit {
   set columns(columns) {
     this._columns = columns.map(column => {
       if (column.colType === ColumnTypes.Date) {
-        if (column.validators.minDate) {
+        if (column.validators?.minDate) {
           column.validators.minDate = new Date(column.validators.minDate);
         }
-        if (column.validators.maxDate) {
+        if (column.validators?.maxDate) {
           column.validators.maxDate = new Date(column.validators.maxDate);
         }
       }
