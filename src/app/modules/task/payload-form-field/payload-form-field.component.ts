@@ -66,7 +66,7 @@ export class PayloadFormFieldComponent implements OnInit {
       if (metaData.configure) {
         metaData.options = metaData.options || [];
       } else {
-        data.value = { id: "", value: [] };
+        data.value = { id: "", value: data?.value?.value || [] };
       }
     }
     if (data?.validators?.minDate) {

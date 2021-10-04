@@ -1,21 +1,8 @@
-import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
-import {getUniqueId} from "../utils";
-import {scrollToBottom} from "../../../../../src/app/utils";
-
-export enum columnType{
-  text= "Text",
-  number = "Number",
-  date= "Date",
-  data = "Data"
-}
-export interface column{
-  displayName: string;
-  columnId: string;
-  label: string;
-  type: columnType;
-  required: boolean;
-  width: string;
-}
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { getUniqueId } from "../utils";
+import { scrollToBottom } from "../../../../../src/app/utils";
+import { FormControl, Validators } from "@angular/forms";
+import { Column, ColumnTypes } from "../../../../../src/app/modules/task/model/create-form.models";
 
 @Component({
   selector: "finlevit-table",
@@ -23,20 +10,34 @@ export interface column{
   styleUrls: ["./table.component.scss"]
 })
 export class TableComponent implements OnInit {
-
   get styleClass(): string {
-    if (this.isSmall){
+    if (this.isSmall) {
       this._styleClass = this._styleClass + " p-datatable-sm";
-    }else if (this.isLarge){
+    } else if (this.isLarge) {
       this._styleClass = this._styleClass + " p-datatable-lg";
     }
     return this._styleClass;
   }
 
-  constructor() {
+  constructor() {}
+  _columns: Column[] = [];
+  @Input()
+  set columns(columns) {
+    this._columns = columns.map(column => {
+      if (column.colType === ColumnTypes.Date) {
+        if (column.validators.minDate) {
+          column.validators.minDate = new Date(column.validators.minDate);
+        }
+        if (column.validators.maxDate) {
+          column.validators.maxDate = new Date(column.validators.maxDate);
+        }
+      }
+      return column;
+    });
   }
-
-  @Input() columns: column[]  = [];
+  get columns() {
+    return this._columns;
+  }
   @Input() tableData: any[] = [];
   @Input() totalRecords = 0;
   @Input() loading = false;
@@ -68,15 +69,22 @@ export class TableComponent implements OnInit {
   @Input() viewMode = false;
   tableId: any = null;
   editRows = {};
+  newRows = {};
+  rowErrors = {};
 
   private _styleClass = "p-datatable-gridlines p-datatable-sm";
+
+  Text = ColumnTypes.Text;
+  TextArea = ColumnTypes.TextArea;
+  Number = ColumnTypes.Number;
+  Date = ColumnTypes.Date;
 
   ngOnInit(): void {
     this.tableId = getUniqueId("table");
   }
 
-  getColType(type){
-    switch (type){
+  getColType(type) {
+    switch (type) {
       case "Text":
       case "Data":
         return "text";
@@ -88,36 +96,127 @@ export class TableComponent implements OnInit {
         return "text";
     }
   }
-  onPage($event){
-    const {first, rows} = $event;
-    this.onPageChange.emit({page: Math.ceil((first + 1) / rows), rows });
+  onPage($event) {
+    const { first, rows } = $event;
+    this.onPageChange.emit({ page: Math.ceil((first + 1) / rows), rows });
   }
-  onDelete(index, rowData){
+  onDelete(index, rowData, isNew = false) {
     this.tableData.splice(index, 1);
-    this.handleRowDelete.emit({index, rowData});
+    delete this.rowErrors[index];
+    this.handleRowDelete.emit({ index, rowData, isNew });
   }
   onEdit(index, data: Array<any>) {
     this.editRows[index] = JSON.parse(JSON.stringify(data));
   }
-  onRowSave(index, rowData){
-    this.handleRowSave.emit({index, rowData});
-    delete this.editRows[index];
+  onRowSave(index, rowData, isNew = false) {
+    if (this.validateRow(index, rowData)) {
+      this.handleRowSave.emit({ index, rowData });
+      if (isNew) {
+        delete this.newRows[index];
+      } else {
+        delete this.editRows[index];
+      }
+      delete this.rowErrors[index];
+    }
   }
-  onRowEditCancel(index, rowData){
+  validateRow(index, rowData, columnId = "") {
+    let valid = true;
+    Object.keys(rowData).forEach(column => {
+      if (columnId && columnId !== column) {
+        return;
+      }
+      const columnValue = rowData[column];
+      const columnConfig = this.columns.find(col => col.columnId === column);
+      const tempFormControl = new FormControl(columnValue, this.getValidators(columnConfig.validators) || []);
+      if (tempFormControl.valid) {
+        if (!this.rowErrors[index]) {
+          this.rowErrors[index] = {};
+        }
+        this.rowErrors[index][column] = { error: false, errorMsg: "" };
+      } else {
+        valid = false;
+        if (!this.rowErrors[index]) {
+          this.rowErrors[index] = {};
+        }
+        this.rowErrors[index][column] = {
+          error: true,
+          errorMsg: this.getErrorMessages(tempFormControl.errors, columnConfig.label)[0]
+        };
+      }
+    });
+    return valid;
+  }
+  getErrorMessages = (errors: any, label: any) => {
+    const errorMessages: string[] = [];
+    Object.keys(errors).forEach(error => {
+      switch (error) {
+        case "required":
+          errorMessages.push(`${label} is required`);
+          break;
+        case "minlength":
+        case "maxlength":
+          errorMessages.push(
+            `Expected atleast length ${errors[error].requiredLength} but got ${errors[error].actualLength}`
+          );
+          break;
+        case "min":
+          errorMessages.push(`Expected atleast value ${errors[error].min} but got ${errors[error].actual}`);
+          break;
+        case "max":
+          errorMessages.push(`Expected atleast value ${errors[error].max} but got ${errors[error].actual}`);
+          break;
+      }
+    });
+    return errorMessages;
+  }
+  getValidators = (validators: any) => {
+    const _validators: any = [];
+    Object.keys(validators).forEach(validator => {
+      switch (validator) {
+        case "minValue":
+          validators[validator] && _validators.push(Validators.min(validators[validator]));
+          break;
+        case "minLength":
+          validators[validator] && _validators.push(Validators.minLength(validators[validator]));
+          break;
+        case "maxValue":
+          validators[validator] && _validators.push(Validators.max(validators[validator]));
+          break;
+        case "maxLength":
+          validators[validator] && _validators.push(Validators.maxLength(validators[validator]));
+          break;
+        case "required":
+          validators[validator] && _validators.push(Validators.required);
+          break;
+      }
+    });
+    return _validators;
+  }
+  onRowEditCancel(index, rowData) {
     this.tableData[index] = this.editRows[index];
     delete this.editRows[index];
+    delete this.rowErrors[index];
   }
-  addRow(){
+  getColumnDefaultValue(column){
+    switch (column.type){
+      case 'string':
+        return "";
+      case "number":
+        return null;
+      default:
+        return null
+    }
+  }
+  addRow() {
     const newRow: any = {};
-    this.columns.forEach( eachColumn => {
-      Object.assign(newRow, { [eachColumn.columnId] : "" });
+    this.columns.forEach(eachColumn => {
+      Object.assign(newRow, { [eachColumn.columnId]: this.getColumnDefaultValue(eachColumn) });
     });
     this.tableData.push(newRow);
     const tableBodyElement = document.querySelector(`#${this.tableId} .p-datatable-tbody`);
-    this.onEdit(this.tableData.length - 1, newRow);
-    scrollToBottom(tableBodyElement);
-  }
-  handleColResize($event){
-    console.log($event);
+    this.newRows[this.tableData.length - 1] = newRow;
+    setTimeout(() => {
+      scrollToBottom(tableBodyElement);
+    });
   }
 }

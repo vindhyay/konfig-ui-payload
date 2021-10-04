@@ -208,6 +208,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
           this.notificationService.success("Transaction Submitted Successfully", "Success");
           this.transactionDetails = data;
           this.taskService.setTransactionDetails(data);
+          console.log('response',data)
           this.id = data.id;
         } else {
           this.notificationService.error(error.errorMessage, "Error");
