@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import {BaseWidget, MetaData} from '../../model/create-form.models';
+import { TaskService } from "../../services/task.service";
 
 @Component({
   selector: 'app-checkbox-group',
@@ -13,9 +14,13 @@ export class CheckboxGroupComponent implements OnInit {
   @Input() viewMode = false;
   @Input() editMode = false;
   @Input() dataListId = "";
-  constructor() {}
+  constructor(private taskService: TaskService) {}
   get metaData(): MetaData {
     return this.item.metaData as MetaData;
   }
   ngOnInit(): void {}
+  onChange($event) {
+    const ifConditions = this.item.metaData?.conditions?.ifConditions || [];
+    this.taskService.checkCondition(ifConditions);
+  }
 }

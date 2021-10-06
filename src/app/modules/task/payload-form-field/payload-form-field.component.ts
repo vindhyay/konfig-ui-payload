@@ -126,11 +126,9 @@ export class PayloadFormFieldComponent implements OnInit {
       this.collapseContainerStatus = false;
     }
     // Apply conditions based on default value
-    if (this.item?.value?.value || this.item?.value?.value === false) {
-      setTimeout(() => {
-        this.onChange(this.item.value.value);
-      });
-    }
+    setTimeout(() => {
+      this.onChange(this.item?.value?.value);
+    });
   }
   showControls: boolean = false;
   editMode: boolean = false;

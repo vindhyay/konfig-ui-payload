@@ -77,7 +77,15 @@ export class TaskService extends BaseService {
         const field = getFieldFromFields(allFields, rule?.field?.value);
         const fieldValue = field?.value?.value;
         let result = false;
-        if (rule.opeartor === "notEquals") {
+        if(rule.operator === "includes"){
+          if ((fieldValue || []).includes(rule.value)) {
+            result = true;
+          }
+        } else if(rule.operator === "excludes"){
+          if (!(fieldValue || []).includes(rule.value)){
+            result = true;
+          }
+        } else if (rule.opeartor === "notEquals") {
           if (String(fieldValue) !== String(rule.value)) {
             result = true;
           }

@@ -11,5 +11,6 @@
   "
   [tooltip]="item?.metaData?.tooltip"
   [(ngModel)]="item.value.value"
+  (ngModelChange)="onChange($event)"
   [alignOptions]="item?.metaData?.alignOptions"
 ></finlevit-lib-checkbox-group>
