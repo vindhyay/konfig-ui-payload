@@ -3,7 +3,7 @@ import { FormControl, Validators } from "@angular/forms";
 import { FieldData } from "../model/field-data.model";
 import { DataTypes } from "../model/payload-field.model";
 import { BaseWidget, NESTED_MIN_COLUMNS, TableMetaData, WidgetTypes } from "../model/create-form.models";
-import {getErrorMessages, getFieldFromFields, validateFields} from "../../../utils";
+import { getErrorMessages, getFieldFromFields, validateFields } from "../../../utils";
 import { TaskService } from "../services/task.service";
 import { AuthService } from "../../auth/services/auth.service";
 import { EditorService } from "../editor.service";
@@ -69,6 +69,9 @@ export class PayloadFormFieldComponent implements OnInit {
         data.value = { id: "", value: data?.value?.value || [] };
       }
     }
+    if(data?.metaData?.widgetType === WidgetTypes.Checkbox) {
+      data.value = {id: "", value: data?.value?.value || false}
+    }
     if (data?.validators?.minDate) {
       data.validators.minDate = new Date(data?.validators?.minDate);
     }
@@ -123,7 +126,7 @@ export class PayloadFormFieldComponent implements OnInit {
       this.collapseContainerStatus = false;
     }
     // Apply conditions based on default value
-    if (this.item?.value?.value) {
+    if (this.item?.value?.value || this.item?.value?.value === false) {
       setTimeout(() => {
         this.onChange(this.item.value.value);
       });
