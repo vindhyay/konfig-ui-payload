@@ -41,7 +41,6 @@ export class AppConfigService {
     const ACCOUNT_WORKFLOW_BASE_URL = config.accountWorkflowBaseURL || '';
     const SOCKET_BASE_URL = config.socketBaseURL || '';
     const AUTH_BASE_URL = config.authBaseUrl || '';
-    const ALTERNATE_WORKFLOW_ADMIN_BASE_URL = config.alternateWorkflowAdminBaseURL || '';
     return {
       // Token Gen URL
       authenticateUrl: AUTH_BASE_URL + '/authenticate',
@@ -153,7 +152,7 @@ export class AppConfigService {
       // task-table-socket
       taskTableSocketURL: SOCKET_BASE_URL + '/socket/task-table',
       // Data list values URL
-      getDataListValuesURL: ALTERNATE_WORKFLOW_ADMIN_BASE_URL + '/resource/query-result',
+      getDataListValuesURL: WORKFLOW_ADMIN_BASE_URL + '/resource/query-result',
       // Upload files
       uploadFile: ACCOUNT_WORKFLOW_BASE_URL + '/transaction/upload-file',
       // Transaction Table Data URL
