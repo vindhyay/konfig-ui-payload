@@ -42,6 +42,7 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
   ErrorContainer: WidgetTypes = WidgetTypes.ErrorContainer;
   transactionId: any;
   taskId: any;
+  allEligibleFields = [];
   @ViewChild("gridsterComponent", { static: false }) gridsterRef: any;
 
   constructor(
@@ -106,11 +107,12 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
       });
     }
     this.editorService.widgetChange$.subscribe(widget => {
+      this.allEligibleFields = [];
       this.checkItemSize(widget);
     });
   }
 
-  getEligibleItems(items, baseGridItem, prevItems) {
+  getEligibleItems(items, baseGridItem) {
     const eligibleItems = items.filter(eachItem => {
       const item = eachItem.item;
       const baseItem = baseGridItem.$item;
@@ -124,10 +126,11 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
           (item.x > baseItem.x && item.x + item.cols < baseItem.x + baseItem.cols)) &&
         baseItem.x + baseItem.cols > item.x &&
         // Dont get if item found in prev round
-        !prevItems.find(prevItem => prevItem.item.metaData.widgetId === item.metaData.widgetId)
+        !this.allEligibleFields.find(prevItem => prevItem.item.metaData.widgetId === item.metaData.widgetId)
       );
     });
-    const itemEligibleItems = eligibleItems.flatMap(elgItem => this.getEligibleItems(items, elgItem, eligibleItems));
+    this.allEligibleFields = this.allEligibleFields.concat(eligibleItems);
+    const itemEligibleItems = eligibleItems.flatMap(elgItem => this.getEligibleItems(items, elgItem));
     return [...eligibleItems, ...itemEligibleItems];
   }
 
@@ -138,7 +141,7 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
       if (!widgetGridItem) {
         return;
       }
-      const eligibleItems = this.getEligibleItems(gridItems, widgetGridItem, []).filter(
+      const eligibleItems = this.getEligibleItems(gridItems, widgetGridItem).filter(
         (thing, index, self) => index === self.findIndex(t => t?.item?.metaData?.widgetId === thing?.item?.metaData?.widgetId)
       );
       const changeGridItemData = widget;
