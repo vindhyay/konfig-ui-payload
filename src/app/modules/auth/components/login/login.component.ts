@@ -77,7 +77,6 @@ export class LoginComponent extends BaseComponent implements OnInit {
             try {
               this.storage.user = userDetails;
               const decodedUserDetails: UserDataModel = JSON.parse(atob(userDetails));
-              console.log(decodedUserDetails);
               this.authService.authSubject.next(decodedUserDetails);
             } catch (error) {
               this.loginError = 'Failed to decode user details';

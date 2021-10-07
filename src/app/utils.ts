@@ -49,7 +49,7 @@ export const validateFields = (fields: any[]) => {
       }
     } else {
       const tempFormControl = new FormControl(field.value.value, getValidators(field.validators));
-      if (tempFormControl.valid) {
+      if (tempFormControl.valid || field?.rows === 0 || field?.metaData?.isHidden) {
         field.error = false;
         field.errorMsg = "";
       } else {

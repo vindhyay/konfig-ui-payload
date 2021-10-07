@@ -1,8 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {BaseComponent} from "./modules/shared/base/base.component";
-import {UserDataModel} from "./modules/auth/models";
-import {ActivatedRoute, Router} from "@angular/router";
-import {AuthService} from "./modules/auth/services/auth.service";
+import { Component, OnInit } from "@angular/core";
+import { BaseComponent } from "./modules/shared/base/base.component";
+import { UserDataModel } from "./modules/auth/models";
+import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
+import { AuthService } from "./modules/auth/services/auth.service";
+import { filter, map } from "rxjs/operators";
 
 @Component({
   selector: 'app-root',
@@ -22,9 +23,18 @@ export class AppComponent extends BaseComponent implements OnInit{
   }
 
   ngOnInit() {
-    this.activatedRoute.paramMap.subscribe(params => {
-      this.workflowId = params.get('workflowId');
-    });
+    this.subscribe(this.router.events.pipe(filter(event => event instanceof NavigationEnd)).pipe(
+      map(() => {
+        return this.activatedRoute.firstChild;
+      })
+    ), data => {
+      this.subscribe(data?.params, params => {
+        this.workflowId = params?.workflowId;
+        if(this.workflowId && this.authService.isAuthenticated()){
+          this.authService.updateUserDetails(this.workflowId);
+        }
+      })
+    })
   }
 
   logoff() {

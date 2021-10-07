@@ -79,14 +79,17 @@ export class PayloadViewFormComponent implements OnInit {
   }
   validateFields(fields: any[]) {
     let result = true;
+    let errorFields = [];
     fields.forEach((field: any) => {
       if (field.children && field.children.length) {
-        if (!this.validateFields(field.children)) {
+        const {result:validationStatus, errorFields: errorFieldsData} = this.validateFields(field.children)
+        if (!validationStatus) {
           result = false;
+          errorFields = errorFields.concat(errorFieldsData)
         }
       } else {
         const tempFormControl = new FormControl(field.value.value, this.getValidators(field.validators));
-        if (tempFormControl.valid) {
+        if (tempFormControl.valid || field?.rows === 0 || field?.metaData?.isHidden) {
           field.error = false;
           field.errorMsg = "";
         } else {
@@ -95,11 +98,12 @@ export class PayloadViewFormComponent implements OnInit {
             tempFormControl.errors,
             field?.label || field?.displayName || field?.widgetName
           )[0];
+          errorFields.push(field);
           result = false;
         }
       }
     });
-    return result;
+    return { result, errorFields }
   }
   getValidators = (validators: any) => {
     const _validators: any = [];
@@ -125,11 +129,15 @@ export class PayloadViewFormComponent implements OnInit {
     return _validators;
   };
   submit(data) {
-    if (this.validateFields(this._payloadFields)) {
-      console.log(this.convertPayload(this._payloadFields));
+    const {result, errorFields} =  this.validateFields(this._payloadFields)
+    if (result) {
       this.onSubmit.emit({ payload: this.convertPayload(this._payloadFields), data });
     } else {
-      this.notificationService.error("Failed to validate", "Submit Error");
+      let errorMsg = "Failed to validate: "
+      if(errorFields.length){
+        errorMsg = errorMsg + ' ' + errorFields[0]?.label;
+      }
+      this.notificationService.error(errorMsg, "Validation error");
     }
   }
   updateValuesFromOptions(data: any) {
