@@ -386,7 +386,28 @@
         'footer-container': item?.metaData?.widgetType === Footer
       }"
     >
-      <div *ngIf="item?.metaData?.title" class="container-title">{{ item?.metaData?.title }}</div>
+      <div
+        *ngIf="item?.metaData?.title"
+        class="container-title"
+        [ngStyle]="{
+        'background-color': item?.metaData?.header?.bgColor,
+        color: item?.metaData?.header?.color,
+        'font-size': item?.metaData?.header?.fontSize + 'px',
+        height: item?.metaData?.header?.height + 'px'
+      }"
+      >
+        <i
+          *ngIf="item?.metaData?.header?.icon"
+          [class]="item?.metaData?.header?.icon"
+          [ngStyle]="{
+          color: item?.metaData?.header?.color,
+          'font-size': item?.metaData?.header?.fontSize + 'px',
+          'font-weight': 'inherit',
+          marginRight: '0.5rem'
+        }"
+        ></i
+        >{{ item?.metaData?.title }}
+      </div>
       <finlevit-grid
         [viewMode]="viewMode"
         [showEdit]="showEdit"
