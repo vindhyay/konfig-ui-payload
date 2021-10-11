@@ -265,37 +265,53 @@ export class PayloadFormFieldComponent implements OnInit {
   calculateFormulaValue(itemMetaData) : any{
     let formulaValue = '';
     let formula = [];
-    if(itemMetaData?.formula.length > 0){
-      itemMetaData.formula.forEach(field => {
+    if(itemMetaData?.formula?.length > 0){
+      itemMetaData?.formula.forEach(field => {
         if (field?.resourceType === resourceType.PAYLOAD_FIELD) {
-          formula.push(getFieldFromFields(this.payloadFields, field.id));
+          formula.push(getFieldFromFields(this.payloadFields, field?.id));
         }else {
           formula.push(field)
         }
       })
     }
-    let firstField = formula.find(field => field.resourceType === resourceType.PAYLOAD_FIELD);
+    let firstField = formula.find(field => field?.resourceType === resourceType.PAYLOAD_FIELD);
     switch (firstField?.dataType){
       case 'number':
         let expression = '';
         formula.forEach(field => {
           if (field?.resourceType === resourceType.PAYLOAD_FIELD) {
-            expression = expression + ' ' + field.value.value;
+            expression = expression + ' ' + field?.value?.value;
           }
           if (field?.resourceType === resourceType.BRACKET) {
-            expression = expression + ' ' + field.displayName;
+            expression = expression + ' ' + field?.displayName;
           }
           if (field?.resourceType === resourceType.FUNCTION) {
-            expression = expression + ' ' + field.expression;
+            expression = expression + ' ' + field?.expression;
           }
         })
         formulaValue = eval(expression);
         return formulaValue;
       case 'string':
-        const fields = formula.filter(field => {
-          return field?.resourceType === resourceType.PAYLOAD_FIELD;
+        formula.forEach(field => {
+          if (field?.resourceType === resourceType.PAYLOAD_FIELD) {
+            if(field?.value?.value){
+              formulaValue = formulaValue + field?.value?.value;
+            }
+          }
+          if (field?.resourceType === resourceType.FUNCTION) {
+            switch(field?.separateBy){
+              case 'Space':
+                formulaValue = formulaValue + ' ';
+                return formulaValue;
+              case 'Comma':
+                formulaValue = formulaValue + ', ';
+                return formulaValue;
+              case 'Hyphen':
+                formulaValue = formulaValue + '-';
+                return formulaValue;
+            }
+          }
         })
-        formulaValue = fields.map(fld => { return fld.value.value }).join(" ");
         return formulaValue;
       case 'date':
         const dateFunc = formula.filter(field => {
@@ -304,15 +320,19 @@ export class PayloadFormFieldComponent implements OnInit {
         let date1;
         let date2;
         const dateIndex = formula.indexOf(dateFunc[0]);
-        if(itemMetaData?.formula[dateIndex - 1].displayName === "Current Date"){
-          date1 = new Date()
+        if(formula[dateIndex - 1].displayName === "Current Date"){
+          date1 = new Date();
         }else {
-          date1 = moment.utc(formula[dateIndex - 1]?.value?.value).toDate();
+          if(formula[dateIndex - 1]?.value?.value){
+            date1 = moment.utc(formula[dateIndex - 1]?.value?.value).toDate();
+          }
         }
         if(formula[dateIndex + 1]?.displayName === "Current Date"){
-          date2 = new Date()
+          date2 = new Date();
         }else {
-          date2 = moment.utc(formula[dateIndex + 1]?.value?.value).toDate();
+          if(formula[dateIndex + 1]?.value?.value){
+            date2 = moment.utc(formula[dateIndex + 1]?.value?.value).toDate();
+          }
         }
         let d = moment(date2);
         let years = d.diff(date1, 'years');
