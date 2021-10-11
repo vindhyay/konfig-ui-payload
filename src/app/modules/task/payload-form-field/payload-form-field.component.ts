@@ -33,6 +33,7 @@ export class PayloadFormFieldComponent implements OnInit {
   Footer: WidgetTypes = WidgetTypes.Footer;
   Image: WidgetTypes = WidgetTypes.Image;
   TextInput: WidgetTypes = WidgetTypes.TextInput;
+  Email: WidgetTypes = WidgetTypes.Email;
   ErrorContainer: WidgetTypes = WidgetTypes.ErrorContainer;
   TextArea: WidgetTypes = WidgetTypes.TextArea;
   Number: WidgetTypes = WidgetTypes.Number;
