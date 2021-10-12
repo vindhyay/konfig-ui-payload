@@ -189,15 +189,21 @@
         [sort]="item?.metaData?.sort"
         [filter]="item?.metaData?.filter"
         [tableData]="
-          item?.value?.value
+          item?.value?.value?.length
             ? item?.value?.value
             : item?.metaData?.configure
             ? item?.metaData?.options
-            : item?.value?.value
+            : item?.value?.value || []
         "
         [tableHeading]="item?.metaData?.heading"
         [columns]="item?.metaData?.columns"
         (onColDataChange)="onColDataChange($event)"
+        [editRow]="item?.metaData?.actions?.editRow"
+        [hideHeader]="item?.metaData?.hideHeader"
+        [cellBorder]="item?.metaData?.cellBorder"
+        [deleteRow]="item?.metaData?.actions?.deleteRow"
+        [actionWidth]="item?.metaData?.actions?.width"
+        [actionLabel]="item?.metaData?.actions?.label"
       ></finlevit-table>
     </div>
   </ng-container>
@@ -380,7 +386,28 @@
         'footer-container': item?.metaData?.widgetType === Footer
       }"
     >
-      <div *ngIf="item?.metaData?.title" class="container-title">{{ item?.metaData?.title }}</div>
+      <div
+        *ngIf="item?.metaData?.title"
+        class="container-title"
+        [ngStyle]="{
+        'background-color': item?.metaData?.header?.bgColor,
+        color: item?.metaData?.header?.color,
+        'font-size': item?.metaData?.header?.fontSize + 'px',
+        height: item?.metaData?.header?.height + 'px'
+      }"
+      >
+        <i
+          *ngIf="item?.metaData?.header?.icon"
+          [class]="item?.metaData?.header?.icon"
+          [ngStyle]="{
+          color: item?.metaData?.header?.color,
+          'font-size': item?.metaData?.header?.fontSize + 'px',
+          'font-weight': 'inherit',
+          marginRight: '0.5rem'
+        }"
+        ></i
+        >{{ item?.metaData?.title }}
+      </div>
       <finlevit-grid
         [viewMode]="viewMode"
         [showEdit]="showEdit"

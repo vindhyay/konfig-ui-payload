@@ -33,7 +33,7 @@ export class TransactionTableComponent extends BaseComponent implements OnInit {
       const {data, error} = parseApiResponse(result);
       if(!error && data){
         this.totalRecords = data.totalRecordCount;
-        this.tableData = (data.data || []).map(transaction => {
+        this.tableData = (data?.data || []).map(transaction => {
           return {
             ...transaction,
             transactionStatusId: transaction?.transactionStatus?.id,

@@ -7,6 +7,7 @@ import { BaseService } from "../../../services/base.service";
 import { LoginDataModel, UserDataModel, SelectedPreferencesModel, UserRole } from "../models";
 import { AppConfigService } from "../../../app-config-providers/app-config.service";
 import { UserService } from "../../user/services/user.service";
+import { parseApiResponse } from "../../../utils";
 
 @Injectable({
   providedIn: "root"
@@ -76,6 +77,24 @@ export class AuthService extends BaseService implements OnDestroy {
   public getUserDetails(appId) {
     const url = `${this.config.getApiUrls().permissionsURL}/${appId}`;
     return this.getData(url);
+  }
+
+  public updateUserDetails(appId){
+    this.getUserDetails(appId).subscribe(
+      response => {
+        const { data, error } = parseApiResponse(response);
+        if (data && !error) {
+          const { userDetails = {} } = data;
+          try {
+            this.storage.user = userDetails;
+            const decodedUserDetails: UserDataModel = JSON.parse(atob(userDetails));
+            this.authSubject.next(decodedUserDetails);
+          }catch (error){
+            console.log('failed to decode details', error)
+          }
+        }
+      }
+    );
   }
 
   public checkCurrentState() {

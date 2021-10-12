@@ -219,20 +219,45 @@ export class MetaData {
 }
 
 export class Column {
-  type: string;
+  type: DATA_TYPES;
+  colType: string;
   columnId: string;
   label: string;
   name: string;
   displayName: string;
   populateResponsePath: string;
+  onChange: string;
+  resultField: string;
+  width?: string;
+  editable: boolean;
+  validators: Validators;
   constructor(data) {
-    const { type = "Text", label = "", name = "", displayName = "", populateResponsePath = "", columnId = "" } = data;
+    const {
+      type = DATA_TYPES.STRING,
+      colType = ColumnTypes.Text,
+      label = "",
+      name = "",
+      displayName = "",
+      populateResponsePath = "",
+      columnId = "",
+      onChange = null,
+      resultField = null,
+      width = "100",
+      editable = true,
+      validators = {}
+    } = data;
+    this.colType = colType;
     this.type = type;
     this.label = label;
     this.columnId = columnId || getUniqueId("column");
     this.name = name;
     this.displayName = displayName;
     this.populateResponsePath = populateResponsePath;
+    this.onChange = onChange;
+    this.resultField = resultField;
+    this.width = width;
+    this.editable = editable;
+    this.validators = new Validators(validators);
   }
 }
 export class TableMetaData extends MetaData {

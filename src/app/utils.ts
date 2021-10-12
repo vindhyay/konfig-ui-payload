@@ -49,7 +49,7 @@ export const validateFields = (fields: any[]) => {
       }
     } else {
       const tempFormControl = new FormControl(field.value.value, getValidators(field.validators));
-      if (tempFormControl.valid) {
+      if (tempFormControl.valid || field?.rows === 0 || field?.metaData?.isHidden) {
         field.error = false;
         field.errorMsg = "";
       } else {
@@ -101,4 +101,10 @@ export const getFieldFromFields = (fields, fieldId) => {
     }
   });
   return paramField;
+};
+export const scrollToBottom = element => {
+  if (!element) {
+    return;
+  }
+  element.scroll({ top: element.scrollHeight, behavior: "smooth" });
 };
