@@ -55,7 +55,7 @@
         [label]="item?.label"
         (onBlur)="optionChange($event, item)"
         [type] = "item?.metaData?.widgetType"
-        [pattern]="getPattern(item?.metaData?.widgetType)"
+        [pattern]="item?.metaData?.pattern || null"
       ></finlevit-text>
       <finlevit-text
               *ngIf="item?.metaData?.isFormulaField"
@@ -72,7 +72,7 @@
               [label]="item?.label"
               (onBlur)="optionChange($event, item)"
               [type] = "item?.metaData?.widgetType"
-              [pattern]="getPattern(item?.metaData?.widgetType)"
+              [pattern]="item?.metaData?.pattern || null"
       ></finlevit-text>
     </div>
   </ng-container>

@@ -100,14 +100,6 @@ export class PayloadFormFieldComponent implements OnInit {
     return this._payloadFields;
   }
 
-  getPattern(wType:string):string|null{
-    switch(wType){
-      case 'Email':
-        return '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
-      default:
-        return null;
-    }
-  }
   ngOnInit() {
     this.taskService.transactionDetailsSubject.subscribe(value => {
       if (value) {
