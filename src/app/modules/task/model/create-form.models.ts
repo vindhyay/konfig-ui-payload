@@ -450,6 +450,7 @@ export class EmailMetaData extends MetaData {
   rightIcon: string;
   isFormulaField: boolean;
   formula = [];
+  pattern:string;
   constructor(data) {
     super(data);
     const { mask = "", icon = "", tooltip = "", placeholder = "example@domain.com", leftIcon = "", rightIcon = "", isFormulaField, formula } = data;
@@ -461,6 +462,7 @@ export class EmailMetaData extends MetaData {
     this.rightIcon = rightIcon;
     this.isFormulaField = isFormulaField;
     this.formula = formula;
+    this.pattern = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
   }
 }
 
@@ -744,6 +746,7 @@ export class BaseWidget {
   isViewOnly: boolean;
   metaData:
     | TextMetaData
+    | EmailMetaData
     | ContainerMetaData
     | TextInputMetaData
     | NumberMetaData
