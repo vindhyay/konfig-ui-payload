@@ -3,7 +3,8 @@
   [options]="options"
   [ngClass]="{ 'display-grid': false }"
   [ngStyle]="{
-    'background-color': parent?.metaData?.backgroundColor,
+    'background-color': parent?.metaData?.bgColor || parent?.metaData?.backgroundColor,
+    color: parent?.metaData?.color,
     backgroundImage: parent?.metaData?.bgImageUrl ? 'url(' + parent?.metaData?.bgImageUrl + ')' : 'none',
     backgroundSize: 'cover',
     backgroundPosition: 'center'
