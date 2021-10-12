@@ -441,6 +441,29 @@ export class TextInputMetaData extends MetaData {
   }
 }
 
+export class EmailMetaData extends MetaData {
+  mask: string;
+  icon: string;
+  placeholder: string;
+  tooltip: string;
+  leftIcon: string;
+  rightIcon: string;
+  isFormulaField: boolean;
+  formula = [];
+  constructor(data) {
+    super(data);
+    const { mask = "", icon = "", tooltip = "", placeholder = "example@domain.com", leftIcon = "", rightIcon = "", isFormulaField, formula } = data;
+    this.mask = mask;
+    this.icon = icon;
+    this.tooltip = tooltip;
+    this.placeholder = placeholder;
+    this.leftIcon = leftIcon;
+    this.rightIcon = rightIcon;
+    this.isFormulaField = isFormulaField;
+    this.formula = formula;
+  }
+}
+
 export class ButtonMetaData extends MetaData {
   icon: string;
   iconPos: string;
@@ -791,7 +814,7 @@ export class BaseWidget {
           this.metaData = new TextInputMetaData(data);
           break;
         case WidgetTypes.Email:
-          this.metaData = new TextInputMetaData({...data,placeholder:'example@domain.com'});
+          this.metaData = new EmailMetaData(data);
           break;
         case WidgetTypes.Number:
           this.metaData = new NumberMetaData(data);
