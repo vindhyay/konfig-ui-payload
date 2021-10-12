@@ -41,7 +41,14 @@ export class InputComponent implements ControlValueAccessor, OnInit {
   iconClass: any = '';
   STRING = String;
 
+  getInputType():string{
+    if(this.type==='PasswordInput'){
+      return 'password';
+    }
+    return this.type;
+  }
   ngOnInit() {
+    console.log('pattern', this.pattern);
     const control = this.controlDir && this.controlDir.control;
     if (control) {
       const validators: ValidatorFn[] = control.validator ? [control.validator] : [];
@@ -61,6 +68,7 @@ export class InputComponent implements ControlValueAccessor, OnInit {
       this.isRequired = hasRequiredField(control);
     }
   }
+
   setInputValue(value: any) {
     this._value = value;
   }
@@ -124,10 +132,14 @@ export class InputComponent implements ControlValueAccessor, OnInit {
   getErrorMessages() {
     const errors = this.controlDir.control?.errors;
     const errorMessages: string[] = [];
+    console.log(errors);
     Object.keys(errors || {}).forEach(error => {
       switch (error) {
         case 'required':
           errorMessages.push(`${this.label} is required`);
+          break;
+        case 'pattern':
+          errorMessages.push(`${this.label} is not valid`);
           break;
         case 'minlength':
         case 'maxlength':

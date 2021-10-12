@@ -33,6 +33,7 @@ export class PayloadFormFieldComponent implements OnInit {
   Footer: WidgetTypes = WidgetTypes.Footer;
   Image: WidgetTypes = WidgetTypes.Image;
   TextInput: WidgetTypes = WidgetTypes.TextInput;
+  PasswordInput: WidgetTypes = WidgetTypes.PasswordInput;
   ErrorContainer: WidgetTypes = WidgetTypes.ErrorContainer;
   TextArea: WidgetTypes = WidgetTypes.TextArea;
   Number: WidgetTypes = WidgetTypes.Number;
@@ -97,6 +98,24 @@ export class PayloadFormFieldComponent implements OnInit {
   private _payloadFields: any;
   get payloadFields(): any {
     return this._payloadFields;
+  }
+
+  getPattern(wType:string):string{
+    if(wType==='PasswordInput'){
+      return '(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}';
+    }
+    return null;
+  }
+
+  isTextInput(wType:string):boolean{
+    return (wType==='TextInput' || wType==='PasswordInput');
+  }
+
+  getInputType(wType:string):string{
+    if(wType==='PasswordInput'){
+      return 'password';
+    }
+    return wType;
   }
 
   ngOnInit() {

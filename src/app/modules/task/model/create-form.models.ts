@@ -105,6 +105,7 @@ export enum WidgetTypes {
   Button = "Button",
   Modal = "Modal",
   TextInput = "TextInput",
+  PasswordInput = "PasswordInput",
   TextArea = "TextArea",
   Number = "Number",
   Dropdown = "Dropdown",
@@ -788,6 +789,9 @@ export class BaseWidget {
           break;
         case WidgetTypes.TextInput:
           this.metaData = new TextInputMetaData(data);
+          break;
+        case WidgetTypes.PasswordInput:
+          this.metaData = new TextInputMetaData({...data,placeholder:'********'});
           break;
         case WidgetTypes.Number:
           this.metaData = new NumberMetaData(data);
