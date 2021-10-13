@@ -1,9 +1,9 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from "@angular/core";
 import { FormControl, Validators } from "@angular/forms";
 import { FieldData } from "../model/field-data.model";
 import { DataTypes } from "../model/payload-field.model";
 import { BaseWidget, NESTED_MIN_COLUMNS, TableMetaData, WidgetTypes } from "../model/create-form.models";
-import { getErrorMessages, getFieldFromFields, validateFields } from "../../../utils";
+import { getErrorMessages, getFieldFromFields, getValidators, validateFields } from "../../../utils";
 import { TaskService } from "../services/task.service";
 import { AuthService } from "../../auth/services/auth.service";
 import { EditorService } from "../editor.service";
@@ -14,7 +14,7 @@ import * as moment from "moment";
   templateUrl: "./payload-form-field.component.html",
   styleUrls: ["./payload-form-field.component.scss"]
 })
-export class PayloadFormFieldComponent implements OnInit {
+export class PayloadFormFieldComponent implements OnInit,OnDestroy {
   tabActiveIndex = 0;
 
   _item: BaseWidget = {} as BaseWidget;
@@ -34,6 +34,7 @@ export class PayloadFormFieldComponent implements OnInit {
   Image: WidgetTypes = WidgetTypes.Image;
   TextInput: WidgetTypes = WidgetTypes.TextInput;
   PasswordInput: WidgetTypes = WidgetTypes.PasswordInput;
+  Email: WidgetTypes = WidgetTypes.Email;
   ErrorContainer: WidgetTypes = WidgetTypes.ErrorContainer;
   TextArea: WidgetTypes = WidgetTypes.TextArea;
   Number: WidgetTypes = WidgetTypes.Number;
@@ -99,6 +100,12 @@ export class PayloadFormFieldComponent implements OnInit {
   get payloadFields(): any {
     return this._payloadFields;
   }
+  transactionDetailsSubscription = null;
+  ngOnDestroy() {
+    if(this.transactionDetailsSubscription){
+      this.transactionDetailsSubscription.unsubscribe();
+    }
+  }
 
   isTextInput(wType:string):boolean{
     return (wType==='TextInput' || wType==='PasswordInput');
@@ -112,7 +119,7 @@ export class PayloadFormFieldComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.taskService.transactionDetailsSubject.subscribe(value => {
+    this.transactionDetailsSubscription = this.taskService.transactionDetailsSubject.subscribe(value => {
       if (value) {
         this._payloadFields = value.uiPayload;
         this.transactionStatus = value?.transactionStatus || null;
@@ -124,15 +131,25 @@ export class PayloadFormFieldComponent implements OnInit {
           this.disable = this.item?.permissions[id].disable
             ? this.item?.permissions[id].disable.indexOf(this.transactionStatus) > -1
             : false;
-          if (this.hide) {
-            setTimeout(() => {
-              this.onCollapse(false, this.item);
-            });
+          if(this.hide){
+            if (this.item.rows) {
+              setTimeout(() => {
+                this.onCollapse(false, this.item);
+              });
+            }
+          }else{
+            if(!this.item?.metaData?.isHidden && !this.item.rows){
+              setTimeout(() => {
+                this.onCollapse(true, this.item);
+              });
+            }
           }
         }
       }
-    });
+    })
+    this.transactionDetailsSubscription.unsubscribe();
   }
+
   ngAfterViewInit() {
     if (this.item?.metaData?.movement === "UP") {
       this.collapseContainerStatus = false;
@@ -167,7 +184,7 @@ export class PayloadFormFieldComponent implements OnInit {
       value: { value = "" },
       metaData: {}
     } = item;
-    const tempFormControl = new FormControl(value, this.getValidators(item.validators));
+    const tempFormControl = new FormControl(value, getValidators(item.validators));
     if (tempFormControl.valid) {
       this.originalValue = JSON.parse(JSON.stringify(value));
       this.editMode = false;
@@ -198,7 +215,7 @@ export class PayloadFormFieldComponent implements OnInit {
   }
   validateField($event: any, field: any) {
     const { validators = {}, label = "" } = field;
-    const tempFormControl = new FormControl($event, this.getValidators(validators));
+    const tempFormControl = new FormControl($event, getValidators(validators));
     if (tempFormControl.valid) {
       field.value.value = $event;
       field.error = false;
@@ -208,29 +225,6 @@ export class PayloadFormFieldComponent implements OnInit {
       field.errorMsg = getErrorMessages(tempFormControl.errors, label);
     }
   }
-  getValidators = (validators: any) => {
-    const _validators: any = [];
-    Object.keys(validators).forEach(validator => {
-      switch (validator) {
-        case "minValue":
-          validators[validator] && _validators.push(Validators.min(validators[validator]));
-          break;
-        case "minLength":
-          validators[validator] && _validators.push(Validators.minLength(validators[validator]));
-          break;
-        case "maxValue":
-          validators[validator] && _validators.push(Validators.max(validators[validator]));
-          break;
-        case "maxLength":
-          validators[validator] && _validators.push(Validators.maxLength(validators[validator]));
-          break;
-        case "required":
-          validators[validator] && _validators.push(Validators.required);
-          break;
-      }
-    });
-    return _validators;
-  };
   btnClick($event, data) {
     this.onBtnClick.emit({ event: $event, data });
   }
@@ -275,57 +269,69 @@ export class PayloadFormFieldComponent implements OnInit {
     const ifConditions = this.item.metaData?.conditions?.ifConditions || [];
     this.taskService.checkCondition(ifConditions);
   }
-  calculateFormulaValue(itemMetaData) : any{
+  calculateFormulaValue(itemMetaData, id) : any{
     let formulaValue = '';
     let formula = [];
-    if(itemMetaData.formula.length > 0){
-      itemMetaData.formula.forEach(field => {
-        if (field.resourceType === resourceType.PAYLOAD_FIELD) {
-          formula.push(getFieldFromFields(this.payloadFields, field.id));
+    if(itemMetaData?.formula?.length > 0){
+      itemMetaData?.formula.forEach(field => {
+        if (field?.resourceType === resourceType.PAYLOAD_FIELD) {
+          formula.push(getFieldFromFields(this.payloadFields, field?.id));
         }else {
           formula.push(field)
         }
       })
     }
-    let firstField = formula.find(field => field.resourceType === resourceType.PAYLOAD_FIELD);
+    let firstField = formula.find(field => field?.resourceType === resourceType.PAYLOAD_FIELD);
     switch (firstField?.dataType){
       case 'number':
         let expression = '';
         formula.forEach(field => {
-          if (field.resourceType === resourceType.PAYLOAD_FIELD) {
-            expression = expression + ' ' + field.value.value;
+          if (field?.resourceType === resourceType.PAYLOAD_FIELD) {
+            expression = expression + ' ' + field?.value?.value;
           }
-          if (field.resourceType === resourceType.BRACKET) {
-            expression = expression + ' ' + field.displayName;
+          if (field?.resourceType === resourceType.BRACKET) {
+            expression = expression + ' ' + field?.displayName;
           }
-          if (field.resourceType === resourceType.FUNCTION) {
-            expression = expression + ' ' + field.expression;
+          if (field?.resourceType === resourceType.FUNCTION) {
+            expression = expression + ' ' + field?.expression;
           }
         })
         formulaValue = eval(expression);
         return formulaValue;
       case 'string':
-        const fields = formula.filter(field => {
-          return field.resourceType === resourceType.PAYLOAD_FIELD;
+        formula.forEach(field => {
+          if (field?.resourceType === resourceType.PAYLOAD_FIELD) {
+            if(field?.value?.value){
+              formulaValue = formulaValue + field.value.value;
+            }
+          }
+          if (field?.resourceType === resourceType.FUNCTION) {
+            if(field?.separateBy){
+              formulaValue = formulaValue + field.separateBy;
+            }
+          }
         })
-        formulaValue = fields.map(fld => { return fld.value.value }).join(" ");
         return formulaValue;
       case 'date':
         const dateFunc = formula.filter(field => {
-          return field.resourceType === resourceType.FUNCTION
+          return field?.resourceType === resourceType.FUNCTION
         })
         let date1;
         let date2;
         const dateIndex = formula.indexOf(dateFunc[0]);
-        if(itemMetaData.formula[dateIndex - 1].displayName === "Current Date"){
-          date1 = new Date()
+        if(formula[dateIndex - 1].displayName === "Current Date"){
+          date1 = new Date();
         }else {
-          date1 = moment.utc(formula[dateIndex - 1].value.value).toDate();
+          if(formula[dateIndex - 1]?.value?.value){
+            date1 = moment.utc(formula[dateIndex - 1]?.value?.value).toDate();
+          }
         }
-        if(formula[dateIndex + 1].displayName === "Current Date"){
-          date2 = new Date()
+        if(formula[dateIndex + 1]?.displayName === "Current Date"){
+          date2 = new Date();
         }else {
-          date2 = moment.utc(formula[dateIndex + 1].value.value).toDate();
+          if(formula[dateIndex + 1]?.value?.value){
+            date2 = moment.utc(formula[dateIndex + 1]?.value?.value).toDate();
+          }
         }
         let d = moment(date2);
         let years = d.diff(date1, 'years');
@@ -336,26 +342,26 @@ export class PayloadFormFieldComponent implements OnInit {
         formulaValue = years + " years  " + months + " months  " + days + " days";
         return formulaValue;
       case 'array':
-        if(firstField.metaData.widgetType === WidgetTypes.CheckboxGroup){
-          if(firstField.value.value){
-            formulaValue = firstField.value.value.join(" ");
+        if(firstField?.metaData?.widgetType === WidgetTypes.CheckboxGroup){
+          if(firstField?.value?.value){
+            formulaValue = firstField?.value?.value.join(" ");
           }
         }
-        if(firstField.metaData.widgetType !== WidgetTypes.CheckboxGroup){
+        if(firstField?.metaData?.widgetType !== WidgetTypes.CheckboxGroup){
           const values = [];
-          if(formula[1].column.type === 'Text'){
-            if(formula[0].value.value){
-              formula[0].value.value.forEach(value => {
-                values.push(value[formula[1].column.columnId])
+          if(formula[1]?.column?.type === 'Text'){
+            if(formula[0]?.value?.value){
+              formula[0]?.value?.value.forEach(value => {
+                values.push(value[formula[1]?.column?.columnId])
               })
               formulaValue = values.join("");
             }
           }
-          if(formula[1].column.type === 'Number'){
-            if(formula[0].value.value){
-              formula[0].value.value.forEach(value => {
-                if(value[formula[1].column.columnId] !== '' && value[formula[1].column.columnId] !== null){
-                  values.push(value[formula[1].column.columnId])
+          if(formula[1]?.column?.type === 'Number'){
+            if(formula[0]?.value?.value){
+              formula[0]?.value?.value.forEach(value => {
+                if(value[formula[1]?.column?.columnId] !== '' && value[formula[1]?.column?.columnId] !== null){
+                  values.push(value[formula[1]?.column?.columnId])
                 }
               })
               if(values.length > 1){
@@ -368,6 +374,11 @@ export class PayloadFormFieldComponent implements OnInit {
         }
         return formulaValue
     }
+    console.log(id)
+    const currField = getFieldFromFields(this.payloadFields, id);
+    console.log(currField);
+    currField.value.value = formulaValue;
+    console.log(formulaValue)
     return formulaValue;
   }
 }

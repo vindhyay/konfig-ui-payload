@@ -10,6 +10,7 @@
       showControls &&
       (item?.metaData?.widgetType == TextInput ||
         item?.metaData?.widgetType == PasswordInput ||
+        item?.metaData?.widgetType == Email ||
         item?.metaData?.widgetType == TextArea ||
         item?.metaData?.widgetType == Number ||
         item?.metaData?.widgetType == CheckboxGroup ||
@@ -55,7 +56,7 @@
         [label]="item?.label"
         (onBlur)="optionChange($event, item)"
         [type]="getInputType(item?.metaData?.widgetType)"
-        [pattern]="item?.metaData?.pattern || null"
+        [pattern]="item?.validators?.pattern || null"
       ></finlevit-text>
       <finlevit-text
               *ngIf="item?.metaData?.isFormulaField"
@@ -66,14 +67,15 @@
               [errorMsg]="item?.errorMsg"
               [tooltip]="item?.metaData?.tooltip"
               [placeholder]="item?.metaData?.placeholder"
-              [ngModel]="calculateFormulaValue(item?.metaData)"
+              [ngModel]="calculateFormulaValue(item?.metaData, item?.id)"
               (ngModelChange)="validateField($event, item)"
               [isRequired]="item?.validators?.required"
               [label]="item?.label"
               (onBlur)="optionChange($event, item)"
               [type]="getInputType(item?.metaData?.widgetType)"
-              [pattern]="item?.metaData?.pattern || null"
+              [pattern]="item?.validators?.pattern || null"
       ></finlevit-text>
+      {{item.value.value}}
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === TextArea">
@@ -116,7 +118,7 @@
                        [suffix]="item?.metaData?.suffix"
                        [prefix]="item?.metaData?.prefix"
                        [error]="item?.error == true"
-                       [ngModel]="calculateFormulaValue(item?.metaData)"
+                       [ngModel]="calculateFormulaValue(item?.metaData, item?.id)"
                        (ngModelChange)="validateField($event, item)"
                        [errorMsg]="item?.errorMsg"
                        [label]="item?.label"

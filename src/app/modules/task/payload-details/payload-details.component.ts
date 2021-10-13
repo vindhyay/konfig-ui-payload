@@ -6,7 +6,7 @@ import { AuthService } from "../../auth/services/auth.service";
 import { BaseComponent } from "../../shared/base/base.component";
 import { NotificationService } from "../../../services/notification.service";
 import { UserDataModel } from "../../auth/models";
-import { getValueFromObjectByPath, parseApiResponse } from "../../../utils";
+import { addOriginalPosition, getValueFromObjectByPath, parseApiResponse } from "../../../utils";
 import { TaskService } from "../services/task.service";
 import { BaseWidget, DATA_TYPES, WidgetTypes } from "../model/create-form.models";
 import { EditorService } from "../editor.service";
@@ -56,6 +56,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
       if (value) {
         this.transactionDetails = value;
         this.formFields = value?.uiPayload || [];
+        this.formFields = this.formFields.sort((a,b)=> a?.y - b?.y);
         const header = this.formFields.find(item => item?.metaData?.widgetType === WidgetTypes.Header);
         const errorContainer = this.formFields.find(item => item?.metaData?.widgetType === WidgetTypes.ErrorContainer);
         if (header && value?.errorMessage?.length && !errorContainer) {
@@ -97,6 +98,9 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
           const { data: transactionDetails, error } = parseApiResponse(result);
           if (transactionDetails && !error) {
             this.transactionDetails = transactionDetails;
+            const payloadFields = this.transactionDetails?.uiPayload || [];
+            addOriginalPosition(payloadFields);
+            this.transactionDetails.uiPayload = payloadFields;
             this.taskService.setTransactionDetails(transactionDetails);
             this.id = transactionDetails.id;
           } else {

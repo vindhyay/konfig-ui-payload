@@ -16,6 +16,9 @@ export const getErrorMessages = (errors: any, label: any) => {
       case "required":
         errorMessages.push(`${label} is required`);
         break;
+      case "pattern":
+        errorMessages.push(`${label} is not valid`);
+        break;
       case "minlength":
       case "maxlength":
         errorMessages.push(
@@ -80,6 +83,9 @@ export const getValidators = (validators: any) => {
       case "maxLength":
         validators[validator] && _validators.push(Validators.maxLength(validators[validator]));
         break;
+      case "pattern":
+        validators[validator] && _validators.push(Validators.pattern(validators[validator]));
+        break;
       case "required":
         validators[validator] && _validators.push(Validators.required);
         break;
@@ -107,4 +113,12 @@ export const scrollToBottom = element => {
     return;
   }
   element.scroll({ top: element.scrollHeight, behavior: "smooth" });
+};
+export const addOriginalPosition = (fields) => {
+  fields.forEach(field => {
+    field.metaData.originalHeight = field.rows + field.y;
+    if (field.children && field.children.length) {
+      addOriginalPosition(field.children);
+    }
+  });
 };

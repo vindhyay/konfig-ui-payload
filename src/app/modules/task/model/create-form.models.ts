@@ -106,6 +106,7 @@ export enum WidgetTypes {
   Modal = "Modal",
   TextInput = "TextInput",
   PasswordInput = "PasswordInput",
+  Email = "Email",
   TextArea = "TextArea",
   Number = "Number",
   Dropdown = "Dropdown",
@@ -130,6 +131,7 @@ class Validators {
   maxValue: number;
   minDate: Date;
   maxDate: Date;
+  pattern: string;
   constructor(validators) {
     const {
       required = false,
@@ -139,7 +141,8 @@ class Validators {
       minValue = null,
       maxValue = null,
       minDate = null,
-      maxDate = null
+      maxDate = null,
+      pattern = null
     } = validators;
     this.required = required;
     this.editable = editable;
@@ -149,6 +152,7 @@ class Validators {
     this.maxValue = maxValue;
     this.minDate = minDate;
     this.maxDate = maxDate;
+    this.pattern = pattern;
   }
 }
 class TextInputValidators extends Validators {
@@ -440,8 +444,29 @@ export class TextInputMetaData extends MetaData {
     this.formula = formula;
   }
 }
-
 export class PasswordInputMetaData extends MetaData {
+  mask: string;
+  icon: string;
+  placeholder: string;
+  tooltip: string;
+  leftIcon: string;
+  rightIcon: string;
+  isFormulaField: boolean;
+  formula = [];
+  constructor(data) {
+    super(data);
+    const { mask = "", icon = "", tooltip = "", placeholder = "********", leftIcon = "", rightIcon = "", isFormulaField, formula } = data;
+    this.mask = mask;
+    this.icon = icon;
+    this.tooltip = tooltip;
+    this.placeholder = placeholder;
+    this.leftIcon = leftIcon;
+    this.rightIcon = rightIcon;
+    this.isFormulaField = isFormulaField;
+    this.formula = formula;
+  }
+}
+export class EmailMetaData extends MetaData {
   mask: string;
   icon: string;
   placeholder: string;
@@ -453,7 +478,7 @@ export class PasswordInputMetaData extends MetaData {
   pattern:string;
   constructor(data) {
     super(data);
-    const { mask = "", icon = "", tooltip = "", placeholder = "********", leftIcon = "", rightIcon = "", isFormulaField, pattern ="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}", formula } = data;
+    const { mask = "", icon = "", tooltip = "", placeholder = "example@domain.com", leftIcon = "", rightIcon = "", isFormulaField, formula } = data;
     this.mask = mask;
     this.icon = icon;
     this.tooltip = tooltip;
@@ -462,7 +487,7 @@ export class PasswordInputMetaData extends MetaData {
     this.rightIcon = rightIcon;
     this.isFormulaField = isFormulaField;
     this.formula = formula;
-    this.pattern = pattern;
+    this.pattern = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
   }
 }
 
@@ -732,7 +757,7 @@ export class BaseWidget {
   rows: number;
   x: number;
   y: number;
-
+  widgetName?: any;
   minItemCols: number;
   maxItemCols: number;
   minItemRows: number;
@@ -747,6 +772,7 @@ export class BaseWidget {
   metaData:
     | TextMetaData
     | PasswordInputMetaData
+    | EmailMetaData
     | ContainerMetaData
     | TextInputMetaData
     | NumberMetaData
@@ -818,6 +844,9 @@ export class BaseWidget {
           break;
         case WidgetTypes.PasswordInput:
           this.metaData = new PasswordInputMetaData(data);
+          break;
+        case WidgetTypes.Email:
+          this.metaData = new EmailMetaData(data);
           break;
         case WidgetTypes.Number:
           this.metaData = new NumberMetaData(data);
