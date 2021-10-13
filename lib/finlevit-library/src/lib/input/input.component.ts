@@ -137,6 +137,9 @@ export class InputComponent implements ControlValueAccessor, OnInit {
             );
           }
           break;
+        case 'pattern':
+          errorMessages.push(`${this.label} is not valid`);
+          break;
         case 'custom':
           if (errors) {
             errorMessages.push(errors[error]);

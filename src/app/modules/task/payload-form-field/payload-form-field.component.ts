@@ -3,7 +3,7 @@ import { FormControl, Validators } from "@angular/forms";
 import { FieldData } from "../model/field-data.model";
 import { DataTypes } from "../model/payload-field.model";
 import { BaseWidget, NESTED_MIN_COLUMNS, TableMetaData, WidgetTypes } from "../model/create-form.models";
-import { getErrorMessages, getFieldFromFields, validateFields } from "../../../utils";
+import { getErrorMessages, getFieldFromFields, getValidators, validateFields } from "../../../utils";
 import { TaskService } from "../services/task.service";
 import { AuthService } from "../../auth/services/auth.service";
 import { EditorService } from "../editor.service";
@@ -33,6 +33,7 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
   Footer: WidgetTypes = WidgetTypes.Footer;
   Image: WidgetTypes = WidgetTypes.Image;
   TextInput: WidgetTypes = WidgetTypes.TextInput;
+  Email: WidgetTypes = WidgetTypes.Email;
   ErrorContainer: WidgetTypes = WidgetTypes.ErrorContainer;
   TextArea: WidgetTypes = WidgetTypes.TextArea;
   Number: WidgetTypes = WidgetTypes.Number;
@@ -171,7 +172,7 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
       value: { value = "" },
       metaData: {}
     } = item;
-    const tempFormControl = new FormControl(value, this.getValidators(item.validators));
+    const tempFormControl = new FormControl(value, getValidators(item.validators));
     if (tempFormControl.valid) {
       this.originalValue = JSON.parse(JSON.stringify(value));
       this.editMode = false;
@@ -202,7 +203,7 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
   }
   validateField($event: any, field: any) {
     const { validators = {}, label = "" } = field;
-    const tempFormControl = new FormControl($event, this.getValidators(validators));
+    const tempFormControl = new FormControl($event, getValidators(validators));
     if (tempFormControl.valid) {
       field.value.value = $event;
       field.error = false;
@@ -212,29 +213,6 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
       field.errorMsg = getErrorMessages(tempFormControl.errors, label);
     }
   }
-  getValidators = (validators: any) => {
-    const _validators: any = [];
-    Object.keys(validators).forEach(validator => {
-      switch (validator) {
-        case "minValue":
-          validators[validator] && _validators.push(Validators.min(validators[validator]));
-          break;
-        case "minLength":
-          validators[validator] && _validators.push(Validators.minLength(validators[validator]));
-          break;
-        case "maxValue":
-          validators[validator] && _validators.push(Validators.max(validators[validator]));
-          break;
-        case "maxLength":
-          validators[validator] && _validators.push(Validators.maxLength(validators[validator]));
-          break;
-        case "required":
-          validators[validator] && _validators.push(Validators.required);
-          break;
-      }
-    });
-    return _validators;
-  };
   btnClick($event, data) {
     this.onBtnClick.emit({ event: $event, data });
   }

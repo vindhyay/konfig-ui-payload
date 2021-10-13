@@ -16,6 +16,9 @@ export const getErrorMessages = (errors: any, label: any) => {
       case "required":
         errorMessages.push(`${label} is required`);
         break;
+      case "pattern":
+        errorMessages.push(`${label} is not valid`);
+        break;
       case "minlength":
       case "maxlength":
         errorMessages.push(
@@ -79,6 +82,9 @@ export const getValidators = (validators: any) => {
         break;
       case "maxLength":
         validators[validator] && _validators.push(Validators.maxLength(validators[validator]));
+        break;
+      case "pattern":
+        validators[validator] && _validators.push(Validators.pattern(validators[validator]));
         break;
       case "required":
         validators[validator] && _validators.push(Validators.required);

@@ -105,6 +105,7 @@ export enum WidgetTypes {
   Button = "Button",
   Modal = "Modal",
   TextInput = "TextInput",
+  Email = "Email",
   TextArea = "TextArea",
   Number = "Number",
   Dropdown = "Dropdown",
@@ -129,6 +130,7 @@ class Validators {
   maxValue: number;
   minDate: Date;
   maxDate: Date;
+  pattern: string;
   constructor(validators) {
     const {
       required = false,
@@ -138,7 +140,8 @@ class Validators {
       minValue = null,
       maxValue = null,
       minDate = null,
-      maxDate = null
+      maxDate = null,
+      pattern = null
     } = validators;
     this.required = required;
     this.editable = editable;
@@ -148,6 +151,7 @@ class Validators {
     this.maxValue = maxValue;
     this.minDate = minDate;
     this.maxDate = maxDate;
+    this.pattern = pattern;
   }
 }
 class TextInputValidators extends Validators {
@@ -440,6 +444,31 @@ export class TextInputMetaData extends MetaData {
   }
 }
 
+export class EmailMetaData extends MetaData {
+  mask: string;
+  icon: string;
+  placeholder: string;
+  tooltip: string;
+  leftIcon: string;
+  rightIcon: string;
+  isFormulaField: boolean;
+  formula = [];
+  pattern:string;
+  constructor(data) {
+    super(data);
+    const { mask = "", icon = "", tooltip = "", placeholder = "example@domain.com", leftIcon = "", rightIcon = "", isFormulaField, formula } = data;
+    this.mask = mask;
+    this.icon = icon;
+    this.tooltip = tooltip;
+    this.placeholder = placeholder;
+    this.leftIcon = leftIcon;
+    this.rightIcon = rightIcon;
+    this.isFormulaField = isFormulaField;
+    this.formula = formula;
+    this.pattern = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
+  }
+}
+
 export class ButtonMetaData extends MetaData {
   icon: string;
   iconPos: string;
@@ -720,6 +749,7 @@ export class BaseWidget {
   isViewOnly: boolean;
   metaData:
     | TextMetaData
+    | EmailMetaData
     | ContainerMetaData
     | TextInputMetaData
     | NumberMetaData
@@ -788,6 +818,9 @@ export class BaseWidget {
           break;
         case WidgetTypes.TextInput:
           this.metaData = new TextInputMetaData(data);
+          break;
+        case WidgetTypes.Email:
+          this.metaData = new EmailMetaData(data);
           break;
         case WidgetTypes.Number:
           this.metaData = new NumberMetaData(data);
