@@ -279,7 +279,7 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
     const ifConditions = this.item.metaData?.conditions?.ifConditions || [];
     this.taskService.checkCondition(ifConditions);
   }
-  calculateFormulaValue(itemMetaData) : any{
+  calculateFormulaValue(itemMetaData, id) : any{
     let formulaValue = '';
     let formula = [];
     if(itemMetaData?.formula?.length > 0){
@@ -312,20 +312,12 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
         formula.forEach(field => {
           if (field?.resourceType === resourceType.PAYLOAD_FIELD) {
             if(field?.value?.value){
-              formulaValue = formulaValue + field?.value?.value;
+              formulaValue = formulaValue + field.value.value;
             }
           }
           if (field?.resourceType === resourceType.FUNCTION) {
-            switch(field?.separateBy){
-              case 'Space':
-                formulaValue = formulaValue + ' ';
-                return formulaValue;
-              case 'Comma':
-                formulaValue = formulaValue + ', ';
-                return formulaValue;
-              case 'Hyphen':
-                formulaValue = formulaValue + '-';
-                return formulaValue;
+            if(field?.separateBy){
+              formulaValue = formulaValue + field.separateBy;
             }
           }
         })
@@ -392,6 +384,11 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
         }
         return formulaValue
     }
+    console.log(id)
+    const currField = getFieldFromFields(this.payloadFields, id);
+    console.log(currField);
+    currField.value.value = formulaValue;
+    console.log(formulaValue)
     return formulaValue;
   }
 }
