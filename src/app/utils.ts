@@ -108,3 +108,11 @@ export const scrollToBottom = element => {
   }
   element.scroll({ top: element.scrollHeight, behavior: "smooth" });
 };
+export const addOriginalPosition = (fields) => {
+  fields.forEach(field => {
+    field.metaData.originalHeight = field.rows + field.y;
+    if (field.children && field.children.length) {
+      addOriginalPosition(field.children);
+    }
+  });
+};

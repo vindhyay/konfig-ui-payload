@@ -706,7 +706,7 @@ export class BaseWidget {
   rows: number;
   x: number;
   y: number;
-
+  widgetName?: any;
   minItemCols: number;
   maxItemCols: number;
   minItemRows: number;

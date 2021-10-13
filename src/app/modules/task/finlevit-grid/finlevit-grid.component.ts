@@ -84,7 +84,7 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
       enableEmptyCellDrop: true,
       minItemCols: 1,
       minItemRows: 1,
-      minItemArea: 1,
+      minItemArea: 0,
       defaultItemCols: 1,
       defaultItemRows: 1,
       maxRows: 1000,
@@ -120,7 +120,7 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
         // Dont get same item
         item.metaData.widgetId !== baseGridItem.item.metaData.widgetId &&
         // Get only below items
-        (item.rows ? item.y >= (baseItem.y + baseItem.rows) : item.y > (baseItem.y + baseItem.rows)) &&
+        (item?.metaData?.originalHeight >= baseGridItem?.item?.metaData?.originalHeight) &&
         // Get only under items
         (item.x + item.cols >= (baseItem.x || baseItem.x + baseItem.cols) ||
           (item.x > baseItem.x && item.x + item.cols < baseItem.x + baseItem.cols)) &&

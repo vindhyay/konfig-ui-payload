@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from "@angular/core";
 import { FormControl, Validators } from "@angular/forms";
 import { FieldData } from "../model/field-data.model";
 import { DataTypes } from "../model/payload-field.model";
@@ -14,7 +14,7 @@ import * as moment from "moment";
   templateUrl: "./payload-form-field.component.html",
   styleUrls: ["./payload-form-field.component.scss"]
 })
-export class PayloadFormFieldComponent implements OnInit {
+export class PayloadFormFieldComponent implements OnInit,OnDestroy {
   tabActiveIndex = 0;
 
   _item: BaseWidget = {} as BaseWidget;
@@ -98,9 +98,15 @@ export class PayloadFormFieldComponent implements OnInit {
   get payloadFields(): any {
     return this._payloadFields;
   }
+  transactionDetailsSubscription = null;
+  ngOnDestroy() {
+    if(this.transactionDetailsSubscription){
+      this.transactionDetailsSubscription.unsubscribe();
+    }
+  }
 
   ngOnInit() {
-    this.taskService.transactionDetailsSubject.subscribe(value => {
+    this.transactionDetailsSubscription = this.taskService.transactionDetailsSubject.subscribe(value => {
       if (value) {
         this._payloadFields = value.uiPayload;
         this.transactionStatus = value?.transactionStatus || null;
@@ -112,15 +118,25 @@ export class PayloadFormFieldComponent implements OnInit {
           this.disable = this.item?.permissions[id].disable
             ? this.item?.permissions[id].disable.indexOf(this.transactionStatus) > -1
             : false;
-          if (this.hide) {
-            setTimeout(() => {
-              this.onCollapse(false, this.item);
-            });
+          if(this.hide){
+            if (this.item.rows) {
+              setTimeout(() => {
+                this.onCollapse(false, this.item);
+              });
+            }
+          }else{
+            if(!this.item?.metaData?.isHidden && !this.item.rows){
+              setTimeout(() => {
+                this.onCollapse(true, this.item);
+              });
+            }
           }
         }
       }
-    });
+    })
+    this.transactionDetailsSubscription.unsubscribe();
   }
+
   ngAfterViewInit() {
     if (this.item?.metaData?.movement === "UP") {
       this.collapseContainerStatus = false;
