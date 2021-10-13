@@ -130,6 +130,7 @@ class Validators {
   maxValue: number;
   minDate: Date;
   maxDate: Date;
+  pattern: string;
   constructor(validators) {
     const {
       required = false,
@@ -139,7 +140,8 @@ class Validators {
       minValue = null,
       maxValue = null,
       minDate = null,
-      maxDate = null
+      maxDate = null,
+      pattern = null
     } = validators;
     this.required = required;
     this.editable = editable;
@@ -149,6 +151,7 @@ class Validators {
     this.maxValue = maxValue;
     this.minDate = minDate;
     this.maxDate = maxDate;
+    this.pattern = pattern;
   }
 }
 class TextInputValidators extends Validators {
