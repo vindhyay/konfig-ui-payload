@@ -113,18 +113,43 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
   }
 
   getEligibleItems(items, baseGridItem) {
+    const baseOriginalHeight = baseGridItem?.item?.metaData?.originalHeight;
+    const movement = baseGridItem?.item?.metaData?.movement;
     const eligibleItems = items.filter(eachItem => {
       const item = eachItem.item;
       const baseItem = baseGridItem.$item;
+      const checkSameItem = (item, baseItem) => {
+        const isSame = item.metaData.widgetId !== baseGridItem.item.metaData.widgetId
+        return isSame;
+      }
+      const checkIsBottom = (item, baseItem) => {
+        if(item?.metaData?.originalHeight >= baseOriginalHeight){
+          return true
+        }
+        return false;
+      }
+
+      const checkIsSide = (item, baseItem) => {
+        if(((item.x + item.cols) > baseItem.x) && (item.x + item.cols) < (baseItem.x + baseItem.cols)){
+          return true
+        }
+        if((item.x + item.cols) === (baseItem.cols + baseItem.x)){
+          return true;
+        }
+        if((item.x > baseItem.x) && (item.x < (baseItem.x + baseItem.cols))){
+          return true;
+        }
+        if((item.x <= baseItem.x) && ((item.x + item.cols) > (baseItem.x + baseItem.cols))){
+          return true
+        }
+      }
       return (
         // Dont get same item
-        item.metaData.widgetId !== baseGridItem.item.metaData.widgetId &&
+        checkSameItem(item, baseItem) &&
         // Get only below items
-        (item?.metaData?.originalHeight >= baseGridItem?.item?.metaData?.originalHeight) &&
+        checkIsBottom(item, baseItem) &&
         // Get only under items
-        (item.x + item.cols >= (baseItem.x || baseItem.x + baseItem.cols) ||
-          (item.x > baseItem.x && item.x + item.cols < baseItem.x + baseItem.cols)) &&
-        baseItem.x + baseItem.cols > item.x &&
+        checkIsSide(item, baseItem) &&
         // Dont get if item found in prev round
         !this.allEligibleFields.find(prevItem => prevItem.item.metaData.widgetId === item.metaData.widgetId)
       );
@@ -143,12 +168,19 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
       }
       const eligibleItems = this.getEligibleItems(gridItems, widgetGridItem).filter(
         (thing, index, self) => index === self.findIndex(t => t?.item?.metaData?.widgetId === thing?.item?.metaData?.widgetId)
-      );
+      )
+      if(widget?.metaData?.movement === 'DOWN' && !eligibleItems.find(elgItem => (elgItem?.item?.y) < (widget.y + widget.rows))){
+        widgetGridItem.updateOptions();
+        widgetGridItem.setSize();
+        return;
+      }
       const changeGridItemData = widget;
       const hideRows = changeGridItemData?.metaData?.hideRows || 0;
       const collisionItems = [];
       if (eligibleItems.length) {
-        eligibleItems.forEach(gridItem => {
+        widgetGridItem.updateOptions();
+        widgetGridItem.setSize();
+        eligibleItems.forEach((gridItem, index) => {
           const eachGridItem = gridItem.item;
           if (changeGridItemData?.metaData?.movement === "UP") {
             if (!collisionItems.length || collisionItems.find(colItem => colItem.y >= eachGridItem.y)) {
@@ -160,15 +192,8 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
               }
             }
           } else if (changeGridItemData?.metaData?.movement === "DOWN") {
-            const collisionItem: any = this.checkCollision(changeGridItemData, gridItems);
-            if (collisionItem) {
-              eachGridItem.y = eachGridItem.y + changeGridItemData?.metaData?.defaultRows - hideRows;
-            } else if (this.checkCollision(eachGridItem, gridItems)) {
-              eachGridItem.y = eachGridItem.y + changeGridItemData?.metaData?.defaultRows - hideRows;
-            }
+            eachGridItem.y = eachGridItem.y + changeGridItemData?.metaData?.defaultRows - hideRows;
           }
-          widgetGridItem.updateOptions();
-          widgetGridItem.setSize();
           gridItem.updateOptions();
           gridItem.setSize();
         });
