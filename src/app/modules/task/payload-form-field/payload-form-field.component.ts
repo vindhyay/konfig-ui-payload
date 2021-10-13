@@ -100,13 +100,6 @@ export class PayloadFormFieldComponent implements OnInit {
     return this._payloadFields;
   }
 
-  getPattern(wType:string):string{
-    if(wType==='PasswordInput'){
-      return '(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}';
-    }
-    return null;
-  }
-
   isTextInput(wType:string):boolean{
     return (wType==='TextInput' || wType==='PasswordInput');
   }

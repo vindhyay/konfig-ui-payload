@@ -48,7 +48,6 @@ export class InputComponent implements ControlValueAccessor, OnInit {
     return this.type;
   }
   ngOnInit() {
-    console.log('pattern', this.pattern);
     const control = this.controlDir && this.controlDir.control;
     if (control) {
       const validators: ValidatorFn[] = control.validator ? [control.validator] : [];

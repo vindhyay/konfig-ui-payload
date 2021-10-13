@@ -441,6 +441,31 @@ export class TextInputMetaData extends MetaData {
   }
 }
 
+export class PasswordInputMetaData extends MetaData {
+  mask: string;
+  icon: string;
+  placeholder: string;
+  tooltip: string;
+  leftIcon: string;
+  rightIcon: string;
+  isFormulaField: boolean;
+  formula = [];
+  pattern:string;
+  constructor(data) {
+    super(data);
+    const { mask = "", icon = "", tooltip = "", placeholder = "********", leftIcon = "", rightIcon = "", isFormulaField, pattern ="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}", formula } = data;
+    this.mask = mask;
+    this.icon = icon;
+    this.tooltip = tooltip;
+    this.placeholder = placeholder;
+    this.leftIcon = leftIcon;
+    this.rightIcon = rightIcon;
+    this.isFormulaField = isFormulaField;
+    this.formula = formula;
+    this.pattern = pattern;
+  }
+}
+
 export class ButtonMetaData extends MetaData {
   icon: string;
   iconPos: string;
@@ -721,6 +746,7 @@ export class BaseWidget {
   isViewOnly: boolean;
   metaData:
     | TextMetaData
+    | PasswordInputMetaData
     | ContainerMetaData
     | TextInputMetaData
     | NumberMetaData
@@ -791,7 +817,7 @@ export class BaseWidget {
           this.metaData = new TextInputMetaData(data);
           break;
         case WidgetTypes.PasswordInput:
-          this.metaData = new TextInputMetaData({...data,placeholder:'********'});
+          this.metaData = new PasswordInputMetaData(data);
           break;
         case WidgetTypes.Number:
           this.metaData = new NumberMetaData(data);
