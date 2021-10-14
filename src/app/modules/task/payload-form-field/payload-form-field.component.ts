@@ -362,11 +362,8 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
         }
         return formulaValue
     }
-    console.log(id)
     const currField = getFieldFromFields(this.payloadFields, id);
-    console.log(currField);
     currField.value.value = formulaValue;
-    console.log(formulaValue)
     return formulaValue;
   }
 }

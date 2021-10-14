@@ -587,8 +587,15 @@ export class ErrorContainerMetadata extends ContainerMetaData {
 }
 
 export class CollapseContainerMetaData extends ContainerMetaData {
+  color: string;
+  bgColor: string;
+  header: ContainerHeader;
   constructor(data) {
     super(data);
+    const { color = "#000000", bgColor = "#ffffff", header = {} } = data;
+    this.color = color;
+    this.bgColor = bgColor;
+    this.header = new ContainerHeader(header);
   }
 }
 
@@ -710,6 +717,22 @@ export class UploadMetaData extends MetaData {
   }
 }
 
+export class ContainerHeader {
+  fontSize: string;
+  height: string;
+  color: string;
+  bgColor: string;
+  icon: string;
+  constructor(data) {
+    const { fontSize = "12", height = "40", color = "#808080", bgColor = "#D3D3D3", icon = "" } = data;
+    this.fontSize = fontSize;
+    this.height = height;
+    this.color = color;
+    this.bgColor = bgColor;
+    this.icon = icon;
+  }
+}
+
 export class ModalMetaData extends MetaData {
   title: string;
   icon: string;
@@ -717,15 +740,17 @@ export class ModalMetaData extends MetaData {
   width: string;
   color: string;
   bgColor: string;
+  button: ContainerHeader;
   constructor(data) {
     super(data);
-    const { title = "", icon = "", height = "400px", width = "500px", color = "#000000", bgColor = "#ffffff" } = data;
+    const { title = "", icon = "", height = "400px", width = "500px", color = "#000000", bgColor = "#ffffff", button = {} } = data;
     this.title = title;
     this.icon = icon;
     this.height = height;
     this.width = width;
     this.color = color;
     this.bgColor = bgColor;
+    this.button = new ContainerHeader(button);
   }
 }
 
