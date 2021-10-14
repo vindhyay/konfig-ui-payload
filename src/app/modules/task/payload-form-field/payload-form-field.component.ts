@@ -108,7 +108,7 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
   }
 
   isTextInput(wType:string):boolean{
-    return (wType==='TextInput' || wType==='PasswordInput');
+    return (wType==='TextInput' || wType==='PasswordInput' || wType==='Email' );
   }
 
   getInputType(wType:string):string{
