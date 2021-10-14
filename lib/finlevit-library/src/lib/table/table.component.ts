@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { getUniqueId } from "../utils";
 import { scrollToBottom } from "../../../../../src/app/utils";
 import { FormControl, Validators } from "@angular/forms";
-import { Column, ColumnTypes } from "../../../../../src/app/modules/task/model/create-form.models";
+import { Column, WidgetTypes } from "../../../../../src/app/modules/task/model/create-form.models";
 
 @Component({
   selector: "finlevit-table",
@@ -24,11 +24,11 @@ export class TableComponent implements OnInit {
   @Input()
   set columns(columns) {
     this._columns = columns.map(column => {
-      if (column.colType === ColumnTypes.Date) {
-        if (column.validators?.minDate) {
+      if (column.colType === WidgetTypes.DatePicker) {
+        if (column?.validators?.minDate) {
           column.validators.minDate = new Date(column.validators.minDate);
         }
-        if (column.validators?.maxDate) {
+        if (column?.validators?.maxDate) {
           column.validators.maxDate = new Date(column.validators.maxDate);
         }
       }
@@ -74,23 +74,31 @@ export class TableComponent implements OnInit {
 
   private _styleClass = "p-datatable-gridlines p-datatable-sm";
 
-  Text = ColumnTypes.Text;
-  TextArea = ColumnTypes.TextArea;
-  Number = ColumnTypes.Number;
-  Date = ColumnTypes.Date;
+  Text: WidgetTypes = WidgetTypes.Text;
+  Button: WidgetTypes = WidgetTypes.Button;
+  Modal: WidgetTypes = WidgetTypes.Modal;
+  TextInput: WidgetTypes = WidgetTypes.TextInput;
+  TextArea: WidgetTypes = WidgetTypes.TextArea;
+  Number: WidgetTypes = WidgetTypes.Number;
+  Checkbox: WidgetTypes = WidgetTypes.Checkbox;
+  Image: WidgetTypes = WidgetTypes.Image;
+  Dropdown: WidgetTypes = WidgetTypes.Dropdown;
+  DatePicker: WidgetTypes = WidgetTypes.DatePicker;
+  CheckboxGroup: WidgetTypes = WidgetTypes.CheckboxGroup;
+  RadioGroup: WidgetTypes = WidgetTypes.RadioGroup;
+  Upload: WidgetTypes = WidgetTypes.Upload;
 
   ngOnInit(): void {
     this.tableId = getUniqueId("table");
   }
 
-  getColType(type) {
+  getColType(type: WidgetTypes) {
     switch (type) {
-      case "Text":
-      case "Data":
+      case WidgetTypes.TextInput:
         return "text";
-      case "Date":
+      case WidgetTypes.DatePicker:
         return "date";
-      case "Number":
+      case WidgetTypes.Number:
         return "numeric";
       default:
         return "text";
