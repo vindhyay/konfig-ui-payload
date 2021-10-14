@@ -58,7 +58,7 @@ export class PayloadViewFormComponent implements OnInit {
           if (field?.children?.length) {
             payload[field.widgetName] = this.convertPayload(field.children, field.type === DataTypes.array);
           } else if (field?.metaData?.widgetType === WidgetTypes.Table) {
-            payload[field.widgetName] = field?.value?.value
+            payload[field.widgetName] = field?.value?.value?.length
               ? getValueFromObjectByPath(field, "value.value") || []
               : getValueFromObjectByPath(field, "metaData.options") || [];
           } else {
