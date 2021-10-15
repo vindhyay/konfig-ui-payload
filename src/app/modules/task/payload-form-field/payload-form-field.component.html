@@ -10,6 +10,7 @@
       showControls &&
       (item?.metaData?.widgetType == TextInput ||
         item?.metaData?.widgetType == Email ||
+        item?.metaData?.widgetType == PhonenumberInput ||
         item?.metaData?.widgetType == TextArea ||
         item?.metaData?.widgetType == Number ||
         item?.metaData?.widgetType == CheckboxGroup ||
@@ -38,7 +39,7 @@
     </div>
   </ng-container>
 
-  <ng-container *ngIf="item?.metaData?.widgetType === TextInput || item?.metaData?.widgetType === Email">
+  <ng-container *ngIf="item?.metaData?.widgetType === TextInput || item?.metaData?.widgetType === Email || item?.metaData?.widgetType === PhonenumberInput">
     <div class="input-container">
       <finlevit-text
         *ngIf="!item?.metaData?.isFormulaField"
@@ -56,6 +57,7 @@
         (onBlur)="optionChange($event, item)"
         [type] = "item?.metaData?.widgetType"
         [pattern]="item?.validators?.pattern || null"
+        [mask] = "item?.metaData?.mask || null"
       ></finlevit-text>
       <finlevit-text
               *ngIf="item?.metaData?.isFormulaField"
@@ -73,6 +75,7 @@
               (onBlur)="optionChange($event, item)"
               [type] = "item?.metaData?.widgetType"
               [pattern]="item?.metaData?.pattern || null"
+              [mask] = "item?.metaData?.mask || null"
       ></finlevit-text>
     </div>
   </ng-container>

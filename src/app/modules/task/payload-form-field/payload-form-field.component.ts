@@ -34,6 +34,7 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
   Image: WidgetTypes = WidgetTypes.Image;
   TextInput: WidgetTypes = WidgetTypes.TextInput;
   Email: WidgetTypes = WidgetTypes.Email;
+  PhonenumberInput: WidgetTypes = WidgetTypes.PhonenumberInput;
   ErrorContainer: WidgetTypes = WidgetTypes.ErrorContainer;
   TextArea: WidgetTypes = WidgetTypes.TextArea;
   Number: WidgetTypes = WidgetTypes.Number;
