@@ -111,11 +111,11 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
     return (wType==='TextInput' || wType==='PasswordInput' || wType==='Email' );
   }
 
-  getInputType(wType:string):string{
-    if(wType==='PasswordInput'){
+  getInputType(wType:string,rIcon):string{
+    if(wType==='PasswordInput' && rIcon=='pi pi-eye'){
       return 'password';
     }
-    return wType;
+    return 'text';
   }
 
   ngOnInit() {
@@ -246,6 +246,10 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
       this.completedSteps[child?.metaData?.widgetId] = true;
       stepperRef.next();
     }
+  }
+
+  onRightIconClick(metaData:any){
+    metaData.rightIcon= metaData?.rightIcon=='pi pi-eye'? 'pi pi-eye-slash' : 'pi pi-eye';
   }
 
   selectionChange($event) {

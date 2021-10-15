@@ -37,6 +37,7 @@ export class InputComponent implements ControlValueAccessor, OnInit {
   @Input() rightIcon: string = '';
   @Input() leftIcon: string = '';
   @Output() onBlur = new EventEmitter();
+  @Output() onRightIconClick = new EventEmitter();
   _value: any = null;
   iconClass: any = '';
   STRING = String;
@@ -89,6 +90,9 @@ export class InputComponent implements ControlValueAccessor, OnInit {
   onLocalTouched($event: any) {
     this.onTouched();
     this.onBlur.emit($event);
+  }
+  onRIconClick(){
+    this.onRightIconClick.emit();    
   }
   onTouched() {}
   onChange(event: any) {}

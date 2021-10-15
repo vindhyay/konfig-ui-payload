@@ -55,8 +55,9 @@
         [isRequired]="item?.validators?.required"
         [label]="item?.label"
         (onBlur)="optionChange($event, item)"
-        [type]="getInputType(item?.metaData?.widgetType)"
+        [type]="getInputType(item?.metaData?.widgetType,item?.metaData?.rightIcon)"
         [pattern]="item?.validators?.pattern || null"
+        (onRightIconClick)="item?.metaData?.widgetType==='PasswordInput'?onRightIconClick(item?.metaData):null"
       ></finlevit-text>
       <finlevit-text
               *ngIf="item?.metaData?.isFormulaField"
@@ -72,8 +73,9 @@
               [isRequired]="item?.validators?.required"
               [label]="item?.label"
               (onBlur)="optionChange($event, item)"
-              [type]="getInputType(item?.metaData?.widgetType)"
+              [type]="getInputType(item?.metaData?.widgetType,item?.metaData?.rightIcon)"
               [pattern]="item?.validators?.pattern || null"
+              (onRightIconClick)="item?.metaData?.widgetType==='PasswordInput'?onRightIconClick(item?.metaData):null"
       ></finlevit-text>
       {{item.value.value}}
     </div>
