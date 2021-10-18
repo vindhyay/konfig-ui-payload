@@ -99,6 +99,7 @@ export interface WidgetItem {
 export enum WidgetTypes {
   Text = "Text",
   Table = "Table",
+  AdvTable = "AdvTable",
   ErrorContainer = "ErrorContainer",
   TransactionTable = "SavedTable",
   CollapseContainer = "CollapseContainer",

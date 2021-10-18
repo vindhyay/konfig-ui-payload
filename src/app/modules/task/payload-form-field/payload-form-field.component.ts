@@ -20,6 +20,7 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
   _item: BaseWidget = {} as BaseWidget;
   Text: WidgetTypes = WidgetTypes.Text;
   Table: WidgetTypes = WidgetTypes.Table;
+  AdvTable: WidgetTypes = WidgetTypes.AdvTable;
   TransactionTable: WidgetTypes = WidgetTypes.TransactionTable;
   Button: WidgetTypes = WidgetTypes.Button;
   CollapseContainer: WidgetTypes = WidgetTypes.CollapseContainer;
@@ -61,7 +62,7 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
     if (!data.value || typeof data.value != "object" || !data.value.value) {
       data.value = { id: "", value: data?.value?.value ? data.value : null };
     }
-    if (data?.metaData?.widgetType === WidgetTypes.Table) {
+    if (data?.metaData?.widgetType === WidgetTypes.Table || data?.metaData?.widgetType === WidgetTypes.AdvTable) {
       const metaData = data.metaData as TableMetaData;
       if (metaData.configure) {
         metaData.options = metaData.options || [];

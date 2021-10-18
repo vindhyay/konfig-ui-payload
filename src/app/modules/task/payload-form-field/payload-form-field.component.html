@@ -207,6 +207,40 @@
       ></finlevit-table>
     </div>
   </ng-container>
+  <ng-container *ngIf="item?.metaData?.widgetType === AdvTable">
+    <div
+      [ngClass]="{
+        'input-container': true,
+        'paginated-table-container': item?.metaData?.pagination,
+        'no-data-table': item?.metaData?.configure ? !item?.metaData?.options?.length : !item?.value?.value?.length
+      }"
+    >
+      <app-adv-table
+        class="table-container"
+        noDataMessage="User can enter data or auto populate in application"
+        [sort]="item?.metaData?.sort"
+        [filter]="item?.metaData?.filter"
+        [headerColor]="item?.metaData?.color"
+        [headerBgColor]="item?.metaData?.bgColor"
+        [tableHeading]="item?.metaData?.heading"
+        [columns]="item?.metaData?.columns"
+        [addRows]="item?.metaData?.addRows"
+        [hideHeader]="item?.metaData?.hideHeader"
+        [cellBorder]="item?.metaData?.cellBorder"
+        [editRow]="item?.metaData?.actions?.editRow"
+        [deleteRow]="item?.metaData?.actions?.deleteRow"
+        [actionWidth]="item?.metaData?.actions?.width"
+        [actionLabel]="item?.metaData?.actions?.label"
+        [tableData]="
+          item?.value?.value?.length
+            ? item?.value?.value
+            : item?.metaData?.configure
+            ? item?.metaData?.options
+            : item?.value?.value || []
+        "
+      ></app-adv-table>
+    </div>
+  </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === TransactionTable">
     <app-transaction-table [item]="item" [viewMode]="viewMode" [editMode]="editMode"></app-transaction-table>
   </ng-container>
