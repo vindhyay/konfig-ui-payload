@@ -107,19 +107,9 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
     }
   }
 
-  isTextInput(metaData:any):boolean{
-    const {widgetType} = metaData;
-    if(widgetType==='PasswordInput' && !metaData.rightIcon){
-      metaData.rightIcon=metaData.showIcon;
-    }
-    return (widgetType==='TextInput' || widgetType==='PasswordInput' || widgetType==='Email' );
-  }
+  isTextInput(widgetType:any):boolean{
 
-  getInputType(wType:string,hidePassword:boolean):string{
-    if(wType==='PasswordInput' && hidePassword){
-      return 'password';
-    }
-    return 'text';
+    return (widgetType==='TextInput' || widgetType==='Email' );
   }
 
   ngOnInit() {
@@ -252,9 +242,7 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
     }
   }
 
-  onRightIconClick(metaData:any){
-    metaData.rightIcon= metaData?.rightIcon=== metaData?.showIcon ?  metaData?.hideIcon : metaData?.showIcon;
-  }
+
 
   selectionChange($event) {
     console.log($event);

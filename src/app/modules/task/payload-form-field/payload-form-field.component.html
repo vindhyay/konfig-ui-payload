@@ -39,7 +39,7 @@
     </div>
   </ng-container>
 
-  <ng-container *ngIf="isTextInput(item?.metaData)">
+  <ng-container *ngIf="isTextInput(item?.metaData?.widgetType)">
     <div class="input-container">
       <finlevit-text
         *ngIf="!item?.metaData?.isFormulaField"
@@ -55,9 +55,7 @@
         [isRequired]="item?.validators?.required"
         [label]="item?.label"
         (onBlur)="optionChange($event, item)"
-        [type]="getInputType(item?.metaData?.widgetType,item?.metaData?.rightIcon===item?.metaData?.showIcon)"
         [pattern]="item?.validators?.pattern || null"
-        (onRightIconClick)="item?.metaData?.widgetType==='PasswordInput'?onRightIconClick(item?.metaData):null"
       ></finlevit-text>
       <finlevit-text
               *ngIf="item?.metaData?.isFormulaField"
@@ -73,10 +71,20 @@
               [isRequired]="item?.validators?.required"
               [label]="item?.label"
               (onBlur)="optionChange($event, item)"
-              [type]="getInputType(item?.metaData?.widgetType,item?.metaData?.rightIcon===item?.metaData?.showIcon)"
               [pattern]="item?.validators?.pattern || null"
-              (onRightIconClick)="item?.metaData?.widgetType==='PasswordInput'?onRightIconClick(item?.metaData):null"
       ></finlevit-text>
+      {{item.value.value}}
+    </div>
+  </ng-container>
+  <ng-container *ngIf="item?.metaData?.widgetType === PasswordInput">
+    <div class="input-container">
+      <app-password-field
+        [isDisabled]="(viewMode && (!item?.validators?.editable || !editMode)) || disable"
+        (onValueChange)="validateField($event, item)"
+        (onBlurChange)="optionChange($event, item)"
+        [item]="item" 
+      ></app-password-field>
+  
       {{item.value.value}}
     </div>
   </ng-container>
