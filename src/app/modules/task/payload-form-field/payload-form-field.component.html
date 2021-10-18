@@ -9,6 +9,8 @@
       showEdit &&
       showControls &&
       (item?.metaData?.widgetType == TextInput ||
+        item?.metaData?.widgetType == PasswordInput ||
+        item?.metaData?.widgetType == Email ||
         item?.metaData?.widgetType == TextArea ||
         item?.metaData?.widgetType == Number ||
         item?.metaData?.widgetType == CheckboxGroup ||
@@ -37,7 +39,7 @@
     </div>
   </ng-container>
 
-  <ng-container *ngIf="item?.metaData?.widgetType === TextInput">
+  <ng-container *ngIf="isTextInput(item?.metaData?.widgetType)">
     <div class="input-container">
       <finlevit-text
         *ngIf="!item?.metaData?.isFormulaField"
@@ -53,6 +55,7 @@
         [isRequired]="item?.validators?.required"
         [label]="item?.label"
         (onBlur)="optionChange($event, item)"
+        [pattern]="item?.validators?.pattern || null"
       ></finlevit-text>
       <finlevit-text
               *ngIf="item?.metaData?.isFormulaField"
@@ -63,12 +66,25 @@
               [errorMsg]="item?.errorMsg"
               [tooltip]="item?.metaData?.tooltip"
               [placeholder]="item?.metaData?.placeholder"
-              [ngModel]="calculateFormulaValue(item?.metaData)"
+              [ngModel]="calculateFormulaValue(item?.metaData, item?.id)"
               (ngModelChange)="validateField($event, item)"
               [isRequired]="item?.validators?.required"
               [label]="item?.label"
               (onBlur)="optionChange($event, item)"
+              [pattern]="item?.validators?.pattern || null"
       ></finlevit-text>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="item?.metaData?.widgetType === PasswordInput">
+    <div class="input-container">
+      <app-password-field
+        [isDisabled]="(viewMode && (!item?.validators?.editable || !editMode)) || disable"
+        (onValueChange)="validateField($event, item)"
+        (onBlurChange)="optionChange($event, item)"
+        [item]="item" 
+      ></app-password-field>
+  
+      {{item.value.value}}
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === TextArea">
@@ -111,7 +127,7 @@
                        [suffix]="item?.metaData?.suffix"
                        [prefix]="item?.metaData?.prefix"
                        [error]="item?.error == true"
-                       [ngModel]="calculateFormulaValue(item?.metaData)"
+                       [ngModel]="calculateFormulaValue(item?.metaData, item?.id)"
                        (ngModelChange)="validateField($event, item)"
                        [errorMsg]="item?.errorMsg"
                        [label]="item?.label"

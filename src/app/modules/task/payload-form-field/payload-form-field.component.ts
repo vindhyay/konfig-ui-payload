@@ -3,7 +3,7 @@ import { FormControl, Validators } from "@angular/forms";
 import { FieldData } from "../model/field-data.model";
 import { DataTypes } from "../model/payload-field.model";
 import { BaseWidget, NESTED_MIN_COLUMNS, TableMetaData, WidgetTypes } from "../model/create-form.models";
-import { getErrorMessages, getFieldFromFields, validateFields } from "../../../utils";
+import { getErrorMessages, getFieldFromFields, getValidators, validateFields } from "../../../utils";
 import { TaskService } from "../services/task.service";
 import { AuthService } from "../../auth/services/auth.service";
 import { EditorService } from "../editor.service";
@@ -34,6 +34,8 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
   Footer: WidgetTypes = WidgetTypes.Footer;
   Image: WidgetTypes = WidgetTypes.Image;
   TextInput: WidgetTypes = WidgetTypes.TextInput;
+  PasswordInput: WidgetTypes = WidgetTypes.PasswordInput;
+  Email: WidgetTypes = WidgetTypes.Email;
   ErrorContainer: WidgetTypes = WidgetTypes.ErrorContainer;
   TextArea: WidgetTypes = WidgetTypes.TextArea;
   Number: WidgetTypes = WidgetTypes.Number;
@@ -106,6 +108,11 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
     }
   }
 
+  isTextInput(widgetType:any):boolean{
+
+    return (widgetType==='TextInput' || widgetType==='Email' );
+  }
+
   ngOnInit() {
     this.transactionDetailsSubscription = this.taskService.transactionDetailsSubject.subscribe(value => {
       if (value) {
@@ -172,7 +179,7 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
       value: { value = "" },
       metaData: {}
     } = item;
-    const tempFormControl = new FormControl(value, this.getValidators(item.validators));
+    const tempFormControl = new FormControl(value, getValidators(item.validators));
     if (tempFormControl.valid) {
       this.originalValue = JSON.parse(JSON.stringify(value));
       this.editMode = false;
@@ -203,7 +210,7 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
   }
   validateField($event: any, field: any) {
     const { validators = {}, label = "" } = field;
-    const tempFormControl = new FormControl($event, this.getValidators(validators));
+    const tempFormControl = new FormControl($event, getValidators(validators));
     if (tempFormControl.valid) {
       field.value.value = $event;
       field.error = false;
@@ -213,29 +220,6 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
       field.errorMsg = getErrorMessages(tempFormControl.errors, label);
     }
   }
-  getValidators = (validators: any) => {
-    const _validators: any = [];
-    Object.keys(validators).forEach(validator => {
-      switch (validator) {
-        case "minValue":
-          validators[validator] && _validators.push(Validators.min(validators[validator]));
-          break;
-        case "minLength":
-          validators[validator] && _validators.push(Validators.minLength(validators[validator]));
-          break;
-        case "maxValue":
-          validators[validator] && _validators.push(Validators.max(validators[validator]));
-          break;
-        case "maxLength":
-          validators[validator] && _validators.push(Validators.maxLength(validators[validator]));
-          break;
-        case "required":
-          validators[validator] && _validators.push(Validators.required);
-          break;
-      }
-    });
-    return _validators;
-  };
   btnClick($event, data) {
     this.onBtnClick.emit({ event: $event, data });
   }
@@ -259,6 +243,8 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
     }
   }
 
+
+
   selectionChange($event) {
     console.log($event);
   }
@@ -280,7 +266,7 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
     const ifConditions = this.item.metaData?.conditions?.ifConditions || [];
     this.taskService.checkCondition(ifConditions);
   }
-  calculateFormulaValue(itemMetaData) : any{
+  calculateFormulaValue(itemMetaData, id) : any{
     let formulaValue = '';
     let formula = [];
     if(itemMetaData?.formula?.length > 0){
@@ -313,20 +299,12 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
         formula.forEach(field => {
           if (field?.resourceType === resourceType.PAYLOAD_FIELD) {
             if(field?.value?.value){
-              formulaValue = formulaValue + field?.value?.value;
+              formulaValue = formulaValue + field.value.value;
             }
           }
           if (field?.resourceType === resourceType.FUNCTION) {
-            switch(field?.separateBy){
-              case 'Space':
-                formulaValue = formulaValue + ' ';
-                return formulaValue;
-              case 'Comma':
-                formulaValue = formulaValue + ', ';
-                return formulaValue;
-              case 'Hyphen':
-                formulaValue = formulaValue + '-';
-                return formulaValue;
+            if(field?.separateBy){
+              formulaValue = formulaValue + field.separateBy;
             }
           }
         })
@@ -393,6 +371,8 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
         }
         return formulaValue
     }
+    const currField = getFieldFromFields(this.payloadFields, id);
+    currField.value.value = formulaValue;
     return formulaValue;
   }
 }

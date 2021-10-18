@@ -16,6 +16,7 @@ import { TransactionTableComponent } from "./payload-form-field/transaction-tabl
 import { TextFieldComponent } from "./payload-form-field/text-field/text-field.component";
 import { ModalComponent } from './payload-form-field/modal/modal.component';
 import { CollapseContainerComponent } from './payload-form-field/collapse-container/collapse-container.component';
+import {PasswordFieldComponent} from './payload-form-field/password-field/password-field.component';
 import { AdvTableComponent } from './payload-form-field/adv-table/adv-table.component';
 
 @NgModule({
@@ -31,7 +32,8 @@ import { AdvTableComponent } from './payload-form-field/adv-table/adv-table.comp
     TextFieldComponent,
     ModalComponent,
     CollapseContainerComponent,
-    AdvTableComponent
+    AdvTableComponent,
+    PasswordFieldComponent
   ],
   imports: [CommonModule, GridsterModule, SharedModule, ExtendedModule],
   providers: [TaskService, AuthService]
