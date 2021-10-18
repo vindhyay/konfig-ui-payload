@@ -31,7 +31,7 @@ import { DatepickerComponent } from './datepicker/datepicker.component';
 import { CalendarModule } from 'primeng/calendar';
 import {TableModule} from "primeng/table";
 import { NgxMaskModule } from 'ngx-mask';
-
+import { PhoneMaskDirective } from './input/phone-mask.directive'
 
 import { TableComponent } from './table/table.component';
 
@@ -50,7 +50,8 @@ import { TableComponent } from './table/table.component';
     RadioGroupComponent,
     DatepickerComponent,
     ButtonComponent,
-    TableComponent
+    TableComponent,
+    PhoneMaskDirective
   ],
   imports: [
     CalendarModule,

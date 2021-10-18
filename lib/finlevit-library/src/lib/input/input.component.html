@@ -21,7 +21,7 @@
       (blur)="onLocalTouched($event)"
       [attr.maxlength]="maxCharLimit"
       [pattern]= "pattern || null"
-      [mask] = "mask"
+      appPhoneMask
     />
   </span>
   <div *ngIf="showMaxCharLimit && maxCharLimit && _value" class="p-d-flex p-justify-end">
