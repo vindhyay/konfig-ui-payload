@@ -33,6 +33,7 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
   Footer: WidgetTypes = WidgetTypes.Footer;
   Image: WidgetTypes = WidgetTypes.Image;
   TextInput: WidgetTypes = WidgetTypes.TextInput;
+  PasswordInput: WidgetTypes = WidgetTypes.PasswordInput;
   Email: WidgetTypes = WidgetTypes.Email;
   PhonenumberInput: WidgetTypes = WidgetTypes.PhonenumberInput;
   ErrorContainer: WidgetTypes = WidgetTypes.ErrorContainer;
@@ -105,6 +106,11 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
     if(this.transactionDetailsSubscription){
       this.transactionDetailsSubscription.unsubscribe();
     }
+  }
+
+  isTextInput(widgetType:any):boolean{
+
+    return (widgetType==='TextInput' || widgetType==='Email' );
   }
 
   ngOnInit() {
@@ -237,6 +243,8 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
     }
   }
 
+
+
   selectionChange($event) {
     console.log($event);
   }
@@ -363,11 +371,8 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
         }
         return formulaValue
     }
-    console.log(id)
     const currField = getFieldFromFields(this.payloadFields, id);
-    console.log(currField);
     currField.value.value = formulaValue;
-    console.log(formulaValue)
     return formulaValue;
   }
 }

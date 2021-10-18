@@ -271,6 +271,9 @@
 .field-modal-content {
   height: 100%;
   width: 100%;
+  &.p-dialog-content{
+    padding: 0;
+  }
 }
 .p-dialog-mask{
   z-index: 100;
@@ -292,6 +295,7 @@
   }
   .p-accordion-content{
     height: 100%;
+    padding: 0;
   }
   .p-accordion .p-accordion-header:not(.p-disabled) .p-accordion-header-link:focus{
     box-shadow: none;

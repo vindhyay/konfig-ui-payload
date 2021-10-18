@@ -7,7 +7,7 @@
   </div>
   <span [ngClass]="{ 'p-input-icon-right': rightIcon, 'p-input-icon-left': leftIcon }">
     <i *ngIf="leftIcon" [class]="leftIcon"></i>
-    <i *ngIf="rightIcon" [class]="rightIcon"></i>
+    <i *ngIf="rightIcon" [class]="rightIcon" (click)="onRIconClick()"></i>
     <input
       pInputText
       [type]="type"

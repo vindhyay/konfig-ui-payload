@@ -38,9 +38,11 @@ export class InputComponent implements ControlValueAccessor, OnInit {
   @Input() leftIcon: string = '';
   @Input() mask: string = '';
   @Output() onBlur = new EventEmitter();
+  @Output() onRightIconClick = new EventEmitter();
   _value: any = null;
   iconClass: any = '';
   STRING = String;
+
 
   ngOnInit() {
     console.log(this.pattern)
@@ -63,6 +65,7 @@ export class InputComponent implements ControlValueAccessor, OnInit {
       this.isRequired = hasRequiredField(control);
     }
   }
+
   setInputValue(value: any) {
     this._value = value;
   }
@@ -84,6 +87,9 @@ export class InputComponent implements ControlValueAccessor, OnInit {
   onLocalTouched($event: any) {
     this.onTouched();
     this.onBlur.emit($event);
+  }
+  onRIconClick(){
+    this.onRightIconClick.emit();    
   }
   onTouched() {}
   onChange(event: any) {}
@@ -126,10 +132,14 @@ export class InputComponent implements ControlValueAccessor, OnInit {
   getErrorMessages() {
     const errors = this.controlDir.control?.errors;
     const errorMessages: string[] = [];
+    console.log(errors);
     Object.keys(errors || {}).forEach(error => {
       switch (error) {
         case 'required':
           errorMessages.push(`${this.label} is required`);
+          break;
+        case 'pattern':
+          errorMessages.push(`${this.label} is not valid`);
           break;
         case 'minlength':
         case 'maxlength':

@@ -105,6 +105,7 @@ export enum WidgetTypes {
   Button = "Button",
   Modal = "Modal",
   TextInput = "TextInput",
+  PasswordInput = "PasswordInput",
   Email = "Email",
   PhonenumberInput = "PhonenumberInput",
   TextArea = "TextArea",
@@ -444,7 +445,41 @@ export class TextInputMetaData extends MetaData {
     this.formula = formula;
   }
 }
-
+export class PasswordInputMetaData extends MetaData {
+  mask: string;
+  icon: string;
+  placeholder: string;
+  tooltip: string;
+  leftIcon: string;
+  rightIcon: string;
+  isFormulaField: boolean;
+  formula = [];
+  rules : any;
+  showIcon: string;
+  hideIcon: string;
+  constructor(data) {
+    super(data);
+    const { mask = "", icon = "", tooltip = "", placeholder = "********", leftIcon = "", rightIcon = "",showIcon = "pi pi-eye",
+    hideIcon = "pi pi-eye-slash",isFormulaField, formula,rules = {
+      oneLowerCase: true,
+      oneUpperCase: true,
+      oneNumber: true,
+      oneSpecialchar: true,
+      minLength : 8,
+    } } = data;
+    this.mask = mask;
+    this.icon = icon;
+    this.tooltip = tooltip;
+    this.placeholder = placeholder;
+    this.leftIcon = leftIcon;
+    this.rightIcon = rightIcon;
+    this.showIcon = showIcon;
+    this.hideIcon = hideIcon;
+    this.isFormulaField = isFormulaField;
+    this.formula = formula;
+    this.rules= rules;
+  }
+}
 export class EmailMetaData extends MetaData {
   mask: string;
   icon: string;
@@ -609,8 +644,15 @@ export class ErrorContainerMetadata extends ContainerMetaData {
 }
 
 export class CollapseContainerMetaData extends ContainerMetaData {
+  color: string;
+  bgColor: string;
+  header: ContainerHeader;
   constructor(data) {
     super(data);
+    const { color = "#000000", bgColor = "#ffffff", header = {} } = data;
+    this.color = color;
+    this.bgColor = bgColor;
+    this.header = new ContainerHeader(header);
   }
 }
 
@@ -732,6 +774,22 @@ export class UploadMetaData extends MetaData {
   }
 }
 
+export class ContainerHeader {
+  fontSize: string;
+  height: string;
+  color: string;
+  bgColor: string;
+  icon: string;
+  constructor(data) {
+    const { fontSize = "12", height = "40", color = "#808080", bgColor = "#D3D3D3", icon = "" } = data;
+    this.fontSize = fontSize;
+    this.height = height;
+    this.color = color;
+    this.bgColor = bgColor;
+    this.icon = icon;
+  }
+}
+
 export class ModalMetaData extends MetaData {
   title: string;
   icon: string;
@@ -739,15 +797,17 @@ export class ModalMetaData extends MetaData {
   width: string;
   color: string;
   bgColor: string;
+  button: ContainerHeader;
   constructor(data) {
     super(data);
-    const { title = "", icon = "", height = "400px", width = "500px", color = "#000000", bgColor = "#ffffff" } = data;
+    const { title = "", icon = "", height = "400px", width = "500px", color = "#000000", bgColor = "#ffffff", button = {} } = data;
     this.title = title;
     this.icon = icon;
     this.height = height;
     this.width = width;
     this.color = color;
     this.bgColor = bgColor;
+    this.button = new ContainerHeader(button);
   }
 }
 
@@ -771,6 +831,7 @@ export class BaseWidget {
   isViewOnly: boolean;
   metaData:
     | TextMetaData
+    | PasswordInputMetaData
     | EmailMetaData
     | ContainerMetaData
     | TextInputMetaData
@@ -841,6 +902,9 @@ export class BaseWidget {
           break;
         case WidgetTypes.TextInput:
           this.metaData = new TextInputMetaData(data);
+          break;
+        case WidgetTypes.PasswordInput:
+          this.metaData = new PasswordInputMetaData(data);
           break;
         case WidgetTypes.Email:
           this.metaData = new EmailMetaData(data);
