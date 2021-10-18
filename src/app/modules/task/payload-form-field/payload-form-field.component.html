@@ -39,7 +39,7 @@
     </div>
   </ng-container>
 
-  <ng-container *ngIf="isTextInput(item?.metaData?.widgetType)">
+  <ng-container *ngIf="isTextInput(item?.metaData)">
     <div class="input-container">
       <finlevit-text
         *ngIf="!item?.metaData?.isFormulaField"
@@ -55,7 +55,7 @@
         [isRequired]="item?.validators?.required"
         [label]="item?.label"
         (onBlur)="optionChange($event, item)"
-        [type]="getInputType(item?.metaData?.widgetType,item?.metaData?.rightIcon)"
+        [type]="getInputType(item?.metaData?.widgetType,item?.metaData?.rightIcon===item?.metaData?.showIcon)"
         [pattern]="item?.validators?.pattern || null"
         (onRightIconClick)="item?.metaData?.widgetType==='PasswordInput'?onRightIconClick(item?.metaData):null"
       ></finlevit-text>
@@ -73,7 +73,7 @@
               [isRequired]="item?.validators?.required"
               [label]="item?.label"
               (onBlur)="optionChange($event, item)"
-              [type]="getInputType(item?.metaData?.widgetType,item?.metaData?.rightIcon)"
+              [type]="getInputType(item?.metaData?.widgetType,item?.metaData?.rightIcon===item?.metaData?.showIcon)"
               [pattern]="item?.validators?.pattern || null"
               (onRightIconClick)="item?.metaData?.widgetType==='PasswordInput'?onRightIconClick(item?.metaData):null"
       ></finlevit-text>

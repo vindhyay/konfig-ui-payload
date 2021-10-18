@@ -42,12 +42,7 @@ export class InputComponent implements ControlValueAccessor, OnInit {
   iconClass: any = '';
   STRING = String;
 
-  getInputType():string{
-    if(this.type==='PasswordInput'){
-      return 'password';
-    }
-    return this.type;
-  }
+
   ngOnInit() {
     const control = this.controlDir && this.controlDir.control;
     if (control) {

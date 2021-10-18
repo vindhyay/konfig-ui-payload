@@ -454,9 +454,12 @@ export class PasswordInputMetaData extends MetaData {
   isFormulaField: boolean;
   formula = [];
   rules : any;
+  showIcon: string;
+  hideIcon: string;
   constructor(data) {
     super(data);
-    const { mask = "", icon = "", tooltip = "", placeholder = "********", leftIcon = "", rightIcon = "pi pi-eye", isFormulaField, formula,rules = {
+    const { mask = "", icon = "", tooltip = "", placeholder = "********", leftIcon = "", rightIcon = "",showIcon = "pi pi-eye",
+    hideIcon = "pi pi-eye-slash",isFormulaField, formula,rules = {
       oneLowerCase: true,
       oneUpperCase: true,
       oneNumber: true,
@@ -469,6 +472,8 @@ export class PasswordInputMetaData extends MetaData {
     this.placeholder = placeholder;
     this.leftIcon = leftIcon;
     this.rightIcon = rightIcon;
+    this.showIcon = showIcon;
+    this.hideIcon = hideIcon;
     this.isFormulaField = isFormulaField;
     this.formula = formula;
     this.rules= rules;

@@ -107,12 +107,16 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
     }
   }
 
-  isTextInput(wType:string):boolean{
-    return (wType==='TextInput' || wType==='PasswordInput' || wType==='Email' );
+  isTextInput(metaData:any):boolean{
+    const {widgetType} = metaData;
+    if(widgetType==='PasswordInput' && !metaData.rightIcon){
+      metaData.rightIcon=metaData.showIcon;
+    }
+    return (widgetType==='TextInput' || widgetType==='PasswordInput' || widgetType==='Email' );
   }
 
-  getInputType(wType:string,rIcon):string{
-    if(wType==='PasswordInput' && rIcon=='pi pi-eye'){
+  getInputType(wType:string,hidePassword:boolean):string{
+    if(wType==='PasswordInput' && hidePassword){
       return 'password';
     }
     return 'text';
@@ -249,7 +253,7 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
   }
 
   onRightIconClick(metaData:any){
-    metaData.rightIcon= metaData?.rightIcon=='pi pi-eye'? 'pi pi-eye-slash' : 'pi pi-eye';
+    metaData.rightIcon= metaData?.rightIcon=== metaData?.showIcon ?  metaData?.hideIcon : metaData?.showIcon;
   }
 
   selectionChange($event) {
