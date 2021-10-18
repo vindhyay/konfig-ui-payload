@@ -33,6 +33,7 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
   Footer: WidgetTypes = WidgetTypes.Footer;
   Image: WidgetTypes = WidgetTypes.Image;
   TextInput: WidgetTypes = WidgetTypes.TextInput;
+  PasswordInput: WidgetTypes = WidgetTypes.PasswordInput;
   Email: WidgetTypes = WidgetTypes.Email;
   ErrorContainer: WidgetTypes = WidgetTypes.ErrorContainer;
   TextArea: WidgetTypes = WidgetTypes.TextArea;
@@ -104,6 +105,11 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
     if(this.transactionDetailsSubscription){
       this.transactionDetailsSubscription.unsubscribe();
     }
+  }
+
+  isTextInput(widgetType:any):boolean{
+
+    return (widgetType==='TextInput' || widgetType==='Email' );
   }
 
   ngOnInit() {
@@ -235,6 +241,8 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
       stepperRef.next();
     }
   }
+
+
 
   selectionChange($event) {
     console.log($event);

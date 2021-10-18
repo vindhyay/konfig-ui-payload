@@ -105,6 +105,7 @@ export enum WidgetTypes {
   Button = "Button",
   Modal = "Modal",
   TextInput = "TextInput",
+  PasswordInput = "PasswordInput",
   Email = "Email",
   TextArea = "TextArea",
   Number = "Number",
@@ -443,7 +444,41 @@ export class TextInputMetaData extends MetaData {
     this.formula = formula;
   }
 }
-
+export class PasswordInputMetaData extends MetaData {
+  mask: string;
+  icon: string;
+  placeholder: string;
+  tooltip: string;
+  leftIcon: string;
+  rightIcon: string;
+  isFormulaField: boolean;
+  formula = [];
+  rules : any;
+  showIcon: string;
+  hideIcon: string;
+  constructor(data) {
+    super(data);
+    const { mask = "", icon = "", tooltip = "", placeholder = "********", leftIcon = "", rightIcon = "",showIcon = "pi pi-eye",
+    hideIcon = "pi pi-eye-slash",isFormulaField, formula,rules = {
+      oneLowerCase: true,
+      oneUpperCase: true,
+      oneNumber: true,
+      oneSpecialchar: true,
+      minLength : 8,
+    } } = data;
+    this.mask = mask;
+    this.icon = icon;
+    this.tooltip = tooltip;
+    this.placeholder = placeholder;
+    this.leftIcon = leftIcon;
+    this.rightIcon = rightIcon;
+    this.showIcon = showIcon;
+    this.hideIcon = hideIcon;
+    this.isFormulaField = isFormulaField;
+    this.formula = formula;
+    this.rules= rules;
+  }
+}
 export class EmailMetaData extends MetaData {
   mask: string;
   icon: string;
@@ -774,6 +809,7 @@ export class BaseWidget {
   isViewOnly: boolean;
   metaData:
     | TextMetaData
+    | PasswordInputMetaData
     | EmailMetaData
     | ContainerMetaData
     | TextInputMetaData
@@ -843,6 +879,9 @@ export class BaseWidget {
           break;
         case WidgetTypes.TextInput:
           this.metaData = new TextInputMetaData(data);
+          break;
+        case WidgetTypes.PasswordInput:
+          this.metaData = new PasswordInputMetaData(data);
           break;
         case WidgetTypes.Email:
           this.metaData = new EmailMetaData(data);
