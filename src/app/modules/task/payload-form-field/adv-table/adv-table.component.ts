@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { BaseWidget, WidgetTypes } from "../../model/create-form.models";
 import { getUniqueId, scrollToBottom } from "../../../../utils";
-import { Validators } from "@angular/forms";
+import { FormControl, Validators } from "@angular/forms";
 
 @Component({
   selector: 'app-adv-table',
@@ -127,31 +127,30 @@ export class AdvTableComponent implements OnInit {
       delete this.rowErrors[index];
     }
   }
-  validateRow(index, rowData, columnId = "") {
+  validateRow(index, rowData: BaseWidget[] = [], columnData: BaseWidget = null) {
     let valid = true;
-    // Object.keys(rowData).forEach(column => {
-    //   if (columnId && columnId !== column) {
-    //     return;
-    //   }
-    //   const columnValue = rowData[column];
-    //   const columnConfig = this.columns.find(col => col.metaData.widgetId === column);
-    //   const tempFormControl = new FormControl(columnValue, this.getValidators(columnConfig.validators) || []);
-    //   if (tempFormControl.valid) {
-    //     if (!this.rowErrors[index]) {
-    //       this.rowErrors[index] = {};
-    //     }
-    //     this.rowErrors[index][column] = { error: false, errorMsg: "" };
-    //   } else {
-    //     valid = false;
-    //     if (!this.rowErrors[index]) {
-    //       this.rowErrors[index] = {};
-    //     }
-    //     this.rowErrors[index][column] = {
-    //       error: true,
-    //       errorMsg: this.getErrorMessages(tempFormControl.errors, columnConfig.label)[0]
-    //     };
-    //   }
-    // });
+    rowData.forEach(eachCol => {
+      if (columnData && columnData?.metaData?.widgetId && columnData?.metaData?.widgetId !== eachCol.metaData.widgetId){
+        return;
+      }
+      const columnValue = eachCol?.value?.value;
+      const tempFormControl = new FormControl(columnValue, this.getValidators(eachCol.validators) || []);
+      if (tempFormControl.valid) {
+        if (!this.rowErrors[index]) {
+          this.rowErrors[index] = {};
+        }
+        this.rowErrors[index][eachCol.metaData.widgetId] = { error: false, errorMsg: "" };
+      } else {
+        valid = false;
+        if (!this.rowErrors[index]) {
+          this.rowErrors[index] = {};
+        }
+        this.rowErrors[index][eachCol.metaData.widgetId] = {
+          error: true,
+          errorMsg: this.getErrorMessages(tempFormControl.errors, eachCol.label)[0]
+        };
+      }
+    });
     return valid;
   }
   getErrorMessages = (errors: any, label: any) => {
@@ -218,7 +217,15 @@ export class AdvTableComponent implements OnInit {
   addRow() {
     const newRow: any = [];
     this.columns.forEach(eachColumn => {
-      newRow.push(JSON.parse(JSON.stringify(eachColumn)));
+      const column = JSON.parse(JSON.stringify(eachColumn));
+      column.value.value = null;
+      if (column?.validators?.minDate) {
+        column.validators.minDate = new Date(column.validators.minDate);
+      }
+      if (column?.validators?.maxDate) {
+        column.validators.maxDate = new Date(column.validators.maxDate);
+      }
+      newRow.push(column);
     });
     this.tableData.push(newRow);
     const tableBodyElement = document.querySelector(`#${this.tableId} .p-datatable-tbody`);

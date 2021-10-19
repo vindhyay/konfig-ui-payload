@@ -61,6 +61,12 @@ export class PayloadViewFormComponent implements OnInit {
             payload[field.widgetName] = field?.value?.value?.length
               ? getValueFromObjectByPath(field, "value.value") || []
               : getValueFromObjectByPath(field, "metaData.options") || [];
+          } else if(field?.metaData?.widgetType === WidgetTypes.AdvTable){
+            const advTableData = []
+            field?.value?.value.forEach(rowData => {
+              advTableData.push(this.convertPayload(rowData))
+            })
+            payload[field.widgetName] = advTableData;
           } else {
             payload[field.widgetName] = getValueFromObjectByPath(field, "value.value") || [];
           }
@@ -106,8 +112,6 @@ export class PayloadViewFormComponent implements OnInit {
     return { result, errorFields }
   }
   submit(data) {
-    console.log(this._payloadFields);
-    return;
     const {result, errorFields} =  this.validateFields(this._payloadFields)
     if (result) {
       this.onSubmit.emit({ payload: this.convertPayload(this._payloadFields), data });

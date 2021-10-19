@@ -71,16 +71,81 @@
               (ngModelChange)="validateRow(rowIndex, rowData, colData)"
               [isSmall]="true"
               [error]="
-                rowErrors[rowIndex] && rowErrors[rowIndex][colData.displayName]
-                  ? rowErrors[rowIndex][colData.displayName]['error']
+                rowErrors[rowIndex] && rowErrors[rowIndex][colData?.metaData?.widgetId]
+                  ? rowErrors[rowIndex][colData?.metaData?.widgetId]['error']
                   : false
               "
               [errorMsg]="
-                rowErrors[rowIndex] && rowErrors[rowIndex][colData.displayName]
-                  ? rowErrors[rowIndex][colData.displayName]['errorMsg']
+                rowErrors[rowIndex] && rowErrors[rowIndex][colData?.metaData?.widgetId]
+                  ? rowErrors[rowIndex][colData?.metaData?.widgetId]['errorMsg']
                   : false
               "
             ></finlevit-text>
+          </div>
+          <div class="p-pl-1" *ngSwitchCase="TextArea">
+            <ng-container *ngIf="!(colData?.validators?.editable && (editRows[rowIndex] || newRows[rowIndex]))">
+              {{ colData?.value?.value }}
+            </ng-container>
+            <finlevit-lib-textarea
+              *ngIf="colData?.validators?.editable && (editRows[rowIndex] || newRows[rowIndex])"
+              [(ngModel)]="colData.value.value"
+              (ngModelChange)="validateRow(rowIndex, rowData, colData)"
+              [isSmall]="true"
+              [error]="
+                rowErrors[rowIndex] && rowErrors[rowIndex][colData?.metaData?.widgetId]
+                  ? rowErrors[rowIndex][colData?.metaData?.widgetId]['error']
+                  : false
+              "
+              [errorMsg]="
+                rowErrors[rowIndex] && rowErrors[rowIndex][colData?.metaData?.widgetId]
+                  ? rowErrors[rowIndex][colData?.metaData?.widgetId]['errorMsg']
+                  : false
+              "
+            ></finlevit-lib-textarea>
+          </div>
+          <div class="p-pl-1" *ngSwitchCase="Number">
+            <ng-container *ngIf="!(colData?.validators?.editable && (editRows[rowIndex] || newRows[rowIndex]))">
+              {{ colData?.value?.value }}
+            </ng-container>
+            <finlevit-number
+              *ngIf="colData?.validators?.editable && (editRows[rowIndex] || newRows[rowIndex])"
+              [(ngModel)]="colData.value.value"
+              (ngModelChange)="validateRow(rowIndex, rowData, colData)"
+              [isSmall]="true"
+              [error]="
+                rowErrors[rowIndex] && rowErrors[rowIndex][colData?.metaData?.widgetId]
+                  ? rowErrors[rowIndex][colData?.metaData?.widgetId]['error']
+                  : false
+              "
+              [errorMsg]="
+                rowErrors[rowIndex] && rowErrors[rowIndex][colData?.metaData?.widgetId]
+                  ? rowErrors[rowIndex][colData?.metaData?.widgetId]['errorMsg']
+                  : false
+              "
+            ></finlevit-number>
+          </div>
+          <div class="p-pl-1" *ngSwitchCase="DatePicker">
+            <ng-container *ngIf="!(colData?.validators?.editable && (editRows[rowIndex] || newRows[rowIndex]))">
+              {{ colData?.value?.value | date }}
+            </ng-container>
+            <finlevit-lib-datepicker
+              *ngIf="colData?.validators?.editable && (editRows[rowIndex] || newRows[rowIndex])"
+              [(ngModel)]="colData.value.value"
+              (ngModelChange)="validateRow(rowIndex, rowData, colData)"
+              [isSmall]="true"
+              [minDate]="colData?.validators?.minDate"
+              [maxDate]="colData?.validators?.maxDate"
+              [error]="
+                rowErrors[rowIndex] && rowErrors[rowIndex][colData?.metaData?.widgetId]
+                  ? rowErrors[rowIndex][colData?.metaData?.widgetId]['error']
+                  : false
+              "
+              [errorMsg]="
+                rowErrors[rowIndex] && rowErrors[rowIndex][colData?.metaData?.widgetId]
+                  ? rowErrors[rowIndex][colData?.metaData?.widgetId]['errorMsg']
+                  : false
+              "
+            ></finlevit-lib-datepicker>
           </div>
           <div class="p-pl-1" *ngSwitchCase="Modal">
             <app-modal [item]="colData" [viewMode]="false"></app-modal>
