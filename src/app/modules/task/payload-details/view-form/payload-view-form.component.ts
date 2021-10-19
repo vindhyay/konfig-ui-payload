@@ -115,10 +115,7 @@ export class PayloadViewFormComponent implements OnInit {
   }
   submit(data) {
     const {result, errorFields} =  this.validateFields(this._payloadFields)
-    console.log('result',result);
     if (result) {
-      console.log(this.convertPayload(this._payloadFields));
-      return;
       this.onSubmit.emit({ payload: this.convertPayload(this._payloadFields), data });
     } else {
       let errorMsg = "Failed to validate: "
