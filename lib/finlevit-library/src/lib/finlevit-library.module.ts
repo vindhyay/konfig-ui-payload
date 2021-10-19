@@ -30,8 +30,6 @@ import { RippleModule } from 'primeng/ripple';
 import { DatepickerComponent } from './datepicker/datepicker.component';
 import { CalendarModule } from 'primeng/calendar';
 import {TableModule} from "primeng/table";
-import { NgxMaskModule } from 'ngx-mask';
-import { PhoneMaskDirective } from './input/phone-mask.directive'
 
 import { TableComponent } from './table/table.component';
 
@@ -50,8 +48,7 @@ import { TableComponent } from './table/table.component';
     RadioGroupComponent,
     DatepickerComponent,
     ButtonComponent,
-    TableComponent,
-    PhoneMaskDirective
+    TableComponent
   ],
   imports: [
     CalendarModule,
@@ -72,8 +69,7 @@ import { TableComponent } from './table/table.component';
     RadioButtonModule,
     ButtonModule,
     RippleModule,
-    TableModule,
-    NgxMaskModule.forRoot({})
+    TableModule
   ],
   exports: [
     FinlevitLibraryComponent,

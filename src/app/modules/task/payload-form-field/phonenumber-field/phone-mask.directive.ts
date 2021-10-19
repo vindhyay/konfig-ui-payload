@@ -18,30 +18,21 @@ export class PhoneMaskDirective {
   }
 
   onInputChange(event, backspace) {
-    console.log("event - ", event);
-    console.log("event length", event.length);
-
     if (event == null) {
       return "";
     }
-    let newVal = event.replace(/\D/g, "");
-    if (backspace && newVal.length <= 6) {
-      newVal = newVal.substring(0, newVal.length - 1);
-    }
+    let newVal = event.replace(/\D/g, "");  
     if (newVal.length === 0) {
       newVal = "";
     } else if (newVal.length <= 3) {
-      newVal = newVal.replace(/^(\d{0,3})/, "($1)");
+      newVal = newVal.replace(/^(\d{0,3})/, "$1");
     } else if (newVal.length <= 6) {
-      newVal = newVal.replace(/^(\d{0,3})(\d{0,3})/, "($1)-$2");
+      newVal = newVal.replace(/^(\d{0,3})(\d{0,3})/, "$1-$2");
     } else {
-      newVal = newVal.replace(/^(\d{0,3})(\d{0,3})(\d{0,4})/, "($1)-$2-$3");
+      newVal = newVal.replace(/^(\d{0,3})(\d{0,3})(\d{0,4})/, "$1-$2-$3");
     }
-
-    console.log(newVal);
-
     if (newVal === "") {
-      this.ngControl.valueAccessor.writeValue(null);
+      this.ngControl.valueAccessor.writeValue('');
     } else {
       this.ngControl.valueAccessor.writeValue(newVal);
     }

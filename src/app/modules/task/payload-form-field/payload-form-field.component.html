@@ -90,6 +90,18 @@
       {{item.value.value}}
     </div>
   </ng-container>
+  <ng-container *ngIf="item?.metaData?.widgetType === PhonenumberInput">
+    <div class="input-container">
+      <app-phonenumber-field
+        [isDisabled]="(viewMode && (!item?.validators?.editable || !editMode)) || disable"
+        (onValueChange)="validateField($event, item)"
+        (onBlurChange)="optionChange($event, item)"
+        [item]="item" 
+      ></app-phonenumber-field>
+  
+      {{item.value.value}}
+    </div>
+  </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === TextArea">
     <div class="input-container">
       <finlevit-lib-textarea

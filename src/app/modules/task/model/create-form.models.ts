@@ -503,7 +503,7 @@ export class EmailMetaData extends MetaData {
   }
 }
 
-export class PhonenumberInput extends MetaData {
+export class PhonenumberInputMetaData extends MetaData {
   mask: string;
   icon: string;
   placeholder: string;
@@ -850,7 +850,7 @@ export class BaseWidget {
     | UploadMetaData
     | CollapseContainerMetaData
     | ErrorContainerMetadata
-    | PhonenumberInput;
+    | PhonenumberInputMetaData;
   name: string;
   displayName: string;
   label: string;
@@ -910,7 +910,7 @@ export class BaseWidget {
           this.metaData = new EmailMetaData(data);
           break;
         case widgetType.PhonenumberInput:
-          this.metaData = new PhonenumberInput(data);
+          this.metaData = new PhonenumberInputMetaData(data);
           break;
         case WidgetTypes.Number:
           this.metaData = new NumberMetaData(data);
