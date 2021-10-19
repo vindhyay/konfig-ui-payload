@@ -247,13 +247,7 @@
         [deleteRow]="item?.metaData?.actions?.deleteRow"
         [actionWidth]="item?.metaData?.actions?.width"
         [actionLabel]="item?.metaData?.actions?.label"
-        [tableData]="
-          item?.value?.value?.length
-            ? item?.value?.value
-            : item?.metaData?.configure
-            ? item?.metaData?.options
-            : item?.value?.value || []
-        "
+        [tableData]="item?.children"
       ></app-adv-table>
     </div>
   </ng-container>

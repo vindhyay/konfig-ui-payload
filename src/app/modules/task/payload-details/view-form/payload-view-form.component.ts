@@ -55,18 +55,20 @@ export class PayloadViewFormComponent implements OnInit {
             payload.push(getValueFromObjectByPath(field, "value.value") || []);
           }
         } else {
-          if (field?.children?.length) {
+          if(field?.metaData?.widgetType === WidgetTypes.AdvTable){
+            const advTableData = [];
+            debugger;
+            field?.children.forEach(rowData => {
+              const rowObject = this.convertPayload(rowData);
+              advTableData.push(rowObject)
+            })
+            payload[field.widgetName] = advTableData;
+          }else if (field?.children?.length) {
             payload[field.widgetName] = this.convertPayload(field.children, field.type === DataTypes.array);
           } else if (field?.metaData?.widgetType === WidgetTypes.Table) {
             payload[field.widgetName] = field?.value?.value?.length
               ? getValueFromObjectByPath(field, "value.value") || []
               : getValueFromObjectByPath(field, "metaData.options") || [];
-          } else if(field?.metaData?.widgetType === WidgetTypes.AdvTable){
-            const advTableData = []
-            field?.value?.value.forEach(rowData => {
-              advTableData.push(this.convertPayload(rowData))
-            })
-            payload[field.widgetName] = advTableData;
           } else {
             payload[field.widgetName] = getValueFromObjectByPath(field, "value.value") || [];
           }
@@ -94,7 +96,7 @@ export class PayloadViewFormComponent implements OnInit {
           errorFields = errorFields.concat(errorFieldsData)
         }
       } else {
-        const tempFormControl = new FormControl(field?.value?.value, getValidators(field?.validators));
+        const tempFormControl = new FormControl(field?.value?.value, getValidators(field?.validators || {}));
         if (tempFormControl.valid || field?.rows === 0 || field?.metaData?.isHidden) {
           field.error = false;
           field.errorMsg = "";
@@ -113,7 +115,10 @@ export class PayloadViewFormComponent implements OnInit {
   }
   submit(data) {
     const {result, errorFields} =  this.validateFields(this._payloadFields)
+    console.log('result',result);
     if (result) {
+      console.log(this.convertPayload(this._payloadFields));
+      return;
       this.onSubmit.emit({ payload: this.convertPayload(this._payloadFields), data });
     } else {
       let errorMsg = "Failed to validate: "
@@ -133,7 +138,7 @@ export class PayloadViewFormComponent implements OnInit {
           field.value = { id: null, value: field.metaData.options };
         }
       }
-      if (field.children.length) {
+      if (field?.children?.length && field?.metaData?.widgetType !== WidgetTypes.AdvTable) {
         field.children = this.updateValuesFromOptions(field.children);
       }
       payload.push(field);
