@@ -57,7 +57,6 @@ export class PayloadViewFormComponent implements OnInit {
         } else {
           if(field?.metaData?.widgetType === WidgetTypes.AdvTable){
             const advTableData = [];
-            debugger;
             field?.children.forEach(rowData => {
               const rowObject = this.convertPayload(rowData);
               advTableData.push(rowObject)
