@@ -86,8 +86,6 @@
         (onBlurChange)="optionChange($event, item)"
         [item]="item" 
       ></app-password-field>
-  
-      {{item.value.value}}
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === PhonenumberInput">
@@ -98,8 +96,6 @@
         (onBlurChange)="optionChange($event, item)"
         [item]="item" 
       ></app-phonenumber-field>
-  
-      {{item.value.value}}
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === TextArea">
