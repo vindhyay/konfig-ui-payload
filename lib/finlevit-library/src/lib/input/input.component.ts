@@ -51,6 +51,7 @@ export class InputComponent implements ControlValueAccessor, OnInit {
         validators.push(Validators.required);
       }
       if (this.pattern) {
+        console.log(this.pattern);
         validators.push(Validators.pattern(this.pattern));
       }
       if (this.validators && this.validators.length) {
@@ -130,14 +131,10 @@ export class InputComponent implements ControlValueAccessor, OnInit {
   getErrorMessages() {
     const errors = this.controlDir.control?.errors;
     const errorMessages: string[] = [];
-    console.log(errors);
     Object.keys(errors || {}).forEach(error => {
       switch (error) {
         case 'required':
           errorMessages.push(`${this.label} is required`);
-          break;
-        case 'pattern':
-          errorMessages.push(`${this.label} is not valid`);
           break;
         case 'minlength':
         case 'maxlength':

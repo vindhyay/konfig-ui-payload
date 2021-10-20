@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { BaseWidget, WidgetTypes } from "../../model/create-form.models";
-import { getUniqueId, scrollToBottom } from "../../../../utils";
-import { FormControl, Validators } from "@angular/forms";
+import { getErrorMessages, getUniqueId, getValidators, scrollToBottom } from "../../../../utils";
+import { FormControl } from "@angular/forms";
 
 @Component({
   selector: 'app-adv-table',
@@ -78,6 +78,7 @@ export class AdvTableComponent implements OnInit {
   Button: WidgetTypes = WidgetTypes.Button;
   Modal: WidgetTypes = WidgetTypes.Modal;
   TextInput: WidgetTypes = WidgetTypes.TextInput;
+  Email: WidgetTypes = WidgetTypes.Email;
   TextArea: WidgetTypes = WidgetTypes.TextArea;
   Number: WidgetTypes = WidgetTypes.Number;
   Checkbox: WidgetTypes = WidgetTypes.Checkbox;
@@ -87,6 +88,7 @@ export class AdvTableComponent implements OnInit {
   CheckboxGroup: WidgetTypes = WidgetTypes.CheckboxGroup;
   RadioGroup: WidgetTypes = WidgetTypes.RadioGroup;
   Upload: WidgetTypes = WidgetTypes.Upload;
+
 
   ngOnInit(): void {
     this.tableId = getUniqueId("table");
@@ -134,7 +136,7 @@ export class AdvTableComponent implements OnInit {
         return;
       }
       const columnValue = eachCol?.value?.value;
-      const tempFormControl = new FormControl(columnValue, this.getValidators(eachCol.validators) || []);
+      const tempFormControl = new FormControl(columnValue, getValidators(eachCol.validators) || []);
       if (tempFormControl.valid) {
         if (!this.rowErrors[index]) {
           this.rowErrors[index] = {};
@@ -147,57 +149,11 @@ export class AdvTableComponent implements OnInit {
         }
         this.rowErrors[index][eachCol.metaData.widgetId] = {
           error: true,
-          errorMsg: this.getErrorMessages(tempFormControl.errors, eachCol.label)[0]
+          errorMsg: getErrorMessages(tempFormControl.errors, eachCol.label)[0]
         };
       }
     });
     return valid;
-  }
-  getErrorMessages = (errors: any, label: any) => {
-    const errorMessages: string[] = [];
-    Object.keys(errors).forEach(error => {
-      switch (error) {
-        case "required":
-          errorMessages.push(`${label} is required`);
-          break;
-        case "minlength":
-        case "maxlength":
-          errorMessages.push(
-            `Expected atleast length ${errors[error].requiredLength} but got ${errors[error].actualLength}`
-          );
-          break;
-        case "min":
-          errorMessages.push(`Expected atleast value ${errors[error].min} but got ${errors[error].actual}`);
-          break;
-        case "max":
-          errorMessages.push(`Expected atleast value ${errors[error].max} but got ${errors[error].actual}`);
-          break;
-      }
-    });
-    return errorMessages;
-  }
-  getValidators = (validators: any) => {
-    const _validators: any = [];
-    Object.keys(validators).forEach(validator => {
-      switch (validator) {
-        case "minValue":
-          validators[validator] && _validators.push(Validators.min(validators[validator]));
-          break;
-        case "minLength":
-          validators[validator] && _validators.push(Validators.minLength(validators[validator]));
-          break;
-        case "maxValue":
-          validators[validator] && _validators.push(Validators.max(validators[validator]));
-          break;
-        case "maxLength":
-          validators[validator] && _validators.push(Validators.maxLength(validators[validator]));
-          break;
-        case "required":
-          validators[validator] && _validators.push(Validators.required);
-          break;
-      }
-    });
-    return _validators;
   }
   onRowEditCancel(index, rowData) {
     this.tableData[index] = this.editRows[index];

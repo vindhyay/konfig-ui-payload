@@ -82,6 +82,108 @@
               "
             ></finlevit-text>
           </div>
+          <div class="p-pl-1" *ngSwitchCase="Dropdown">
+            <ng-container *ngIf="!(colData?.validators?.editable && (editRows[rowIndex] || newRows[rowIndex]))">
+              {{ colData?.value?.value }}
+            </ng-container>
+            <finlevit-lib-select
+              *ngIf="colData?.validators?.editable && (editRows[rowIndex] || newRows[rowIndex])"
+              [placeholder]="colData?.metaData?.placeholder"
+              [isDisabled]="false"
+              [isRequired]="colData?.validators?.required"
+              [(ngModel)]="colData.value.value"
+              (ngModelChange)="validateRow(rowIndex, rowData, colData)"
+              [options]="colData?.metaData?.options"
+              [optionLabel]="
+                colData?.metaData?.isLabelAndValue || colData?.metaData?.optionType === 'dataresource'
+                  ? colData?.metaData?.optionLabel
+                  : ''
+              "
+              [optionValue]="
+                colData?.metaData?.isLabelAndValue || colData?.metaData?.optionType === 'dataresource'
+                  ? colData?.metaData?.optionValue
+                  : ''
+              "
+              [error]="
+                rowErrors[rowIndex] && rowErrors[rowIndex][colData?.metaData?.widgetId]
+                  ? rowErrors[rowIndex][colData?.metaData?.widgetId]['error']
+                  : false
+              "
+              [errorMsg]="
+                rowErrors[rowIndex] && rowErrors[rowIndex][colData?.metaData?.widgetId]
+                  ? rowErrors[rowIndex][colData?.metaData?.widgetId]['errorMsg']
+                  : false
+              "
+              [tooltip]="colData?.metaData?.tooltip"
+            ></finlevit-lib-select>
+          </div>
+          <div class="p-pl-1" *ngSwitchCase="Email">
+            <ng-container *ngIf="!(colData?.validators?.editable && (editRows[rowIndex] || newRows[rowIndex]))">
+              {{ colData?.value?.value }}
+            </ng-container>
+            <finlevit-text
+              *ngIf="colData?.validators?.editable && (editRows[rowIndex] || newRows[rowIndex])"
+              (onBlur)="onColDataChange.emit({ column: colData, data: colData?.value?.value })"
+              [(ngModel)]="colData.value.value"
+              (ngModelChange)="validateRow(rowIndex, rowData, colData)"
+              [isSmall]="true"
+              [error]="
+                rowErrors[rowIndex] && rowErrors[rowIndex][colData?.metaData?.widgetId]
+                  ? rowErrors[rowIndex][colData?.metaData?.widgetId]['error']
+                  : false
+              "
+              [pattern]="colData?.validators?.pattern || null"
+              [errorMsg]="
+                rowErrors[rowIndex] && rowErrors[rowIndex][colData?.metaData?.widgetId]
+                  ? rowErrors[rowIndex][colData?.metaData?.widgetId]['errorMsg']
+                  : false
+              "
+            ></finlevit-text>
+          </div>
+          <div class="p-pl-1" *ngSwitchCase="Checkbox">
+            <ng-container *ngIf="!(colData?.validators?.editable && (editRows[rowIndex] || newRows[rowIndex]))">
+              {{ colData?.value?.value ? "True" : "False" }}
+            </ng-container>
+            <finlevit-lib-checkbox
+              *ngIf="colData?.validators?.editable && (editRows[rowIndex] || newRows[rowIndex])"
+              [label]="colData?.label"
+              [(ngModel)]="colData.value.value"
+              (ngModelChange)="validateRow(rowIndex, rowData, colData)"
+              [isRequired]="colData?.validators?.required"
+              [tooltip]="colData?.metaData?.tooltip"
+              [error]="
+                rowErrors[rowIndex] && rowErrors[rowIndex][colData?.metaData?.widgetId]
+                  ? rowErrors[rowIndex][colData?.metaData?.widgetId]['error']
+                  : false
+              "
+              [errorMsg]="
+                rowErrors[rowIndex] && rowErrors[rowIndex][colData?.metaData?.widgetId]
+                  ? rowErrors[rowIndex][colData?.metaData?.widgetId]['errorMsg']
+                  : false
+              "
+            ></finlevit-lib-checkbox>
+          </div>
+          <div class="p-pl-1" *ngSwitchCase="Image">
+            <ng-container *ngIf="!(colData?.validators?.editable && (editRows[rowIndex] || newRows[rowIndex]))">
+              <img height="100px" width="100%" [src]="colData?.value?.value" alt="cell-image" />
+            </ng-container>
+            <finlevit-lib-textarea
+              *ngIf="colData?.validators?.editable && (editRows[rowIndex] || newRows[rowIndex])"
+              [(ngModel)]="colData.value.value"
+              (ngModelChange)="validateRow(rowIndex, rowData, colData)"
+              [isSmall]="true"
+              [error]="
+                rowErrors[rowIndex] && rowErrors[rowIndex][colData?.metaData?.widgetId]
+                  ? rowErrors[rowIndex][colData?.metaData?.widgetId]['error']
+                  : false
+              "
+              [errorMsg]="
+                rowErrors[rowIndex] && rowErrors[rowIndex][colData?.metaData?.widgetId]
+                  ? rowErrors[rowIndex][colData?.metaData?.widgetId]['errorMsg']
+                  : false
+              "
+            ></finlevit-lib-textarea>
+          </div>
           <div class="p-pl-1" *ngSwitchCase="TextArea">
             <ng-container *ngIf="!(colData?.validators?.editable && (editRows[rowIndex] || newRows[rowIndex]))">
               {{ colData?.value?.value }}
