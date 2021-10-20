@@ -89,7 +89,7 @@
           </div>
           <div class="p-pl-1" *ngSwitchCase="Number">
             <ng-container *ngIf="!(col?.validators?.editable && (editRows[rowIndex] || newRows[rowIndex]))">
-              {{ rowData[col.columnId] | json}}
+              {{ rowData[col.columnId] }}
             </ng-container>
             <finlevit-number
               *ngIf="col?.validators?.editable && (editRows[rowIndex] || newRows[rowIndex])"
