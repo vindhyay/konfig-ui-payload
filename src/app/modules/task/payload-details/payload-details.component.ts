@@ -46,12 +46,11 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
         ? queryParams.params
         : { name: this.currentUser?.name, userId: this.currentUser?.userId, email: this.currentUser?.emailId };
     });
-    this.activatedRoute.paramMap.subscribe(params => {
-      this.workflowId = params.get("workflowId");
-      if (this.workflowId) {
-        this.createTransaction(this.workflowId, this.id);
-      }
-    });
+    this.workflowId = this.activatedRoute.snapshot?.params?.workflowId
+    if (this.workflowId) {
+      this.authService.updateUserDetails(this.workflowId);
+      this.createTransaction(this.workflowId, this.id);
+    }
     this.taskService.transactionDetailsSubject.subscribe(value => {
       if (value) {
         this.transactionDetails = value;
