@@ -105,7 +105,9 @@ export enum WidgetTypes {
   Button = "Button",
   Modal = "Modal",
   TextInput = "TextInput",
+  PasswordInput = "PasswordInput",
   Email = "Email",
+  PhonenumberInput = "PhonenumberInput",
   TextArea = "TextArea",
   Number = "Number",
   Dropdown = "Dropdown",
@@ -443,7 +445,41 @@ export class TextInputMetaData extends MetaData {
     this.formula = formula;
   }
 }
-
+export class PasswordInputMetaData extends MetaData {
+  mask: string;
+  icon: string;
+  placeholder: string;
+  tooltip: string;
+  leftIcon: string;
+  rightIcon: string;
+  isFormulaField: boolean;
+  formula = [];
+  rules : any;
+  showIcon: string;
+  hideIcon: string;
+  constructor(data) {
+    super(data);
+    const { mask = "", icon = "", tooltip = "", placeholder = "********", leftIcon = "", rightIcon = "",showIcon = "pi pi-eye",
+    hideIcon = "pi pi-eye-slash",isFormulaField, formula,rules = {
+      oneLowerCase: true,
+      oneUpperCase: true,
+      oneNumber: true,
+      oneSpecialchar: true,
+      minLength : 8,
+    } } = data;
+    this.mask = mask;
+    this.icon = icon;
+    this.tooltip = tooltip;
+    this.placeholder = placeholder;
+    this.leftIcon = leftIcon;
+    this.rightIcon = rightIcon;
+    this.showIcon = showIcon;
+    this.hideIcon = hideIcon;
+    this.isFormulaField = isFormulaField;
+    this.formula = formula;
+    this.rules= rules;
+  }
+}
 export class EmailMetaData extends MetaData {
   mask: string;
   icon: string;
@@ -453,7 +489,6 @@ export class EmailMetaData extends MetaData {
   rightIcon: string;
   isFormulaField: boolean;
   formula = [];
-  pattern:string;
   constructor(data) {
     super(data);
     const { mask = "", icon = "", tooltip = "", placeholder = "example@domain.com", leftIcon = "", rightIcon = "", isFormulaField, formula } = data;
@@ -465,7 +500,29 @@ export class EmailMetaData extends MetaData {
     this.rightIcon = rightIcon;
     this.isFormulaField = isFormulaField;
     this.formula = formula;
-    this.pattern = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
+  }
+}
+
+export class PhonenumberInputMetaData extends MetaData {
+  mask: string;
+  icon: string;
+  placeholder: string;
+  tooltip: string;
+  leftIcon: string;
+  rightIcon: string;
+  isFormulaField: boolean;
+  formula = [];
+  constructor(data) {
+    super(data);
+    const { mask = "000-000-0000", icon = "", tooltip = "", placeholder = "000-000-0000", leftIcon = "", rightIcon = "", isFormulaField, formula } = data;
+    this.mask = mask;
+    this.icon = icon;
+    this.tooltip = tooltip;
+    this.placeholder = placeholder;
+    this.leftIcon = leftIcon;
+    this.rightIcon = rightIcon;
+    this.isFormulaField = isFormulaField;
+    this.formula = formula;
   }
 }
 
@@ -774,6 +831,7 @@ export class BaseWidget {
   isViewOnly: boolean;
   metaData:
     | TextMetaData
+    | PasswordInputMetaData
     | EmailMetaData
     | ContainerMetaData
     | TextInputMetaData
@@ -791,7 +849,8 @@ export class BaseWidget {
     | TableMetaData
     | UploadMetaData
     | CollapseContainerMetaData
-    | ErrorContainerMetadata;
+    | ErrorContainerMetadata
+    | PhonenumberInputMetaData;
   name: string;
   displayName: string;
   label: string;
@@ -844,8 +903,14 @@ export class BaseWidget {
         case WidgetTypes.TextInput:
           this.metaData = new TextInputMetaData(data);
           break;
+        case WidgetTypes.PasswordInput:
+          this.metaData = new PasswordInputMetaData(data);
+          break;
         case WidgetTypes.Email:
           this.metaData = new EmailMetaData(data);
+          break;
+        case widgetType.PhonenumberInput:
+          this.metaData = new PhonenumberInputMetaData(data);
           break;
         case WidgetTypes.Number:
           this.metaData = new NumberMetaData(data);

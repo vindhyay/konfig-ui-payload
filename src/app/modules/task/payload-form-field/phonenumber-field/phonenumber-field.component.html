@@ -1,0 +1,17 @@
+
+<finlevit-text
+[isDisabled]="isDisabled"
+[leftIcon]="item?.metaData?.leftIcon"
+[rightIcon]="item?.metaData?.rightIcon"
+[error]="item?.error == true"
+[errorMsg]="item?.errorMsg"
+[tooltip]="item?.metaData?.tooltip"
+[placeholder]="item?.metaData?.placeholder"
+[(ngModel)]="item.value.value"
+(ngModelChange)="validateField($event)"
+[isRequired]="item?.validators?.required"
+[label]="item?.label"
+(onBlur)="optionChange($event)"
+[pattern]="item?.validators?.pattern || null"
+[mask] = "item?.metaData?.mask || null"
+></finlevit-text>
