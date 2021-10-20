@@ -17,7 +17,7 @@ import { TextFieldComponent } from "./payload-form-field/text-field/text-field.c
 import { ModalComponent } from './payload-form-field/modal/modal.component';
 import { CollapseContainerComponent } from './payload-form-field/collapse-container/collapse-container.component';
 import {PasswordFieldComponent} from './payload-form-field/password-field/password-field.component';
-
+import {PhonenumberFieldComponent} from './payload-form-field/phonenumber-field/phonenumber-field.component';
 @NgModule({
   declarations: [
     PayloadDetailsComponent,
@@ -31,7 +31,8 @@ import {PasswordFieldComponent} from './payload-form-field/password-field/passwo
     TextFieldComponent,
     ModalComponent,
     CollapseContainerComponent,
-    PasswordFieldComponent
+    PasswordFieldComponent,
+    PhonenumberFieldComponent
   ],
   imports: [CommonModule, GridsterModule, SharedModule, ExtendedModule],
   providers: [TaskService, AuthService]

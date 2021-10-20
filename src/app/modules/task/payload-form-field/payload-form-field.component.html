@@ -11,6 +11,7 @@
       (item?.metaData?.widgetType == TextInput ||
         item?.metaData?.widgetType == PasswordInput ||
         item?.metaData?.widgetType == Email ||
+        item?.metaData?.widgetType == PhonenumberInput ||
         item?.metaData?.widgetType == TextArea ||
         item?.metaData?.widgetType == Number ||
         item?.metaData?.widgetType == CheckboxGroup ||
@@ -56,6 +57,7 @@
         [label]="item?.label"
         (onBlur)="optionChange($event, item)"
         [pattern]="item?.validators?.pattern || null"
+        [mask] = "item?.metaData?.mask || null"
       ></finlevit-text>
       <finlevit-text
               *ngIf="item?.metaData?.isFormulaField"
@@ -72,6 +74,7 @@
               [label]="item?.label"
               (onBlur)="optionChange($event, item)"
               [pattern]="item?.validators?.pattern || null"
+              [mask] = "item?.metaData?.mask || null"
       ></finlevit-text>
     </div>
   </ng-container>
@@ -83,8 +86,16 @@
         (onBlurChange)="optionChange($event, item)"
         [item]="item" 
       ></app-password-field>
-  
-      {{item.value.value}}
+    </div>
+  </ng-container>
+  <ng-container *ngIf="item?.metaData?.widgetType === PhonenumberInput">
+    <div class="input-container">
+      <app-phonenumber-field
+        [isDisabled]="(viewMode && (!item?.validators?.editable || !editMode)) || disable"
+        (onValueChange)="validateField($event, item)"
+        (onBlurChange)="optionChange($event, item)"
+        [item]="item" 
+      ></app-phonenumber-field>
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === TextArea">
