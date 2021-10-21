@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { BaseWidget, TableActions, WidgetTypes } from "../../model/create-form.models";
 import { getErrorMessages, getUniqueId, getValidators, scrollToBottom } from "../../../../utils";
 import { FormControl } from "@angular/forms";
+import { SortEvent } from "primeng/api";
 
 @Component({
   selector: 'app-adv-table',
@@ -187,6 +188,27 @@ export class AdvTableComponent implements OnInit {
     this.newRows[this.tableData.length - 1] = newRow;
     setTimeout(() => {
       scrollToBottom(tableBodyElement);
+    });
+  }
+  customSort(event: SortEvent) {
+    event.data.sort((data1, data2) => {
+      const value1Data = data1.find(cellData => cellData.widgetName === event.field);
+      const value2Data = data2.find(cellData => cellData.widgetName === event.field);
+      let value1 = value1Data?.value?.value;
+      let value2 = value2Data?.value?.value;
+      let result = null;
+      if (value1 == null && value2 != null)
+        result = -1;
+      else if (value1 != null && value2 == null)
+        result = 1;
+      else if (value1 == null && value2 == null)
+        result = 0;
+      else if (typeof value1 === 'string' && typeof value2 === 'string')
+        result = value1.localeCompare(value2);
+      else
+        result = (value1 < value2) ? -1 : (value1 > value2) ? 1 : 0;
+
+      return (event.order * result);
     });
   }
 }
