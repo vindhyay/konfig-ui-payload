@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { BaseWidget, WidgetTypes } from "../../model/create-form.models";
+import { BaseWidget, TableActions, WidgetTypes } from "../../model/create-form.models";
 import { getErrorMessages, getUniqueId, getValidators, scrollToBottom } from "../../../../utils";
 import { FormControl } from "@angular/forms";
 
@@ -52,8 +52,7 @@ export class AdvTableComponent implements OnInit {
   @Input() cellBorder = true;
   @Input() editRow = false;
   @Input() deleteRow = false;
-  @Input() actionWidth = 10;
-  @Input() actionLabel = "Actions";
+  @Input() actionCol: TableActions = {} as TableActions;
   @Input() tableHeading = "";
   @Input() headerColor = "#000000";
   @Input() headerBgColor = "#ffffff";
@@ -174,7 +173,7 @@ export class AdvTableComponent implements OnInit {
     const newRow: any = [];
     this.columns.forEach(eachColumn => {
       const column = JSON.parse(JSON.stringify(eachColumn));
-      column.value.value = null;
+      column.value.value = column?.value?.value || null;
       if (column?.validators?.minDate) {
         column.validators.minDate = new Date(column.validators.minDate);
       }

@@ -9,7 +9,7 @@
   [rows]="10"
   [totalRecords]="totalRecords || tableData.length"
   [paginatorDropdownAppendTo]="'body'"
-  [resizableColumns]="true"
+  [resizableColumns]="false"
   [loading]="loading"
   [showCurrentPageReport]="true"
   currentPageReportTemplate="{first} to {last} of {totalRecords}"
@@ -22,8 +22,9 @@
           color: headerColor,
           backgroundColor: headerBgColor,
           border: !cellBorder ? 'none' : '',
-          width: (column?.metaData?.colWidth || 100) + '%'
+          width: column?.metaData?.colWidth + '%'
         }"
+        [attr.data-colId]="column.id"
         pResizableColumn
         [pSortableColumn]="sort ? column.displayName : ''"
         *ngFor="let column of columns"
@@ -42,13 +43,13 @@
           [ngStyle]="{
             color: headerColor,
             backgroundColor: headerBgColor,
-            width: (actionWidth || 100) + '%',
+            width: actionCol?.width + '%',
             border: !cellBorder ? 'none' : '',
             textAlign: 'center'
           }"
           [pSortableColumn]="''"
         >
-          {{ actionLabel }}
+          {{ actionCol?.label }}
         </th>
       </ng-container>
     </tr>
@@ -56,8 +57,8 @@
   <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex">
     <tr (click)="onRowClick.emit(rowData)">
       <td
-        *ngFor="let colData of rowData"
-        [ngStyle]="{ width: (colData?.metaData?.colWidth || 100) + '%', border: !cellBorder ? 'none' : '' }"
+        *ngFor="let colData of rowData; let i = index"
+        [ngStyle]="{ width: columns[i]?.metaData?.colWidth + '%', border: !cellBorder ? 'none' : '' }"
       >
         <ng-container [ngSwitch]="colData?.metaData?.widgetType">
           <div class="p-pl-1" *ngSwitchCase="TextInput">
@@ -88,7 +89,7 @@
             </ng-container>
             <finlevit-lib-select
               *ngIf="colData?.validators?.editable && (editRows[rowIndex] || newRows[rowIndex])"
-              [placeholder]="colData?.metaData?.placeholder"
+              [placeholder]="colData?.metaData?.placeholder || 'select'"
               [isDisabled]="false"
               [isRequired]="colData?.validators?.required"
               [(ngModel)]="colData.value.value"
@@ -205,6 +206,32 @@
               "
             ></finlevit-lib-textarea>
           </div>
+          <div class="p-pl-1" *ngSwitchCase="RadioGroup">
+            <ng-container *ngIf="!(colData?.validators?.editable && (editRows[rowIndex] || newRows[rowIndex]))">
+              {{ colData?.value?.value }}
+            </ng-container>
+            <finlevit-radio-group
+              *ngIf="colData?.validators?.editable && (editRows[rowIndex] || newRows[rowIndex])"
+              [(ngModel)]="colData.value.value"
+              (ngModelChange)="validateRow(rowIndex, rowData, colData)"
+              [isSmall]="true"
+              [error]="
+                rowErrors[rowIndex] && rowErrors[rowIndex][colData?.metaData?.widgetId]
+                  ? rowErrors[rowIndex][colData?.metaData?.widgetId]['error']
+                  : false
+              "
+              [errorMsg]="
+                rowErrors[rowIndex] && rowErrors[rowIndex][colData?.metaData?.widgetId]
+                  ? rowErrors[rowIndex][colData?.metaData?.widgetId]['errorMsg']
+                  : false
+              "
+              [isRequired]="colData?.validators?.required"
+              [items]="colData?.metaData?.options"
+              [alignOptions]="colData?.metaData?.alignOptions"
+              [optionLabel]="colData?.metaData?.isLabelAndValue ? colData?.metaData?.optionLabel : ''"
+              [optionValue]="colData?.metaData?.isLabelAndValue ? colData?.metaData?.optionValue : ''"
+            ></finlevit-radio-group>
+          </div>
           <div class="p-pl-1" *ngSwitchCase="Number">
             <ng-container *ngIf="!(colData?.validators?.editable && (editRows[rowIndex] || newRows[rowIndex]))">
               {{ colData?.value?.value }}
@@ -259,7 +286,7 @@
       </td>
       <td
         *ngIf="editRow || deleteRow"
-        [ngStyle]="{ width: actionWidth + '%', border: !cellBorder ? 'none' : '' }"
+        [ngStyle]="{ width: actionCol.width + '%', border: !cellBorder ? 'none' : '' }"
         class="table-actions"
       >
         <ng-container *ngIf="editRows[rowIndex]">

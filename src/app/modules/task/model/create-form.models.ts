@@ -86,6 +86,21 @@ export enum DATA_TYPES {
   ARRAY = "array"
 }
 
+
+export class TableActions {
+  editRow: boolean;
+  deleteRow: boolean;
+  width: any;
+  label: string;
+  constructor(data) {
+    const { editRow = false, deleteRow = false, width = 30, label = "Actions" } = data;
+    this.editRow = editRow;
+    this.deleteRow = deleteRow;
+    this.width = width;
+    this.label = label;
+  }
+}
+
 export interface WidgetItem {
   cols: number;
   label: string;
