@@ -65,6 +65,7 @@
               *ngIf="colData?.validators?.editable && (editRows[rowIndex] || newRows[rowIndex])"
               (onBlur)="onColDataChange.emit({ column: colData, data: colData?.value?.value })"
               [(ngModel)]="colData.value.value"
+              [placeholder]="colData?.metaData?.placeholder"
               (ngModelChange)="validateRow(rowIndex, rowData, colData)"
               [isSmall]="true"
               [error]="
@@ -124,6 +125,7 @@
               [(ngModel)]="colData.value.value"
               (ngModelChange)="validateRow(rowIndex, rowData, colData)"
               [isSmall]="true"
+              [placeholder]="colData?.metaData?.placeholder"
               [error]="
                 rowErrors[rowIndex] && rowErrors[rowIndex][colData?.metaData?.widgetId]
                   ? rowErrors[rowIndex][colData?.metaData?.widgetId]['error']
@@ -169,6 +171,7 @@
               [(ngModel)]="colData.value.value"
               (ngModelChange)="validateRow(rowIndex, rowData, colData)"
               [isSmall]="true"
+              [placeholder]="colData?.metaData?.placeholder"
               [error]="
                 rowErrors[rowIndex] && rowErrors[rowIndex][colData?.metaData?.widgetId]
                   ? rowErrors[rowIndex][colData?.metaData?.widgetId]['error']
@@ -190,6 +193,7 @@
               [(ngModel)]="colData.value.value"
               (ngModelChange)="validateRow(rowIndex, rowData, colData)"
               [isSmall]="true"
+              [placeholder]="colData?.metaData?.placeholder"
               [error]="
                 rowErrors[rowIndex] && rowErrors[rowIndex][colData?.metaData?.widgetId]
                   ? rowErrors[rowIndex][colData?.metaData?.widgetId]['error']
@@ -211,6 +215,7 @@
               [(ngModel)]="colData.value.value"
               (ngModelChange)="validateRow(rowIndex, rowData, colData)"
               [isSmall]="true"
+              [placeholder]="colData?.metaData?.placeholder"
               [error]="
                 rowErrors[rowIndex] && rowErrors[rowIndex][colData?.metaData?.widgetId]
                   ? rowErrors[rowIndex][colData?.metaData?.widgetId]['error']
@@ -237,6 +242,7 @@
               [(ngModel)]="colData.value.value"
               (ngModelChange)="validateRow(rowIndex, rowData, colData)"
               [isSmall]="true"
+              [placeholder]="colData?.metaData?.placeholder"
               [error]="
                 rowErrors[rowIndex] && rowErrors[rowIndex][colData?.metaData?.widgetId]
                   ? rowErrors[rowIndex][colData?.metaData?.widgetId]['error']
@@ -258,6 +264,7 @@
               [(ngModel)]="colData.value.value"
               (ngModelChange)="validateRow(rowIndex, rowData, colData)"
               [isSmall]="true"
+              [placeholder]="colData?.metaData?.placeholder"
               [minDate]="colData?.validators?.minDate"
               [maxDate]="colData?.validators?.maxDate"
               [error]="

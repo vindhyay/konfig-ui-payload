@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { BaseWidget, TableActions, WidgetTypes } from "../../model/create-form.models";
-import { getErrorMessages, getUniqueId, getValidators, scrollToBottom } from "../../../../utils";
+import { getErrorMessages, getUniqueId, getValidators, scrollToBottom, superClone } from "../../../../utils";
 import { FormControl } from "@angular/forms";
 import { SortEvent } from "primeng/api";
 
@@ -175,14 +175,8 @@ export class AdvTableComponent implements OnInit {
   addRow() {
     const newRow: any = [];
     this.columns.forEach(eachColumn => {
-      const column = JSON.parse(JSON.stringify(eachColumn));
+      const column = superClone(eachColumn);
       column.value.value = column?.value?.value || null;
-      if (column?.validators?.minDate) {
-        column.validators.minDate = new Date(column.validators.minDate);
-      }
-      if (column?.validators?.maxDate) {
-        column.validators.maxDate = new Date(column.validators.maxDate);
-      }
       newRow.push(column);
     });
     this.tableData.push(newRow);
