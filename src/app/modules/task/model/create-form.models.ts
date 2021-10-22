@@ -624,13 +624,21 @@ export class DatePickerMetaData extends MetaData {
   returnDateFormat: string;
   placeholder: string;
   tooltip: string;
+  showTime: boolean;
+  hourFormat: number;
+  stepHour: number;
+  stepMinute: number;
   constructor(data) {
     super(data);
-    const { viewDateFormat = "mm/dd/yy", returnDateFormat = "isoTimestamp", tooltip = "", placeholder = "" } = data;
+    const { viewDateFormat = "mm/dd/yy", returnDateFormat = "isoTimestamp", tooltip = "", placeholder = "",showTime=false,hourFormat=24,stepHour=1,stepMinute=1  } = data;
     this.viewDateFormat = viewDateFormat;
     this.returnDateFormat = returnDateFormat;
     this.tooltip = tooltip;
     this.placeholder = placeholder;
+    this.showTime=showTime;
+    this.hourFormat=hourFormat;
+    this.stepHour=stepHour;
+    this.stepMinute=stepMinute;
   }
 }
 

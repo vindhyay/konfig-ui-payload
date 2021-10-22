@@ -330,6 +330,10 @@
         [maxDate]="item?.validators?.maxDate"
         [(ngModel)]="item.value.value"
         (ngModelChange)="validateField($event, item)"
+        [showTime]="item?.metaData?.showTime"
+        [hourFormat]="item?.metaData?.hourFormat"
+        [stepMinute]="item?.metaData?.stepMinute"
+        [stepHour]="item?.metaData?.stepHour"
       ></finlevit-lib-datepicker>
     </div>
   </ng-container>

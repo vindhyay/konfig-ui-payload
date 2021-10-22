@@ -22,6 +22,11 @@
     [yearNavigator]="yearNavigator"
     [monthNavigator]="monthNavigator"
     yearRange="1920:2120"
+    [showTime]= "showTime"
+    [hourFormat]= "hourFormat"
+    [stepHour]= "stepHour"
+    [stepMinute]= "stepMinute"
+    [showSeconds]= "showTime"
   ></p-calendar>
   <div *ngIf="checkError()">
     <small class="p-error">{{ errorMsg || getErrorMessages()[0] }}</small>

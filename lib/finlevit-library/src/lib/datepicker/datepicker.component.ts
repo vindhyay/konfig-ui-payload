@@ -31,6 +31,10 @@ export class DatepickerComponent implements ControlValueAccessor, OnInit {
   @Input() maxDate: Date = null;
   @Input() yearNavigator: boolean = true;
   @Input() monthNavigator: boolean = true;
+  @Input() showTime: boolean = false;
+  @Input() hourFormat: number = 12;
+  @Input() stepHour: number = 1;
+  @Input() stepMinute: number = 1;
 
   _value: any = null;
 
