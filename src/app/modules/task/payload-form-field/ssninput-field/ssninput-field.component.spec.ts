@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { PhonenumberFieldComponent } from './phonenumber-field.component';
+import { ssnInputFieldComponent } from './ssninput-field.component';
 
-describe('PhonenumberFieldComponent', () => {
-  let component: PhonenumberFieldComponent;
-  let fixture: ComponentFixture<PhonenumberFieldComponent>;
+describe('ssnInputFieldComponent', () => {
+  let component: ssnInputFieldComponent;
+  let fixture: ComponentFixture<ssnInputFieldComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PhonenumberFieldComponent ]
+      declarations: [ ssnInputFieldComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PhonenumberFieldComponent);
+    fixture = TestBed.createComponent(ssnInputFieldComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

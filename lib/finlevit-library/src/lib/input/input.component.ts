@@ -37,6 +37,7 @@ export class InputComponent implements ControlValueAccessor, OnInit {
   @Input() rightIcon: string = '';
   @Input() leftIcon: string = '';
   @Input() mask: string = '';
+  @Input() hiddenInput: boolean = false;
   @Output() onBlur = new EventEmitter();
   @Output() onRightIconClick = new EventEmitter();
   _value: any = null;
@@ -45,7 +46,6 @@ export class InputComponent implements ControlValueAccessor, OnInit {
 
 
   ngOnInit() {
-    console.log(this.pattern)
     const control = this.controlDir && this.controlDir.control;
     if (control) {
       const validators: ValidatorFn[] = control.validator ? [control.validator] : [];
