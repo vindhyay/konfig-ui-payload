@@ -2,7 +2,7 @@
   [lazy]="lazyLoad"
   (onLazyLoad)="onPage($event)"
   [columns]="columns"
-  [value]="tableData"
+  [value]="filterEnable ? filteredTableData : tableData"
   [styleClass]="styleClass"
   [paginator]="pagination && !!tableData.length"
   [rowsPerPageOptions]="[10, 20, 50]"
@@ -310,11 +310,17 @@
   </ng-template>
   <ng-template pTemplate="footer" class="table-footer">
     <div class="table-footer" *ngIf="addRows && (!tableData.length || !pagination)">
-      <p-button (click)="addRow()" type="button" icon="pi pi-plus" styleClass="p-button-text"></p-button>
+      <div class="table-footer-actions">
+        <p-button (click)="addRow()" type="button" icon="pi pi-plus" styleClass="p-button-text"></p-button>
+        <app-custom-table-filters *ngIf="false" (search)="handleSearch($event)" [columns]="columns"></app-custom-table-filters>
+      </div>
     </div>
   </ng-template>
   <ng-template pTemplate="paginatorright">
-    <p-button *ngIf="addRows" (click)="addRow()" type="button" icon="pi pi-plus" styleClass="p-button-text"></p-button>
+    <div class="table-footer-actions">
+      <p-button *ngIf="addRows" (click)="addRow()" type="button" icon="pi pi-plus" styleClass="p-button-text"></p-button>
+      <app-custom-table-filters *ngIf="false" (search)="handleSearch($event)" [columns]="columns"></app-custom-table-filters>
+    </div>
   </ng-template>
   <ng-template pTemplate="paginatorleft"> </ng-template>
 </p-table>

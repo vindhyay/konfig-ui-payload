@@ -18,6 +18,7 @@ import { ModalComponent } from './payload-form-field/modal/modal.component';
 import { CollapseContainerComponent } from './payload-form-field/collapse-container/collapse-container.component';
 import {PasswordFieldComponent} from './payload-form-field/password-field/password-field.component';
 import { AdvTableComponent } from './payload-form-field/adv-table/adv-table.component';
+import { CustomTableFiltersComponent } from './payload-form-field/adv-table/custom-table-filters/custom-table-filters.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { AdvTableComponent } from './payload-form-field/adv-table/adv-table.comp
     ModalComponent,
     CollapseContainerComponent,
     AdvTableComponent,
-    PasswordFieldComponent
+    PasswordFieldComponent,
+    CustomTableFiltersComponent
   ],
   imports: [CommonModule, GridsterModule, SharedModule, ExtendedModule],
   providers: [TaskService, AuthService]

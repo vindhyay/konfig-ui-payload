@@ -15,6 +15,8 @@ import { FinlevitFileUploadComponent } from "./finlevit-file-upload/finlevit-fil
 import { DialogModule } from "primeng/dialog";
 import { ButtonModule } from "primeng/button";
 import { AccordionModule } from "primeng/accordion";
+import { CustomDropdownComponent } from "./custom-dropdown.component";
+import { PortalModule } from '@angular/cdk/portal';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,8 @@ import { AccordionModule } from "primeng/accordion";
     BtnPrimaryComponent,
     LoaderComponent,
     PageNotFoundComponent,
-    FinlevitFileUploadComponent
+    FinlevitFileUploadComponent,
+    CustomDropdownComponent
   ],
   imports: [
     CommonModule,
@@ -35,6 +38,7 @@ import { AccordionModule } from "primeng/accordion";
       preventDuplicates: true,
       closeButton: true
     }),
+    PortalModule,
     ReactiveFormsModule,
     FinlevitLibraryModule,
     AccordionModule,
@@ -54,7 +58,9 @@ import { AccordionModule } from "primeng/accordion";
     DialogModule,
     ButtonModule,
     FinlevitFileUploadComponent,
-    AccordionModule
+    AccordionModule,
+    CustomDropdownComponent,
+    PortalModule
   ]
 })
 export class SharedModule {}
