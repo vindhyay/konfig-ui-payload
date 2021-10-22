@@ -11,7 +11,8 @@
 [isRequired]="item?.validators?.required"
 [label]="item?.label"
 (onBlur)="optionChange($event)"
-[type]="_type"
 [pattern]="item?.validators?.pattern || null"
+[mask] ="_type_mask"
 (onRightIconClick)="onRightIconClick(item?.metaData)"
+[hiddenInput]="true"
 ></finlevit-text>

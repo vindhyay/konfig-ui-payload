@@ -10,6 +10,7 @@
       showControls &&
       (item?.metaData?.widgetType == TextInput ||
         item?.metaData?.widgetType == PasswordInput ||
+        item?.metaData?.widgetType == SSNInput ||
         item?.metaData?.widgetType == Email ||
         item?.metaData?.widgetType == PhonenumberInput ||
         item?.metaData?.widgetType == TextArea ||
@@ -86,6 +87,16 @@
         (onBlurChange)="optionChange($event, item)"
         [item]="item" 
       ></app-password-field>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="item?.metaData?.widgetType === SSNInput">
+    <div class="input-container">
+      <app-ssninput-field
+        [isDisabled]="(viewMode && (!item?.validators?.editable || !editMode)) || disable"
+        (onValueChange)="validateField($event, item)"
+        (onBlurChange)="optionChange($event, item)"
+        [item]="item" 
+      ></app-ssninput-field>
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === PhonenumberInput">

@@ -127,6 +127,6 @@ export const passwordPattern: any = {
   oneLowerCase: '(?=.*[a-z])',
   oneUpperCase: '(?=.*[A-Z])',
   oneNumber: '(?=.*[0-9])',
-  oneSpecialchar: '(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]',
+  oneSpecialchar: '(?=.*[$@$!%*?&])',
   minLength : '.{x,}',
 }
