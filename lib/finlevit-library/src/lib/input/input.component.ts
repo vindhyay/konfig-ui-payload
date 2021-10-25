@@ -53,7 +53,6 @@ export class InputComponent implements ControlValueAccessor, OnInit {
         validators.push(Validators.required);
       }
       if (this.pattern) {
-        console.log(this.pattern);
         validators.push(Validators.pattern(this.pattern));
       }
       if (this.validators && this.validators.length) {
