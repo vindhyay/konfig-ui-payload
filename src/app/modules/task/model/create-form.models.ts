@@ -122,7 +122,9 @@ export enum WidgetTypes {
   Modal = "Modal",
   TextInput = "TextInput",
   PasswordInput = "PasswordInput",
+  SSNInput = "SSNInput",
   Email = "Email",
+  PhonenumberInput = "PhonenumberInput",
   TextArea = "TextArea",
   Number = "Number",
   Dropdown = "Dropdown",
@@ -552,6 +554,60 @@ export class PasswordInputMetaData extends MetaData {
     this.rules= rules;
   }
 }
+
+export class SSNInputMetaData extends MetaData {
+  mask: string;
+  hideMask: string;
+  showMask: string;
+  icon: string;
+  placeholder: string;
+  tooltip: string;
+  leftIcon: string;
+  rightIcon: string;
+  showIcon: string;
+  hideIcon: string;
+  isFormulaField: boolean;
+  formula = [];
+  selectedInput: string;
+  patterns:any;
+  constructor(data) {
+    super(data);
+    const {
+      mask = "XXX-XX-0000",
+      hideMask = "XXX-XX-0000",
+      showMask = "000-00-0000",
+      icon = "",
+      tooltip = "",
+      placeholder = "***-**-****",
+      leftIcon = "",
+      rightIcon = "",
+      showIcon = "pi pi-eye-slash",
+      hideIcon = "pi pi-eye",
+      isFormulaField,
+      formula,
+      selectedInput='SSN',
+      patterns = {
+        SSN: "^(?!\\b(\\d)\\1+-(\\d)\\1+-(\\d)\\1+\\b)(?!123-45-6789|219-09-9999|078-05-1120)(?!666|000|9\\d{2})\\d{3}-(?!00)\\d{2}-(?!0{4})\\d{4}$",
+        ITIN: "^(9\\d{2})-([7]\\d|8[0-8])-(\\d{4})$"
+      }
+    } = data;
+    this.mask = mask;
+    this.icon = icon;
+    this.tooltip = tooltip;
+    this.placeholder = placeholder;
+    this.leftIcon = leftIcon;
+    this.rightIcon = rightIcon;
+    this.showIcon = showIcon;
+    this.hideIcon = hideIcon;
+    this.isFormulaField = isFormulaField;
+    this.formula = formula;
+    this.selectedInput= selectedInput;
+    this.patterns=patterns;
+    this.showMask=showMask;
+    this.hideMask=hideMask;
+  }
+}
+
 export class EmailMetaData extends MetaData {
   mask: string;
   icon: string;
@@ -561,7 +617,6 @@ export class EmailMetaData extends MetaData {
   rightIcon: string;
   isFormulaField: boolean;
   formula = [];
-  pattern:string;
   constructor(data) {
     super(data);
     const { mask = "", icon = "", tooltip = "", placeholder = "example@domain.com", leftIcon = "", rightIcon = "", isFormulaField, formula } = data;
@@ -573,7 +628,29 @@ export class EmailMetaData extends MetaData {
     this.rightIcon = rightIcon;
     this.isFormulaField = isFormulaField;
     this.formula = formula;
-    this.pattern = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
+  }
+}
+
+export class PhonenumberInputMetaData extends MetaData {
+  mask: string;
+  icon: string;
+  placeholder: string;
+  tooltip: string;
+  leftIcon: string;
+  rightIcon: string;
+  isFormulaField: boolean;
+  formula = [];
+  constructor(data) {
+    super(data);
+    const { mask = "000-000-0000", icon = "", tooltip = "", placeholder = "000-000-0000", leftIcon = "", rightIcon = "", isFormulaField, formula } = data;
+    this.mask = mask;
+    this.icon = icon;
+    this.tooltip = tooltip;
+    this.placeholder = placeholder;
+    this.leftIcon = leftIcon;
+    this.rightIcon = rightIcon;
+    this.isFormulaField = isFormulaField;
+    this.formula = formula;
   }
 }
 
@@ -620,13 +697,21 @@ export class DatePickerMetaData extends MetaData {
   returnDateFormat: string;
   placeholder: string;
   tooltip: string;
+  showTime: boolean;
+  hourFormat: number;
+  stepHour: number;
+  stepMinute: number;
   constructor(data) {
     super(data);
-    const { viewDateFormat = "mm/dd/yy", returnDateFormat = "isoTimestamp", tooltip = "", placeholder = "" } = data;
+    const { viewDateFormat = "mm/dd/yy", returnDateFormat = "isoTimestamp", tooltip = "", placeholder = "",showTime=false,hourFormat=24,stepHour=1,stepMinute=1  } = data;
     this.viewDateFormat = viewDateFormat;
     this.returnDateFormat = returnDateFormat;
     this.tooltip = tooltip;
     this.placeholder = placeholder;
+    this.showTime=showTime;
+    this.hourFormat=hourFormat;
+    this.stepHour=stepHour;
+    this.stepMinute=stepMinute;
   }
 }
 
@@ -900,7 +985,9 @@ export class BaseWidget {
     | TableMetaData
     | UploadMetaData
     | CollapseContainerMetaData
-    | ErrorContainerMetadata;
+    | ErrorContainerMetadata
+    | PhonenumberInputMetaData
+    | SSNInputMetaData;
   name: string;
   displayName: string;
   label: string;
@@ -956,8 +1043,14 @@ export class BaseWidget {
         case WidgetTypes.PasswordInput:
           this.metaData = new PasswordInputMetaData(data);
           break;
+        case WidgetTypes.SSNInput:
+          this.metaData = new SSNInputMetaData(data);
+          break;
         case WidgetTypes.Email:
           this.metaData = new EmailMetaData(data);
+          break;
+        case widgetType.PhonenumberInput:
+          this.metaData = new PhonenumberInputMetaData(data);
           break;
         case WidgetTypes.Number:
           this.metaData = new NumberMetaData(data);

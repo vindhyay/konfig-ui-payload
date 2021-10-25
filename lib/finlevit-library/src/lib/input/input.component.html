@@ -21,6 +21,24 @@
       (blur)="onLocalTouched($event)"
       [attr.maxlength]="maxCharLimit"
       [pattern]= "pattern || null"
+      *ngIf="!mask"
+    />
+    <input
+      pInputText
+      [type]="type"
+      [placeholder]="placeholder"
+      [disabled]="isDisabled"
+      [ngClass]="{ 'p-inputtext-sm': isSmall, 'p-inputtext-lg': isLarge, 'ng-invalid ng-dirty': checkError() }"
+      [required]="isRequired"
+      [ngModel]="_value"
+      (input)="onLocalChange($event)"
+      (focus)="onLocalFocus($event)"
+      (blur)="onLocalTouched($event)"
+      [attr.maxlength]="maxCharLimit"
+      [pattern]= "pattern || null"
+      [mask] ="mask"
+      *ngIf="mask"
+      [hiddenInput] = "hiddenInput"
     />
   </span>
   <div *ngIf="showMaxCharLimit && maxCharLimit && _value" class="p-d-flex p-justify-end">

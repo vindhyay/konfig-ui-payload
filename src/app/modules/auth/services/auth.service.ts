@@ -87,8 +87,6 @@ export class AuthService extends BaseService implements OnDestroy {
           const { userDetails = {} } = data;
           try {
             this.storage.user = userDetails;
-            const decodedUserDetails: UserDataModel = JSON.parse(atob(userDetails));
-            this.authSubject.next(decodedUserDetails);
           }catch (error){
             console.log('failed to decode details', error)
           }

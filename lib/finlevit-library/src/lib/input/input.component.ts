@@ -36,6 +36,8 @@ export class InputComponent implements ControlValueAccessor, OnInit {
   @Input() isLarge: boolean = false;
   @Input() rightIcon: string = '';
   @Input() leftIcon: string = '';
+  @Input() mask: string = '';
+  @Input() hiddenInput: boolean = false;
   @Output() onBlur = new EventEmitter();
   @Output() onRightIconClick = new EventEmitter();
   _value: any = null;

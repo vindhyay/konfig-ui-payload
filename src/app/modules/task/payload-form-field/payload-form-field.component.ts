@@ -35,7 +35,9 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
   Image: WidgetTypes = WidgetTypes.Image;
   TextInput: WidgetTypes = WidgetTypes.TextInput;
   PasswordInput: WidgetTypes = WidgetTypes.PasswordInput;
+  SSNInput: WidgetTypes = WidgetTypes.SSNInput;
   Email: WidgetTypes = WidgetTypes.Email;
+  PhonenumberInput: WidgetTypes = WidgetTypes.PhonenumberInput;
   ErrorContainer: WidgetTypes = WidgetTypes.ErrorContainer;
   TextArea: WidgetTypes = WidgetTypes.TextArea;
   Number: WidgetTypes = WidgetTypes.Number;
@@ -346,7 +348,7 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
         }
         if(firstField?.metaData?.widgetType !== WidgetTypes.CheckboxGroup){
           const values = [];
-          if(formula[1]?.column?.type === 'Text'){
+          if(formula[1]?.column?.type === 'Text' || formula[1]?.column?.type === 'string'){
             if(formula[0]?.value?.value){
               formula[0]?.value?.value.forEach(value => {
                 values.push(value[formula[1]?.column?.columnId])
@@ -354,7 +356,7 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
               formulaValue = values.join("");
             }
           }
-          if(formula[1]?.column?.type === 'Number'){
+          if(formula[1]?.column?.type === 'Number' || formula[1]?.column?.type === 'number'){
             if(formula[0]?.value?.value){
               formula[0]?.value?.value.forEach(value => {
                 if(value[formula[1]?.column?.columnId] !== '' && value[formula[1]?.column?.columnId] !== null){

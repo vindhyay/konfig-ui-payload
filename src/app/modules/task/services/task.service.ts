@@ -85,7 +85,7 @@ export class TaskService extends BaseService {
           if (!(fieldValue || []).includes(rule.value)){
             result = true;
           }
-        } else if (rule.opeartor === "notEquals") {
+        } else if (rule.operator === "notEquals") {
           if (String(fieldValue) !== String(rule.value)) {
             result = true;
           }

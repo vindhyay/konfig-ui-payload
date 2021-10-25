@@ -17,6 +17,8 @@ import { TextFieldComponent } from "./payload-form-field/text-field/text-field.c
 import { ModalComponent } from './payload-form-field/modal/modal.component';
 import { CollapseContainerComponent } from './payload-form-field/collapse-container/collapse-container.component';
 import {PasswordFieldComponent} from './payload-form-field/password-field/password-field.component';
+import {PhonenumberFieldComponent} from './payload-form-field/phonenumber-field/phonenumber-field.component';
+import {ssnInputFieldComponent} from './payload-form-field/ssninput-field/ssninput-field.component';
 import { AdvTableComponent } from './payload-form-field/adv-table/adv-table.component';
 import { CustomTableFiltersComponent } from './payload-form-field/adv-table/custom-table-filters/custom-table-filters.component';
 
@@ -33,6 +35,8 @@ import { CustomTableFiltersComponent } from './payload-form-field/adv-table/cust
     TextFieldComponent,
     ModalComponent,
     CollapseContainerComponent,
+    PhonenumberFieldComponent,
+    ssnInputFieldComponent,
     AdvTableComponent,
     PasswordFieldComponent,
     CustomTableFiltersComponent

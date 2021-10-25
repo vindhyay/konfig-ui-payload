@@ -1,3 +1,4 @@
+
 <finlevit-text
 [isDisabled]="isDisabled"
 [leftIcon]="item?.metaData?.leftIcon"
@@ -11,7 +12,6 @@
 [isRequired]="item?.validators?.required"
 [label]="item?.label"
 (onBlur)="optionChange($event)"
-[type]="_type"
 [pattern]="item?.validators?.pattern || null"
-(onRightIconClick)="onRightIconClick(item?.metaData)"
+[mask] = "item?.metaData?.mask || null"
 ></finlevit-text>
