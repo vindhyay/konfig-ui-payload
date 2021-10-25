@@ -23,17 +23,7 @@ export class AdvTableComponent implements OnInit {
   _columns: BaseWidget[] = [];
   @Input()
   set columns(columns) {
-    this._columns = columns.map(column => {
-      if (column.metaData.widgetType === WidgetTypes.DatePicker) {
-        if (column?.validators?.minDate) {
-          column.validators.minDate = new Date(column.validators.minDate);
-        }
-        if (column?.validators?.maxDate) {
-          column.validators.maxDate = new Date(column.validators.maxDate);
-        }
-      }
-      return column;
-    });
+    this._columns = columns;
     this.tableData = [];
   }
   get columns() {

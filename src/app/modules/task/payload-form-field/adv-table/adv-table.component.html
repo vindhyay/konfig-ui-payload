@@ -319,14 +319,14 @@
     <div class="table-footer" *ngIf="addRows && (!tableData.length || !pagination)">
       <div class="table-footer-actions">
         <p-button (click)="addRow()" type="button" icon="pi pi-plus" styleClass="p-button-text"></p-button>
-        <app-custom-table-filters *ngIf="false" (search)="handleSearch($event)" [columns]="columns"></app-custom-table-filters>
+        <app-custom-table-filters *ngIf="filter"  (search)="handleSearch($event)" [columns]="columns"></app-custom-table-filters>
       </div>
     </div>
   </ng-template>
   <ng-template pTemplate="paginatorright">
     <div class="table-footer-actions">
       <p-button *ngIf="addRows" (click)="addRow()" type="button" icon="pi pi-plus" styleClass="p-button-text"></p-button>
-      <app-custom-table-filters *ngIf="false" (search)="handleSearch($event)" [columns]="columns"></app-custom-table-filters>
+      <app-custom-table-filters *ngIf="filter" (search)="handleSearch($event)" [columns]="columns"></app-custom-table-filters>
     </div>
   </ng-template>
   <ng-template pTemplate="paginatorleft"> </ng-template>

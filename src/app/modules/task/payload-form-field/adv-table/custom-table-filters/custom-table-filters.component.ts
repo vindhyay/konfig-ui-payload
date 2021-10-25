@@ -40,43 +40,43 @@ export class CustomTableFiltersComponent implements OnInit {
     ];
     this.conditions = {
       STRING: [
-        { name: 'Starts with', id: 'startsWith' },
-        { name: 'Ends with', id: 'endsWith' },
-        { name: 'Contains', id: 'contains' },
+        // { name: 'Starts with', id: 'startsWith' },
+        // { name: 'Ends with', id: 'endsWith' },
+        // { name: 'Contains', id: 'contains' },
         { name: 'Equals', id: 'equals' },
-        { name: 'Equals Ignore Case', id: 'equalsIgnoreCase' },
+        // { name: 'Equals Ignore Case', id: 'equalsIgnoreCase' },
         { name: 'Not equals', id: 'notEquals' },
-        { name: 'Length equals', id: 'lengthEquals' },
-        { name: 'Length greater', id: 'lengthGreater' },
-        { name: 'Length less', id: 'lengthLess' },
-        { name: 'Length greater and equals', id: 'lengthGreaterAndEquals' },
-        { name: 'Length less and equals', id: 'lengthLessAndEquals' }
+        // { name: 'Length equals', id: 'lengthEquals' },
+        // { name: 'Length greater', id: 'lengthGreater' },
+        // { name: 'Length less', id: 'lengthLess' },
+        // { name: 'Length greater and equals', id: 'lengthGreaterAndEquals' },
+        // { name: 'Length less and equals', id: 'lengthLessAndEquals' }
       ],
       BOOLEAN: [
         { name: 'Equals', id: 'equals' },
         { name: 'Not equals', id: 'notEquals' }
       ],
       DATE: [
-        { name: 'Greater than', id: 'greaterThan' },
-        { name: 'Greater than equals', id: 'greaterthanEquals' },
-        { name: 'Less than', id: 'lessthan' },
-        { name: 'Less than equals', id: 'lessthanEquals' },
+        // { name: 'Greater than', id: 'greaterThan' },
+        // { name: 'Greater than equals', id: 'greaterthanEquals' },
+        // { name: 'Less than', id: 'lessthan' },
+        // { name: 'Less than equals', id: 'lessthanEquals' },
         { name: 'Equals', id: 'equals' },
         { name: 'Not equals', id: 'notEquals' }
       ],
       TIMESTAMP: [
-        { name: 'Greater than', id: 'greaterThan' },
-        { name: 'Greater than equals', id: 'greaterthanEquals' },
-        { name: 'Less than', id: 'lessthan' },
-        { name: 'Less than equals', id: 'lessthanEquals' },
+        // { name: 'Greater than', id: 'greaterThan' },
+        // { name: 'Greater than equals', id: 'greaterthanEquals' },
+        // { name: 'Less than', id: 'lessthan' },
+        // { name: 'Less than equals', id: 'lessthanEquals' },
         { name: 'Equals', id: 'equals' },
         { name: 'Not equals', id: 'notEquals' }
       ],
       NUMBER: [
-        { name: 'Greater than', id: 'greaterThan' },
-        { name: 'Greater than equals', id: 'greaterthanEquals' },
-        { name: 'Less than', id: 'lessthan' },
-        { name: 'Less than equals', id: 'lessthanEquals' },
+        // { name: 'Greater than', id: 'greaterThan' },
+        // { name: 'Greater than equals', id: 'greaterthanEquals' },
+        // { name: 'Less than', id: 'lessthan' },
+        // { name: 'Less than equals', id: 'lessthanEquals' },
         { name: 'Equals', id: 'equals' },
         { name: 'Not equals', id: 'notEquals' }
       ],
