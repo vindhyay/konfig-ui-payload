@@ -27,8 +27,22 @@ export class DatepickerComponent implements ControlValueAccessor, OnInit {
   @Input() showIcon = true;
   @Input() isDisabled = false;
   @Input() errorMsg = "";
-  @Input() minDate: Date = null;
-  @Input() maxDate: Date = null;
+  _minDate: Date;
+  _maxDate: Date;
+  @Input()
+  get minDate() {
+    return this._minDate;
+  }
+  set minDate(value) {
+    this._minDate = value ? new Date(value) : value;
+  }
+  @Input()
+  get maxDate() {
+    return this._maxDate;
+  }
+  set maxDate(value) {
+    this._maxDate = value ? new Date(value) : value;
+  }
   @Input() yearNavigator: boolean = true;
   @Input() monthNavigator: boolean = true;
   @Input() showTime: boolean = false;

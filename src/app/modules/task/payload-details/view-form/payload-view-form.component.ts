@@ -55,7 +55,14 @@ export class PayloadViewFormComponent implements OnInit {
             payload.push(getValueFromObjectByPath(field, "value.value") || []);
           }
         } else {
-          if (field?.children?.length) {
+          if(field?.metaData?.widgetType === WidgetTypes.AdvTable){
+            const advTableData = [];
+            field?.children.forEach(rowData => {
+              const rowObject = this.convertPayload(rowData);
+              advTableData.push(rowObject)
+            })
+            payload[field.widgetName] = advTableData;
+          }else if (field?.children?.length) {
             payload[field.widgetName] = this.convertPayload(field.children, field.type === DataTypes.array);
           } else if (field?.metaData?.widgetType === WidgetTypes.Table) {
             payload[field.widgetName] = field?.value?.value?.length
@@ -88,7 +95,7 @@ export class PayloadViewFormComponent implements OnInit {
           errorFields = errorFields.concat(errorFieldsData)
         }
       } else {
-        const tempFormControl = new FormControl(field?.value?.value, getValidators(field?.validators));
+        const tempFormControl = new FormControl(field?.value?.value, getValidators(field?.validators || {}));
         if (tempFormControl.valid || field?.rows === 0 || field?.metaData?.isHidden) {
           field.error = false;
           field.errorMsg = "";
@@ -127,7 +134,7 @@ export class PayloadViewFormComponent implements OnInit {
           field.value = { id: null, value: field.metaData.options };
         }
       }
-      if (field.children.length) {
+      if (field?.children?.length && field?.metaData?.widgetType !== WidgetTypes.AdvTable) {
         field.children = this.updateValuesFromOptions(field.children);
       }
       payload.push(field);

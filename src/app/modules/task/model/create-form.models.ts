@@ -86,6 +86,21 @@ export enum DATA_TYPES {
   ARRAY = "array"
 }
 
+
+export class TableActions {
+  editRow: boolean;
+  deleteRow: boolean;
+  width: any;
+  label: string;
+  constructor(data) {
+    const { editRow = false, deleteRow = false, width = 30, label = "Actions" } = data;
+    this.editRow = editRow;
+    this.deleteRow = deleteRow;
+    this.width = width;
+    this.label = label;
+  }
+}
+
 export interface WidgetItem {
   cols: number;
   label: string;
@@ -99,6 +114,7 @@ export interface WidgetItem {
 export enum WidgetTypes {
   Text = "Text",
   Table = "Table",
+  AdvTable = "AdvTable",
   ErrorContainer = "ErrorContainer",
   TransactionTable = "SavedTable",
   CollapseContainer = "CollapseContainer",
@@ -227,32 +243,91 @@ export class MetaData {
 
 export class Column {
   type: DATA_TYPES;
-  colType: string;
+  colType: WidgetTypes;
   columnId: string;
   label: string;
   name: string;
   displayName: string;
   populateResponsePath: string;
-  onChange: string;
-  resultField: string;
   width?: string;
   editable: boolean;
   validators: Validators;
+  metaData:
+    | TextMetaData
+    | TextInputMetaData
+    | NumberMetaData
+    | CheckboxMetaData
+    | ImageMetaData
+    | CheckboxGroupMetaData
+    | DropdownMetaData
+    | DatePickerMetaData
+    | RadioGroupMetaData
+    | TextAreaMetaData
+    | ButtonMetaData
+    | UploadMetaData
+    | ModalMetaData;
   constructor(data) {
     const {
       type = DATA_TYPES.STRING,
-      colType = ColumnTypes.Text,
+      colType = WidgetTypes.TextInput,
       label = "",
       name = "",
       displayName = "",
       populateResponsePath = "",
       columnId = "",
-      onChange = null,
-      resultField = null,
       width = "100",
       editable = true,
-      validators = {}
+      validators = {},
+      metaData
     } = data;
+    if (metaData) {
+      switch (colType) {
+        case WidgetTypes.Text:
+          this.metaData = new TextMetaData(data);
+          break;
+        case WidgetTypes.TextInput:
+          this.metaData = new TextInputMetaData(data);
+          break;
+        case WidgetTypes.Number:
+          this.metaData = new NumberMetaData(data);
+          break;
+        case WidgetTypes.Checkbox:
+          this.metaData = new CheckboxMetaData(data);
+          break;
+        case WidgetTypes.Image:
+          this.metaData = new ImageMetaData(data);
+          break;
+        case WidgetTypes.CheckboxGroup:
+          this.metaData = new CheckboxGroupMetaData(data);
+          break;
+        case WidgetTypes.Dropdown:
+          this.metaData = new DropdownMetaData(data);
+          break;
+        case WidgetTypes.DatePicker:
+          this.metaData = new DatePickerMetaData(data);
+          break;
+        case WidgetTypes.RadioGroup:
+          this.metaData = new RadioGroupMetaData(data);
+          break;
+        case WidgetTypes.TextArea:
+          this.metaData = new TextAreaMetaData(data);
+          break;
+        case WidgetTypes.Button:
+          this.metaData = new ButtonMetaData(data);
+          break;
+        case WidgetTypes.Upload:
+          this.metaData = new UploadMetaData(data);
+          break;
+        case WidgetTypes.Modal:
+          this.metaData = new ModalMetaData(data);
+          break;
+        default:
+          this.metaData = null;
+          break;
+      }
+    } else {
+      this.metaData = metaData;
+    }
     this.colType = colType;
     this.type = type;
     this.label = label;
@@ -260,8 +335,6 @@ export class Column {
     this.name = name;
     this.displayName = displayName;
     this.populateResponsePath = populateResponsePath;
-    this.onChange = onChange;
-    this.resultField = resultField;
     this.width = width;
     this.editable = editable;
     this.validators = new Validators(validators);

@@ -19,6 +19,9 @@ import { CollapseContainerComponent } from './payload-form-field/collapse-contai
 import {PasswordFieldComponent} from './payload-form-field/password-field/password-field.component';
 import {PhonenumberFieldComponent} from './payload-form-field/phonenumber-field/phonenumber-field.component';
 import {ssnInputFieldComponent} from './payload-form-field/ssninput-field/ssninput-field.component';
+import { AdvTableComponent } from './payload-form-field/adv-table/adv-table.component';
+import { CustomTableFiltersComponent } from './payload-form-field/adv-table/custom-table-filters/custom-table-filters.component';
+
 @NgModule({
   declarations: [
     PayloadDetailsComponent,
@@ -32,9 +35,11 @@ import {ssnInputFieldComponent} from './payload-form-field/ssninput-field/ssninp
     TextFieldComponent,
     ModalComponent,
     CollapseContainerComponent,
-    PasswordFieldComponent,
     PhonenumberFieldComponent,
-    ssnInputFieldComponent
+    ssnInputFieldComponent,
+    AdvTableComponent,
+    PasswordFieldComponent,
+    CustomTableFiltersComponent
   ],
   imports: [CommonModule, GridsterModule, SharedModule, ExtendedModule],
   providers: [TaskService, AuthService]

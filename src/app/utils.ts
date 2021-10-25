@@ -130,3 +130,18 @@ export const passwordPattern: any = {
   oneSpecialchar: '(?=.*[$@$!%*?&])',
   minLength : '.{x,}',
 }
+export const superClone = (object): any => {
+  const cloning = {};
+  if(!object){
+    return null;
+  }
+  Object.keys(object).map(prop => {
+    if (Array.isArray(object[prop])) {
+      cloning[prop] = [].concat(object[prop]);
+    } else if (typeof  object[prop] === "object") {
+      cloning[prop] = superClone(object[prop]);
+    } else { cloning[prop] = object[prop]; }
+  });
+
+  return cloning;
+};
