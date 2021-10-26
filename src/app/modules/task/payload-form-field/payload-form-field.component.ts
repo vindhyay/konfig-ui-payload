@@ -245,8 +245,6 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
     }
   }
 
-
-
   selectionChange($event) {
     console.log($event);
   }
@@ -284,18 +282,31 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
     switch (firstField?.dataType){
       case 'number':
         let expression = '';
-        formula.forEach(field => {
-          if (field?.resourceType === resourceType.PAYLOAD_FIELD) {
-            expression = expression + ' ' + field?.value?.value;
-          }
-          if (field?.resourceType === resourceType.BRACKET) {
-            expression = expression + ' ' + field?.displayName;
-          }
-          if (field?.resourceType === resourceType.FUNCTION) {
-            expression = expression + ' ' + field?.expression;
+        let values = formula.filter(field => {
+          if(field?.resourceType === resourceType.PAYLOAD_FIELD){
+            return field?.value?.value;
           }
         })
-        formulaValue = eval(expression);
+        if(values.length > 0){
+          formula.forEach(field => {
+            if (field?.resourceType === resourceType.PAYLOAD_FIELD) {
+              expression = expression + ' ' + field?.value?.value;
+            }
+            if (field?.resourceType === resourceType.BRACKET) {
+              expression = expression + ' ' + field?.displayName;
+            }
+            if (field?.resourceType === resourceType.FUNCTION) {
+              expression = expression + ' ' + field?.expression;
+            }
+          })
+          if(eval(expression) === Infinity){
+            formulaValue = '∞'
+          }else {
+            formulaValue = eval(expression);
+          }
+        }else {
+          formulaValue = values[0]?.value?.value || '';
+        }
         return formulaValue;
       case 'string':
         formula.forEach(field => {
