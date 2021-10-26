@@ -31,7 +31,7 @@
         [pSortableColumn]="sort ? column?.widgetName : ''"
         *ngFor="let column of columns"
       >
-        {{ column.label }}
+        {{ column?.displayName }}
         <p-sortIcon *ngIf="sort" [field]="column.widgetName"></p-sortIcon>
       </th>
       <ng-container *ngIf="editRow || deleteRow">
@@ -139,7 +139,7 @@
               "
             ></finlevit-text>
           </div>
-          <div class="p-pl-1" *ngSwitchCase="Checkbox">
+          <div class="p-pl-1 adv-checkbox" *ngSwitchCase="Checkbox">
             <ng-container *ngIf="!(colData?.validators?.editable && (editRows[rowIndex] || newRows[rowIndex]))">
               {{ colData?.value?.value ? "True" : "False" }}
             </ng-container>
@@ -171,7 +171,7 @@
               [(ngModel)]="colData.value.value"
               (ngModelChange)="validateRow(rowIndex, rowData, colData)"
               [isSmall]="true"
-              [placeholder]="colData?.metaData?.placeholder"
+              [placeholder]="'Enter image URL'"
               [error]="
                 rowErrors[rowIndex] && rowErrors[rowIndex][colData?.metaData?.widgetId]
                   ? rowErrors[rowIndex][colData?.metaData?.widgetId]['error']
