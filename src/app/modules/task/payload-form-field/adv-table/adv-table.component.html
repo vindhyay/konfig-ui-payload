@@ -280,7 +280,13 @@
             ></finlevit-lib-datepicker>
           </div>
           <div class="p-pl-1" *ngSwitchCase="Modal">
-            <app-modal [item]="colData" [viewMode]="false"></app-modal>
+            <app-modal [showEdit]="showEdit"
+                       [editMode]="editMode"
+                       [isDisabled]="isDisabled"
+                       [viewMode]="viewMode"
+                       (onBtnClick)="onBtnClick.emit($event)"
+                       (onTableDataChange)="onTableDataChange.emit($event)"
+                       (onOptionChange)="optionChange($event, $event.data)" [item]="colData" ></app-modal>
           </div>
           <div *ngSwitchDefault>
             {{ colData?.value?.value }}

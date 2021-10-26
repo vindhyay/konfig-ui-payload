@@ -318,3 +318,22 @@
   margin: 0 20px;
   display: flex;
 }
+//Table css start
+.p-datatable-wrapper {
+  font-family: sans-serif, serif;
+  font-size: 13px;
+  .p-datatable-thead > tr > th{
+    font-weight: 500;
+    line-height: 2rem;
+  }
+  .p-sortable-column-icon{
+    font-size: 11px;
+  }
+  .pi-filter-icon{
+    font-size: 11px;
+  }
+}
+.p-datatable.p-datatable-sm .p-datatable-thead > tr > th {
+  padding: 0.2rem 0.5rem;
+}
+//Table css end

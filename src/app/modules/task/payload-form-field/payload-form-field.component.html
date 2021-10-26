@@ -269,6 +269,13 @@
         [deleteRow]="item?.metaData?.actions?.deleteRow"
         [actionCol]="item?.metaData?.actions"
         [tableData]="item?.children"
+        [showEdit]="showEdit"
+        [viewMode]="viewMode"
+        [isDisabled]="disable"
+        [editMode]="editMode"
+        (onBtnClick)="onBtnClick.emit($event)"
+        (onTableDataChange)="onTableDataChange.emit($event)"
+        (onOptionChange)="optionChange($event, $event.data)"
       ></app-adv-table>
     </div>
   </ng-container>
