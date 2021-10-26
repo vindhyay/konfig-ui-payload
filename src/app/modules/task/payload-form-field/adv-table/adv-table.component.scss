@@ -98,3 +98,9 @@
     }
   }
 }
+.adv-checkbox{
+  text-align: center;
+  ::ng-deep .p-field-checkbox{
+    display: inline-flex;
+  }
+}
