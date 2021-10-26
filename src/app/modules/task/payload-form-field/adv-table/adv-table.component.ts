@@ -10,6 +10,13 @@ import { SortEvent } from "primeng/api";
   styleUrls: ['./adv-table.component.scss']
 })
 export class AdvTableComponent implements OnInit {
+  @Output() onBtnClick = new EventEmitter();
+  @Output() onOptionChange = new EventEmitter();
+  @Output() onTableDataChange = new EventEmitter();
+  @Input() viewMode = false;
+  @Input() showEdit = false;
+  @Input() isDisabled: boolean = false;
+  @Input() editMode: boolean = false;
   get styleClass(): string {
     if (this.isSmall) {
       this._styleClass = this._styleClass + " p-datatable-sm";
@@ -58,7 +65,6 @@ export class AdvTableComponent implements OnInit {
   @Output() handleRowSave = new EventEmitter();
   @Output() handleRowDelete = new EventEmitter();
 
-  @Input() viewMode = false;
   tableId: any = null;
   editRows = {};
   newRows = {};
@@ -227,5 +233,8 @@ export class AdvTableComponent implements OnInit {
       this.filterEnable = false;
       this.filteredTableData = [];
     }
+  }
+  optionChange($event, data) {
+    this.onOptionChange.emit({ event: $event, data });
   }
 }
