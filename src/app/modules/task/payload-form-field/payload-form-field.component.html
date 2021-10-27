@@ -376,6 +376,7 @@
       [selectedIndex]="selectedStep"
       [ngClass]="{ 'stepper-container': true, 'no-stepper-child-container': item.children.length === 0 }"
       labelPosition="bottom"
+      (selectionChange)="OnStepChange($event)"
       #stepper
     >
       <mat-step *ngFor="let child of item.children; let i = index">

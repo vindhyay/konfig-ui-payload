@@ -17,13 +17,14 @@
   [draggable]="false"
   [resizable]="false"
   [style]="{ height: metaData.height, width: metaData.width }"
-  styleClass="field-modal"
+  [styleClass]="item?.metaData?.widgetId"
   contentStyleClass="field-modal-content"
   [modal]="true"
   [header]="metaData?.title"
   [(visible)]="modalStatus"
   [autoZIndex]="false"
   (onShow)="onShow($event)"
+  (onHide)="onHide($event)"
 >
   <finlevit-grid
     [viewMode]="viewMode"

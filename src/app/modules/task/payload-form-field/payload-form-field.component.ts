@@ -46,7 +46,9 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
   CheckboxGroup: WidgetTypes = WidgetTypes.CheckboxGroup;
   Upload: WidgetTypes = WidgetTypes.Upload;
   NESTED_MIN_COLUMNS: number = NESTED_MIN_COLUMNS;
-
+  activeTabIndexes = {};
+  activeStepperIndexes = {};
+  modalStatus = {};
   completedSteps = {};
   selectedStep = 0;
   transactionStatus = null;
@@ -145,6 +147,8 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
       }
     })
     this.transactionDetailsSubscription.unsubscribe();
+    this.tabActiveIndex = this.editorService.activeTabIndexes[this.item.metaData.widgetId];
+    this.selectedStep = this.editorService.activeStepperIndexes[this.item.metaData.widgetId];
   }
 
   ngAfterViewInit() {
@@ -230,6 +234,7 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
   }
   onTabChange($event) {
     const { index = 0 } = $event;
+    this.editorService.activeTabIndexes[this.item.metaData.widgetId] = index;
     this.tabActiveIndex = index;
     window.dispatchEvent(new Event("resize"));
   }
@@ -387,6 +392,12 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
     const currField = getFieldFromFields(this.payloadFields, id);
     currField.value.value = formulaValue;
     return formulaValue;
+  }
+  OnStepChange($event){
+    const { selectedIndex = 0 } = $event;
+    this.editorService.activeStepperIndexes[this.item.metaData.widgetId] = selectedIndex;
+    this.selectedStep = selectedIndex;
+    window.dispatchEvent(new Event("resize"));
   }
 }
 

@@ -7,7 +7,9 @@ import { BaseWidget } from "./model/create-form.models";
 })
 export class EditorService {
   constructor() {}
-
+  activeTabIndexes = {};
+  activeStepperIndexes = {};
+  modalStatus = {};
   dragItem: any = null;
   sourceList: any = [];
   dragEvent: any = null;

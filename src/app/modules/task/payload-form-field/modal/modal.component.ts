@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { BaseWidget, ModalMetaData } from "../../model/create-form.models";
+import { EditorService } from "../../editor.service";
 
 @Component({
   selector: "app-modal",
@@ -19,13 +20,19 @@ export class ModalComponent implements OnInit {
   get metaData(): ModalMetaData {
     return this.item.metaData as ModalMetaData;
   }
-  constructor() {}
-  ngOnInit(): void {}
+  constructor(private editorService: EditorService) {}
+  ngOnInit(): void {
+    this.modalStatus = this.editorService.modalStatus[this.item.metaData.widgetId];
+  }
   toggleModal() {
     this.modalStatus = !this.modalStatus;
+    this.editorService.modalStatus[this.item.metaData.widgetId] = this.modalStatus;
   }
   onShow($event) {
     window.dispatchEvent(new Event("resize"));
+  }
+  onHide($event){
+    this.editorService.modalStatus[this.item.metaData.widgetId] = false;
   }
   optionChange($event, data) {
     this.onOptionChange.emit({ event: $event, data });
