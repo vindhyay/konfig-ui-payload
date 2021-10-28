@@ -9,6 +9,7 @@ import { EditorService } from "../../editor.service";
 })
 export class ModalComponent implements OnInit {
   @Input() item: BaseWidget = {} as BaseWidget;
+  @Input() modalId: string = null;
   @Input() viewMode = false;
   @Input() showEdit = false;
   @Input() isDisabled: boolean = false;
@@ -22,17 +23,20 @@ export class ModalComponent implements OnInit {
   }
   constructor(private editorService: EditorService) {}
   ngOnInit(): void {
-    this.modalStatus = this.editorService.modalStatus[this.item.metaData.widgetId];
+    if(!this.modalId){
+      this.modalId = this.item.metaData.widgetId;
+    }
+    this.modalStatus = this.editorService.modalStatus[this.modalId];
   }
   toggleModal() {
     this.modalStatus = !this.modalStatus;
-    this.editorService.modalStatus[this.item.metaData.widgetId] = this.modalStatus;
+    this.editorService.modalStatus[this.modalId] = this.modalStatus;
   }
   onShow($event) {
     window.dispatchEvent(new Event("resize"));
   }
   onHide($event){
-    this.editorService.modalStatus[this.item.metaData.widgetId] = false;
+    this.editorService.modalStatus[this.modalId] = false;
   }
   optionChange($event, data) {
     this.onOptionChange.emit({ event: $event, data });

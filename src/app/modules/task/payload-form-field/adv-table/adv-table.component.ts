@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { BaseWidget, TableActions, WidgetTypes } from "../../model/create-form.models";
-import { getErrorMessages, getUniqueId, getValidators, scrollToBottom, superClone } from "../../../../utils";
+import { getErrorMessages, getUniqueId, getValidators, scrollToBottom, DeepCopy } from "../../../../utils";
 import { FormControl } from "@angular/forms";
 import { SortEvent } from "primeng/api";
 
@@ -171,7 +171,7 @@ export class AdvTableComponent implements OnInit {
   addRow() {
     const newRow: any = [];
     this.columns.forEach(eachColumn => {
-      const column = superClone(eachColumn);
+      const column = DeepCopy.copy(eachColumn);
       column.value.value = column?.value?.value || null;
       newRow.push(column);
     });

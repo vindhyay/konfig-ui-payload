@@ -280,7 +280,7 @@
             ></finlevit-lib-datepicker>
           </div>
           <div class="p-pl-1" *ngSwitchCase="Modal">
-            <app-modal [showEdit]="showEdit"
+            <app-modal [modalId]="colData?.metaData?.widgetId+ rowIndex" [showEdit]="showEdit"
                        [editMode]="editMode"
                        [isDisabled]="isDisabled"
                        [viewMode]="viewMode"
