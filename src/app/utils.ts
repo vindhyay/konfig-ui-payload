@@ -1,6 +1,8 @@
 import ShortUniqueId from "short-unique-id";
 import { result } from "./state/model/api-response";
 import { FormControl, Validators } from "@angular/forms";
+import { BaseWidget, WidgetTypes } from "./modules/task/model/create-form.models";
+
 
 const uid = new ShortUniqueId();
 export const getValueFromObjectByPath = (obj: any, path: any) =>
@@ -93,7 +95,6 @@ export const getValidators = (validators: any) => {
   });
   return _validators;
 };
-
 export const getFieldFromFields = (fields, fieldId) => {
   let paramField = null;
   fields.forEach(field => {
@@ -104,6 +105,20 @@ export const getFieldFromFields = (fields, fieldId) => {
       if (field?.id === fieldId) {
         paramField = field;
       }
+    }
+  });
+  return paramField;
+};
+
+export const eligibileReviewField= [WidgetTypes.TextArea,WidgetTypes.TextInput,WidgetTypes.PasswordInput,WidgetTypes.SSNInput,WidgetTypes.Email,WidgetTypes.PhonenumberInput,WidgetTypes.Dropdown,WidgetTypes.Number,WidgetTypes.DatePicker,WidgetTypes.Checkbox]
+export const getAllFromFields = (fields,eligibileField) => {
+  let paramField = [];
+  fields.forEach(field => {
+    if (field.children && field.children.length) {
+      const nestedParamField = getAllFromFields(field.children,eligibileField);
+      paramField = [...paramField,...nestedParamField];
+    } else if(eligibileField.indexOf(field.metaData.widgetType)>=0) {
+      paramField.push({label:field.label,value:field.value.value});
     }
   });
   return paramField;

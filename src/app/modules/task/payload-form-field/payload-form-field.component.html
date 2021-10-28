@@ -372,7 +372,20 @@
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === StepperContainer">
+    <app-vertical-stepper *ngIf="item?.metaData?.stepperType==='Vertical'" 
+      [completedSteps]="completedSteps" 
+      [selectedIndex]="verticalStepIndex" 
+      [children]="item?.children" 
+      [metaData]="item?.metaData"
+      [viewMode]="viewMode" 
+      (onNext)="onNextClick($event)" 
+      (onSelect)="onSelectionClick($event,item.metaData)" 
+      (onPrev)="onPrevClick($event)"
+      (onBtnClick)="onBtnClick.emit($event)"
+      >
+    </app-vertical-stepper>
     <mat-horizontal-stepper
+      *ngIf="item?.metaData?.stepperType!=='Vertical'" 
       [selectedIndex]="selectedStep"
       [ngClass]="{ 'stepper-container': true, 'no-stepper-child-container': item.children.length === 0 }"
       labelPosition="bottom"

@@ -555,6 +555,20 @@ export class PasswordInputMetaData extends MetaData {
   }
 }
 
+export class StepperContainerMetaData extends MetaData {
+  sublabel:string;
+  stepperType: string;
+  isReviewer:boolean;
+  isFreeflow:boolean;
+  constructor(data) {
+    super(data);
+    const {sublabel='',stepperType="Horizontal",isReviewer=false,isFreeflow=false}=data;
+    this.sublabel=sublabel;
+    this.stepperType=stepperType;
+    this.isReviewer=isReviewer;
+    this.isFreeflow=isFreeflow;
+  }
+}
 export class SSNInputMetaData extends MetaData {
   mask: string;
   hideMask: string;
@@ -987,7 +1001,8 @@ export class BaseWidget {
     | CollapseContainerMetaData
     | ErrorContainerMetadata
     | PhonenumberInputMetaData
-    | SSNInputMetaData;
+    | SSNInputMetaData
+    | StepperContainerMetaData;
   name: string;
   displayName: string;
   label: string;
@@ -1036,6 +1051,9 @@ export class BaseWidget {
           break;
         case WidgetTypes.Container:
           this.metaData = new ContainerMetaData(data);
+          break;
+        case WidgetTypes.StepperContainer:
+          this.metaData = new StepperContainerMetaData(data);
           break;
         case WidgetTypes.TextInput:
           this.metaData = new TextInputMetaData(data);
