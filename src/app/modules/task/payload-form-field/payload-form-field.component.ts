@@ -49,6 +49,7 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
   activeTabIndexes = {};
   activeStepperIndexes = {};
   modalStatus = {};
+  verticalStepIndex:number =0 ;
   completedSteps = {};
   selectedStep = 0;
   transactionStatus = null;
@@ -249,7 +250,33 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
       stepperRef.next();
     }
   }
-
+  onPrevClick($event){
+    if($event>0){
+      this.verticalStepIndex -=1;
+    }
+  }
+  onSelectionClick($event,metaData){
+    if(metaData.isFreeflow){
+      this.verticalStepIndex = $event;
+    }else{
+      const child=this.item.children[this.verticalStepIndex]
+      const validate = validateFields(child.children);
+      if (validate) {
+        this.verticalStepIndex = $event;
+      }
+    }
+  }
+  onNextClick($event) {
+    const child=this.item.children[this.verticalStepIndex]
+    const validate = validateFields(child.children);
+    if (validate) {
+      this.completedSteps[child?.metaData?.widgetId] = true;
+      this.verticalStepIndex +=1;
+    }
+    if(this.verticalStepIndex>this.item.children.length-1){
+      this.verticalStepIndex=this.item.children.length-1;
+    }
+  }
   selectionChange($event) {
     console.log($event);
   }
