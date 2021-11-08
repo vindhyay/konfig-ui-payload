@@ -1,6 +1,6 @@
-import { Component, Input, OnInit, Optional, Self } from '@angular/core';
-import { ControlValueAccessor, NgControl, ValidatorFn, Validators } from '@angular/forms';
-import { hasRequiredField } from '../utils';
+import {Component, Input, OnInit, Optional, Self} from '@angular/core';
+import {ControlValueAccessor, NgControl, ValidatorFn, Validators} from "@angular/forms";
+import {hasRequiredField} from "../utils";
 
 @Component({
   selector: 'finlevit-lib-multi-select',
@@ -8,16 +8,17 @@ import { hasRequiredField } from '../utils';
   styleUrls: ['./multi-select.component.scss']
 })
 export class MultiSelectComponent implements OnInit, ControlValueAccessor {
+
   constructor(@Optional() @Self() public controlDir: NgControl) {
     if (this.controlDir) {
       this.controlDir.valueAccessor = this;
-    }
-  }
-  @Input() filter: boolean = false;
-  @Input() showClear: boolean = false;
+    }}
+  @Input() filter : boolean  = false;
+  @Input() showClear : boolean  = false;
+  @Input() showHeader : boolean  = true;
   @Input() options: any[] = [];
-  @Input() optionLabel: string = '';
-  @Input() optionValue: string = '';
+  @Input() optionLabel : string = '';
+  @Input() optionValue : string = '';
   @Input() isRequired = false;
   @Input() validators: any = [];
   @Input() placeholder: string = '';
@@ -28,8 +29,8 @@ export class MultiSelectComponent implements OnInit, ControlValueAccessor {
   @Input() error = false;
   @Input() showErrorBorder = true;
   @Input() isDisabled = false;
-  @Input() maxSelectedLabels: number = 100;
-  @Input() chip: boolean = false;
+  @Input() maxSelectedLabels : number = 100;
+  @Input() chip : boolean = false;
   @Input() errorMsg = '';
 
   _value: any = null;

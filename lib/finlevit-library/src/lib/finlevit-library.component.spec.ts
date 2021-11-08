@@ -8,8 +8,9 @@ describe('FinlevitLibraryComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FinlevitLibraryComponent]
-    }).compileComponents();
+      declarations: [ FinlevitLibraryComponent ]
+    })
+    .compileComponents();
   });
 
   beforeEach(() => {

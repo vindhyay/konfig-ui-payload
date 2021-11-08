@@ -6,15 +6,6 @@
   --input-checked-border-color: #007bff;
 }
 
-.checkbox-options-wrapper{
-  &.horizontal{
-    display: flex;
-  }
-  .p-field-checkbox {
-    margin: 0 1rem 1rem 0;
-  }
-}
-
 :host ::ng-deep{
   .p-checkbox .p-checkbox-box .p-checkbox-icon{
     color: var(--input-check-icon-color);

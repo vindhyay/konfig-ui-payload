@@ -1,17 +1,17 @@
 <button
-  [ngStyle]="{
+        [ngStyle]="{
     color: color,
     backgroundColor: variant === 'outlinedButton' || variant === 'raisedTextButton' ? 'transparent' : bgColor,
     borderColor: variant === 'raisedTextButton' ? 'transparent' : bgColor,
     boxShadow: variant === 'raisedTextButton' ? 'none' : ''
   }"
-  pButton
-  pRipple
-  type="button"
-  [label]="label"
-  [disabled]="isDisabled"
-  [icon]="icon"
-  [iconPos]="iconPos"
-  [ngClass]="class"
-  (click)="btnClick.emit()"
+        pButton
+        pRipple
+        type="button"
+        [label]="label"
+        [disabled]="isDisabled"
+        [icon]="icon"
+        [iconPos]="iconPos"
+        [ngClass]="class"
+        (click)="btnClick.emit()"
 ></button>

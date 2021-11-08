@@ -2,12 +2,14 @@
   <div *ngIf="label" class="d-flex flex-row">
     <div [ngClass]="{ 'input-label': true, 'input-label-sm': isSmall, 'input-label-lg': isLarge }">
       {{ label }}<span class="required" *ngIf="isRequired"> *</span>
-      <i class="label-tooltip pi pi-info-circle p-pl-2" [pTooltip]="tooltip" *ngIf="tooltip"></i>
+      <em class="label-tooltip pi pi-info-circle p-pl-2" [pTooltip]="tooltip" *ngIf="tooltip"></em>
     </div>
   </div>
   <p-multiSelect
     *ngIf="!chip"
+    appendTo="body"
     [options]="options"
+    [showHeader]="showHeader"
     [(ngModel)]="_value"
     [optionValue]="optionValue"
     [optionLabel]="optionLabel"
@@ -23,6 +25,7 @@
   </p-multiSelect>
   <p-multiSelect
     *ngIf="chip"
+    appendTo="body"
     [options]="options"
     [(ngModel)]="_value"
     [optionValue]="optionValue"

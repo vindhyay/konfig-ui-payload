@@ -87,8 +87,8 @@ import { TableComponent } from './table/table.component';
     RadioGroupComponent,
     DatepickerComponent,
     ButtonComponent,
-    TableModule,
-    TableComponent
+    TableComponent,
+    TableModule
   ]
 })
 export class FinlevitLibraryModule {}

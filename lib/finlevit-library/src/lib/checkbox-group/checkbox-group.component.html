@@ -1,7 +1,7 @@
 <div [ngClass]="{ 'p-field': true, 'small-input': isSmall, 'large-input': isLarge }">
   <div *ngIf="label" class="d-flex flex-row">
     <div
-            [ngClass]="{
+      [ngClass]="{
         'input-label': true,
         'checkbox-group-label': true,
         'input-label-sm': isSmall,
@@ -11,7 +11,7 @@
       }"
     >
       {{ label }}<span class="required" *ngIf="isRequired"> *</span>
-      <i class="label-tooltip pi pi-info-circle p-pl-2" [pTooltip]="tooltip" *ngIf="tooltip"></i>
+      <em class="label-tooltip pi pi-info-circle p-pl-2" [pTooltip]="tooltip" *ngIf="tooltip"></em>
     </div>
   </div>
   <div [ngClass]="{

@@ -1,11 +1,18 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Optional, Output, Self, ViewChild } from '@angular/core';
-import { ControlValueAccessor, NgControl, ValidatorFn, Validators } from '@angular/forms';
-import { hasRequiredField } from '../utils';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Optional, Output, Self, ViewChild } from "@angular/core";
+import { ControlValueAccessor, NgControl, ValidatorFn, Validators } from "@angular/forms";
+import { hasRequiredField } from "../utils";
+
+enum LabelPos {
+  Left = "Left",
+  Top = "Top",
+  Down = "Down",
+  Right = "Right"
+}
 
 @Component({
-  selector: 'finlevit-text',
-  templateUrl: './input.component.html',
-  styleUrls: ['./input.component.scss']
+  selector: "finlevit-text",
+  templateUrl: "./input.component.html",
+  styleUrls: ["./input.component.scss"]
 })
 export class InputComponent implements ControlValueAccessor, OnInit {
   constructor(@Optional() @Self() public controlDir: NgControl) {
@@ -14,37 +21,46 @@ export class InputComponent implements ControlValueAccessor, OnInit {
     }
   }
 
-  @ViewChild('input', { static: true }) input: ElementRef | undefined;
-  @Input() isDisabled: boolean = false;
-  @Input() type = 'text';
-  @Input() noSpaces: boolean = false;
-  @Input() isRequired: boolean = false;
-  @Input() toCapital: boolean = false;
-  @Input() toLower: boolean = false;
-  @Input() toCapitalize: boolean = false;
-  @Input() toNumber: boolean = false;
-  @Input() tooltip: string = '';
-  @Input() pattern: string = '';
-  @Input() label: string = '';
-  @Input() placeholder: string = '';
-  @Input() errorMsg: string = '';
-  @Input() error: boolean = false;
+  get _placeholder(): string {
+    if(this.placeholder && !this.label && this.isRequired){
+      return this.placeholder + "*"
+    }else {
+      return this.placeholder;
+    }
+  }
+
+  @ViewChild("input", { static: true }) input: ElementRef | undefined;
+  @Input() isDisabled = false;
+  @Input() type = "text";
+  @Input() noSpaces = false;
+  @Input() isRequired = false;
+  @Input() toCapital = false;
+  @Input() toLower = false;
+  @Input() toCapitalize = false;
+  @Input() toNumber = false;
+  @Input() tooltip = "";
+  @Input() pattern = "";
+  @Input() label = "";
+  @Input() labelPos: LabelPos;
+  @Input() placeholder = "";
+  @Input() errorMsg = "";
+  @Input() error = false;
   @Input() validators: any = [];
-  @Input() maxCharLimit: number = 200;
-  @Input() showMaxCharLimit: boolean = false;
-  @Input() isSmall: boolean = false;
-  @Input() isLarge: boolean = false;
-  @Input() rightIcon: string = '';
-  @Input() leftIcon: string = '';
-  @Input() mask: string = '';
+  @Input() maxCharLimit = 2000;
+  @Input() showMaxCharLimit = false;
+  @Input() isSmall = false;
+  @Input() isLarge = false;
+  @Input() rightIcon = "";
+  @Input() leftIcon = "";
+  @Input() showErrorMsg: boolean = true;
+  @Input() mask = null;
   @Input() hiddenInput: boolean = false;
   @Output() onBlur = new EventEmitter();
   @Output() onRightIconClick = new EventEmitter();
   _value: any = null;
-  iconClass: any = '';
+  iconClass: any = "";
   STRING = String;
-
-
+  labelPosTypes = LabelPos;
   ngOnInit() {
     const control = this.controlDir && this.controlDir.control;
     if (control) {
@@ -65,7 +81,6 @@ export class InputComponent implements ControlValueAccessor, OnInit {
       this.isRequired = hasRequiredField(control);
     }
   }
-
   setInputValue(value: any) {
     this._value = value;
   }
@@ -88,8 +103,8 @@ export class InputComponent implements ControlValueAccessor, OnInit {
     this.onTouched();
     this.onBlur.emit($event);
   }
-  onRIconClick(){
-    this.onRightIconClick.emit();    
+  onRIconClick() {
+    this.onRightIconClick.emit();
   }
   onTouched() {}
   onChange(event: any) {}
@@ -106,7 +121,7 @@ export class InputComponent implements ControlValueAccessor, OnInit {
       value = this.capitalLetter(value);
     }
     if (this.noSpaces) {
-      value = value.replace(/\s+/g, '');
+      value = value.replace(/\s+/g, "");
     }
     if (this.toNumber) {
       value = value ? Number(value) : null;
@@ -116,13 +131,13 @@ export class InputComponent implements ControlValueAccessor, OnInit {
   }
 
   capitalLetter(str: any) {
-    str = str.split(' ');
-    for (var i = 0, x = str.length; i < x; i++) {
+    str = str.split(" ");
+    for (let i = 0, x = str.length; i < x; i++) {
       if (str[i][0]) {
         str[i] = str[i][0].toUpperCase() + str[i].substr(1);
       }
     }
-    return str.join(' ');
+    return str.join(" ");
   }
 
   checkError() {
@@ -134,21 +149,21 @@ export class InputComponent implements ControlValueAccessor, OnInit {
     const errorMessages: string[] = [];
     Object.keys(errors || {}).forEach(error => {
       switch (error) {
-        case 'required':
+        case "required":
           errorMessages.push(`${this.label} is required`);
           break;
-        case 'minlength':
-        case 'maxlength':
+        case "pattern":
+          errorMessages.push(`${this.label} is not valid`);
+          break;
+        case "minlength":
+        case "maxlength":
           if (errors) {
             errorMessages.push(
               `Expected atleast length ${errors[error].requiredLength} but got ${errors[error].actualLength}`
             );
           }
           break;
-        case 'pattern':
-          errorMessages.push(`${this.label} is not valid`);
-          break;
-        case 'custom':
+        case "custom":
           if (errors) {
             errorMessages.push(errors[error]);
           }

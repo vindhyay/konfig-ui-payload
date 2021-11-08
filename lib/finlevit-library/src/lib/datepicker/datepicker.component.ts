@@ -1,11 +1,18 @@
-import { Component, Input, OnInit, Optional, Self, ViewChild } from "@angular/core";
-import { ControlValueAccessor, NgControl, ValidatorFn, Validators } from "@angular/forms";
-import { hasRequiredField } from "../utils";
+import { Component, Input, OnInit, Optional, Self } from '@angular/core';
+import { ControlValueAccessor, NgControl, ValidatorFn, Validators } from '@angular/forms';
+import { hasRequiredField } from '../utils';
+
+enum LabelPos {
+  Left = "Left",
+  Top = "Top",
+  Down = "Down",
+  Right = "Right"
+}
 
 @Component({
-  selector: "finlevit-lib-datepicker",
-  templateUrl: "./datepicker.component.html",
-  styleUrls: ["./datepicker.component.css"]
+  selector: 'finlevit-lib-datepicker',
+  templateUrl: './datepicker.component.html',
+  styleUrls: ['./datepicker.component.scss']
 })
 export class DatepickerComponent implements ControlValueAccessor, OnInit {
   constructor(@Optional() @Self() public controlDir: NgControl) {
@@ -23,6 +30,8 @@ export class DatepickerComponent implements ControlValueAccessor, OnInit {
   @Input() tooltip = "";
   @Input() label = "";
   @Input() error = false;
+  @Input() labelPos: LabelPos;
+  @Input() showErrorMsg: boolean = true;
   @Input() showErrorBorder = true;
   @Input() showIcon = true;
   @Input() isDisabled = false;
@@ -50,7 +59,9 @@ export class DatepickerComponent implements ControlValueAccessor, OnInit {
   @Input() stepHour: number = 1;
   @Input() stepMinute: number = 1;
 
+
   _value: any = null;
+  labelPosTypes = LabelPos;
 
   ngOnInit() {
     const control = this.controlDir && this.controlDir.control;

@@ -2,6 +2,13 @@ import { Component, EventEmitter, Input, OnInit, Optional, Output, Self } from '
 import { ControlValueAccessor, NgControl, ValidatorFn, Validators } from '@angular/forms';
 import { hasRequiredField } from '../utils';
 
+enum LabelPos {
+  Left = "Left",
+  Top = "Top",
+  Down = "Down",
+  Right = "Right"
+}
+
 @Component({
   selector: 'finlevit-number',
   templateUrl: './number.component.html',
@@ -13,6 +20,15 @@ export class NumberComponent implements ControlValueAccessor, OnInit {
       this.controlDir.valueAccessor = this;
     }
   }
+
+  get _placeholder(): string {
+    if(this.placeholder && !this.label && this.isRequired){
+      return this.placeholder + "*"
+    }else {
+      return this.placeholder;
+    }
+  }
+
   @Input() showErrorBorder = true;
   @Input() isSmall = false;
   @Input() isLarge = false;
@@ -20,22 +36,34 @@ export class NumberComponent implements ControlValueAccessor, OnInit {
   @Input() maxValue: number = Number.POSITIVE_INFINITY;
 
   @Input() prefix = '';
-  @Input() format = false;
+  @Input() format = true;
   @Input() suffix = '';
   @Input() isDisabled = false;
   @Input() isRequired = false;
   @Input() tooltip = '';
   @Input() label = '';
   @Input() placeholder = '';
+  @Input() maxLength: number = 200;
+  @Input() showMaxCharLimit: boolean = false;
+  @Input() labelPos: LabelPos;
+  @Input() mode;
+  @Input() currency;
+  @Input() minFractionDigits: number;
+  @Input() maxFractionDigits: number;
+  @Input() showButtons: boolean = false;
+  @Input() step: number;
 
   @Input() errorMsg = '';
   @Input() error = false;
+  @Input() showErrorMsg: boolean = true;
 
   @Input() validators: any = [];
 
   @Output() onBlur = new EventEmitter();
 
   _value: any = null;
+  STRING = String;
+  labelPosTypes = LabelPos;
 
   ngOnInit() {
     const control = this.controlDir && this.controlDir.control;
