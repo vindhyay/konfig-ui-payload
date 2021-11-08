@@ -2,6 +2,13 @@ import { Component, Input, OnInit, Optional, Self } from '@angular/core';
 import { ControlValueAccessor, NgControl, ValidatorFn, Validators } from '@angular/forms';
 import { hasRequiredField } from '../utils';
 
+enum LabelPos {
+  Left = "Left",
+  Top = "Top",
+  Down = "Down",
+  Right = "Right"
+}
+
 @Component({
   selector: 'finlevit-lib-select',
   templateUrl: './select.component.html',
@@ -45,9 +52,12 @@ export class SelectComponent implements ControlValueAccessor, OnInit {
   @Input() showErrorBorder = true;
   @Input() isDisabled = false;
   @Input() errorMsg = '';
+  @Input() labelPos: LabelPos;
+  @Input() showErrorMsg: boolean = true;
 
   _options = [];
   _value: any = null;
+  labelPosTypes = LabelPos;
 
   ngOnInit() {
     const control = this.controlDir && this.controlDir.control;

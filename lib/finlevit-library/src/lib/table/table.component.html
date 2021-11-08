@@ -1,52 +1,52 @@
 <p-table
-  [lazy]="lazyLoad"
-  (onLazyLoad)="onPage($event)"
-  [columns]="columns"
-  [value]="tableData"
-  [styleClass]="styleClass"
-  [paginator]="pagination && !!tableData.length"
-  [rowsPerPageOptions]="[10, 20, 50]"
-  [rows]="10"
-  [totalRecords]="totalRecords || tableData.length"
-  [paginatorDropdownAppendTo]="'body'"
-  [resizableColumns]="true"
-  [loading]="loading"
-  [showCurrentPageReport]="true"
-  currentPageReportTemplate="{first} to {last} of {totalRecords}"
-  [id]="tableId"
+        [lazy]="lazyLoad"
+        (onLazyLoad)="onPage($event)"
+        [columns]="columns"
+        [value]="tableData"
+        [styleClass]="styleClass"
+        [paginator]="pagination && !!tableData.length"
+        [rowsPerPageOptions]="[10, 20, 50]"
+        [rows]="10"
+        [totalRecords]="totalRecords || tableData.length"
+        [paginatorDropdownAppendTo]="'body'"
+        [resizableColumns]="true"
+        [loading]="loading"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="{first} to {last} of {totalRecords}"
+        [id]="tableId"
 >
   <ng-template pTemplate="header">
     <tr *ngIf="!hideHeader">
       <th
-        [ngStyle]="{
+              [ngStyle]="{
           color: headerColor,
           backgroundColor: headerBgColor,
           border: !cellBorder ? 'none' : '',
           width: (column?.width || 100) + '%'
         }"
-        pResizableColumn
-        [pSortableColumn]="sort ? column.columnId : ''"
-        *ngFor="let column of columns"
+              pResizableColumn
+              [pSortableColumn]="sort ? column.columnId : ''"
+              *ngFor="let column of columns"
       >
         {{ column.label }}
         <p-sortIcon *ngIf="sort" [field]="column.columnId"></p-sortIcon>
         <p-columnFilter
-          *ngIf="filter"
-          [type]="getColType(column.colType)"
-          [field]="column.columnId"
-          display="menu"
+                *ngIf="filter"
+                [type]="getColType(column.colType)"
+                [field]="column.columnId"
+                display="menu"
         ></p-columnFilter>
       </th>
       <ng-container *ngIf="editRow || deleteRow">
         <th
-          [ngStyle]="{
+                [ngStyle]="{
             color: headerColor,
             backgroundColor: headerBgColor,
             width: (actionWidth || 100) + '%',
             border: !cellBorder ? 'none' : '',
             textAlign: 'center'
           }"
-          [pSortableColumn]="''"
+                [pSortableColumn]="''"
         >
           {{ actionLabel }}
         </th>
@@ -56,22 +56,22 @@
   <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex">
     <tr (click)="onRowClick.emit(rowData)">
       <td
-        [ngStyle]="{ width: (col?.width || 100) + '%', border: !cellBorder ? 'none' : '' }"
-        *ngFor="let col of columns"
+              [ngStyle]="{ width: (col?.width || 100) + '%', border: !cellBorder ? 'none' : '' }"
+              *ngFor="let col of columns"
       >
         <ng-container [ngSwitch]="col.colType">
-          <div class="p-pl-1" *ngSwitchCase="TextInput">
+          <div class="p-pl-1" *ngSwitchCase="Text">
             <ng-container *ngIf="!(col?.validators?.editable && (editRows[rowIndex] || newRows[rowIndex]))">
               {{ rowData[col.columnId] }}
             </ng-container>
             <finlevit-text
-              *ngIf="col?.validators?.editable && (editRows[rowIndex] || newRows[rowIndex])"
-              (onBlur)="onColDataChange.emit({ column: col, data: rowData[col.columnId] })"
-              [(ngModel)]="rowData[col.columnId]"
-              (ngModelChange)="validateRow(rowIndex, rowData, col.columnId)"
-              [isSmall]="true"
-              [error]="rowErrors[rowIndex] && rowErrors[rowIndex][col.columnId] ? rowErrors[rowIndex][col.columnId]['error']: false"
-              [errorMsg]="rowErrors[rowIndex] && rowErrors[rowIndex][col.columnId] ? rowErrors[rowIndex][col.columnId]['errorMsg']: false"
+                    *ngIf="col?.validators?.editable && (editRows[rowIndex] || newRows[rowIndex])"
+                    (onBlur)="onColDataChange.emit({ column: col, data: rowData[col.columnId] })"
+                    [(ngModel)]="rowData[col.columnId]"
+                    (ngModelChange)="validateRow(rowIndex, rowData, col.columnId)"
+                    [isSmall]="true"
+                    [error]="rowErrors[rowIndex] && rowErrors[rowIndex][col.columnId] ? rowErrors[rowIndex][col.columnId]['error']: false"
+                    [errorMsg]="rowErrors[rowIndex] && rowErrors[rowIndex][col.columnId] ? rowErrors[rowIndex][col.columnId]['errorMsg']: false"
             ></finlevit-text>
           </div>
           <div class="p-pl-1" *ngSwitchCase="TextArea">
@@ -79,12 +79,12 @@
               {{ rowData[col.columnId] }}
             </ng-container>
             <finlevit-lib-textarea
-              *ngIf="col?.validators?.editable && (editRows[rowIndex] || newRows[rowIndex])"
-              [(ngModel)]="rowData[col.columnId]"
-              (ngModelChange)="validateRow(rowIndex, rowData, col.columnId)"
-              [isSmall]="true"
-              [error]="rowErrors[rowIndex] && rowErrors[rowIndex][col.columnId] ? rowErrors[rowIndex][col.columnId]['error']: false"
-              [errorMsg]="rowErrors[rowIndex] && rowErrors[rowIndex][col.columnId] ? rowErrors[rowIndex][col.columnId]['errorMsg']: false"
+                    *ngIf="col?.validators?.editable && (editRows[rowIndex] || newRows[rowIndex])"
+                    [(ngModel)]="rowData[col.columnId]"
+                    (ngModelChange)="validateRow(rowIndex, rowData, col.columnId)"
+                    [isSmall]="true"
+                    [error]="rowErrors[rowIndex] && rowErrors[rowIndex][col.columnId] ? rowErrors[rowIndex][col.columnId]['error']: false"
+                    [errorMsg]="rowErrors[rowIndex] && rowErrors[rowIndex][col.columnId] ? rowErrors[rowIndex][col.columnId]['errorMsg']: false"
             ></finlevit-lib-textarea>
           </div>
           <div class="p-pl-1" *ngSwitchCase="Number">
@@ -92,28 +92,28 @@
               {{ rowData[col.columnId] }}
             </ng-container>
             <finlevit-number
-              *ngIf="col?.validators?.editable && (editRows[rowIndex] || newRows[rowIndex])"
-              (onBlur)="onColDataChange.emit({ column: col, data: rowData[col.columnId] })"
-              [(ngModel)]="rowData[col.columnId]"
-              (ngModelChange)="validateRow(rowIndex, rowData, col.columnId)"
-              [isSmall]="true"
-              [error]="rowErrors[rowIndex] && rowErrors[rowIndex][col.columnId] ? rowErrors[rowIndex][col.columnId]['error']: false"
-              [errorMsg]="rowErrors[rowIndex] && rowErrors[rowIndex][col.columnId] ? rowErrors[rowIndex][col.columnId]['errorMsg']: false"
+                    *ngIf="col?.validators?.editable && (editRows[rowIndex] || newRows[rowIndex])"
+                    (onBlur)="onColDataChange.emit({ column: col, data: rowData[col.columnId] })"
+                    [(ngModel)]="rowData[col.columnId]"
+                    (ngModelChange)="validateRow(rowIndex, rowData, col.columnId)"
+                    [isSmall]="true"
+                    [error]="rowErrors[rowIndex] && rowErrors[rowIndex][col.columnId] ? rowErrors[rowIndex][col.columnId]['error']: false"
+                    [errorMsg]="rowErrors[rowIndex] && rowErrors[rowIndex][col.columnId] ? rowErrors[rowIndex][col.columnId]['errorMsg']: false"
             ></finlevit-number>
           </div>
-          <div class="p-pl-1" *ngSwitchCase="DatePicker">
+          <div class="p-pl-1" *ngSwitchCase="Date">
             <ng-container *ngIf="!(col?.validators?.editable && (editRows[rowIndex] || newRows[rowIndex]))">
               {{ rowData[col.columnId] | date }}
             </ng-container>
             <finlevit-lib-datepicker
-              *ngIf="col?.validators?.editable && (editRows[rowIndex] || newRows[rowIndex])"
-              [(ngModel)]="rowData[col.columnId]"
-              (ngModelChange)="validateRow(rowIndex, rowData, col.columnId)"
-              [isSmall]="true"
-              [minDate]="col?.validators?.minDate"
-              [maxDate]="col?.validators?.maxDate"
-              [error]="rowErrors[rowIndex] && rowErrors[rowIndex][col.columnId] ? rowErrors[rowIndex][col.columnId]['error']: false"
-              [errorMsg]="rowErrors[rowIndex] && rowErrors[rowIndex][col.columnId] ? rowErrors[rowIndex][col.columnId]['errorMsg']: false"
+                    *ngIf="col?.validators?.editable && (editRows[rowIndex] || newRows[rowIndex])"
+                    [(ngModel)]="rowData[col.columnId]"
+                    (ngModelChange)="validateRow(rowIndex, rowData, col.columnId)"
+                    [isSmall]="true"
+                    [minDate]="col?.validators?.minDate"
+                    [maxDate]="col?.validators?.maxDate"
+                    [error]="rowErrors[rowIndex] && rowErrors[rowIndex][col.columnId] ? rowErrors[rowIndex][col.columnId]['error']: false"
+                    [errorMsg]="rowErrors[rowIndex] && rowErrors[rowIndex][col.columnId] ? rowErrors[rowIndex][col.columnId]['errorMsg']: false"
             ></finlevit-lib-datepicker>
           </div>
           <div *ngSwitchDefault>
@@ -122,9 +122,9 @@
         </ng-container>
       </td>
       <td
-        *ngIf="editRow || deleteRow"
-        [ngStyle]="{ width: actionWidth + '%', border: !cellBorder ? 'none' : '' }"
-        class="table-actions"
+              *ngIf="editRow || deleteRow"
+              [ngStyle]="{ width: actionWidth + '%', border: !cellBorder ? 'none' : '' }"
+              class="table-actions"
       >
         <ng-container *ngIf="editRows[rowIndex]">
           <div class="edit-action-mode">

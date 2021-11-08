@@ -243,7 +243,7 @@ export class MetaData {
 
 export class Column {
   type: DATA_TYPES;
-  colType: WidgetTypes;
+  colType: string;
   columnId: string;
   label: string;
   name: string;

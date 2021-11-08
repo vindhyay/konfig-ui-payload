@@ -1,0 +1,97 @@
+:host {
+  --input-border-color: #ced4da;
+  --input-background-color: #ffffff;
+  --input-color: #495057;
+  --input-label-color: #373f51;
+  --validation-message-color: #dc3545;
+  --input-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  --input-label-font-family: 'Muli';
+  --input-label-align: flex-start;
+  --input-text-decoration: none;
+  --input-text-align: left;
+  --input-font-size: 16px;
+  --input-border: solid;
+  --input-border-radius: 4px;
+  --input-line-height: 1;
+  --input-letter-spacing: 0;
+  --input-word-spacing: 0;
+  --input-font-style: normal;
+  --input-font-weight: normal;
+}
+
+.p-field{
+  .label-top{
+    .lib-label-container{
+      display: flex;
+      justify-content: var(--input-label-align);
+    }
+  }
+  .label-left{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+    .lib-label-container{
+      width: 100%;
+      max-width: 35%;
+    }
+    .lib-input-container{
+      width: 100%;
+      max-width: 65%;
+      &.no-label-input-container{
+        max-width: 100%;
+      }
+    }
+  }
+  .label-down{
+    display: flex;
+    flex-direction: column-reverse;
+    .lib-label-container{
+      display: flex;
+      justify-content: var(--input-label-align);
+    }
+  }
+  .label-right{
+    display: flex;
+    align-items: center;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    .lib-label-container{
+      width: 100%;
+      max-width: 35%;
+      justify-content: flex-end;
+    }
+    .lib-input-container{
+      width: 100%;
+      max-width: 65%;
+      &.no-label-input-container{
+        max-width: 100%;
+      }
+    }
+  }
+}
+
+.p-inputtext{
+  background-color: var(--input-background-color);
+  color: var(--input-color);
+  font-family: var(--input-font-family);
+  text-decoration: var(--input-text-decoration);
+  text-align: var(--input-text-align);
+  font-size: var(--input-font-size);
+  border: var(--input-border) 1px var(--input-border-color);
+  border-radius: var(--input-border-radius);
+  line-height: var(--input-line-height);
+  letter-spacing: var(--input-letter-spacing);
+  word-spacing: var(--input-word-spacing);
+  font-style: var(--input-font-style);
+  font-weight: var(--input-font-weight);
+}
+
+.label{
+  color: var(--input-label-color);
+  font-family: var(--input-label-font-family);
+}
+
+.validation-message{
+  color: var(--validation-message-color);
+}

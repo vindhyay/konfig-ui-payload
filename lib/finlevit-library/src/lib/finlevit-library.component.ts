@@ -3,10 +3,14 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'lib-finlevit-library',
   template: '',
-  styles: []
+  styles: [
+  ]
 })
 export class FinlevitLibraryComponent implements OnInit {
-  constructor() {}
 
-  ngOnInit(): void {}
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
 }

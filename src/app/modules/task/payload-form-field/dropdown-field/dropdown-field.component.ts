@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { BaseWidget, DropdownMetaData } from "../../model/create-form.models";
+import {AlignTypes, BaseWidget, DropdownMetaData} from "../../model/create-form.models";
 
 @Component({
   selector: "app-dropdown-field",
@@ -12,6 +12,27 @@ export class DropdownFieldComponent implements OnInit {
   @Input() isDisabled: boolean = false;
   @Input() editMode: boolean = false;
   @Output() optionChange = new EventEmitter();
+  @Input() borderColor: string;
+  @Input() backgroundColor: string;
+  @Input() textColor: string;
+  @Input() labelColor: string;
+  @Input() textFontFamily: string;
+  @Input() labelFontFamily: string;
+  @Input() errorMessage: string;
+  @Input() labelPos: any;
+  @Input() labelHorizontalAlign: AlignTypes;
+  @Input() validationMessageColor: string;
+  @Input() showErrorMessage: boolean
+  @Input() textHorizontalAlign: string;
+  @Input() borderRadius: string;
+  @Input() fontSize: string;
+  @Input() wordSpacing: string;
+  @Input() letterSpacing: string;
+  @Input() lineSpacing: string;
+  @Input() fontWeight: string;
+  @Input() fontStyle: string;
+  @Input() textDecoration: string;
+  @Input() borderStyle: string;
   get metaData(): DropdownMetaData {
     return this.item.metaData as DropdownMetaData;
   }

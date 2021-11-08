@@ -1,34 +1,46 @@
-<div [ngClass]="{ 'p-field': true, 'small-input': isSmall, 'large-input': isLarge }">
-  <div *ngIf="label" class="d-flex flex-row">
-    <div [ngClass]="{ 'input-label': true, 'input-label-sm': isSmall, 'input-label-lg': isLarge }">
-      {{ label }}<span class="required" *ngIf="isRequired"> *</span>
-      <i class="label-tooltip pi pi-info-circle p-pl-2" [pTooltip]="tooltip" *ngIf="tooltip"></i>
+<div [ngClass]="{ 'p-field': true }">
+    <div
+            [ngClass]="{
+             'label-top': labelPos === labelPosTypes.Top,
+             'label-left': labelPos === labelPosTypes.Left,
+             'label-down': labelPos === labelPosTypes.Down,
+             'label-right': labelPos === labelPosTypes.Right
+          }"
+    >
+        <div *ngIf="label" class="d-flex flex-row lib-label-container">
+            <div [ngClass]="{ 'input-label': true, 'input-label-sm': isSmall, 'input-label-lg': isLarge, 'label' : true}">
+                {{ label }}<span class="required" *ngIf="isRequired"> *</span>
+                <em class="label-tooltip pi pi-info-circle p-pl-2" [pTooltip]="tooltip" *ngIf="tooltip"></em>
+            </div>
+        </div>
+        <div [ngClass]="{'lib-input-container': true, 'no-label-input-container': !label}">
+            <p-dropdown
+                    appendTo="body"
+                    [options]="options"
+                    [(ngModel)]="_value"
+                    [optionValue]="optionValue"
+                    [optionLabel]="optionLabel"
+                    [showClear]="showClear"
+                    [filter]="filter"
+                    [required]="isRequired"
+                    [placeholder]="placeholder"
+                    (onChange)="onLocalChange($event)"
+                    (onFocus)="onLocalFocus($event)"
+                    (onBlur)="onLocalTouched($event)"
+                    [disabled]="isDisabled"
+                    [ngClass]="{ 'error-border': showErrorBorder && checkError() }"
+                    [styleClass]="isSmall ? 'p-inputtext-sm' : isLarge ? 'p-inputtext-lg' : ''"
+            >
+                <ng-container *ngIf="iconOptions">
+                    <ng-template let-item pTemplate="item">
+                        <i [ngClass]="item.icon"></i><span class="p-pl-2">{{ item.name }}</span>
+                    </ng-template>
+                </ng-container>
+            </p-dropdown>
+        </div>
     </div>
-  </div>
-  <p-dropdown
-    appendTo="body"
-    [options]="options"
-    [(ngModel)]="_value"
-    [optionValue]="optionValue"
-    [optionLabel]="optionLabel"
-    [showClear]="showClear"
-    [filter]="filter"
-    [required]="isRequired"
-    [placeholder]="placeholder"
-    (onChange)="onLocalChange($event)"
-    (onFocus)="onLocalFocus($event)"
-    (onBlur)="onLocalTouched($event)"
-    [disabled]="isDisabled"
-    [ngClass]="{ 'error-border': showErrorBorder && checkError() }"
-    [styleClass]="isSmall ? 'p-inputtext-sm' : isLarge ? 'p-inputtext-lg' : ''"
-  >
-    <ng-container *ngIf="iconOptions">
-      <ng-template let-item pTemplate="item">
-        <i [ngClass]="item.icon"></i><span class="p-pl-2">{{ item.name }}</span>
-      </ng-template>
-    </ng-container>
-  </p-dropdown>
-  <div *ngIf="checkError()">
-    <small class="p-error">{{ errorMsg || getErrorMessages()[0] }}</small>
-  </div>
+    <div *ngIf="checkError() && showErrorMsg">
+        <small class="validation-message">{{ errorMsg || getErrorMessages()[0] }}</small>
+    </div>
 </div>
+

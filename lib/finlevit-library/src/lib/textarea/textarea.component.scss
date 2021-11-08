@@ -12,6 +12,7 @@
   --input-font-size: 16px;
   --input-border: solid;
   --input-border-radius: 4px;
+  --input-line-height: 1;
   --input-letter-spacing: 0;
   --input-word-spacing: 0;
   --input-font-style: normal;
@@ -70,8 +71,13 @@
   }
 }
 
+.label{
+  color: var(--input-label-color);
+  font-family: var(--input-label-font-family);
+}
+
 :host ::ng-deep{
-  .p-dropdown{
+  .p-inputtext{
     background-color: var(--input-background-color);
     color: var(--input-color);
     font-family: var(--input-font-family);
@@ -79,14 +85,10 @@
     font-size: var(--input-font-size);
     border: var(--input-border) 1px var(--input-border-color);
     border-radius: var(--input-border-radius);
+    line-height: var(--input-line-height);
     letter-spacing: var(--input-letter-spacing);
     word-spacing: var(--input-word-spacing);
     font-style: var(--input-font-style);
     font-weight: var(--input-font-weight);
   }
-}
-
-.label{
-  color: var(--input-label-color);
-  font-family: var(--input-label-font-family);
 }
