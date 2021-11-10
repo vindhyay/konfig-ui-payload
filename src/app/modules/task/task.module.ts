@@ -22,6 +22,7 @@ import {ssnInputFieldComponent} from './payload-form-field/ssninput-field/ssninp
 import { AdvTableComponent } from './payload-form-field/adv-table/adv-table.component';
 import { CustomTableFiltersComponent } from './payload-form-field/adv-table/custom-table-filters/custom-table-filters.component';
 import { VerticalStepperComponent } from './payload-form-field/vertical-stepper/vertical-stepper.component';
+import { DividerComponent } from "./payload-form-field/divider/divider.component";
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { VerticalStepperComponent } from './payload-form-field/vertical-stepper/
     AdvTableComponent,
     PasswordFieldComponent,
     CustomTableFiltersComponent,
-    VerticalStepperComponent
+    VerticalStepperComponent,
+    DividerComponent
   ],
   imports: [CommonModule, GridsterModule, SharedModule, ExtendedModule],
   providers: [TaskService, AuthService]

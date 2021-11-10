@@ -138,7 +138,8 @@ export enum WidgetTypes {
   Image = "Image",
   Header = "Header",
   Footer = "Footer",
-  Upload = "Upload"
+  Upload = "Upload",
+  Divider = "Divider"
 }
 class Validators {
   required: boolean;
@@ -961,6 +962,41 @@ export class ModalMetaData extends MetaData {
   }
 }
 
+export class DividerMetaData extends MetaData {
+  align: string;
+  layout: string;
+  type: string;
+  text: string;
+  textColor: string;
+  borderColor: string;
+  borderStyle: string;
+  fontFamily: string;
+  fontSize: string;
+  constructor(data) {
+    super(data);
+    const {
+      align = 'center',
+      layout = 'horizontal',
+      type = 'dotted',
+      text = '',
+      textColor = 'black',
+      borderColor = '#d1d1d1',
+      borderStyle = 'solid',
+      fontFamily = 'Helvetica',
+      fontSize = '1em'
+    } = data;
+    this.align = align;
+    this.layout = layout;
+    this.type = type;
+    this.text = text;
+    this.textColor = textColor;
+    this.borderColor = borderColor;
+    this.borderStyle = borderStyle;
+    this.fontFamily = fontFamily;
+    this.fontSize = fontSize;
+  }
+}
+
 export class BaseWidget {
   id: any;
   cols: number;
@@ -1002,7 +1038,8 @@ export class BaseWidget {
     | ErrorContainerMetadata
     | PhonenumberInputMetaData
     | SSNInputMetaData
-    | StepperContainerMetaData;
+    | StepperContainerMetaData
+    | DividerMetaData;
   name: string;
   displayName: string;
   label: string;
@@ -1114,6 +1151,9 @@ export class BaseWidget {
           break;
         case WidgetTypes.ErrorContainer:
           this.metaData = new ErrorContainerMetadata(data);
+          break;
+        case WidgetTypes.Divider:
+          this.metaData = new DividerMetaData(data);
           break;
         default:
           this.metaData = null;
