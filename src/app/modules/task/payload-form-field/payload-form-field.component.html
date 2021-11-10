@@ -620,6 +620,11 @@
       </p-tabView>
     </div>
   </ng-container>
+  <ng-container *ngIf="item?.metaData?.widgetType === Divider">
+    <div class="input-container">
+      <app-divider [item]="item"></app-divider>
+    </div>
+  </ng-container>
   <ng-container
     *ngIf="
       item?.metaData?.widgetType === Container ||

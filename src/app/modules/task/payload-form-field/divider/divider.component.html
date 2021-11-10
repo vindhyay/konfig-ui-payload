@@ -1,0 +1,57 @@
+<div class="container" *ngIf="metaData?.layout === 'horizontal'">
+    <div class="text mat-typography" *ngIf="metaData?.align === 'left'" [ngStyle]="{
+        color: metaData?.textColor,
+        'font-family': metaData?.fontFamily,
+        'font-size': metaData?.fontSize
+    }">{{metaData?.text}}</div>
+    <div class="line">
+        <mat-divider [ngStyle]="{
+            'border-top-color': metaData?.borderColor,
+            'border-top-style': metaData?.borderStyle
+        }"></mat-divider>
+    </div>
+    <div class="text mat-typography" *ngIf="metaData?.align === 'center' && metaData?.text" [ngStyle]="{
+        color: metaData?.textColor, 
+        'font-family': metaData?.fontFamily,
+        'font-size': metaData?.fontSize
+    }">{{metaData?.text}}</div>
+    <div class="line" *ngIf="metaData?.align === 'center' && metaData?.text">
+        <mat-divider [ngStyle]="{
+            'border-top-color': metaData?.borderColor,
+            'border-top-style': metaData?.borderStyle
+        }"></mat-divider>
+    </div>
+    <div class="text mat-typography" *ngIf="metaData?.align === 'right'" [ngStyle]="{
+        color: metaData?.textColor,
+        'font-family': metaData?.fontFamily,
+        'font-size': metaData?.fontSize
+    }">{{metaData?.text}}</div>
+</div>
+
+
+<div class="text mat-typography" *ngIf="metaData?.layout === 'vertical' && metaData?.align==='top'" [ngStyle]="{
+        'text-align': 'center',
+        'color': metaData?.textColor,
+        'font-family': metaData?.fontFamily,
+        'font-size': metaData?.fontSize
+    }">{{metaData?.text}}</div>
+<mat-divider vertical *ngIf="metaData?.layout === 'vertical'" [ngStyle]="{
+            'border-right-color': metaData?.borderColor,
+            'border-right-style': metaData?.borderStyle
+        }"></mat-divider>
+<div class="text mat-typography" *ngIf="metaData?.layout === 'vertical' && metaData?.align==='middle'" [ngStyle]="{
+        'text-align': 'center',
+        'color': metaData?.textColor,
+        'font-family': metaData?.fontFamily,
+        'font-size': metaData?.fontSize
+    }">{{metaData?.text}}</div>
+<mat-divider vertical *ngIf="metaData?.layout === 'vertical'" [ngStyle]="{
+            'border-right-color': metaData?.borderColor,
+            'border-right-style': metaData?.borderStyle
+        }"></mat-divider>
+<div class="text mat-typography" *ngIf="metaData?.layout === 'vertical' && metaData?.align==='bottom'" [ngStyle]="{
+        'text-align': 'center',
+        'color': metaData?.textColor,
+        'font-family': metaData?.fontFamily,
+        'font-size': metaData?.fontSize
+    }">{{metaData?.text}}</div>
