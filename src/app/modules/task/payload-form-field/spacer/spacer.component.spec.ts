@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
-import { DividerComponent } from "./divider.component";
+import { SpacerComponent } from "./spacer.component";
 
 
-describe("DividerComponent", () => {
-  let component: DividerComponent;
-  let fixture: ComponentFixture<DividerComponent>;
+describe("SpacerComponent", () => {
+  let component: SpacerComponent;
+  let fixture: ComponentFixture<SpacerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DividerComponent]
+      declarations: [SpacerComponent]
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DividerComponent);
+    fixture = TestBed.createComponent(SpacerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
