@@ -625,6 +625,11 @@
       <app-divider [item]="item"></app-divider>
     </div>
   </ng-container>
+  <ng-container *ngIf="item?.metaData?.widgetType === Spacer">
+    <div class="input-container">
+      <app-spacer [item]="item"></app-spacer>
+    </div>
+  </ng-container>
   <ng-container
     *ngIf="
       item?.metaData?.widgetType === Container ||

@@ -139,7 +139,8 @@ export enum WidgetTypes {
   Header = "Header",
   Footer = "Footer",
   Upload = "Upload",
-  Divider = "Divider"
+  Divider = "Divider",
+  Spacer = "Spacer"
 }
 class Validators {
   required: boolean;
@@ -997,6 +998,12 @@ export class DividerMetaData extends MetaData {
   }
 }
 
+export class SpacerMetaData extends MetaData {
+  constructor(data) {
+    super(data);
+  }
+}
+
 export class BaseWidget {
   id: any;
   cols: number;
@@ -1039,7 +1046,8 @@ export class BaseWidget {
     | PhonenumberInputMetaData
     | SSNInputMetaData
     | StepperContainerMetaData
-    | DividerMetaData;
+    | DividerMetaData
+    | SpacerMetaData;
   name: string;
   displayName: string;
   label: string;
@@ -1154,6 +1162,9 @@ export class BaseWidget {
           break;
         case WidgetTypes.Divider:
           this.metaData = new DividerMetaData(data);
+          break;
+        case WidgetTypes.Spacer:
+          this.metaData = new SpacerMetaData(data);
           break;
         default:
           this.metaData = null;
