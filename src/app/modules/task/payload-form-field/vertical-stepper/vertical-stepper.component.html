@@ -1,45 +1,124 @@
 <div class="stepper-container">
-  <ul class="progressbar">
-    <li
-      *ngFor="let child of children; let i = index"
-      [ngClass]="{
-        completed: (_selectedIndex > i || completedSteps[child.metaData.widgetId]),
-        selected: _selectedIndex === i
-      }"
-      (click)="onSelectIndexChange(i)"
-    >
-      <div class="indicator">
-        <i [class]="child.metaData.icon"></i>
-      </div>
-      <div class="step-label">
-        <h6>{{ child.label }}</h6>
-        <p>{{ child?.metaData?.sublabel }}</p>
-      </div>
-    </li>
-  </ul>
-  <div [ngClass]="{ content: true, 'view-mode': viewMode }">
-    <finlevit-grid
-      [viewMode]="viewMode"
-      [parent]="children[_selectedIndex]"
-      [items]="children[_selectedIndex].children"
-      (onBtnClick)="onBtnClick.emit($event)"
-    ></finlevit-grid>
-    <ng-container *ngIf="_selectedIndex == children.length - 1">
-        <div class="review_content">
-          <div  *ngFor="let child of reviewData;let i = index">              
-              <h5>{{child.label}}<button class="step-btn edit-btn" (click)="onSelectIndexChange(i)">Edit</button></h5>
-              <div class="personal-panel">
-              <p *ngFor="let item of child.children"><strong>{{item.label}}</strong>&ngsp;:&ngsp;<span>{{item.value}}</span></p>
-              </div>
-          </div>
+  <div
+    class="progressbar"
+    [ngStyle]="{
+      background: metaData.leftPanelBgColor
+    }"
+  >
+    <div class="stepper-header" *ngIf="metaData.showHeader"  [ngStyle]="{
+      height: metaData.headerHeight+'px'
+    }">
+      <finlevit-grid
+        [viewMode]="viewMode"
+        [parent]="headerContent[0]"
+        [items]="headerContent[0]?.children"
+      ></finlevit-grid>
+    </div>
+    <ul>
+      <li
+        *ngFor="let child of children; let i = index"
+        [ngClass]="{
+          completed: _selectedIndex > i || completedSteps[child.metaData.widgetId],
+          selected: _selectedIndex === i
+        }"
+        (click)="onSelectIndexChange(i)"
+      >
+        <div
+          [ngClass]="{
+            indicator: true,
+            'box-pattern': metaData.indicatorPattern === 'square'
+          }"
+        >
+          <i [class]="child.metaData.icon"></i>
         </div>
-    </ng-container>
-    <div class="stepper-btn-container">
-      <div>
-        <button class="step-btn" *ngIf="_selectedIndex > 0" (click)="setSelection(-1)">Previous</button>
+        <div class="step-label">
+          <p
+            [class]="'text-content text-style-' + metaData?.textStyle"
+            [ngStyle]="{
+              color:
+                _selectedIndex > i
+                  ? metaData.completedStepColor
+                  : _selectedIndex === i
+                  ? metaData.currentStepColor
+                  : metaData.color,
+              'font-weight': metaData.fontWeight,
+              'font-style': metaData.fontStyle,
+              'text-decoration': metaData.textDecortation
+            }"
+          >
+            {{ child.label }}
+          </p>
+          <p class="sub-lable">{{ child?.metaData?.sublabel }}</p>
+        </div>
+        <span
+          [ngStyle]="{
+            background: _selectedIndex > i ? metaData.completedBarColor : metaData.defaultBarColor
+          }"
+        ></span>
+      </li>
+    </ul>
+  </div>
+  <div class="wrapper">
+    <div class="inner-wrapper">
+      <div class="scrollView">
+        <div
+          class="content"
+          [ngStyle]="{
+            background: metaData.conentBgColor
+          }"
+        >
+          <finlevit-grid
+            [viewMode]="viewMode"
+            [parent]="children[_selectedIndex]"
+            [items]="children[_selectedIndex].children"
+            (onBtnClick)="onBtnClick.emit($event)"
+            (checkHeight)="checkHeight()"
+            [showEdit]="showEdit"
+          ></finlevit-grid>
+          <ng-container *ngIf="_selectedIndex == children.length - 1">
+            <div class="review_content">
+              <div *ngFor="let child of reviewData; let i = index">
+                <h5>{{ child.label }}</h5>
+                <div class="personal-panel">
+                  <button class="btn btn-info edit-btn" (click)="onSelectIndexChange(i)">Edit</button>
+                  <div class="content-container">
+                    <p *ngFor="let item of child.children">
+                      <strong>{{ item.label }}</strong
+                      >&ngsp;:&ngsp;<span>{{ item.value }}</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
       </div>
-      <div>
-        <button *ngIf="_selectedIndex != children.length - 1" class="step-btn" (click)="setSelection(1)">Next</button>
+      <div
+        class="stepper-btn-container"
+        [ngStyle]="{
+          background: metaData.footerBgColor
+        }"
+      >
+        <ng-container *ngFor="let item of metaData.buttonContainer">
+          <div [ngStyle]="{ width: item.cols * 10 + 'px' }" *ngIf="checkVisibility(item, _selectedIndex)">
+            <finlevit-button
+              [icon]="item?.metaData?.icon"
+              [iconPos]="item?.metaData?.iconPos"
+              [color]="item?.metaData?.color"
+              [bgColor]="item?.metaData?.bgColor"
+              [label]="item?.label"
+              [variant]="item?.metaData?.variant"
+              [type]="item?.metaData?.type"
+              (btnClick)="setSelection(item)"
+            ></finlevit-button>
+          </div>
+        </ng-container>
+        <!-- <div>
+          <button class="step-btn" *ngIf="_selectedIndex > 0" (click)="setSelection(-1)">Previous</button>
+        </div>
+        <div>
+          <button *ngIf="_selectedIndex != children.length - 1" class="step-btn" (click)="setSelection(1)">Next</button>
+        </div> -->
       </div>
     </div>
   </div>

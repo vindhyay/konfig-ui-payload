@@ -540,6 +540,8 @@
       (onSelect)="onSelectionClick($event,item.metaData)" 
       (onPrev)="onPrevClick($event)"
       (onBtnClick)="onBtnClick.emit($event)"
+      [showEdit]="showEdit"
+      [headerContent]= "item?.metaData?.headerContent" 
       >
     </app-vertical-stepper>
     <mat-horizontal-stepper
