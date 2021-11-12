@@ -156,7 +156,10 @@ export class AppConfigService {
       // Upload files
       uploadFile: ACCOUNT_WORKFLOW_BASE_URL + '/transaction/upload-file',
       // Transaction Table Data URL
-      transactionTableURL: ACCOUNT_WORKFLOW_BASE_URL + '/transaction/status'
+      transactionTableURL: ACCOUNT_WORKFLOW_BASE_URL + '/transaction/status',
+      // Wizard Screen APIs
+      saveAndValidateScreenURL: ACCOUNT_WORKFLOW_BASE_URL + '/transaction/save-and-validate',
+      getScreenDataURL: ACCOUNT_WORKFLOW_BASE_URL + '/transaction',
     }
   }
 }

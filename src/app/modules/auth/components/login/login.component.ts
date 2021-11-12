@@ -47,7 +47,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
     );
     this.authService.checkCurrentState();
     this.activatedRoute.params.subscribe(params => {
-     this.appId = params?.workflowId
+     this.appId = params?.applicationId
     })
     this.activatedRoute.queryParams.subscribe(params => {
       this.queryParams = params

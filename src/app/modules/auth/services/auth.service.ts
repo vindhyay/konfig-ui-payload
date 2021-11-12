@@ -61,7 +61,7 @@ export class AuthService extends BaseService implements OnDestroy {
     this.activatedRoute.firstChild.queryParams.subscribe(params => {
       const queryParams = params;
       const pathParams = this.activatedRoute.snapshot.firstChild.params;
-      this.router.navigate([pathParams?.workflowId + "/auth"], {
+      this.router.navigate([pathParams?.applicationId + "/auth"], {
         queryParams: queryParams,
         relativeTo: this.activatedRoute
       });
