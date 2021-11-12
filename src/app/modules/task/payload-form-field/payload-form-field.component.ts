@@ -256,7 +256,7 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
     }
   }
   onSelectionClick($event,metaData){
-    if(metaData.isFreeflow){
+    if(metaData.isFreeflow || (this.verticalStepIndex>$event)){
       this.verticalStepIndex = $event;
     }else{
       const child=this.item.children[this.verticalStepIndex]

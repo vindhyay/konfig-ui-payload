@@ -39,6 +39,18 @@ export class EditorService {
     this.widgetConfigTabIndex.next(index);
   }
 
+  public setAdjustableHeight(items, containerName = ".gridster-container") {
+    const container: any = document.querySelector(containerName);
+    if (container && container.getClientRects().length) {
+      let rows = container.offsetHeight;
+      items.forEach(item => {
+        rows = Math.max(rows, (item.y + item.rows)*10);
+      });
+      console.log('rows',container,container.offsetHeight,(container.offsetHeight -rows),rows);
+      container.style.height = container.offsetHeight+ (rows - container.offsetHeight) + "px";
+    }
+  }
+  
   public setContainerHeight(items: any) {
     const container: any = document.querySelector(".gridster-container");
     if (container && container.getClientRects().length) {
