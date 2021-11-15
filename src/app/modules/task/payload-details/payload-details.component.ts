@@ -213,11 +213,11 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
   }
 
   submitTransaction(payloadData: any) {
-    const { payload: payloadJson, files = [], data: { metaData: { status: statusId = "" } = {} } = {} } = payloadData;
-    // @ts-ignore
+    const { payloadFields: payloadMetaData, payload: screenDataJson, files = [], data: { metaData: { status: statusId = "" } = {} } = {} } = payloadData;
     const params = {
       userId: this.currentUser?.userId,
       statusId,
+      screenId: this.transactionDetails.screenId,
       transactionId: this.transactionDetails.transactionId || ""
     };
     const appId = this.transactionDetails?.application?.appId;
@@ -225,30 +225,44 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
       this.notificationService.error("Application not found", "Failed to submit");
       return;
     }
-    this.loading = true;
-    const payload = new FormData();
-    payload.append("payload", JSON.stringify(payloadJson));
-    files.forEach((file: any) => {
-      payload.append("files", file);
-    });
-    this.userService.submitTransaction(appId, params, payload).subscribe(
-      result => {
-        this.loading = false;
-        const { data, error } = parseApiResponse(result);
-        if (data && !error) {
-          this.notificationService.success("Transaction Submitted Successfully", "Success");
-          this.transactionDetails = data;
-          this.taskService.setTransactionDetails(data);
-          this.id = data.id;
-        } else {
-          this.notificationService.error(error.errorMessage, "Error");
-        }
-      },
-      error => {
-        this.loading = false;
-        this.notificationService.error(error?.error?.error?.errorMessage);
-      }
-    );
+    this.userService.saveAndValidateScreen({ statusId, screenId: this.transactionDetails?.screenId, transactionId: this.transactionDetails.transactionId }, payloadMetaData)
+      .subscribe(result => {
+          this.loading = false;
+          const { data, error } = parseApiResponse(result);
+          if (data && !error) {
+            this.taskService.setTransactionDetails(data);
+            const payload = new FormData();
+            const allScreenData = {...this.transactionDetails.dataPayload, [this.transactionDetails.screenAlias]: screenDataJson}
+            payload.append("payload", JSON.stringify(allScreenData));
+            files.forEach((file: any) => {
+              payload.append("files", file);
+            });
+            this.loading = true;
+            this.userService.submitTransaction(appId, params, payload).subscribe(
+              result => {
+                this.loading = false;
+                const { data, error } = parseApiResponse(result);
+                if (data && !error) {
+                  this.notificationService.success("Transaction Submitted Successfully", "Success");
+                  this.transactionDetails = data;
+                  this.taskService.setTransactionDetails(data);
+                  this.id = data.id;
+                } else {
+                  this.notificationService.error(error.errorMessage, "Error");
+                }
+              },
+              error => {
+                this.loading = false;
+                this.notificationService.error(error?.error?.error?.errorMessage);
+              }
+            );
+          }else{
+            this.loading = false;
+            this.notificationService.error(error.errorMessage);
+          }
+        }, error => {
+          this.loading = false;
+        })
   }
 
   redirectTo(QUEUE_TYPE?: any) {
