@@ -149,9 +149,9 @@ export class UserService extends BaseService implements OnDestroy {
   };
 
   //Unique Key Transaction pop
-  uniqueKeyTransaction = (transactionId: any, payload: any): Observable<any> => {
+  uniqueKeyTransaction = (transactionId: any, payload: any, params: {screenId: string}): Observable<any> => {
     const url = `${this.config.getApiUrls().uniqueKeyTransactionURL}/${transactionId}`;
-    return this.postData(url, payload);
+    return this.postData(url, payload, params);
   };
 
   //Get Workflow Payload To Show Form
@@ -231,4 +231,15 @@ export class UserService extends BaseService implements OnDestroy {
       }
     });
   }
+
+  //  Save and validate screen
+  saveAndValidateScreen= (params, payload: any): Observable<any> => {
+    const url = `${this.config.getApiUrls().saveAndValidateScreenURL}`;
+    return this.postData(url, payload, params);
+  };
+  // Get screen details based on action id
+  getScreenData = (transactionId, params):Observable<any> => {
+  const url = `${this.config.getApiUrls().getScreenDataURL}/${transactionId}`;
+  return this.getData(url, params);
+};
 }

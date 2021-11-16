@@ -27,6 +27,7 @@ export class PayloadViewFormComponent implements OnInit {
   @Output() onSave = new EventEmitter();
   @Output() onPopulate = new EventEmitter();
   @Output() onUniqueFieldChange = new EventEmitter();
+  @Output() onGetScreen = new EventEmitter();
   _payloadFields = [];
 
   constructor(
@@ -115,7 +116,7 @@ export class PayloadViewFormComponent implements OnInit {
   submit(data) {
     const {result, errorFields} =  this.validateFields(this._payloadFields)
     if (result) {
-      this.onSubmit.emit({ payload: this.convertPayload(this._payloadFields), data });
+      this.onSubmit.emit({ payload: this.convertPayload(this._payloadFields), data, payloadFields: this.updateValuesFromOptions(this._payloadFields) });
     } else {
       let errorMsg = "Failed to validate: "
       if(errorFields.length){
@@ -197,6 +198,10 @@ export class PayloadViewFormComponent implements OnInit {
     }
   }
 
+  getScreen(data){
+    this.onGetScreen.emit({ payloadFields: this.updateValuesFromOptions(this._payloadFields), data });
+  }
+
   onBtnClick($event) {
     const {
       data: {
@@ -213,6 +218,9 @@ export class PayloadViewFormComponent implements OnInit {
     }
     if (type === ButtonActions.logout) {
       this.authService.logoff(false, this.activatedRoute);
+    }
+    if(type === ButtonActions.next || type === ButtonActions.previous) {
+      this.getScreen($event?.data);
     }
     if (type === ButtonActions.populate) {
       let error = false;

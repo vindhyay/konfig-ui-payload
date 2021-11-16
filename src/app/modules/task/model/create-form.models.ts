@@ -39,7 +39,9 @@ export enum ButtonActions {
   logout = "logout",
   submit = "submit",
   save = "save",
-  populate = "populate"
+  populate = "populate",
+  next = "next",
+  previous = "previous",
 }
 
 export enum PayloadType {

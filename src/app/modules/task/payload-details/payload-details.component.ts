@@ -30,7 +30,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
   }
   screenHeight: number;
   screenWidth: number;
-  workflowId: string | null = "";
+  applicationId: string | null = "";
   transactionDetails: any = {};
   id: any;
   formFields: any = [];
@@ -46,10 +46,10 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
         ? queryParams.params
         : { name: this.currentUser?.name, userId: this.currentUser?.userId, email: this.currentUser?.emailId };
     });
-    this.workflowId = this.activatedRoute.snapshot?.params?.workflowId
-    if (this.workflowId) {
-      this.authService.updateUserDetails(this.workflowId);
-      this.createTransaction(this.workflowId, this.id);
+    this.applicationId = this.activatedRoute.snapshot?.params?.applicationId
+    if (this.applicationId) {
+      this.authService.updateUserDetails(this.applicationId);
+      this.createTransaction(this.applicationId, this.id);
     }
     this.taskService.transactionDetailsSubject.subscribe(value => {
       if (value) {
@@ -121,7 +121,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
   }
 
   uniqueFieldChange($event) {
-    this.userService.uniqueKeyTransaction(this.transactionDetails.transactionId, { uniqueField: $event }).subscribe(
+    this.userService.uniqueKeyTransaction(this.transactionDetails.transactionId, { uniqueField: $event }, {screenId:  this.transactionDetails?.screenId}).subscribe(
       result => {
         const { data, error } = parseApiResponse(result);
         this.loading = false;
@@ -142,7 +142,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
     this.loading = true;
     if (!isUnique) {
       const saveResult = await this.userService
-        .saveTransaction({ transactionId: this.transactionDetails.transactionId }, this.formFields)
+        .saveTransaction({ transactionId: this.transactionDetails?.transactionId, screenId: this.transactionDetails?.screenId }, this.formFields)
         .toPromise();
     }
     this.userService.populateTransaction(this.id, { triggerId }, { parameters }).subscribe(
@@ -160,12 +160,40 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
       }
     );
   }
+  getScreenData(event: any){
+    const { payloadFields: payloadMetaData, data: { metaData: { widgetId = '', status: statusId = "" } = {} } = {} } = event;
+    this.loading = true;
+    this.userService.saveAndValidateScreen({ statusId, screenId: this.transactionDetails?.screenId, transactionId: this.transactionDetails.transactionId }, payloadMetaData)
+      .subscribe(result => {
+      const { data, error } = parseApiResponse(result);
+      if (data && !error) {
+        this.userService.getScreenData(this.transactionDetails.id, {screenId: this.transactionDetails?.screenId, actionId: widgetId }).subscribe(result => {
+          this.loading = false;
+          const { data, error } = parseApiResponse(result);
+          if (data && !error) {
+            this.transactionDetails = data;
+            this.taskService.setTransactionDetails(data);
+          }else{
+            this.notificationService.error(error?.errorMessage || 'Failed', error?.errorCode)
+          }
+        }, error => {
+          this.loading = false;
+          this.notificationService.error(error?.error?.error?.errorMessage);
+        })
+      } else {
+        this.notificationService.error(error.errorMessage);
+      }
+    },error => {
+        this.loading = false;
+        this.notificationService.error(error?.error?.error?.errorMessage);
+      })
+  }
 
   saveTransaction(event: any) {
     const { payloadFields: payloadMetaData, data: { metaData: { status: statusId = "" } = {} } = {} } = event;
     this.loading = true;
     this.userService
-      .saveTransaction({ statusId, transactionId: this.transactionDetails.transactionId }, payloadMetaData)
+      .saveTransaction({ statusId, screenId: this.transactionDetails?.screenId, transactionId: this.transactionDetails.transactionId }, payloadMetaData)
       .subscribe(
         result => {
           this.loading = false;
@@ -185,11 +213,11 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
   }
 
   submitTransaction(payloadData: any) {
-    const { payload: payloadJson, files = [], data: { metaData: { status: statusId = "" } = {} } = {} } = payloadData;
-    // @ts-ignore
+    const { payloadFields: payloadMetaData, payload: screenDataJson, files = [], data: { metaData: { status: statusId = "" } = {} } = {} } = payloadData;
     const params = {
       userId: this.currentUser?.userId,
       statusId,
+      screenId: this.transactionDetails.screenId,
       transactionId: this.transactionDetails.transactionId || ""
     };
     const appId = this.transactionDetails?.application?.appId;
@@ -197,31 +225,44 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
       this.notificationService.error("Application not found", "Failed to submit");
       return;
     }
-    this.loading = true;
-    const payload = new FormData();
-    payload.append("payload", JSON.stringify(payloadJson));
-    files.forEach((file: any) => {
-      payload.append("files", file);
-    });
-    this.userService.submitTransaction(appId, params, payload).subscribe(
-      result => {
-        this.loading = false;
-        const { data, error } = parseApiResponse(result);
-        if (data && !error) {
-          this.notificationService.success("Transaction Submitted Successfully", "Success");
-          this.transactionDetails = data;
-          this.taskService.setTransactionDetails(data);
-          console.log('response',data)
-          this.id = data.id;
-        } else {
-          this.notificationService.error(error.errorMessage, "Error");
-        }
-      },
-      error => {
-        this.loading = false;
-        this.notificationService.error(error?.error?.error?.errorMessage);
-      }
-    );
+    this.userService.saveAndValidateScreen({ statusId, screenId: this.transactionDetails?.screenId, transactionId: this.transactionDetails.transactionId }, payloadMetaData)
+      .subscribe(result => {
+          this.loading = false;
+          const { data, error } = parseApiResponse(result);
+          if (data && !error) {
+            this.taskService.setTransactionDetails(data);
+            const payload = new FormData();
+            const allScreenData = {...this.transactionDetails.dataPayload, [this.transactionDetails.screenAlias]: screenDataJson}
+            payload.append("payload", JSON.stringify(allScreenData));
+            files.forEach((file: any) => {
+              payload.append("files", file);
+            });
+            this.loading = true;
+            this.userService.submitTransaction(appId, params, payload).subscribe(
+              result => {
+                this.loading = false;
+                const { data, error } = parseApiResponse(result);
+                if (data && !error) {
+                  this.notificationService.success("Transaction Submitted Successfully", "Success");
+                  this.transactionDetails = data;
+                  this.taskService.setTransactionDetails(data);
+                  this.id = data.id;
+                } else {
+                  this.notificationService.error(error.errorMessage, "Error");
+                }
+              },
+              error => {
+                this.loading = false;
+                this.notificationService.error(error?.error?.error?.errorMessage);
+              }
+            );
+          }else{
+            this.loading = false;
+            this.notificationService.error(error.errorMessage);
+          }
+        }, error => {
+          this.loading = false;
+        })
   }
 
   redirectTo(QUEUE_TYPE?: any) {

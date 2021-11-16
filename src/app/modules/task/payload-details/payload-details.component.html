@@ -4,6 +4,7 @@
     <app-payload-view-form
       [showActions]="showActions"
       [payloadFields]="formFields"
+      (onGetScreen)="getScreenData($event)"
       (onSubmit)="submitTransaction($event)"
       (onSave)="saveTransaction($event)"
       (onPopulate)="populateTransaction($event)"

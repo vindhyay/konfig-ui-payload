@@ -7,12 +7,12 @@ import {LoginComponent} from './modules/auth/components/login/login.component';
 
 const routes: Routes = [
     {
-    path: ':workflowId/auth',
+    path: ':applicationId/auth',
       component: LoginComponent,
       pathMatch: 'full'
   },
   {
-    path: ':workflowId',
+    path: ':applicationId',
     component: PayloadDetailsComponent,
     pathMatch: 'full',
     data: {
