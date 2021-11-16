@@ -63,10 +63,10 @@ export class VerticalStepperComponent implements OnInit {
   }
   setSelection(item:any) {
     switch(item.metaData?.onClickConfig?.action){
-      case 'previous':
+      case 'previousStep':
         this.onPrev.emit(this._selectedIndex);
         break;
-      case 'next':
+      case 'nextStep':
         this.onNext.emit(this._selectedIndex);
         break;
       case 'submit':
@@ -81,9 +81,9 @@ export class VerticalStepperComponent implements OnInit {
   }
   checkVisibility(item:any,index:number):boolean{
     switch(item.metaData?.onClickConfig?.action){
-      case 'previous':
+      case 'previousStep':
         return this._selectedIndex>0
-      case 'next':
+      case 'nextStep':
         return this._selectedIndex<this.children.length-1;
       case 'submit':
         return this._selectedIndex===this.children.length-1;
