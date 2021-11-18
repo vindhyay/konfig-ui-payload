@@ -12,11 +12,29 @@
   --input-font-size: 16px;
   --input-border: solid;
   --input-border-radius: 4px;
+  --input-border-width: 1px;
   --input-line-height: 1;
   --input-letter-spacing: 0;
   --input-word-spacing: 0;
   --input-font-style: normal;
   --input-font-weight: normal;
+  --input-adornment-background-color: #f1f1f1ff;
+  --input-border-top: var(--input-border);
+  --input-border-top-width: var(--input-border-width);
+  --input-border-top-color: var(--input-border-color);
+  --input-border-radius-top-left: var(--input-border-radius);
+  --input-border-right: var(--input-border);
+  --input-border-right-width: var(--input-border-width);
+  --input-border-right-color: var(--input-border-color);
+  --input-border-radius-top-right: var(--input-border-radius);
+  --input-border-bottom: var(--input-border);
+  --input-border-bottom-width: var(--input-border-width);
+  --input-border-bottom-color: var(--input-border-color);
+  --input-border-radius-bottom-right: var(--input-border-radius);
+  --input-border-left: var(--input-border);
+  --input-border-left-width: var(--input-border-width);
+  --input-border-left-color: var(--input-border-color);
+  --input-border-radius-bottom-left: var(--input-border-radius);
 }
 
 .p-field{
@@ -24,6 +42,14 @@
     .lib-label-container{
       display: flex;
       justify-content: var(--input-label-align);
+      overflow-wrap: break-word;
+    }
+    .lib-input-container{
+      width: 100%;
+      max-width: 100%;
+      &.no-label-input-container{
+        max-width: 100%;
+      }
     }
   }
   .label-left{
@@ -32,12 +58,13 @@
     flex-direction: row;
     justify-content: space-between;
     .lib-label-container{
-      width: 100%;
-      max-width: 35%;
+      width: var(--input-label-width);
+      max-width: var(--input-label-width);
+      overflow-wrap: break-word;
     }
     .lib-input-container{
       width: 100%;
-      max-width: 65%;
+      max-width: 100%;
       &.no-label-input-container{
         max-width: 100%;
       }
@@ -49,6 +76,14 @@
     .lib-label-container{
       display: flex;
       justify-content: var(--input-label-align);
+      overflow-wrap: break-word;
+    }
+    .lib-input-container{
+      width: 100%;
+      max-width: 100%;
+      &.no-label-input-container{
+        max-width: 100%;
+      }
     }
   }
   .label-right{
@@ -57,17 +92,36 @@
     flex-direction: row-reverse;
     justify-content: space-between;
     .lib-label-container{
-      width: 100%;
-      max-width: 35%;
+      width: var(--input-label-width);
+      max-width: var(--input-label-width);
       justify-content: flex-end;
+      overflow-wrap: break-word;
     }
     .lib-input-container{
       width: 100%;
-      max-width: 65%;
+      max-width: 100%;
       &.no-label-input-container{
         max-width: 100%;
       }
     }
+  }
+  .extended-input-1{
+    border: var(--input-border) var(--input-border-width) var(--input-border-color);
+    border-radius: var(--input-border-radius);
+    background-color: var(--input-background-color);
+  }
+  .extended-input-2{
+    border-top: var(--input-border-top) var(--input-border-top-width) var(--input-border-top-color);
+    border-right: var(--input-border-right) var(--input-border-right-width) var(--input-border-right-color);
+    border-bottom: var(--input-border-bottom) var(--input-border-bottom-width) var(--input-border-bottom-color);
+    border-left: var(--input-border-left) var(--input-border-left-width) var(--input-border-left-color);
+    border-radius: var(--input-border-radius-top-left) var(--input-border-radius-top-right) var(--input-border-radius-bottom-right) var(--input-border-radius-bottom-left);
+    background-color: var(--input-background-color);
+  }
+  .overflow-hide{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap
   }
 }
 
@@ -78,17 +132,24 @@
     font-family: var(--input-font-family);
     text-align: var(--input-text-align);
     font-size: var(--input-font-size);
-    border: var(--input-border) 1px var(--input-border-color);
+    border: none;
     border-radius: var(--input-border-radius);
     line-height: var(--input-line-height);
     letter-spacing: var(--input-letter-spacing);
     word-spacing: var(--input-word-spacing);
     font-style: var(--input-font-style);
     font-weight: var(--input-font-weight);
+    text-decoration: var(--input-text-decoration);
+  }
+  .p-calendar .p-button.p-button-icon-only{
+    border: none;
+    border-left: var(--input-border) var(--input-border-width) var(--input-border-color);
+    border-radius: 0 var(--input-border-radius) var(--input-border-radius) 0;
   }
 }
 
 .label{
   color: var(--input-label-color);
   font-family: var(--input-label-font-family);
+  font-size: var(--input-label-font-size);
 }

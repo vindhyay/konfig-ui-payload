@@ -32,10 +32,13 @@ export class TextareaComponent implements ControlValueAccessor, OnInit {
   @Input() label = '';
   @Input() placeholder = '';
   @Input() labelPos: LabelPos;
+  @Input() independentBorders: boolean = false;
+  @Input() allowLabelWrapping: boolean = false;
 
   @Input() errorMsg = '';
   @Input() error = false;
   @Input() showErrorMsg: boolean = true;
+  @Input() showCharCount: boolean = false;
 
   @Input() validators: any = [];
 
@@ -43,6 +46,7 @@ export class TextareaComponent implements ControlValueAccessor, OnInit {
 
   _value: any = null;
   labelPosTypes = LabelPos;
+  STRING = String;
 
   ngOnInit() {
     const control = this.controlDir && this.controlDir.control;

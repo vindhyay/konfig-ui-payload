@@ -33,6 +33,28 @@ export class DropdownFieldComponent implements OnInit {
   @Input() fontStyle: string;
   @Input() textDecoration: string;
   @Input() borderStyle: string;
+  @Input() adornmentBackgroundColor: string;
+  @Input() borderWidth: string;
+  @Input() labelFontSize: string;
+  @Input() labelWidth: string;
+  @Input() borderTopStyle: string;
+  @Input() borderTopLeftRadius: string;
+  @Input() borderTopColor: string;
+  @Input() borderTopWidth: string;
+  @Input() borderRightStyle: string;
+  @Input() borderTopRightRadius: string;
+  @Input() borderRightColor: string;
+  @Input() borderRightWidth: string;
+  @Input() borderBottomStyle: string;
+  @Input() borderBottomRightRadius: string;
+  @Input() borderBottomColor: string;
+  @Input() borderBottomWidth: string;
+  @Input() borderLeftStyle: string;
+  @Input() borderBottomLeftRadius: string;
+  @Input() borderLeftColor: string;
+  @Input() borderLeftWidth: string;
+  @Input() independentBorder: boolean;
+  @Input() allowLabelWrapping: boolean;
   get metaData(): DropdownMetaData {
     return this.item.metaData as DropdownMetaData;
   }

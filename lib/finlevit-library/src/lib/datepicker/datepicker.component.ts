@@ -36,6 +36,8 @@ export class DatepickerComponent implements ControlValueAccessor, OnInit {
   @Input() showIcon = true;
   @Input() isDisabled = false;
   @Input() errorMsg = "";
+  @Input() independentBorders: boolean = false;
+  @Input() allowLabelWrapping: boolean = false;
   _minDate: Date;
   _maxDate: Date;
   @Input()
