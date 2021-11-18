@@ -55,6 +55,11 @@ export class InputComponent implements ControlValueAccessor, OnInit {
   @Input() showErrorMsg: boolean = true;
   @Input() mask = null;
   @Input() hiddenInput: boolean = false;
+  @Input() prefixText: string;
+  @Input() suffixText: string;
+  @Input() showClearButton: boolean = false;
+  @Input() independentBorders: boolean = false;
+  @Input() allowLabelWrapping: boolean = false;
   @Output() onBlur = new EventEmitter();
   @Output() onRightIconClick = new EventEmitter();
   _value: any = null;
@@ -159,7 +164,7 @@ export class InputComponent implements ControlValueAccessor, OnInit {
         case "maxlength":
           if (errors) {
             errorMessages.push(
-              `Expected atleast length ${errors[error].requiredLength} but got ${errors[error].actualLength}`
+                `Expected atleast length ${errors[error].requiredLength} but got ${errors[error].actualLength}`
             );
           }
           break;
@@ -171,5 +176,9 @@ export class InputComponent implements ControlValueAccessor, OnInit {
       }
     });
     return errorMessages;
+  }
+  clearValue(){
+    this.setInputValue(null);
+    this.onChange(null)
   }
 }

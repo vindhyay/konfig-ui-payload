@@ -52,6 +52,11 @@ export class NumberComponent implements ControlValueAccessor, OnInit {
   @Input() maxFractionDigits: number;
   @Input() showButtons: boolean = false;
   @Input() step: number;
+  @Input() prefixText: string;
+  @Input() suffixText: string;
+  @Input() showClearButton: boolean = false;
+  @Input() independentBorders: boolean = false;
+  @Input() allowLabelWrapping: boolean = false;
 
   @Input() errorMsg = '';
   @Input() error = false;
@@ -133,5 +138,9 @@ export class NumberComponent implements ControlValueAccessor, OnInit {
       }
     });
     return errorMessages;
+  }
+  clearValue(){
+    this.setInputValue(null);
+    this.onChange(null)
   }
 }

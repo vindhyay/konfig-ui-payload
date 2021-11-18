@@ -23,6 +23,8 @@ export class SelectComponent implements ControlValueAccessor, OnInit {
   @Input() iconOptions: boolean = false;
   @Input() filter: boolean = false;
   @Input() showClear: boolean = false;
+  @Input() independentBorders: boolean = false;
+  @Input() allowLabelWrapping: boolean = false;
   @Input()
   set options(data) {
     this._options = data;
