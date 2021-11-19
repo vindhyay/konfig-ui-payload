@@ -31,6 +31,7 @@ export class VerticalStepperComponent implements OnInit {
     conentBgColor: '#fff',
     leftPanelBgColor: '#fff',
     headerHeight:0,
+    stepperHeight:0,
   };
   @Output() onNext = new EventEmitter();
   @Output() onPrev = new EventEmitter();
@@ -44,6 +45,7 @@ export class VerticalStepperComponent implements OnInit {
   ngOnInit() {
     setTimeout(()=>{
       this.checkHeight();
+      this.scrollTo(this._selectedIndex);
     },100)
     console.log(this.children, this.selectedIndex,this.metaData,this.headerContent);
   }
@@ -60,6 +62,13 @@ export class VerticalStepperComponent implements OnInit {
       console.log(this.reviewData);
     }
     this._selectedIndex=number;
+    setTimeout(()=>{
+      this.scrollTo(this._selectedIndex);
+    },50)
+  }
+  private scrollTo(_index: any) {
+    let elmnt = document.querySelectorAll('.stepper-body>li')[this._selectedIndex];
+    elmnt?.scrollIntoView();
   }
   setSelection(item:any) {
     switch(item.metaData?.onClickConfig?.action){

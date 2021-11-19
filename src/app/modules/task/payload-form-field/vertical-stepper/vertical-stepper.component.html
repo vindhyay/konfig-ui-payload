@@ -14,7 +14,9 @@
         [items]="headerContent[0]?.children"
       ></finlevit-grid>
     </div>
-    <ul>
+    <ul class="stepper-body" [ngStyle]="{
+      height: metaData.stepperHeight+'px'
+    }">
       <li
         *ngFor="let child of children; let i = index"
         [ngClass]="{
