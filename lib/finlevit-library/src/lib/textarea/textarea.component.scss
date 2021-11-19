@@ -109,6 +109,7 @@
     border: var(--input-border) var(--input-border-width) var(--input-border-color);
     border-radius: var(--input-border-radius);
     background-color: var(--input-background-color);
+    width: 100%;
   }
   .extended-input-2{
     border-top: var(--input-border-top) var(--input-border-top-width) var(--input-border-top-color);
@@ -117,6 +118,7 @@
     border-left: var(--input-border-left) var(--input-border-left-width) var(--input-border-left-color);
     border-radius: var(--input-border-radius-top-left) var(--input-border-radius-top-right) var(--input-border-radius-bottom-right) var(--input-border-radius-bottom-left);
     background-color: var(--input-background-color);
+    width: 100%;
   }
   .border-error{
     border-color: #dc3545;
