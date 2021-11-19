@@ -69,7 +69,7 @@ export class VerticalStepperComponent implements OnInit {
   }
   private scrollTo(_index: any) {
     let elmnt = document.querySelectorAll('.stepper-body>li')[this._selectedIndex];
-    elmnt?.scrollIntoView();
+    elmnt?.scrollIntoView({block: "nearest", inline: "nearest"});
   }
   setSelection(item:any) {
     switch(item.metaData?.onClickConfig?.action){
