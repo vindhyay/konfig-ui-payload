@@ -63,8 +63,9 @@ export class VerticalStepperComponent implements OnInit {
     }
     this._selectedIndex=number;
     setTimeout(()=>{
+      this.checkHeight();
       this.scrollTo(this._selectedIndex);
-    },50)
+    },100)
   }
   private scrollTo(_index: any) {
     let elmnt = document.querySelectorAll('.stepper-body>li')[this._selectedIndex];
