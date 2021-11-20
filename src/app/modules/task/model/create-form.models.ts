@@ -951,10 +951,54 @@ export class ModalMetaData extends MetaData {
   width: string;
   color: string;
   bgColor: string;
+  footerbgColor: string;
   button: ContainerHeader;
+  iconPos: string;
+  type: ButtonTypes;
+  variant: ButtonVariants;
+  textStyle:string;
+  fontStyle:string;
+  textDecortation: string;
+  fontWeight: number;
+  footerContent: any;
+  footerHeight: number;
+  modalHeader: {
+    headerbgColor:string,
+    headerHeight: number,
+    textStyle: string,
+    fontWeight: number,
+    textDecortation: string,
+    fontStyle: string,
+  };
   constructor(data) {
     super(data);
-    const { title = "", icon = "", height = "400px", width = "500px", color = "#000000", bgColor = "#ffffff", button = {} } = data;
+    const {
+      title = "",
+      icon = "",
+      height = "400px",
+      width = "500px",
+      color = "#000000",
+      bgColor = "#ffffff",
+      button = {},
+      iconPos = "left",
+      type = ButtonTypes.primary,
+      variant = ButtonVariants.raisedButton,
+      textStyle = TextStyles.BODY1,
+      fontStyle = '',
+      textDecortation = '',
+      fontWeight = 400,
+      footerbgColor= "#ffffff",
+      footerContent = [],
+      footerHeight= 50,
+      modalHeader= {
+        headerbgColor : '#ffffff',
+        headerHeight: 50,
+        textStyle : TextStyles.BODY1,
+        fontWeight: 400,
+        textDecortation: '',
+        fontStyle: '',
+      }
+    } = data;
     this.title = title;
     this.icon = icon;
     this.height = height;
@@ -962,6 +1006,17 @@ export class ModalMetaData extends MetaData {
     this.color = color;
     this.bgColor = bgColor;
     this.button = new ContainerHeader(button);
+    this.iconPos=iconPos;
+    this.type=type;
+    this.variant=variant;
+    this.fontStyle = fontStyle;
+    this.textStyle = textStyle;
+    this.textDecortation= textDecortation;
+    this.fontWeight = fontWeight;
+    this.footerbgColor=footerbgColor;
+    this.footerContent=footerContent;
+    this.footerHeight= footerHeight;
+    this.modalHeader = modalHeader;
   }
 }
 
