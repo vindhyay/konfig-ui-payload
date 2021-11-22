@@ -199,7 +199,16 @@ export class PayloadViewFormComponent implements OnInit {
   }
 
   getScreen(data){
-    this.onGetScreen.emit({ payloadFields: this.updateValuesFromOptions(this._payloadFields), data });
+    const {result, errorFields} =  this.validateFields(this._payloadFields)
+    if (result) {
+      this.onGetScreen.emit({ payloadFields: this.updateValuesFromOptions(this._payloadFields), data });
+    } else {
+      let errorMsg = "Failed to validate: "
+      if(errorFields.length){
+        errorMsg = errorMsg + ' ' + errorFields[0]?.label;
+      }
+      this.notificationService.error(errorMsg, "Validation error");
+    }
   }
 
   onBtnClick($event) {
