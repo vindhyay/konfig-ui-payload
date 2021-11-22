@@ -77,7 +77,7 @@
             (checkHeight)="checkHeight()"
             [showEdit]="showEdit"
           ></finlevit-grid>
-          <ng-container *ngIf="_selectedIndex == children.length - 1">
+          <ng-container *ngIf="_selectedIndex == children.length - 1 && reviewData.length">
             <div class="review_content">
               <div *ngFor="let child of reviewData; let i = index">
                 <h5>{{ child.label }}</h5>
