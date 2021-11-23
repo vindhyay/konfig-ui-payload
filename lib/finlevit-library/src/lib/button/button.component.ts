@@ -44,6 +44,13 @@ export class ButtonComponent {
   @Input() info = false;
   @Input() secondary = false;
   @Input() success = false;
+  @Input() borderColor = '#007bff';
+  @Input() borderTopColor = '#007bff';
+  @Input() borderRightColor = '#007bff';
+  @Input() borderBottomColor = '#007bff';
+  @Input() borderLeftColor = '#007bff';
+
+  @Input() independentBorders: boolean = false;
   @Output() btnClick = new EventEmitter();
   private _class = "";
   get class(): string {
@@ -53,6 +60,12 @@ export class ButtonComponent {
     }
     if (this.isLarge) {
       this._class = this._class + " p-button-lg";
+    }
+    if(this.independentBorders){
+      this._class = this._class + " independent-borders";
+    }
+    if(!this.independentBorders){
+      this._class = this._class + " single-border";
     }
     return this._class;
   }

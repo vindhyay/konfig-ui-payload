@@ -1,10 +1,9 @@
 <button
-        [ngStyle]="{
-    color: color,
-    backgroundColor: variant === 'outlinedButton' || variant === 'raisedTextButton' ? 'transparent' : bgColor,
-    borderColor: variant === 'raisedTextButton' ? 'transparent' : bgColor,
-    boxShadow: variant === 'raisedTextButton' ? 'none' : ''
-  }"
+        [ngStyle]="{ boxShadow: variant === 'raisedTextButton' ? 'none' : '',
+        backgroundColor: variant === 'outlinedButton' || variant === 'raisedTextButton' ? 'transparent' : bgColor,
+        color: color, borderTopColor: independentBorders ? borderTopColor : borderColor,
+        borderRightColor: independentBorders ? borderRightColor : borderColor, borderBottomColor: independentBorders ? borderBottomColor : borderColor,
+        borderLeftColor: independentBorders ? borderLeftColor : borderColor}"
         pButton
         pRipple
         type="button"
@@ -14,4 +13,5 @@
         [iconPos]="iconPos"
         [ngClass]="class"
         (click)="btnClick.emit()"
+        class="hover-btn"
 ></button>
