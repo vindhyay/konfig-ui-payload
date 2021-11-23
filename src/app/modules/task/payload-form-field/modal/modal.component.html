@@ -35,12 +35,11 @@
   [draggable]="false"
   [resizable]="false"
   [style]="{ height: metaData.height, width: metaData.width ,'flex-grow': 'inherit' }"
-  [styleClass]="item?.metaData?.widgetId"
+  [styleClass]="item?.metaData?.widgetId+' activeModal' "
   contentStyleClass="field-modal-content"
   [modal]="true"
   [(visible)]="modalStatus"
   [autoZIndex]="false"
-  [styleClass]="'activeModal'"
   [closeOnEscape]="true"
   (onShow)="onShow($event)"
   (onHide)="onHide($event)"
@@ -59,6 +58,7 @@
         {{metaData?.title}}
       </div>
     </ng-template>
+    <div [class]="'modal'+item?.metaData?.widgetId">
       <finlevit-grid
         [viewMode]="viewMode"
         [showEdit]="showEdit"
@@ -67,9 +67,11 @@
         (onTableDataChange)="onTableDataChange.emit($event)"
         (onOptionChange)="optionChange($event, $event.data)"
         [items]="item.children"
+        (checkHeight)="checkHeight()" 
       ></finlevit-grid>
+    </div>
     <ng-template pTemplate="footer">
-      <div [style]="{
+      <div class="footer-content" [style]="{
         'background-color': metaData?.footerbgColor,
         'height': metaData?.footerHeight+'px'
       }">

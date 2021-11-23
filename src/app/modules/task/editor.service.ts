@@ -46,7 +46,6 @@ export class EditorService {
       items.forEach(item => {
         rows = Math.max(rows, (item.y + item.rows)*10);
       });
-      console.log('rows',container,container.offsetHeight,(container.offsetHeight -rows),rows);
       container.style.height = container.offsetHeight+ (rows - container.offsetHeight) + "px";
     }
   }
