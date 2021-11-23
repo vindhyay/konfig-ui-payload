@@ -47,7 +47,7 @@ export class VerticalStepperComponent implements OnInit {
       this.checkHeight();
       this.scrollTo(this._selectedIndex);
     },100)
-    console.log(this.children, this.selectedIndex,this.metaData,this.headerContent);
+    console.log('VstepperInit',this.children, this.selectedIndex,this.metaData,this.headerContent);
   }
 
   @Input() set selectedIndex(number) {
