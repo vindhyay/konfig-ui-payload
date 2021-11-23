@@ -27,6 +27,9 @@ export class ModalComponent implements OnInit {
       this.modalId = this.item.metaData.widgetId;
     }
     this.modalStatus = this.editorService.modalStatus[this.modalId];
+    setTimeout(()=>{
+      this.checkHeight();
+    })
   }
   toggleModal() {
     this.modalStatus = !this.modalStatus;
@@ -34,6 +37,14 @@ export class ModalComponent implements OnInit {
   }
   onShow($event) {
     window.dispatchEvent(new Event("resize"));
+    setTimeout(()=>{
+      this.checkHeight();
+    })
+  }
+  checkHeight(containerName?) {
+    if (this.item.children?.length) {
+      this.editorService.setAdjustableHeight(this.item.children, ".modal"+this.item?.metaData?.widgetId);
+    }
   }
   onHide($event){
     this.editorService.modalStatus[this.modalId] = false;
