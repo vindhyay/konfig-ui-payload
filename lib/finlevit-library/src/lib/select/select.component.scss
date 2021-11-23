@@ -10,6 +10,7 @@
   --input-label-align: flex-start;
   --input-label-width: 35%;
   --input-text-decoration: none;
+  --input-label-text-decoration: none;
   --input-text-align: left;
   --input-font-size: 16px;
   --input-border: solid;
@@ -20,6 +21,8 @@
   --input-word-spacing: 0;
   --input-font-style: normal;
   --input-font-weight: normal;
+  --input-label-font-style: normal;
+  --input-label-font-weight: normal;
   --input-adornment-background-color: #f1f1f1ff;
   --input-border-top: var(--input-border);
   --input-border-top-width: var(--input-border-width);
@@ -150,4 +153,7 @@
   color: var(--input-label-color);
   font-family: var(--input-label-font-family);
   font-size: var(--input-label-font-size);
+  font-style: var(--input-label-font-style);
+  font-weight: var(--input-label-font-weight);
+  text-decoration: var(--input-label-text-decoration);
 }

@@ -55,6 +55,9 @@ export class ssnInputFieldComponent implements OnInit {
   @Input() labelPosition: string;
   @Input() errorMessage: string;
   @Input() showErrorMessage: boolean;
+  @Input() labelFontWeight: string;
+  @Input() labelStyle: string;
+  @Input() labelTextDecoration: string;
   @Output() onValueChange = new EventEmitter();
   @Output() onBlurChange = new EventEmitter();
 
