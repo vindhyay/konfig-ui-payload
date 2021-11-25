@@ -24,6 +24,7 @@ import { CustomTableFiltersComponent } from './payload-form-field/adv-table/cust
 import { VerticalStepperComponent } from './payload-form-field/vertical-stepper/vertical-stepper.component';
 import { DividerComponent } from "./payload-form-field/divider/divider.component";
 import { SpacerComponent } from "./payload-form-field/spacer/spacer.component";
+import { ContainerComponent } from "./payload-form-field/container/container.component";
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { SpacerComponent } from "./payload-form-field/spacer/spacer.component";
     CustomTableFiltersComponent,
     VerticalStepperComponent,
     DividerComponent,
-    SpacerComponent
+    SpacerComponent,
+    ContainerComponent
   ],
   imports: [CommonModule, GridsterModule, SharedModule, ExtendedModule],
   providers: [TaskService, AuthService]

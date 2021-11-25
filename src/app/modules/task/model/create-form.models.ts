@@ -780,14 +780,29 @@ export class TextMetaData extends MetaData {
   }
 }
 
+export enum ContainerActions {
+  none = "none",
+  previous = "previous",
+  next = "next",
+  externalLink = "externalLink",
+}
+
 export class ContainerMetaData extends MetaData {
   title: string;
   icon: string;
+  header: ContainerHeader;
+  onClickConfig: OnChangeTriggerConfig;
+  externalLink: string;
+  styleProperties: { id: "", properties: any };
   constructor(data) {
     super(data);
-    const { title = "", icon = "" } = data;
+    const { title = "", icon = "", styleProperties = {}, onClickConfig = {}, externalLink = "", header = {} } = data;
     this.title = title;
     this.icon = icon;
+    this.styleProperties = styleProperties;
+    this.onClickConfig = new OnChangeTriggerConfig(onClickConfig);
+    this.externalLink = externalLink;
+    this.header = new ContainerHeader(header);
   }
 }
 

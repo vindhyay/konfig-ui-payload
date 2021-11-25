@@ -986,9 +986,17 @@
       <app-spacer [item]="item"></app-spacer>
     </div>
   </ng-container>
+  <ng-container *ngIf="item?.metaData?.widgetType === Container">
+    <div class="input-container">
+      <app-container [item]="item" [viewMode]="viewMode" [showEdit]="showEdit"
+      (btnClick)="btnClick($event, item)"
+      (onBtnClick)="onBtnClick.emit($event)"
+      (onTableDataChange)="onTableDataChange.emit($event)"
+      (onOptionChange)="optionChange($event, $event.data)"></app-container>
+    </div>
+  </ng-container>
   <ng-container
     *ngIf="
-      item?.metaData?.widgetType === Container ||
       item?.metaData?.widgetType === Header ||
       item?.metaData?.widgetType === Footer
     "
