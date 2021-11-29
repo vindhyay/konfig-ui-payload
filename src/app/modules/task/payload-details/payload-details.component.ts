@@ -145,7 +145,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
         .saveTransaction({ transactionId: this.transactionDetails?.transactionId, screenId: this.transactionDetails?.screenId }, this.formFields)
         .toPromise();
     }
-    this.userService.populateTransaction(this.id, { triggerId }, { parameters }).subscribe(
+    this.userService.populateTransaction(this.id, { triggerId, screenId: this.transactionDetails?.screenId }, { parameters }).subscribe(
       result => {
         const { data, error } = parseApiResponse(result);
         this.loading = false;
