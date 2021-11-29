@@ -69,4 +69,9 @@ export class ButtonComponent {
     }
     return this._class;
   }
+
+  actionBtnClick($event) {
+    $event.stopPropagation();
+    this.btnClick.emit();
+  }
 }

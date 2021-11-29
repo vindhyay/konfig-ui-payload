@@ -1,7 +1,7 @@
 <gridster
   #gridsterComponent
   [options]="options"
-  [ngClass]="{ 'display-grid': false }"
+  [ngClass]="{ 'display-grid': false, 'gridster-overflow': parent?.metaData?.widgetType === Container || parent?.metaData?.widgetType === CollapseContainer }"
   [ngStyle]="{
     'background-color': parent?.metaData?.bgColor || parent?.metaData?.backgroundColor,
     color: parent?.metaData?.color,
