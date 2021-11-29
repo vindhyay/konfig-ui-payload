@@ -45,6 +45,7 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
   taskId: any;
   allEligibleFields = [];
   @ViewChild("gridsterComponent", { static: false }) gridsterRef: any;
+  globalStyle;
 
   constructor(
     private editorService: EditorService,
@@ -57,6 +58,11 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
   }
 
   ngOnInit() {
+    if (this.parent && this.parent.metaData && this.parent.metaData.widgetType === WidgetTypes.Container) {
+      this.globalStyle = this.parent?.metaData["styleProperties"]
+        ? this.parent?.metaData["styleProperties"]["properties"]
+        : {};
+    }
     this.options = {
       gridType: GridType.Fit,
       displayGrid: DisplayGrid.None,
