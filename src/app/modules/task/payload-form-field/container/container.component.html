@@ -1,7 +1,7 @@
 <div [ngClass]="{
     'nested-grid-container': true,
     'empty-child': !item.children.length
-  }" [ngStyle]="getGlobalStyles()" (click)="actionBtnClick()">
+  }" [ngStyle]="getGlobalStyles()" (click)="actionBtnClick($event, item)">
 
   <div *ngIf="item?.metaData?.title" class="container-title" [ngStyle]="getGlobalTitleStyle()">
     <i *ngIf="item?.metaData?.header?.icon" [class]="item?.metaData?.header?.icon" [ngStyle]="{

@@ -7,12 +7,11 @@ import { BaseWidget, ContainerActions, ContainerMetaData } from "../../model/cre
   styleUrls: ["./container.component.scss"]
 })
 export class ContainerComponent implements OnInit {
-  constructor() {}
+  constructor() { }
 
   @Input() item: BaseWidget = {} as BaseWidget;
   @Input() viewMode = false;
   @Input() showEdit;
-  @Output() btnClick = new EventEmitter();
   @Output() onBtnClick = new EventEmitter();
   @Output() onOptionChange = new EventEmitter();
   @Output() onTableDataChange = new EventEmitter();
@@ -21,16 +20,17 @@ export class ContainerComponent implements OnInit {
     this.onOptionChange.emit({ event: $event, data });
   }
 
-  actionBtnClick() {
+  actionBtnClick($event, data) {
+    $event.stopPropagation();
     if (!this.metaData || !this.metaData.onClickConfig || !this.metaData.onClickConfig.action) return;
     if (this.metaData.onClickConfig.action === ContainerActions.next || this.metaData.onClickConfig.action === ContainerActions.previous) {
-      this.btnClick.emit('container');
+      this.onBtnClick.emit({ event: $event, data });
     } else if (this.metaData.onClickConfig.action === ContainerActions.externalLink) {
       window.open(this.metaData.externalLink, "_blank");
     }
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   get metaData(): ContainerMetaData {
     return this.item.metaData as ContainerMetaData;
