@@ -230,7 +230,6 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
     }
   }
   btnClick($event, data) {
-    window.event.stopPropagation();
     this.onBtnClick.emit({ event: $event, data });
   }
   optionChange($event, data) {
