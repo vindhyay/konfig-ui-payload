@@ -68,6 +68,7 @@
           [ngStyle]="{
             background: metaData.conentBgColor
           }"
+          #contentConatiner
         >
           <finlevit-grid
             [viewMode]="viewMode"
@@ -96,10 +97,14 @@
         </div>
       </div>
       <div
-        class="stepper-btn-container"
+        [ngClass] = "{
+          'stepper-btn-container': true,
+          'alignEnd':  _selectedIndex===0
+        }"
         [ngStyle]="{
           background: metaData.footerBgColor
         }"
+        
       >
         <ng-container *ngFor="let item of metaData.buttonContainer">
           <div [ngStyle]="{ width: item.cols * 10 + 'px' }" *ngIf="checkVisibility(item, _selectedIndex)">
@@ -115,12 +120,6 @@
             ></finlevit-button>
           </div>
         </ng-container>
-        <!-- <div>
-          <button class="step-btn" *ngIf="_selectedIndex > 0" (click)="setSelection(-1)">Previous</button>
-        </div>
-        <div>
-          <button *ngIf="_selectedIndex != children.length - 1" class="step-btn" (click)="setSelection(1)">Next</button>
-        </div> -->
       </div>
     </div>
   </div>
