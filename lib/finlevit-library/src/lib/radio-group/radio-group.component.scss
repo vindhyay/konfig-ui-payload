@@ -1,8 +1,70 @@
+:host {
+  --input-unselected-background-color: #ffffff;
+  --input-unselected-border-color: #ced4da;
+  --input-selected-background-color: #ffffff;
+  --input-selected-border-color: #007bff;
+  --input-label-font-style: normal;
+  --input-label-font-weight: normal;
+  --input-label-text-decoration: none;
+  --input-label-font-family: 'Muli';
+  --input-label-font-size: 14px;
+  --input-label-color: #373F51;
+  --input-letter-spacing: 0;
+  --input-word-spacing: 0;
+  --input-flex-direction: row
+}
+
 .radio-options-wrapper{
+  &.vertical{
+    display: flex;
+    flex-wrap: wrap;
+  }
   &.horizontal{
     display: flex;
+    .p-field-radiobutton{
+      margin: 0 1rem 1rem 0;
+    }
   }
   .p-field-radiobutton {
-   margin: 0 1rem 1rem 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+::ng-deep{
+  .p-field-radiobutton > label{
+    color: var(--input-label-color);
+    font-family: var(--input-label-font-family);
+    font-size: var(--input-label-font-size);
+    font-style: var(--input-label-font-style);
+    font-weight: var(--input-label-font-weight);
+    text-decoration: var(--input-label-text-decoration);
+    letter-spacing: var(--input-letter-spacing);
+    word-spacing: var(--input-word-spacing);
+    margin-right: 0.5rem;
+  }
+
+  .p-field-radiobutton{
+    flex-direction: var(--input-flex-direction);
+  }
+
+  .p-radiobutton .p-radiobutton-box.p-highlight{
+    border: 2px solid var(--input-selected-border-color);
+    background: #ffffff;
+  }
+
+  .p-radiobutton .p-radiobutton-box{
+    border: 2px solid var(--input-unselected-border-color);
+    background: var(--input-unselected-background-color);
+  }
+
+  .p-radiobutton .p-radiobutton-box .p-radiobutton-icon{
+    background: var(--input-selected-background-color);
+  }
+
+  .p-radiobutton .p-radiobutton-box.p-highlight:not(.p-disabled):hover{
+    border: 2px solid var(--input-selected-border-color);
+    background: #ffffff;
   }
 }
