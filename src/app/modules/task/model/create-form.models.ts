@@ -142,7 +142,8 @@ export enum WidgetTypes {
   Footer = "Footer",
   Upload = "Upload",
   Divider = "Divider",
-  Spacer = "Spacer"
+  Spacer = "Spacer",
+  Icon = "Icon"
 }
 class Validators {
   required: boolean;
@@ -1076,6 +1077,20 @@ export class SpacerMetaData extends MetaData {
   }
 }
 
+export class IconMetaData extends MetaData {
+  iconType: string;
+  color: string;
+  constructor(data) {
+    super(data);
+    const {
+      iconType = "search",
+      color = "black"
+    } = data;
+    this.iconType = iconType;
+    this.color = color;
+  }
+}
+
 export class BaseWidget {
   id: any;
   cols: number;
@@ -1237,6 +1252,9 @@ export class BaseWidget {
           break;
         case WidgetTypes.Spacer:
           this.metaData = new SpacerMetaData(data);
+          break;
+        case WidgetTypes.Icon:
+          this.metaData = new IconMetaData(data);
           break;
         default:
           this.metaData = null;

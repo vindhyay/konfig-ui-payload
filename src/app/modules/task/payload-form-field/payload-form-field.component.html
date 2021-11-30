@@ -986,6 +986,11 @@
       <app-spacer [item]="item"></app-spacer>
     </div>
   </ng-container>
+  <ng-container *ngIf="item?.metaData?.widgetType === Icon">
+    <div class="input-container">
+      <app-icon [item]="item"></app-icon>
+    </div>
+  </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Container">
     <div class="input-container">
       <app-container [item]="item" [viewMode]="viewMode" [showEdit]="showEdit"
