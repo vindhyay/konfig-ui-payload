@@ -4,18 +4,53 @@
   --input-unchecked-border-color: #ced4da;
   --input-checked-background-color: #007bff;
   --input-checked-border-color: #007bff;
+  --input-label-font-style: normal;
+  --input-label-font-weight: normal;
+  --input-label-text-decoration: none;
+  --input-label-font-family: 'Muli';
+  --input-label-font-size: 14px;
+  --input-label-color: #373F51;
+  --input-letter-spacing: 0;
+  --input-word-spacing: 0;
+  --input-flex-direction: row
 }
 
 :host ::ng-deep{
+  .p-field-checkbox > label{
+    color: var(--input-label-color);
+    font-family: var(--input-label-font-family);
+    font-size: var(--input-label-font-size);
+    font-style: var(--input-label-font-style);
+    font-weight: var(--input-label-font-weight);
+    text-decoration: var(--input-label-text-decoration);
+    letter-spacing: var(--input-letter-spacing);
+    word-spacing: var(--input-word-spacing);
+    margin-right: 0.5rem;
+  }
+
+  .p-field-checkbox{
+    flex-direction: var(--input-flex-direction);
+  }
+
   .p-checkbox .p-checkbox-box .p-checkbox-icon{
     color: var(--input-check-icon-color);
   }
+
   .p-checkbox .p-checkbox-box{
     border: 2px solid var(--input-unchecked-border-color);
     background: var(--input-unchecked-background-color);
+    :before{
+      border: 2px solid var(--input-unchecked-border-color);
+      background: var(--input-unchecked-background-color);
+    }
   }
+
   .p-checkbox .p-checkbox-box.p-highlight{
     border: 2px solid var(--input-checked-border-color);
     background: var(--input-checked-background-color);
+    :before{
+      background: var(--input-checked-background-color);
+      border: 2px solid var(--input-checked-border-color);
+    }
   }
 }
