@@ -36,69 +36,6 @@ export class ContainerComponent implements OnInit {
     return this.item.metaData as ContainerMetaData;
   }
 
-  getGlobalStyles() {
-    let style = {};
-    if (this.metaData
-      && this.metaData?.styleProperties
-      && Object.keys(this.metaData.styleProperties).length
-      && this.metaData?.styleProperties?.properties) {
-      const styleProperties = this.metaData?.styleProperties?.properties;
-      const {
-        independentBorder,
-        borderTopStyle,
-        borderLeftStyle,
-        borderBottomStyle,
-        borderRightStyle,
-        borderTopLeftRadius,
-        borderTopRightRadius,
-        borderBottomLeftRadius,
-        borderBottomRightRadius,
-        borderTopColor,
-        borderLeftColor,
-        borderBottomColor,
-        borderRightColor,
-        borderTopWidth,
-        borderLeftWidth,
-        borderBottomWidth,
-        borderRightWidth,
-        borderStyle,
-        borderRadius,
-        borderColor,
-        borderWidth
-      } = styleProperties;
-      style = {
-        "border-top-style": independentBorder ? borderTopStyle : borderStyle,
-        "border-left-style": independentBorder ? borderLeftStyle : borderStyle,
-        "border-bottom-style": independentBorder ? borderBottomStyle : borderStyle,
-        "border-right-style": independentBorder ? borderRightStyle : borderStyle,
-
-        "border-top-left-radius": independentBorder ? borderTopLeftRadius : borderRadius,
-        "border-top-right-radius": independentBorder ? borderTopRightRadius : borderRadius,
-        "border-bottom-left-radius": independentBorder ? borderBottomLeftRadius : borderRadius,
-        "border-bottom-right-radius": independentBorder ? borderBottomRightRadius : borderRadius,
-
-        "border-top-color": independentBorder ? borderTopColor : borderColor,
-        "border-left-color": independentBorder ? borderLeftColor : borderColor,
-        "border-bottom-color": independentBorder ? borderBottomColor : borderColor,
-        "border-right-color": independentBorder ? borderRightColor : borderColor,
-
-        "border-top-width": independentBorder ? borderTopWidth : borderWidth,
-        "border-left-width": independentBorder ? borderLeftWidth : borderWidth,
-        "border-bottom-width": independentBorder ? borderBottomWidth : borderWidth,
-        "border-right-width": independentBorder ? borderRightWidth : borderWidth
-      };
-    }
-
-    if (this.metaData && this.metaData?.onClickConfig &&
-      (this.metaData?.onClickConfig?.action === ContainerActions.next
-        || this.metaData?.onClickConfig?.action === ContainerActions.previous
-        || this.metaData?.onClickConfig?.action === ContainerActions.externalLink)
-    ) {
-      style['cursor'] = 'pointer';
-    }
-    return style;
-  }
-
   getGlobalShadow() {
     if (this.metaData && this.metaData?.styleProperties && !Object.keys(this.metaData.styleProperties).length) {
       return {};
