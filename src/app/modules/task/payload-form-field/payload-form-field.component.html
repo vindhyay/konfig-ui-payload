@@ -957,10 +957,10 @@
               'empty-child': !child.children.length
             }"
             >
-              <div *ngIf="!child.children.length" class="container-help-text">
+              <!-- <div *ngIf="!child.children.length" class="container-help-text">
                 <i class="pi pi-plus"></i>
                 <span>Drag and drop fields to tab container</span>
-              </div>
+              </div> -->
               <finlevit-grid
                 [viewMode]="viewMode"
                 [showEdit]="showEdit"
@@ -969,6 +969,7 @@
                 (onBtnClick)="onBtnClick.emit($event)"
                 (onTableDataChange)="onTableDataChange.emit($event)"
                 (onOptionChange)="optionChange($event, $event.data)"
+                (checkHeight)="checkHeight(child)"
               ></finlevit-grid>
             </div>
           </p-tabPanel>
