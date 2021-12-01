@@ -1085,7 +1085,7 @@ export class IconMetaData extends MetaData {
   constructor(data) {
     super(data);
     const {
-      iconType = "search",
+      iconType = "logout",
       color = "black",
       width = 20,
       height = 20

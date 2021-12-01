@@ -20,8 +20,6 @@ export class IconComponent implements OnInit {
 
     // TODO: try width and height
     getFontSize() {
-        // const minValue = Math.min(this.item.cols, this.item.rows);
-        // return minValue / 1.5 + 'rem';
         const minValue = Math.min(this.metaData?.width, this.metaData?.height);
         return minValue + 'px';
     }
