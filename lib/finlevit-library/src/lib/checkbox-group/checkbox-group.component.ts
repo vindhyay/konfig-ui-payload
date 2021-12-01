@@ -32,6 +32,7 @@ export class CheckboxGroupComponent implements OnInit, ControlValueAccessor {
   @Input() errorMsg = '';
   @Input() error = false;
   @Input() validators: any = [];
+  @Input() columns: number = 1;
 
   _selectedValues: any[] = ['Salary'];
 
