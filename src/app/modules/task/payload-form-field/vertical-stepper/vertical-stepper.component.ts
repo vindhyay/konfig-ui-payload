@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from "@angular/core";
 import { getAllFromFields,eligibileReviewField } from "src/app/utils";
 import { TextStyles } from "../../model/create-form.models";
 import { EditorService } from "../../editor.service";
@@ -41,7 +41,7 @@ export class VerticalStepperComponent implements OnInit {
   @Input() showEdit = false;
   reviewData=[];
   _selectedIndex=0;
-
+  @ViewChild("contentConatiner", { read: ElementRef }) contentConatiner: ElementRef;
   ngOnInit() {
     setTimeout(()=>{
       this.checkHeight();
@@ -65,6 +65,7 @@ export class VerticalStepperComponent implements OnInit {
     setTimeout(()=>{
       this.checkHeight();
       this.scrollTo(this._selectedIndex);
+      this.contentConatiner.nativeElement.scrollIntoView();
     },100)
   }
   private scrollTo(_index: any) {
