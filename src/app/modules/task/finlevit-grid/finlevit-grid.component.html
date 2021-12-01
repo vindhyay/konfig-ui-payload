@@ -25,6 +25,7 @@
         'error-container': item?.metaData?.widgetType === ErrorContainer
       }"
       [item]="item"
+      [ngStyle]="getGlobalStyles(item)"
     >
       <app-payload-form-field
         *ngIf="!item?.metaData?.isHidden"

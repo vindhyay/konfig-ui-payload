@@ -14,6 +14,21 @@ export class CheckboxGroupComponent implements OnInit {
   @Input() viewMode = false;
   @Input() editMode = false;
   @Input() dataListId = "";
+  @Input() checkedBorderColor : string;
+  @Input() uncheckedBorderColor : string;
+  @Input() checkedBackgroundColor : string;
+  @Input() uncheckedBackgroundColor : string;
+  @Input() checkIconColor : string;
+  @Input() labelFontWeight : string;
+  @Input() labelStyle : string;
+  @Input() labelTextDecoration : string;
+  @Input() labelColor : string;
+  @Input() labelFontStyle : string;
+  @Input() labelFontSize : string;
+  @Input() wordSpacing : string;
+  @Input() letterSpacing : string;
+  @Input() checkboxAlign : string;
+  @Input() columns: number
   constructor(private taskService: TaskService) {}
   get metaData(): MetaData {
     return this.item.metaData as MetaData;

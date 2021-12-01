@@ -1,7 +1,7 @@
 <div [ngClass]="{ 'p-field': true, 'small-input': isSmall, 'large-input': isLarge }">
   <div *ngIf="label" class="d-flex flex-row">
     <div
-      [ngClass]="{
+            [ngClass]="{
         'input-label': true,
         'checkbox-group-label': true,
         'input-label-sm': isSmall,
@@ -19,7 +19,8 @@
   'horizontal': alignOptions === 'Horizontal',
   'vertical': alignOptions === 'Vertical'
   }">
-    <div *ngFor="let item of items; let i = index" class="p-field-checkbox">
+    <div *ngFor="let item of items; let i = index" [ngStyle]="{width : alignOptions === 'Vertical' ? 100/columns + '%' : ''}"
+         [ngClass]="{'p-field-checkbox': true}">
       <p-checkbox
               [inputId]="_id + i"
               [value]="optionValue ? item[optionValue] : item"

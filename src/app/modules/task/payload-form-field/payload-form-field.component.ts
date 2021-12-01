@@ -429,6 +429,11 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
     this.selectedStep = selectedIndex;
     window.dispatchEvent(new Event("resize"));
   }
+  checkHeight(child?) {
+    if (child.children?.length) {
+      this.editorService.setAdjustableHeight(child?.children, ".nested-grid-container");
+    }
+  }
 }
 
 export enum resourceType {

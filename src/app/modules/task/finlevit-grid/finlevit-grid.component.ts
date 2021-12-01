@@ -7,7 +7,7 @@ import {
   GridsterItemComponentInterface,
   GridType
 } from "../../../../../lib/angular-gridster2/src/public_api";
-import { BaseWidget, MIN_COLUMNS, MIN_ROWS, WidgetTypes } from "../model/create-form.models";
+import { BaseWidget, ContainerActions, MIN_COLUMNS, MIN_ROWS, WidgetTypes } from "../model/create-form.models";
 import { ActivatedRoute } from "@angular/router";
 import { EditorService } from "../editor.service";
 import { parseApiResponse } from "../../../utils";
@@ -255,5 +255,69 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
       item.y < item2.y + item2.rows &&
       item.y + item.rows > item2.y
     );
+  }
+
+  getGlobalStyles(item) {
+    if (!item?.metaData || item?.metaData?.widgetType !== this.Container) return {};
+    let style = {};
+    if (item.metaData
+      && item.metaData?.styleProperties
+      && Object.keys(item.metaData.styleProperties).length
+      && item.metaData?.styleProperties?.properties) {
+      const styleProperties = item.metaData?.styleProperties?.properties;
+      const {
+        independentBorder,
+        borderTopStyle,
+        borderLeftStyle,
+        borderBottomStyle,
+        borderRightStyle,
+        borderTopLeftRadius,
+        borderTopRightRadius,
+        borderBottomLeftRadius,
+        borderBottomRightRadius,
+        borderTopColor,
+        borderLeftColor,
+        borderBottomColor,
+        borderRightColor,
+        borderTopWidth,
+        borderLeftWidth,
+        borderBottomWidth,
+        borderRightWidth,
+        borderStyle,
+        borderRadius,
+        borderColor,
+        borderWidth
+      } = styleProperties;
+      style = {
+        "border-top-style": independentBorder ? borderTopStyle : borderStyle,
+        "border-left-style": independentBorder ? borderLeftStyle : borderStyle,
+        "border-bottom-style": independentBorder ? borderBottomStyle : borderStyle,
+        "border-right-style": independentBorder ? borderRightStyle : borderStyle,
+
+        "border-top-left-radius": independentBorder ? borderTopLeftRadius : borderRadius,
+        "border-top-right-radius": independentBorder ? borderTopRightRadius : borderRadius,
+        "border-bottom-left-radius": independentBorder ? borderBottomLeftRadius : borderRadius,
+        "border-bottom-right-radius": independentBorder ? borderBottomRightRadius : borderRadius,
+
+        "border-top-color": independentBorder ? borderTopColor : borderColor,
+        "border-left-color": independentBorder ? borderLeftColor : borderColor,
+        "border-bottom-color": independentBorder ? borderBottomColor : borderColor,
+        "border-right-color": independentBorder ? borderRightColor : borderColor,
+
+        "border-top-width": independentBorder ? borderTopWidth : borderWidth,
+        "border-left-width": independentBorder ? borderLeftWidth : borderWidth,
+        "border-bottom-width": independentBorder ? borderBottomWidth : borderWidth,
+        "border-right-width": independentBorder ? borderRightWidth : borderWidth
+      };
+    }
+
+    if (item.metaData && item.metaData?.onClickConfig &&
+      (item.metaData?.onClickConfig?.action === ContainerActions.next
+        || item.metaData?.onClickConfig?.action === ContainerActions.previous
+        || item.metaData?.onClickConfig?.action === ContainerActions.externalLink)
+    ) {
+      style['cursor'] = 'pointer';
+    }
+    return style;
   }
 }

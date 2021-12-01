@@ -424,7 +424,6 @@
         (ngModelChange)="validateField($event, item)"
         [label]="item?.label"
         [isRequired]="item?.validators?.required"
-        [format]="item?.metaData?.format"
         (onBlur)="optionChange($event, item)"
                        [style.--input-adornment-background-color]="item?.metaData?.styleProperties?.properties?.adornmentBackgroundColor"
                        [style.--input-border-width]="item?.metaData?.styleProperties?.properties?.borderWidth"
@@ -492,7 +491,6 @@
                        (ngModelChange)="validateField($event, item)"
                        [label]="item?.label"
                        [isRequired]="item?.validators?.required"
-                       [format]="item?.metaData?.format"
                        (onBlur)="optionChange($event, item)"
                        [currency]="item?.metaData?.currency"
                        [style.--input-adornment-background-color]="item?.metaData?.styleProperties?.properties?.adornmentBackgroundColor"
@@ -713,6 +711,20 @@
         [label]="item?.label"
         [(ngModel)]="item.value.value"
         (ngModelChange)="validateField($event, item); onChange($event)"
+        [style.--input-label-font-weight]="item?.metaData?.styleProperties?.properties?.labelFontWeight"
+        [style.--input-label-font-style]="item?.metaData?.styleProperties?.properties?.labelStyle"
+        [style.--input-label-text-decoration]="item?.metaData?.styleProperties?.properties?.labelTextDecoration"
+        [style.--input-label-color]="item?.metaData?.styleProperties?.properties?.labelColor"
+        [style.--input-label-font-family]="item?.metaData?.styleProperties?.properties?.labelFontStyle"
+        [style.--input-label-font-size]="item?.metaData?.styleProperties?.properties?.labelFontSize"
+        [style.--input-word-spacing]="item?.metaData?.styleProperties?.properties?.wordSpacing"
+        [style.--input-letter-spacing]="item?.metaData?.styleProperties?.properties?.letterSpacing"
+        [style.--input-unchecked-background-color]="item?.metaData?.styleProperties?.properties?.uncheckedBackgroundColor"
+        [style.--input-unchecked-border-color]="item?.metaData?.styleProperties?.properties?.uncheckedBorderColor"
+        [style.--input-checked-background-color]="item?.metaData?.styleProperties?.properties?.checkedBackgroundColor"
+        [style.--input-checked-border-color]="item?.metaData?.styleProperties?.properties?.checkedBorderColor"
+        [style.--input-check-icon-color]="item?.metaData?.styleProperties?.properties?.checkIconColor"
+        [style.--input-flex-direction]="item?.metaData?.styleProperties?.properties?.checkboxAlign"
       ></finlevit-lib-checkbox>
     </div>
   </ng-container>
@@ -724,6 +736,21 @@
         [editMode]="editMode"
         [dataListId]="item?.metaData?.datalistId"
         [isDisabled]="disable"
+        [columns]="item?.metaData?.columns"
+        [labelFontWeight]="item?.metaData?.styleProperties?.properties?.labelFontWeight"
+        [labelStyle]="item?.metaData?.styleProperties?.properties?.labelStyle"
+        [labelTextDecoration]="item?.metaData?.styleProperties?.properties?.labelTextDecoration"
+        [labelColor]="item?.metaData?.styleProperties?.properties?.labelColor"
+        [labelFontStyle]="item?.metaData?.styleProperties?.properties?.labelFontStyle"
+        [labelFontSize]="item?.metaData?.styleProperties?.properties?.labelFontSize"
+        [wordSpacing]="item?.metaData?.styleProperties?.properties?.wordSpacing"
+        [letterSpacing]="item?.metaData?.styleProperties?.properties?.letterSpacing"
+        [uncheckedBackgroundColor]="item?.metaData?.styleProperties?.properties?.uncheckedBackgroundColor"
+        [uncheckedBorderColor]="item?.metaData?.styleProperties?.properties?.uncheckedBorderColor"
+        [checkedBackgroundColor]="item?.metaData?.styleProperties?.properties?.checkedBackgroundColor"
+        [checkedBorderColor]="item?.metaData?.styleProperties?.properties?.checkedBorderColor"
+        [checkIconColor]="item?.metaData?.styleProperties?.properties?.checkIconColor"
+        [checkboxAlign]="item?.metaData?.styleProperties?.properties?.checkboxAlign"
       ></app-checkbox-group>
     </div>
   </ng-container>
@@ -811,6 +838,20 @@
         [errorMsg]="item?.errorMsg"
         [error]="item?.error == true"
         [alignOptions]="item?.metaData?.alignOptions"
+        [columns]="item?.metaData?.columns"
+        [style.--input-label-font-weight]="item?.metaData?.styleProperties?.properties?.labelFontWeight"
+        [style.--input-label-font-style]="item?.metaData?.styleProperties?.properties?.labelStyle"
+        [style.--input-label-text-decoration]="item?.metaData?.styleProperties?.properties?.labelTextDecoration"
+        [style.--input-label-color]="item?.metaData?.styleProperties?.properties?.labelColor"
+        [style.--input-label-font-family]="item?.metaData?.styleProperties?.properties?.labelFontStyle"
+        [style.--input-label-font-size]="item?.metaData?.styleProperties?.properties?.labelFontSize"
+        [style.--input-word-spacing]="item?.metaData?.styleProperties?.properties?.wordSpacing"
+        [style.--input-letter-spacing]="item?.metaData?.styleProperties?.properties?.letterSpacing"
+        [style.--input-unselected-background-color]="item?.metaData?.styleProperties?.properties?.unselectedBackgroundColor"
+        [style.--input-unselected-border-color]="item?.metaData?.styleProperties?.properties?.unselectedBorderColor"
+        [style.--input-selected-background-color]="item?.metaData?.styleProperties?.properties?.selectedBackgroundColor"
+        [style.--input-selected-border-color]="item?.metaData?.styleProperties?.properties?.selectedBorderColor"
+        [style.--input-flex-direction]="item?.metaData?.styleProperties?.properties?.radioAlign"
       ></finlevit-radio-group>
     </div>
   </ng-container>
@@ -957,10 +998,10 @@
               'empty-child': !child.children.length
             }"
             >
-              <div *ngIf="!child.children.length" class="container-help-text">
+              <!-- <div *ngIf="!child.children.length" class="container-help-text">
                 <i class="pi pi-plus"></i>
                 <span>Drag and drop fields to tab container</span>
-              </div>
+              </div> -->
               <finlevit-grid
                 [viewMode]="viewMode"
                 [showEdit]="showEdit"
@@ -969,6 +1010,7 @@
                 (onBtnClick)="onBtnClick.emit($event)"
                 (onTableDataChange)="onTableDataChange.emit($event)"
                 (onOptionChange)="optionChange($event, $event.data)"
+                (checkHeight)="checkHeight(child)"
               ></finlevit-grid>
             </div>
           </p-tabPanel>

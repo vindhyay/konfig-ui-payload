@@ -34,6 +34,10 @@
   align-items: center;
 }
 
+.stepper-btn-container.alignEnd{
+  justify-content: flex-end !important;
+}
+
 ::ng-deep .stepper-btn-container .p-button{
   width: 100% !important;
 }
