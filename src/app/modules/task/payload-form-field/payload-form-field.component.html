@@ -840,6 +840,20 @@
         [errorMsg]="item?.errorMsg"
         [error]="item?.error == true"
         [alignOptions]="item?.metaData?.alignOptions"
+        [columns]="item?.metaData?.columns"
+        [style.--input-label-font-weight]="item?.metaData?.styleProperties?.properties?.labelFontWeight"
+        [style.--input-label-font-style]="item?.metaData?.styleProperties?.properties?.labelStyle"
+        [style.--input-label-text-decoration]="item?.metaData?.styleProperties?.properties?.labelTextDecoration"
+        [style.--input-label-color]="item?.metaData?.styleProperties?.properties?.labelColor"
+        [style.--input-label-font-family]="item?.metaData?.styleProperties?.properties?.labelFontStyle"
+        [style.--input-label-font-size]="item?.metaData?.styleProperties?.properties?.labelFontSize"
+        [style.--input-word-spacing]="item?.metaData?.styleProperties?.properties?.wordSpacing"
+        [style.--input-letter-spacing]="item?.metaData?.styleProperties?.properties?.letterSpacing"
+        [style.--input-unselected-background-color]="item?.metaData?.styleProperties?.properties?.unselectedBackgroundColor"
+        [style.--input-unselected-border-color]="item?.metaData?.styleProperties?.properties?.unselectedBorderColor"
+        [style.--input-selected-background-color]="item?.metaData?.styleProperties?.properties?.selectedBackgroundColor"
+        [style.--input-selected-border-color]="item?.metaData?.styleProperties?.properties?.selectedBorderColor"
+        [style.--input-flex-direction]="item?.metaData?.styleProperties?.properties?.radioAlign"
       ></finlevit-radio-group>
     </div>
   </ng-container>
