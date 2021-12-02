@@ -25,6 +25,7 @@ import { VerticalStepperComponent } from './payload-form-field/vertical-stepper/
 import { DividerComponent } from "./payload-form-field/divider/divider.component";
 import { SpacerComponent } from "./payload-form-field/spacer/spacer.component";
 import { ContainerComponent } from "./payload-form-field/container/container.component";
+import { IconComponent } from "./payload-form-field/icon/icon.component";
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { ContainerComponent } from "./payload-form-field/container/container.com
     VerticalStepperComponent,
     DividerComponent,
     SpacerComponent,
-    ContainerComponent
+    ContainerComponent,
+    IconComponent
   ],
   imports: [CommonModule, GridsterModule, SharedModule, ExtendedModule],
   providers: [TaskService, AuthService]
