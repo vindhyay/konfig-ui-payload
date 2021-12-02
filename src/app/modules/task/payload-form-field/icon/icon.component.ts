@@ -18,9 +18,4 @@ export class IconComponent implements OnInit {
         return this.item.metaData as IconMetaData;
     }
 
-    // TODO: try width and height
-    getFontSize() {
-        const minValue = Math.min(this.metaData?.width, this.metaData?.height);
-        return minValue + 'px';
-    }
 }

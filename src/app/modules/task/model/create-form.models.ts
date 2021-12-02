@@ -1080,20 +1080,17 @@ export class SpacerMetaData extends MetaData {
 export class IconMetaData extends MetaData {
   iconType: string;
   color: string;
-  width: number;
-  height: number;
+  fontSize: string;
   constructor(data) {
     super(data);
     const {
       iconType = "logout",
       color = "black",
-      width = 20,
-      height = 20
+      fontSize = "20px"
     } = data;
     this.iconType = iconType;
     this.color = color;
-    this.width = width;
-    this.height = height;
+    this.fontSize = fontSize;
   }
 }
 
