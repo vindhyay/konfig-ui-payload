@@ -6,6 +6,6 @@
         <em class="label-tooltip pi pi-info-circle p-pl-2" [pTooltip]="tooltip" *ngIf="tooltip"></em>
     </label>
 </div>
-<div *ngIf="checkError()">
+<div *ngIf="checkError() && showErrorMsg">
     <small class="p-error">{{ errorMsg  }}</small>
 </div>

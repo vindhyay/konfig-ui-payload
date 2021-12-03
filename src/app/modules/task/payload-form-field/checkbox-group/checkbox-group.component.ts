@@ -28,6 +28,20 @@ export class CheckboxGroupComponent implements OnInit {
   @Input() wordSpacing : string;
   @Input() letterSpacing : string;
   @Input() checkboxAlign : string;
+  @Input() textColor : string;
+  @Input() labelWidth : string;
+  @Input() textFontStyle : string;
+  @Input() fontSize : string;
+  @Input() lineSpacing : string;
+  @Input() fontWeight : string;
+  @Input() fontStyle : string;
+  @Input() textDecoration : string;
+  @Input() labelPosition : any;
+  @Input() allowLabelWrapping : boolean;
+  @Input() errorMessage : string;
+  @Input() showErrorMessage : boolean;
+  @Input() labelAlignment : string;
+
   @Input() columns: number
   constructor(private taskService: TaskService) {}
   get metaData(): MetaData {

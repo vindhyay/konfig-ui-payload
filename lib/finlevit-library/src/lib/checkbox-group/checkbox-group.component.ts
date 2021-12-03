@@ -2,6 +2,13 @@ import { Component, ElementRef, Input, OnInit, Optional, Self, ViewChild } from 
 import { ControlValueAccessor, NgControl, ValidatorFn, Validators } from '@angular/forms';
 import { getUniqueId, hasRequiredField } from '../utils';
 
+enum LabelPos {
+  Left = "Left",
+  Top = "Top",
+  Down = "Down",
+  Right = "Right"
+}
+
 @Component({
   selector: 'finlevit-lib-checkbox-group',
   templateUrl: './checkbox-group.component.html',
@@ -28,13 +35,17 @@ export class CheckboxGroupComponent implements OnInit, ControlValueAccessor {
   @Input() isRequired = false;
   @Input() tooltip = '';
   @Input() label = '';
+  @Input() labelPos: LabelPos = LabelPos.Right;
   @Input() placeholder = '';
   @Input() errorMsg = '';
+  @Input() showErrorMsg: boolean = true;
   @Input() error = false;
   @Input() validators: any = [];
   @Input() columns: number = 1;
-
+  @Input() allowLabelWrapping: boolean = false;
+  optionTooltip: any = 'tooltip'
   _selectedValues: any[] = ['Salary'];
+  labelPosTypes = LabelPos;
 
   ngOnInit(): void {
     const control = this.controlDir && this.controlDir.control;
