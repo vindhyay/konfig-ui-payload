@@ -24,6 +24,7 @@ export class CheckboxComponent implements ControlValueAccessor, OnInit {
   @Input() isSmall: boolean = false;
   @Input() isLarge: boolean = false;
   @Input() error: boolean = false;
+  @Input() showErrorMsg: boolean = true;
   @Input() tooltip: string = '';
   ngOnInit(): void {
     const control = this.controlDir && this.controlDir.control;

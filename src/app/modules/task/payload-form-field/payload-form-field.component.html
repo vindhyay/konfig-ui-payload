@@ -705,7 +705,6 @@
     <div class="input-container">
       <finlevit-lib-checkbox
         [isDisabled]="(viewMode && (!item?.validators?.editable || !editMode)) || disable"
-        [errorMsg]="item?.errorMsg"
         [error]="item?.error == true"
         [isRequired]="item?.validators?.required"
         [label]="item?.label"
@@ -725,6 +724,8 @@
         [style.--input-checked-border-color]="item?.metaData?.styleProperties?.properties?.checkedBorderColor"
         [style.--input-check-icon-color]="item?.metaData?.styleProperties?.properties?.checkIconColor"
         [style.--input-flex-direction]="item?.metaData?.styleProperties?.properties?.checkboxAlign"
+        [errorMsg]="item?.metaData?.errorMessage"
+        [showErrorMsg]="item?.metaData?.showErrorMessage"
       ></finlevit-lib-checkbox>
     </div>
   </ng-container>
@@ -751,6 +752,19 @@
         [checkedBorderColor]="item?.metaData?.styleProperties?.properties?.checkedBorderColor"
         [checkIconColor]="item?.metaData?.styleProperties?.properties?.checkIconColor"
         [checkboxAlign]="item?.metaData?.styleProperties?.properties?.checkboxAlign"
+        [textColor]="item?.metaData?.styleProperties?.properties?.textColor"
+        [labelWidth]="item?.metaData?.styleProperties?.properties?.labelWidth"
+        [textFontStyle]="item?.metaData?.styleProperties?.properties?.textFontStyle"
+        [fontSize]="item?.metaData?.styleProperties?.properties?.fontSize"
+        [lineSpacing]="item?.metaData?.styleProperties?.properties?.lineSpacing"
+        [fontWeight]="item?.metaData?.styleProperties?.properties?.fontWeight"
+        [fontStyle]="item?.metaData?.styleProperties?.properties?.fontStyle"
+        [textDecoration]="item?.metaData?.styleProperties?.properties?.textDecoration"
+        [labelPosition]="item?.metaData?.styleProperties?.properties?.labelPosition"
+        [allowLabelWrapping]="item?.metaData?.styleProperties?.properties?.allowLabelWrapping"
+        [labelAlignment]="item?.metaData?.styleProperties?.properties?.labelAlignment"
+        [errorMessage]="item?.metaData?.errorMessage"
+        [showErrorMessage]="item?.metaData?.showErrorMessage"
       ></app-checkbox-group>
     </div>
   </ng-container>
