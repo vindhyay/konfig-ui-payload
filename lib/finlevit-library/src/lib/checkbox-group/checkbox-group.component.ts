@@ -35,7 +35,7 @@ export class CheckboxGroupComponent implements OnInit, ControlValueAccessor {
   @Input() isRequired = false;
   @Input() tooltip = '';
   @Input() label = '';
-  @Input() labelPos: LabelPos = LabelPos.Right;
+  @Input() labelPos: LabelPos;
   @Input() placeholder = '';
   @Input() errorMsg = '';
   @Input() showErrorMsg: boolean = true;
