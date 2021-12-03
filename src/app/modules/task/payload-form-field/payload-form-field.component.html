@@ -705,7 +705,6 @@
     <div class="input-container">
       <finlevit-lib-checkbox
         [isDisabled]="(viewMode && (!item?.validators?.editable || !editMode)) || disable"
-        [errorMsg]="item?.errorMsg"
         [error]="item?.error == true"
         [isRequired]="item?.validators?.required"
         [label]="item?.label"
@@ -725,6 +724,8 @@
         [style.--input-checked-border-color]="item?.metaData?.styleProperties?.properties?.checkedBorderColor"
         [style.--input-check-icon-color]="item?.metaData?.styleProperties?.properties?.checkIconColor"
         [style.--input-flex-direction]="item?.metaData?.styleProperties?.properties?.checkboxAlign"
+        [errorMsg]="item?.metaData?.errorMessage"
+        [showErrorMsg]="item?.metaData?.showErrorMessage"
       ></finlevit-lib-checkbox>
     </div>
   </ng-container>
@@ -751,6 +752,19 @@
         [checkedBorderColor]="item?.metaData?.styleProperties?.properties?.checkedBorderColor"
         [checkIconColor]="item?.metaData?.styleProperties?.properties?.checkIconColor"
         [checkboxAlign]="item?.metaData?.styleProperties?.properties?.checkboxAlign"
+        [textColor]="item?.metaData?.styleProperties?.properties?.textColor"
+        [labelWidth]="item?.metaData?.styleProperties?.properties?.labelWidth"
+        [textFontStyle]="item?.metaData?.styleProperties?.properties?.textFontStyle"
+        [fontSize]="item?.metaData?.styleProperties?.properties?.fontSize"
+        [lineSpacing]="item?.metaData?.styleProperties?.properties?.lineSpacing"
+        [fontWeight]="item?.metaData?.styleProperties?.properties?.fontWeight"
+        [fontStyle]="item?.metaData?.styleProperties?.properties?.fontStyle"
+        [textDecoration]="item?.metaData?.styleProperties?.properties?.textDecoration"
+        [labelPosition]="item?.metaData?.styleProperties?.properties?.labelPosition"
+        [allowLabelWrapping]="item?.metaData?.styleProperties?.properties?.allowLabelWrapping"
+        [labelAlignment]="item?.metaData?.styleProperties?.properties?.labelAlignment"
+        [errorMessage]="item?.metaData?.errorMessage"
+        [showErrorMessage]="item?.metaData?.showErrorMessage"
       ></app-checkbox-group>
     </div>
   </ng-container>
@@ -835,7 +849,6 @@
         [optionValue]="item?.metaData?.isLabelAndValue ? item?.metaData?.optionValue : ''"
         [(ngModel)]="item.value.value"
         (ngModelChange)="validateField($event, item); onChange($event)"
-        [errorMsg]="item?.errorMsg"
         [error]="item?.error == true"
         [alignOptions]="item?.metaData?.alignOptions"
         [columns]="item?.metaData?.columns"
@@ -852,6 +865,22 @@
         [style.--input-selected-background-color]="item?.metaData?.styleProperties?.properties?.selectedBackgroundColor"
         [style.--input-selected-border-color]="item?.metaData?.styleProperties?.properties?.selectedBorderColor"
         [style.--input-flex-direction]="item?.metaData?.styleProperties?.properties?.radioAlign"
+        [style.--input-color]="item?.metaData?.styleProperties?.properties?.textColor"
+        [style.--input-text-align]="item?.metaData?.styleProperties?.properties?.textHorizontalAlign"
+        [style.--input-background-color]="item?.metaData?.styleProperties?.properties?.backgroundColor"
+        [style.--input-border-color]="item?.metaData?.styleProperties?.properties?.borderColor"
+        [style.--input-font-family]="item?.metaData?.styleProperties?.properties?.textFontStyle"
+        [style.--input-border]="item?.metaData?.styleProperties?.properties?.borderStyle"
+        [style.--input-border-radius]="item?.metaData?.styleProperties?.properties?.borderRadius"
+        [style.--input-font-size]="item?.metaData?.styleProperties?.properties?.fontSize"
+        [style.--input-line-spacing]="item?.metaData?.styleProperties?.properties?.lineSpacing"
+        [style.--input-font-weight]="item?.metaData?.styleProperties?.properties?.fontWeight"
+        [style.--input-font-style]="item?.metaData?.styleProperties?.properties?.fontStyle"
+        [style.--input-text-decoration]="item?.metaData?.styleProperties?.properties?.textDecoration"
+        [allowLabelWrapping]="item?.metaData?.styleProperties?.properties?.allowLabelWrapping"
+        [style.--input-label-align]="item?.metaData?.styleProperties?.properties?.labelAlignment"
+        [errorMsg]="item?.metaData?.errorMessage"
+        [showErrorMsg]="item?.metaData?.showErrorMessage"
       ></finlevit-radio-group>
     </div>
   </ng-container>
