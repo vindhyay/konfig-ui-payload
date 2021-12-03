@@ -264,6 +264,9 @@ export class PayloadViewFormComponent implements OnInit {
         this.onPopulate.emit({ triggerId: id, parameters: reqParams, payloadFields: this._payloadFields });
       }
     }
+    if(type === ButtonActions.serviceProviders){
+      this.onPopulate.emit({ triggerId: id, parameters: null, payloadFields: this._payloadFields });
+    }
   }
 
   getValueFromField(fields, fieldId) {
