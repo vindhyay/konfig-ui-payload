@@ -2,6 +2,19 @@ import {Component, Input, OnInit, Optional, Self} from "@angular/core";
 import {ControlValueAccessor, NgControl, ValidatorFn, Validators} from "@angular/forms";
 import {getUniqueId, hasRequiredField} from "../utils";
 
+enum RadioType {
+  Outline = "Outline",
+  Filled = "Filled"
+}
+
+enum LabelPos {
+  Left = "Left",
+  Top = "Top",
+  Down = "Down",
+  Right = "Right"
+}
+
+
 @Component({
   selector: "finlevit-radio-group",
   templateUrl: "./radio-group.component.html",
@@ -17,12 +30,14 @@ export class RadioGroupComponent implements OnInit, ControlValueAccessor {
   }
 
   @Input() alignOptions: "Horizontal" | "Vertical" = "Horizontal";
+  @Input() radioType: RadioType = RadioType.Filled;
   @Input() showErrorBorder = true;
   @Input() isSmall = false;
   @Input() isLarge = false;
   @Input() items: any[] = [];
   @Input() optionLabel = "";
   @Input() optionValue: any = "";
+  @Input() labelPos: LabelPos;
   @Input() isDisabled = false;
   @Input() isRequired = false;
   @Input() tooltip = "";
@@ -31,9 +46,14 @@ export class RadioGroupComponent implements OnInit, ControlValueAccessor {
   @Input() errorMsg = "";
   @Input() error = false;
   @Input() validators: any = [];
+  @Input() showErrorMsg: boolean = true;
   @Input() columns: number = 1;
+  @Input() allowLabelWrapping: boolean = false;
 
   _value: any = null;
+  optionTooltip: any = 'tooltip'
+  labelPosTypes = LabelPos;
+
 
 
   ngOnInit(): void {
