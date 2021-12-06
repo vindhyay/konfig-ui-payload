@@ -27,7 +27,6 @@ export class ModalComponent implements OnInit {
     return this.item.metaData as ModalMetaData;
   }
   @Input() set selectedIndex(number) {
-    console.log(number);
     this._selectedIndex=number;
     this.checkVisibility();
     setTimeout(()=>{
