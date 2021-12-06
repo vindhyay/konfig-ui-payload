@@ -21,7 +21,7 @@
   --input-label-letter-spacing: 0;
   --input-label-word-spacing: 0;
   --input-label-width: 35%;
-
+  --input-radiobutton-size: 20px;
 }
 
 .radio-options-wrapper{
@@ -156,10 +156,14 @@
   .p-radiobutton .p-radiobutton-box{
     border: 2px solid var(--input-unselected-border-color);
     background: var(--input-unselected-background-color);
+    width: var(--input-radiobutton-size);
+    height: var(--input-radiobutton-size);
   }
 
   .p-radiobutton .p-radiobutton-box .p-radiobutton-icon{
     background: var(--input-selected-background-color);
+    width: calc(var(--input-radiobutton-size) - 10px);
+    height: calc(var(--input-radiobutton-size) - 10px);
   }
 
   .p-radiobutton .p-radiobutton-box.p-highlight:not(.p-disabled):hover{
@@ -170,6 +174,12 @@
   .p-radiobutton .p-radiobutton-box:not(.p-disabled).p-focus{
     box-shadow: none;
   }
+
+  .p-radiobutton{
+    width: var(--input-radiobutton-size);
+    height: var(--input-radiobutton-size);
+  }
+
 }
 
 .label{

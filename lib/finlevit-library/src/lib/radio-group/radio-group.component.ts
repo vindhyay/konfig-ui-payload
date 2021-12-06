@@ -112,4 +112,8 @@ export class RadioGroupComponent implements OnInit, ControlValueAccessor {
     });
     return errorMessages;
   }
+
+  checkIfObject(item) {
+    return typeof item === 'object';
+  }
 }
