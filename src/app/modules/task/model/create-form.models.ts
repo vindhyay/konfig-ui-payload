@@ -1082,16 +1082,22 @@ export class IconMetaData extends MetaData {
   iconType: string;
   color: string;
   fontSize: string;
+  horizontalPosition: string;
+  verticalPosition: string;
   constructor(data) {
     super(data);
     const {
       iconType = "logout",
       color = "black",
-      fontSize = "20px"
+      fontSize = "20px",
+      horizontalPosition = "center",
+      verticalPosition = "center"
     } = data;
     this.iconType = iconType;
     this.color = color;
     this.fontSize = fontSize;
+    this.horizontalPosition = horizontalPosition;
+    this.verticalPosition = verticalPosition;
   }
 }
 

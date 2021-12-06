@@ -1,6 +1,11 @@
-<span class="material-icons" [ngStyle]="{
+<div class="icon-container" [ngStyle]="{
+    'justify-content': item?.metaData?.horizontalPosition,
+    'align-items': item?.metaData?.verticalPosition
+}">
+    <span class="material-icons" [ngStyle]="{
     'font-size': item?.metaData?.fontSize,
     color: item?.metaData?.color
 }">
-    {{item?.metaData?.iconType}}
-</span>
+        {{item?.metaData?.iconType}}
+    </span>
+</div>
