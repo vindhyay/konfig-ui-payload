@@ -225,6 +225,9 @@ export class PayloadViewFormComponent implements OnInit {
     if (type === ButtonActions.save) {
       this.saveForLater($event?.data);
     }
+    if (type === ButtonActions.nextStep || type === ButtonActions.previousStep) {
+      this.saveForLater($event?.data);
+    }
     if (type === ButtonActions.logout) {
       this.authService.logoff(false, this.activatedRoute);
     }
