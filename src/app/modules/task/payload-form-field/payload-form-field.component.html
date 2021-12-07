@@ -883,6 +883,9 @@
         [style.--input-label-align]="item?.metaData?.styleProperties?.properties?.labelAlignment"
         [errorMsg]="item?.metaData?.errorMessage"
         [showErrorMsg]="item?.metaData?.showErrorMessage"
+        [style.--input-label-width]="item?.metaData?.styleProperties?.properties?.labelWidth + '%'"
+        [style.--input-radiobutton-size]="item?.metaData?.styleProperties?.properties?.radiobuttonSize"
+        [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
       ></finlevit-radio-group>
     </div>
   </ng-container>
