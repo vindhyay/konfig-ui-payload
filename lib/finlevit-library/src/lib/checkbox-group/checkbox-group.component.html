@@ -25,12 +25,12 @@
            [ngClass]="{'p-field-checkbox': true, 'lib-input-container': true, 'no-label-input-container': !label}">
         <p-checkbox
                 [inputId]="_id + i"
-                [value]="optionValue ? item[optionValue] : checkIfObject(item) ? item?.name : item"
+                [value]="optionValue ? item[optionValue] : item.hasOwnProperty('name') ? item?.name : item"
                 [(ngModel)]="_selectedValues"
                 (ngModelChange)="onLocalChange()"
                 [ngClass]="{ 'p-inputtext-sm': isSmall, 'p-inputtext-lg': isLarge, 'error-border': checkError() }"
         ></p-checkbox>
-        <label [for]="_id + i">{{ optionLabel ? item[optionLabel] : checkIfObject(item) ? item?.name : item }}</label>
+        <label [for]="_id + i">{{ optionLabel ? item[optionLabel] : item.hasOwnProperty('name') ? item?.name : item }}</label>
         <em class="label-tooltip pi pi-question-circle" [pTooltip]="item[optionTooltip]" *ngIf="item[optionTooltip]"></em>
       </div>
     </div>

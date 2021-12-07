@@ -63,7 +63,6 @@ export class CheckboxGroupComponent implements OnInit, ControlValueAccessor {
       control.updateValueAndValidity();
       this.isRequired = hasRequiredField(control);
     }
-    console.log(typeof this.items[0]);
   }
 
   writeValue(value: any): void {
@@ -103,9 +102,5 @@ export class CheckboxGroupComponent implements OnInit, ControlValueAccessor {
       }
     });
     return errorMessages;
-  }
-
-  checkIfObject(item) {
-    return typeof item === 'object';
   }
 }
