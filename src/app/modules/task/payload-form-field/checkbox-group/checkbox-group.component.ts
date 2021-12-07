@@ -41,6 +41,7 @@ export class CheckboxGroupComponent implements OnInit {
   @Input() errorMessage : string;
   @Input() showErrorMessage : boolean;
   @Input() labelAlignment : string;
+  @Input() checkboxSize: string;
 
   @Input() columns: number
   constructor(private taskService: TaskService) {}
