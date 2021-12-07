@@ -23,7 +23,7 @@
       <div *ngFor="let item of items" class="p-field-radiobutton" [ngStyle]="{width : alignOptions === 'Vertical' ? 100/columns + '%' : ''}">
         <p-radioButton
                 [disabled]="isDisabled"
-                [inputId]="_id + (optionValue ? item[optionValue] : checkIfObject(item) ? item?.name : item)"
+                [inputId]="_id + (optionValue ? item[optionValue] : item.hasOwnProperty('name') ? item?.name : item)"
                 name="category"
                 [value]="optionValue ? item[optionValue] : item"
                 [(ngModel)]="_value"
@@ -31,8 +31,8 @@
                 [ngClass]="{ 'p-inputtext-sm': isSmall, 'p-inputtext-lg': isLarge, 'error-border': checkError(),
                                      'outline': radioType === 'Outline', 'filled':  radioType === 'Filled'}"
         ></p-radioButton>
-        <label [for]="_id + (optionValue ? item[optionValue] : checkIfObject(item) ? item?.name : item)">
-          {{ optionLabel ? item[optionLabel] : checkIfObject(item) ? item?.name : item }}</label>
+        <label [for]="_id + (optionValue ? item[optionValue] : item.hasOwnProperty('name') ? item?.name : item)">
+          {{ optionLabel ? item[optionLabel] : item.hasOwnProperty('name') ? item?.name : item }}</label>
         <em class="label-tooltip pi pi-question-circle" [pTooltip]="item[optionTooltip]" *ngIf="item[optionTooltip]"></em>
       </div>
     </div>
