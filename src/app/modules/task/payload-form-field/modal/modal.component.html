@@ -1,16 +1,3 @@
-<!-- <button
-  (click)="toggleModal()"
-  [ngStyle]="{
-    width: '100%',
-    height: '100%',
-    color: metaData?.button?.color,
-    backgroundColor: metaData?.button?.bgColor,
-    border: 'none',
-    borderRadius: '4px'
-  }"
->
-  {{ item?.label }}
-</button> -->
 <finlevit-button
   [icon]="metaData?.icon"
   [iconPos]="metaData?.iconPos"
@@ -21,12 +8,14 @@
   [type]="metaData?.type"
   (btnClick)="toggleModal()"
   [class]="'text-content text-style-' + metaData?.textStyle"
+  [style.--button-label-font-style]="metaData?.fontStyle"
   [ngStyle]="{
     width: '100%',
     height: '100%',
     'font-weight': metaData?.fontWeight,
     'font-style': metaData?.fontStyle,
-    'text-decoration': metaData?.textDecortation
+    'text-decoration': metaData?.textDecortation,
+    'color': metaData?.button?.color
   }"
 ></finlevit-button>
 <p-dialog
@@ -49,6 +38,7 @@
       [class]="'header-content text-content text-style-' + metaData?.modalHeader[0]?.textStyle"
       [style]="{
         'background-color': metaData?.modalHeader[0]?.headerbgColor,
+        'color': metaData?.modalHeader[0]?.color,
         'font-weight': metaData?.modalHeader[0]?.fontWeight,
         'font-style': metaData?.modalHeader[0]?.fontStyle,
         'text-decoration': metaData?.modalHeader[0]?.textDecortation,
@@ -74,7 +64,7 @@
     <div
       [ngClass]="{ 'footer-content': true }"
       [style]="{
-        'background-color': metaData?.footerbgColor,
+        'background-color':metaData?.buttonContainer?.bgColor,
         height: metaData?.footerHeight + 'px'
       }"
     >
