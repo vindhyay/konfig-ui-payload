@@ -37,6 +37,8 @@ export class VerticalStepperComponent implements OnInit {
   @Output() onPrev = new EventEmitter();
   @Output() onSelect = new EventEmitter();
   @Output() onBtnClick = new EventEmitter();
+  @Output() onOptionChange = new EventEmitter();
+  @Output() onTableDataChange = new EventEmitter();
   @Input() completedSteps = {};
   @Input() showEdit = false;
   reviewData=[];
@@ -47,7 +49,6 @@ export class VerticalStepperComponent implements OnInit {
       this.checkHeight();
       this.scrollTo(this._selectedIndex);
     },100)
-    console.log('VstepperInit',this.children, this.selectedIndex,this.metaData,this.headerContent);
   }
 
   @Input() set selectedIndex(number) {

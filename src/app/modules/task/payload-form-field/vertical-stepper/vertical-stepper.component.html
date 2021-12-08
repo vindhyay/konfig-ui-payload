@@ -77,6 +77,8 @@
             (onBtnClick)="onBtnClick.emit($event)"
             (checkHeight)="checkHeight()"
             [showEdit]="showEdit"
+            (onTableDataChange)="onTableDataChange.emit($event)"
+            (onOptionChange)="onOptionChange.emit($event)"
           ></finlevit-grid>
           <ng-container *ngIf="_selectedIndex == children.length - 1 && reviewData.length">
             <div class="review_content">

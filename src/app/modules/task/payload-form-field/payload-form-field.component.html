@@ -975,6 +975,8 @@
       (onBtnClick)="onBtnClick.emit($event)"
       [showEdit]="showEdit"
       [headerContent]= "item?.metaData?.headerContent" 
+      (onTableDataChange)="onTableDataChange.emit($event)"
+      (onOptionChange)="optionChange($event, $event.data)"
       >
     </app-vertical-stepper>
     <mat-horizontal-stepper
