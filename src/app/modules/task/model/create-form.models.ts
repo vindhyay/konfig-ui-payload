@@ -43,6 +43,8 @@ export enum ButtonActions {
   serviceProviders = "serviceProviders",
   next = "next",
   previous = "previous",
+  nextStep = "nextStep",
+  previousStep = "previousStep"
 }
 
 export enum PayloadType {
@@ -979,14 +981,9 @@ export class ModalMetaData extends MetaData {
   fontWeight: number;
   footerContent: any;
   footerHeight: number;
-  modalHeader: {
-    headerbgColor:string,
-    headerHeight: number,
-    textStyle: string,
-    fontWeight: number,
-    textDecortation: string,
-    fontStyle: string,
-  };
+  modalHeader: any;
+  modalType: string;
+  buttonContainer: any;
   constructor(data) {
     super(data);
     const {
@@ -1007,14 +1004,9 @@ export class ModalMetaData extends MetaData {
       footerbgColor= "#ffffff",
       footerContent = [],
       footerHeight= 50,
-      modalHeader= {
-        headerbgColor : '#ffffff',
-        headerHeight: 50,
-        textStyle : TextStyles.BODY1,
-        fontWeight: 400,
-        textDecortation: '',
-        fontStyle: '',
-      }
+      modalHeader=[],
+      buttonContainer = {},
+      modalType = "SinglePage"
     } = data;
     this.title = title;
     this.icon = icon;
@@ -1034,6 +1026,8 @@ export class ModalMetaData extends MetaData {
     this.footerContent=footerContent;
     this.footerHeight= footerHeight;
     this.modalHeader = modalHeader;
+    this.modalType = modalType;
+    this.buttonContainer = buttonContainer;
   }
 }
 

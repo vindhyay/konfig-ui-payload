@@ -837,6 +837,10 @@
         (onBtnClick)="onBtnClick.emit($event)"
         (onTableDataChange)="onTableDataChange.emit($event)"
         (onOptionChange)="optionChange($event, $event.data)"
+        (selectionChange)="OnStepChange($event)" 
+        [selectedIndex]="verticalStepIndex || 0"
+        (onNext)="onNextClick($event)" 
+        (onPrev)="onPrevClick($event)"
       ></app-modal>
     </div>
   </ng-container>
