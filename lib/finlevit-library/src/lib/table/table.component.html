@@ -60,7 +60,7 @@
               *ngFor="let col of columns"
       >
         <ng-container [ngSwitch]="col.colType">
-          <div class="p-pl-1" *ngSwitchCase="Text">
+          <div class="p-pl-1" *ngSwitchCase="TextInput">
             <ng-container *ngIf="!(col?.validators?.editable && (editRows[rowIndex] || newRows[rowIndex]))">
               {{ rowData[col.columnId] }}
             </ng-container>
@@ -101,7 +101,7 @@
                     [errorMsg]="rowErrors[rowIndex] && rowErrors[rowIndex][col.columnId] ? rowErrors[rowIndex][col.columnId]['errorMsg']: false"
             ></finlevit-number>
           </div>
-          <div class="p-pl-1" *ngSwitchCase="Date">
+          <div class="p-pl-1" *ngSwitchCase="DatePicker">
             <ng-container *ngIf="!(col?.validators?.editable && (editRows[rowIndex] || newRows[rowIndex]))">
               {{ rowData[col.columnId] | date }}
             </ng-container>

@@ -24,7 +24,7 @@ export class TableComponent implements OnInit {
   @Input()
   set columns(columns) {
     this._columns = columns.map(column => {
-      if (column.colType === ColumnTypes.Date) {
+      if (column.colType === ColumnTypes.DatePicker) {
         if (column?.validators?.minDate) {
           column.validators.minDate = new Date(column.validators.minDate);
         }
@@ -75,9 +75,10 @@ export class TableComponent implements OnInit {
   private _styleClass = 'p-datatable-gridlines p-datatable-sm';
 
   Text = ColumnTypes.Text;
+  TextInput = ColumnTypes.TextInput;
   TextArea = ColumnTypes.TextArea;
   Number = ColumnTypes.Number;
-  Date = ColumnTypes.Date;
+  DatePicker = ColumnTypes.DatePicker;
 
   ngOnInit(): void {
     this.tableId = getUniqueId('table');
@@ -85,12 +86,12 @@ export class TableComponent implements OnInit {
 
   getColType(type) {
     switch (type) {
-      case 'Text':
-      case 'Data':
+      case ColumnTypes.TextInput:
+      case ColumnTypes.Data:
         return 'text';
-      case 'Date':
+      case ColumnTypes.DatePicker:
         return 'date';
-      case 'Number':
+      case ColumnTypes.Number:
         return 'numeric';
       default:
         return 'text';
