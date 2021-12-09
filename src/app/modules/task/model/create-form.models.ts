@@ -514,9 +514,34 @@ export class TextInputMetaData extends MetaData {
   rightIcon: string;
   isFormulaField: boolean;
   formula = [];
+  errorMessage: string;
+  showErrorMessage: boolean;
+  styleProperties: { id: "", properties: any };
+  allowLabelWrapping: boolean;
+  showClearButton: boolean;
+  adornmentBackgroundColor: boolean;
+  prefixText: "";
+  suffixText: "";
   constructor(data) {
     super(data);
-    const { mask = "", icon = "", tooltip = "", placeholder = "", leftIcon = "", rightIcon = "", isFormulaField, formula } = data;
+    const {
+      mask = "",
+      icon = "",
+      tooltip = "",
+      placeholder = "",
+      leftIcon = "",
+      rightIcon = "",
+      isFormulaField,
+      formula,
+      errorMessage = "",
+      showErrorMessage = true,
+      styleProperties = {},
+      allowLabelWrapping = false,
+      showClearButton = false,
+      adornmentBackgroundColor = "#ffffff",
+      prefixText = "",
+      suffixText = ""
+    } = data;
     this.mask = mask;
     this.icon = icon;
     this.tooltip = tooltip;
@@ -525,6 +550,14 @@ export class TextInputMetaData extends MetaData {
     this.rightIcon = rightIcon;
     this.isFormulaField = isFormulaField;
     this.formula = formula;
+    this.errorMessage = errorMessage;
+    this.showErrorMessage = showErrorMessage;
+    this.styleProperties = styleProperties;
+    this.allowLabelWrapping = allowLabelWrapping;
+    this.showClearButton = showClearButton;
+    this.adornmentBackgroundColor = adornmentBackgroundColor;
+    this.prefixText = prefixText;
+    this.suffixText = suffixText;
   }
 }
 export class PasswordInputMetaData extends MetaData {
