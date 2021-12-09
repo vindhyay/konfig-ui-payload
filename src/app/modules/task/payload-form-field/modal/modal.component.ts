@@ -86,6 +86,8 @@ export class ModalComponent implements OnInit {
           return {...item, metaData:{ ...item.metaData,isHidden:this._selectedIndex===this.item.children.length-1}};
         case 'submit':
           return {...item, metaData:{ ...item.metaData,isHidden:this._selectedIndex!==this.item.children.length-1}};
+        default:
+          return item;
       }
     })
   }
