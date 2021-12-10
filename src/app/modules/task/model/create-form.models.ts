@@ -794,9 +794,34 @@ export class PhonenumberInputMetaData extends MetaData {
   rightIcon: string;
   isFormulaField: boolean;
   formula = [];
+  errorMessage: string;
+  showErrorMessage: boolean;
+  styleProperties: { id: "", properties: any };
+  adornmentBackgroundColor: string;
+  allowLabelWrapping: boolean;
+  showClearButton: boolean;
+  prefixText: string;
+  suffixText: string;
   constructor(data) {
     super(data);
-    const { mask = "000-000-0000", icon = "", tooltip = "", placeholder = "000-000-0000", leftIcon = "", rightIcon = "", isFormulaField, formula } = data;
+    const {
+      mask = "000-000-0000",
+      icon = "",
+      tooltip = "",
+      placeholder = "000-000-0000",
+      leftIcon = "",
+      rightIcon = "",
+      isFormulaField,
+      formula,
+      errorMessage = "",
+      showErrorMessage = true,
+      styleProperties = {},
+      adornmentBackgroundColor = "#ffffff",
+      allowLabelWrapping = false,
+      showClearButton = false,
+      prefixText = "",
+      suffixText = ""
+    } = data;
     this.mask = mask;
     this.icon = icon;
     this.tooltip = tooltip;
@@ -805,6 +830,14 @@ export class PhonenumberInputMetaData extends MetaData {
     this.rightIcon = rightIcon;
     this.isFormulaField = isFormulaField;
     this.formula = formula;
+    this.errorMessage = errorMessage;
+    this.showErrorMessage = showErrorMessage;
+    this.styleProperties = styleProperties;
+    this.adornmentBackgroundColor = adornmentBackgroundColor;
+    this.allowLabelWrapping = allowLabelWrapping;
+    this.showClearButton = showClearButton;
+    this.prefixText = prefixText;
+    this.suffixText = suffixText;
   }
 }
 
