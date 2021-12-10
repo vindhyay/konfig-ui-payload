@@ -224,13 +224,15 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
       );
   }
 
+
   submitTransaction(payloadData: any) {
-    const { payloadFields: payloadMetaData, payload: screenDataJson, files = [], data: { metaData: { status: statusId = "" } = {} } = {} } = payloadData;
+    const { payloadFields: payloadMetaData, payload: screenDataJson, files = [], itemData: {data:{ metaData: { status: statusId = "" } = {} },triggerId} } = payloadData;
     const params = {
-      userId: this.currentUser?.userId,
-      statusId,
+      // userId: this.currentUser?.userId,
+      // statusId,
+      triggerId,
       screenId: this.transactionDetails.screenId,
-      transactionId: this.transactionDetails.transactionId || ""
+      // transactionId: this.transactionDetails.transactionId || ""
     };
     const appId = this.transactionDetails?.application?.appId;
     if (!appId) {
@@ -250,7 +252,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
               payload.append("files", file);
             });
             this.loading = true;
-            this.userService.submitTransaction(appId, params, payload).subscribe(
+            this.userService.submitMuliplAction(this.transactionDetails.transactionId,params, payload).subscribe(
               result => {
                 this.loading = false;
                 const { data, error } = parseApiResponse(result);

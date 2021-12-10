@@ -1,7 +1,9 @@
 import ShortUniqueId from "short-unique-id";
 import { result } from "./state/model/api-response";
 import { FormControl, Validators } from "@angular/forms";
-import { BaseWidget, WidgetTypes } from "./modules/task/model/create-form.models";
+import { ButtonActions, WidgetTypes } from "./modules/task/model/create-form.models";
+
+export const Action_Config_UI= [ButtonActions.logout];
 
 
 const uid = new ShortUniqueId();
