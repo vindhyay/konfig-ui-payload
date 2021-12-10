@@ -28,9 +28,10 @@ export enum PopulateConfigOptionTypes {
 
 export enum ColumnTypes {
   Text = "Text",
+  TextInput = "TextInput",
   TextArea = "TextArea",
   Number = "Number",
-  Date = "Date",
+  DatePicker = "DatePicker",
   Data = "Data"
 }
 
