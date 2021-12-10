@@ -93,7 +93,7 @@ export class ModalComponent implements OnInit {
   }
   checkHeight(containerName?) {
     if (this.item.children?.length) {
-      this.editorService.setAdjustableHeight(this.item.children, ".modal"+this.item?.metaData?.widgetId);
+      this.editorService.setAdjustableHeight(this.item.children[this._selectedIndex].children, ".modal"+this.item?.metaData?.widgetId);
     }
   }
   onHide($event){
