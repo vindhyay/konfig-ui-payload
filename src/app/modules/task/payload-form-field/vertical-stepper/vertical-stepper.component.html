@@ -16,7 +16,7 @@
     </div>
     <ul class="stepper-body" [ngStyle]="{
       height: metaData.stepperHeight+'px'
-    }">
+    }" #stepperBody>
       <li
         *ngFor="let child of children; let i = index"
         [ngClass]="{
@@ -102,13 +102,17 @@
         [ngClass] = "{
           'stepper-btn-container': true,
           'alignEnd':  _selectedIndex===0
-        }"
-        [ngStyle]="{
-          background: metaData.footerBgColor
-        }"
-        
+        }"        
       >
-        <ng-container *ngFor="let item of metaData.buttonContainer">
+      <finlevit-grid
+          [viewMode]="viewMode"
+          [showEdit]="showEdit"
+          [parent]="metaData?.buttonContainer"
+          [items]="metaData?.buttonContainer?.children"
+          (onBtnClick)="setSelection($event)"
+          [style]="{width:'100%'}"
+        ></finlevit-grid>
+        <!-- <ng-container *ngFor="let item of metaData.buttonContainer">
           <div [ngStyle]="{ width: item.cols * 10 + 'px' }" *ngIf="checkVisibility(item, _selectedIndex)">
             <finlevit-button
               [icon]="item?.metaData?.icon"
@@ -121,7 +125,7 @@
               (btnClick)="setSelection(item)"
             ></finlevit-button>
           </div>
-        </ng-container>
+        </ng-container> -->
       </div>
     </div>
   </div>

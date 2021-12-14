@@ -2,13 +2,14 @@ import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild }
 import { getAllFromFields,eligibileReviewField } from "src/app/utils";
 import { TextStyles } from "../../model/create-form.models";
 import { EditorService } from "../../editor.service";
+import { TaskService } from "../../services/task.service";
 @Component({
   selector: "app-vertical-stepper",
   templateUrl: "./vertical-stepper.component.html",
   styleUrls: ["./vertical-stepper.component.scss"]
 })
 export class VerticalStepperComponent implements OnInit {
-  constructor(private editorService: EditorService) {
+  constructor(private editorService: EditorService,private taskService: TaskService) {
   }
   @Input() children = [];
   @Input() headerContent=[];
@@ -26,7 +27,7 @@ export class VerticalStepperComponent implements OnInit {
     fontStyle: '',
     defaultBarColor: '',
     completedBarColor: '',
-    buttonContainer:[],
+    buttonContainer:{},
     footerBgColor: '#fff',
     conentBgColor: '#fff',
     leftPanelBgColor: '#fff',
@@ -44,11 +45,18 @@ export class VerticalStepperComponent implements OnInit {
   reviewData=[];
   _selectedIndex=0;
   @ViewChild("contentConatiner", { read: ElementRef }) contentConatiner: ElementRef;
+  @ViewChild("stepperBody", { read: ElementRef }) stepperBody: ElementRef;
   ngOnInit() {
     setTimeout(()=>{
       this.checkHeight();
       this.scrollTo(this._selectedIndex);
     },100)
+    this.taskService.transactionDetailsSubject.subscribe(value => {
+      setTimeout(()=>{
+        this.checkVisibility();
+        this.scrollTo(this._selectedIndex);
+      })
+    })
   }
 
   @Input() set selectedIndex(number) {
@@ -65,45 +73,64 @@ export class VerticalStepperComponent implements OnInit {
     this._selectedIndex=number;
     setTimeout(()=>{
       this.checkHeight();
+      this.checkVisibility();
       this.scrollTo(this._selectedIndex);
       this.contentConatiner.nativeElement.scrollIntoView();
     },100)
   }
   private scrollTo(_index: any) {
-    let elmnt = document.querySelectorAll('.stepper-body>li')[this._selectedIndex];
-    elmnt?.scrollIntoView({block: "nearest", inline: "nearest"});
+    // console.log(this.stepperBody.nativeElement);
+    // let elmnt = document.querySelectorAll('.stepper-body>li')[];
+    this.stepperBody.nativeElement?.children[this._selectedIndex]?.scrollIntoView({block: "nearest", inline: "nearest"});
+    // elmnt?.scrollIntoView({block: "nearest", inline: "nearest"});
   }
   setSelection(item:any) {
-    switch(item.metaData?.onClickConfig?.action){
+    // switch(item.metaData?.onClickConfig?.action){
+    //   case 'previousStep':
+    //     this.onPrev.emit(this._selectedIndex);
+    //     break;
+    //   case 'nextStep':
+    //     this.onNext.emit(this._selectedIndex);
+    //     break;
+    //   case 'submit':
+    //     this.onBtnClick.emit({data:item});
+    //     break;
+    //   case 'exit':
+    //     break;
+    //   case 'save':
+    //     this.onBtnClick.emit({data:item});
+    //     break;
+    // }
+    switch(item.data.metaData?.onClickConfig?.action){
       case 'previousStep':
         this.onPrev.emit(this._selectedIndex);
+        this.onBtnClick.emit(item);
         break;
       case 'nextStep':
         this.onNext.emit(this._selectedIndex);
+        this.onBtnClick.emit(item);
         break;
       case 'submit':
-        this.onBtnClick.emit({data:item});
-        break;
-      case 'exit':
+        this.onBtnClick.emit(item);
         break;
       case 'save':
-        this.onBtnClick.emit({data:item});
+        this.onBtnClick.emit(item);
         break;
     }
   }
-  checkVisibility(item:any,index:number):boolean{
-    switch(item.metaData?.onClickConfig?.action){
-      case 'previousStep':
-        return this._selectedIndex>0
-      case 'nextStep':
-        return this._selectedIndex<this.children.length-1;
-      case 'submit':
-        return this._selectedIndex===this.children.length-1;
-      case 'exit':
-      case 'save':
-        return true;
-    }
-    return false;
+  checkVisibility(){
+    this.metaData.buttonContainer['children'] = this.metaData.buttonContainer['children'].map((item)=>{
+      switch(item.metaData?.onClickConfig?.action){
+        case 'previousStep':
+           return {...item, metaData:{ ...item.metaData,isHidden:this._selectedIndex<=0}};
+        case 'nextStep':
+          return {...item, metaData:{ ...item.metaData,isHidden:this._selectedIndex===this.children.length-1}};
+        case 'submit':
+          return {...item, metaData:{ ...item.metaData,isHidden:this._selectedIndex!==this.children.length-1}};
+        default:
+          return item;
+      }
+    })
   }
   checkHeight(containerName?) {
     console.log('parent',this.children[this._selectedIndex].children);
