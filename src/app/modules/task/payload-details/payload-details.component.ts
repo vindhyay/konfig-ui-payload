@@ -239,7 +239,8 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
       this.notificationService.error("Application not found", "Failed to submit");
       return;
     }
-    this.userService.saveAndValidateScreen({ statusId, screenId: this.transactionDetails?.screenId, transactionId: this.transactionDetails.transactionId }, payloadMetaData)
+    // this.userService.saveAndValidateScreen({ statusId, screenId: this.transactionDetails?.screenId, transactionId: this.transactionDetails.transactionId }, payloadMetaData)
+    this.userService.saveTransaction({ transactionId: this.transactionDetails?.transactionId, screenId: this.transactionDetails?.screenId }, this.formFields)
       .subscribe(result => {
           this.loading = false;
           const { data, error } = parseApiResponse(result);

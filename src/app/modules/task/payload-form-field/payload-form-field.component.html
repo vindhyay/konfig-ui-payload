@@ -48,7 +48,7 @@
         [isDisabled]="(viewMode && (!item?.validators?.editable || !editMode)) || disable"
         [leftIcon]="item?.metaData?.leftIcon"
         [rightIcon]="item?.metaData?.rightIcon"
-        [error]="item?.error == true"
+        [error]="isError(item)"
         [tooltip]="item?.metaData?.tooltip"
         [placeholder]="item?.metaData?.placeholder"
         [(ngModel)]="item.value.value"
@@ -106,15 +106,15 @@
         [style.--input-label-font-style]="item?.metaData?.styleProperties?.properties?.labelStyle"
         [style.--input-label-text-decoration]="item?.metaData?.styleProperties?.properties?.labelTextDecoration"
         [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
-        [errorMsg]="item?.metaData?.errorMessage"
-        [showErrorMsg]="item?.metaData?.showErrorMessage"
+        [errorMsg]="item?.errorMessage || item?.metaData?.errorMessage"
+        [showErrorMsg]="item?.errorMessage || item?.metaData?.showErrorMessage"
       ></finlevit-text>
       <finlevit-text
               *ngIf="item?.metaData?.isFormulaField"
               [isDisabled]="(viewMode && (!item?.validators?.editable || !editMode)) || disable"
               [leftIcon]="item?.metaData?.leftIcon"
               [rightIcon]="item?.metaData?.rightIcon"
-              [error]="item?.error == true"
+              [error]="isError(item)"
               [tooltip]="item?.metaData?.tooltip"
               [placeholder]="item?.metaData?.placeholder"
               [ngModel]="calculateFormulaValue(item?.metaData, item?.id)"
@@ -146,7 +146,7 @@
               [showClearButton]="item?.metaData?.showClearButton"
               [prefixText]="item?.metaData?.prefixText"
               [suffixText]="item?.metaData?.suffixText"
-              [errorMsg]="item?.metaData?.errorMessage"
+              [errorMsg]="item?.errorMessage || item?.metaData?.errorMessage"
               (onBlur)="optionChange($event, item)"
               [pattern]="item?.validators?.pattern || null"
               [mask] = "item?.metaData?.mask || null"
@@ -174,7 +174,7 @@
               [style.--input-label-font-style]="item?.metaData?.styleProperties?.properties?.labelStyle"
               [style.--input-label-text-decoration]="item?.metaData?.styleProperties?.properties?.labelTextDecoration"
               [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
-              [showErrorMsg]="item?.metaData?.showErrorMessage"
+              [showErrorMsg]="item?.errorMessage || item?.metaData?.showErrorMessage"
       ></finlevit-text>
     </div>
   </ng-container>
@@ -185,7 +185,7 @@
         [isDisabled]="(viewMode && (!item?.validators?.editable || !editMode)) || disable"
         [leftIcon]="item?.metaData?.leftIcon"
         [rightIcon]="item?.metaData?.rightIcon"
-        [error]="item?.error == true"
+        [error]="isError(item)"
         [tooltip]="item?.metaData?.tooltip"
         [placeholder]="item?.metaData?.placeholder"
         [(ngModel)]="item.value.value"
@@ -243,15 +243,15 @@
         [style.--input-label-font-style]="item?.metaData?.styleProperties?.properties?.labelStyle"
         [style.--input-label-text-decoration]="item?.metaData?.styleProperties?.properties?.labelTextDecoration"
         [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
-        [errorMsg]="item?.metaData?.errorMessage"
-        [showErrorMsg]="item?.metaData?.showErrorMessage"
+        [errorMsg]="item?.errorMessage || item?.metaData?.errorMessage"
+        [showErrorMsg]="item?.errorMessage || item?.metaData?.showErrorMessage"
       ></finlevit-text>
       <finlevit-text
               *ngIf="item?.metaData?.isFormulaField"
               [isDisabled]="(viewMode && (!item?.validators?.editable || !editMode)) || disable"
               [leftIcon]="item?.metaData?.leftIcon"
               [rightIcon]="item?.metaData?.rightIcon"
-              [error]="item?.error == true"
+              [error]="isError(item)"
               [tooltip]="item?.metaData?.tooltip"
               [placeholder]="item?.metaData?.placeholder"
               [ngModel]="calculateFormulaValue(item?.metaData, item?.id)"
@@ -283,7 +283,7 @@
               [showClearButton]="item?.metaData?.styleProperties?.properties?.showClearButton"
               [prefixText]="item?.metaData?.styleProperties?.properties?.prefixText"
               [suffixText]="item?.metaData?.styleProperties?.properties?.suffixText"
-              [errorMsg]="item?.metaData?.errorMessage"
+              [errorMsg]="item?.errorMessage || item?.metaData?.errorMessage"
               (onBlur)="optionChange($event, item)"
               [pattern]="item?.validators?.pattern || null"
               [mask] = "item?.metaData?.mask || null"
@@ -311,7 +311,7 @@
               [style.--input-label-font-style]="item?.metaData?.styleProperties?.properties?.labelStyle"
               [style.--input-label-text-decoration]="item?.metaData?.styleProperties?.properties?.labelTextDecoration"
               [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
-              [showErrorMsg]="item?.metaData?.showErrorMessage"
+              [showErrorMsg]="item?.errorMessage || item?.metaData?.showErrorMessage"
       ></finlevit-text>
     </div>
   </ng-container>
@@ -368,7 +368,7 @@
         [prefixText]="item?.metaData?.styleProperties?.properties?.prefixText"
         [suffixText]="item?.metaData?.styleProperties?.properties?.suffixText"
         [labelPosition]="item?.metaData?.styleProperties?.properties?.labelPosition"
-        [errorMessage]="item?.metaData?.errorMessage"
+        [errorMessage]="item?.errorMessage || item?.metaData?.errorMessage"
         [showErrorMessage]="item?.metaData?.showErrorMessage"
       ></app-password-field>
     </div>
@@ -425,7 +425,7 @@
         [prefixText]="item?.metaData?.styleProperties?.properties?.prefixText"
         [suffixText]="item?.metaData?.styleProperties?.properties?.suffixText"
         [labelPosition]="item?.metaData?.styleProperties?.properties?.labelPosition"
-        [errorMessage]="item?.metaData?.errorMessage"
+        [errorMessage]="item?.errorMessage || item?.metaData?.errorMessage"
         [showErrorMessage]="item?.metaData?.showErrorMessage"
       ></app-ssninput-field>
     </div>
@@ -483,7 +483,7 @@
         [prefixText]="item?.metaData?.styleProperties?.properties?.prefixText"
         [suffixText]="item?.metaData?.styleProperties?.properties?.suffixText"
         [labelPosition]="item?.metaData?.styleProperties?.properties?.labelPosition"
-        [errorMessage]="item?.metaData?.errorMessage"
+        [errorMessage]="item?.errorMessage || item?.metaData?.errorMessage"
         [showErrorMessage]="item?.metaData?.showErrorMessage"
       ></app-phonenumber-field>
     </div>
@@ -493,7 +493,7 @@
       <finlevit-lib-textarea
         [isDisabled]="(viewMode && (!item?.validators?.editable || !editMode)) || disable"
         [rows]="item?.metaData?.rowsCount"
-        [error]="item?.error == true"
+        [error]="isError(item)"
         [tooltip]="item?.metaData?.tooltip"
         [placeholder]="item?.metaData?.placeholder"
         [(ngModel)]="item.value.value"
@@ -522,7 +522,7 @@
         [style.--input-border-left-width]="item?.metaData?.styleProperties?.properties?.borderLeftWidth"
         [independentBorders]="item?.metaData?.styleProperties?.properties?.independentBorder"
         [allowLabelWrapping]="item?.metaData?.styleProperties?.properties?.allowLabelWrapping"
-        [errorMsg]="item?.metaData?.errorMessage"
+        [errorMsg]="item?.errorMessage || item?.metaData?.errorMessage"
         [showCharCount]="item?.metaData?.styleProperties?.properties?.showCharCount"
         [autoResize]="item?.metaData?.autoResize"
         [style.--input-color]="item?.metaData?.styleProperties?.properties?.textColor"
@@ -546,7 +546,7 @@
         [style.--input-label-font-style]="item?.metaData?.styleProperties?.properties?.labelStyle"
         [style.--input-label-text-decoration]="item?.metaData?.styleProperties?.properties?.labelTextDecoration"
         [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
-        [showErrorMsg]="item?.metaData?.showErrorMessage"
+        [showErrorMsg]="item?.errorMessage || item?.metaData?.showErrorMessage"
       ></finlevit-lib-textarea>
     </div>
   </ng-container>
@@ -556,7 +556,7 @@
         [isDisabled]="(viewMode && (!item?.validators?.editable || !editMode)) || disable"
         [placeholder]="item?.metaData?.placeholder"
         [tooltip]="item?.metaData?.tooltip"
-        [error]="item?.error == true"
+        [error]="isError(item)"
         [(ngModel)]="item.value.value"
         (ngModelChange)="validateField($event, item)"
         [label]="item?.label"
@@ -585,8 +585,8 @@
                        [independentBorders]="item?.metaData?.styleProperties?.properties?.independentBorder"
                        [allowLabelWrapping]="item?.metaData?.styleProperties?.properties?.allowLabelWrapping"
                        [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
-                       [errorMsg]="item?.metaData?.errorMessage"
-                       [showErrorMsg]="item?.metaData?.showErrorMessage"
+                       [errorMsg]="item?.errorMessage || item?.metaData?.errorMessage"
+                       [showErrorMsg]="item?.errorMessage || item?.metaData?.showErrorMessage"
                        [prefixText]="item?.metaData?.styleProperties?.properties?.prefixText"
                        [suffixText]="item?.metaData?.styleProperties?.properties?.suffixText"
                        [showClearButton]="item?.metaData?.styleProperties?.properties?.showClearButton"
@@ -623,7 +623,7 @@
                        [isDisabled]="(viewMode && (!item?.validators?.editable || !editMode)) || disable"
                        [placeholder]="item?.metaData?.placeholder"
                        [tooltip]="item?.metaData?.tooltip"
-                       [error]="item?.error == true"
+                       [error]="isError(item)"
                        [ngModel]="calculateFormulaValue(item?.metaData, item?.id)"
                        (ngModelChange)="validateField($event, item)"
                        [label]="item?.label"
@@ -653,8 +653,8 @@
                        [independentBorders]="item?.metaData?.styleProperties?.properties?.independentBorder"
                        [allowLabelWrapping]="item?.metaData?.styleProperties?.properties?.allowLabelWrapping"
                        [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
-                       [errorMsg]="item?.metaData?.errorMessage"
-                       [showErrorMsg]="item?.metaData?.showErrorMessage"
+                       [errorMsg]="item?.errorMessage || item?.metaData?.errorMessage"
+                       [showErrorMsg]="item?.errorMessage || item?.metaData?.showErrorMessage"
                        [prefixText]="item?.metaData?.styleProperties?.properties?.prefixText"
                        [suffixText]="item?.metaData?.styleProperties?.properties?.suffixText"
                        [showClearButton]="item?.metaData?.styleProperties?.properties?.showClearButton"
@@ -842,7 +842,7 @@
     <div class="input-container">
       <finlevit-lib-checkbox
         [isDisabled]="(viewMode && (!item?.validators?.editable || !editMode)) || disable"
-        [error]="item?.error == true"
+        [error]="isError(item)"
         [isRequired]="item?.validators?.required"
         [label]="item?.label"
         [(ngModel)]="item.value.value"
@@ -862,8 +862,8 @@
         [style.--input-check-icon-color]="item?.metaData?.styleProperties?.properties?.checkIconColor"
         [style.--input-flex-direction]="item?.metaData?.styleProperties?.properties?.checkboxAlign"
         [style.--input-checkbox-size]="item?.metaData?.styleProperties?.properties?.checkboxSize"
-        [errorMsg]="item?.metaData?.errorMessage"
-        [showErrorMsg]="item?.metaData?.showErrorMessage"
+        [errorMsg]="item?.errorMessage || item?.metaData?.errorMessage"
+        [showErrorMsg]="item?.errorMessage || item?.metaData?.showErrorMessage"
       ></finlevit-lib-checkbox>
     </div>
   </ng-container>
@@ -902,8 +902,8 @@
         [allowLabelWrapping]="item?.metaData?.styleProperties?.properties?.allowLabelWrapping"
         [labelAlignment]="item?.metaData?.styleProperties?.properties?.labelAlignment"
         [checkboxSize]="item?.metaData?.styleProperties?.properties?.checkboxSize"
-        [errorMessage]="item?.metaData?.errorMessage"
-        [showErrorMessage]="item?.metaData?.showErrorMessage"
+        [errorMessage]="item?.errorMessage || item?.metaData?.errorMessage"
+        [showErrorMessage]="item?.errorMessage || item?.metaData?.showErrorMessage"
       ></app-checkbox-group>
     </div>
   </ng-container>
@@ -958,8 +958,8 @@
         [borderLeftWidth]="item?.metaData?.styleProperties?.properties?.borderLeftWidth"
         [independentBorder]="item?.metaData?.styleProperties?.properties?.independentBorder"
         [allowLabelWrapping]="item?.metaData?.styleProperties?.properties?.allowLabelWrapping"
-        [errorMessage]="item?.metaData?.errorMessage"
-        [showErrorMessage]="item?.metaData?.showErrorMessage"
+        [errorMessage]="item?.errorMessage || item?.metaData?.errorMessage"
+        [showErrorMessage]="item?.errorMessage ||  item?.metaData?.showErrorMessage"
       ></app-dropdown-field>
     </div>
   </ng-container>
@@ -992,7 +992,7 @@
         [optionValue]="item?.metaData?.isLabelAndValue ? item?.metaData?.optionValue : 'name'"
         [(ngModel)]="item.value.value"
         (ngModelChange)="validateField($event, item); onChange($event)"
-        [error]="item?.error == true"
+        [error]="isError(item)"
         [alignOptions]="item?.metaData?.alignOptions"
         [columns]="item?.metaData?.columns"
         [style.--input-label-font-weight]="item?.metaData?.styleProperties?.properties?.labelFontWeight"
@@ -1022,8 +1022,8 @@
         [style.--input-text-decoration]="item?.metaData?.styleProperties?.properties?.textDecoration"
         [allowLabelWrapping]="item?.metaData?.styleProperties?.properties?.allowLabelWrapping"
         [style.--input-label-align]="item?.metaData?.styleProperties?.properties?.labelAlignment"
-        [errorMsg]="item?.metaData?.errorMessage"
-        [showErrorMsg]="item?.metaData?.showErrorMessage"
+        [errorMsg]="item?.errorMessage || item?.metaData?.errorMessage"
+        [showErrorMsg]="item?.errorMessage || item?.metaData?.showErrorMessage"
         [style.--input-label-width]="item?.metaData?.styleProperties?.properties?.labelWidth + '%'"
         [style.--input-radiobutton-size]="item?.metaData?.styleProperties?.properties?.radiobuttonSize"
         [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
@@ -1035,8 +1035,8 @@
       <finlevit-lib-datepicker
         [isDisabled]="(viewMode && (!item?.validators?.editable || !editMode)) || disable"
         [label]="item?.label"
-        [errorMsg]="item?.errorMsg"
-        [error]="item?.error == true"
+        [errorMsg]="item?.errorMessage || item?.errorMsg"
+        [error]="isError(item)"
         [isRequired]="item?.validators?.required"
         [tooltip]="item?.metaData?.tooltip"
         [placeholder]="item?.metaData?.placeholder"
@@ -1069,7 +1069,7 @@
         [style.--input-label-font-weight]="item?.metaData?.styleProperties?.properties?.labelFontWeight"
         [style.--input-label-font-style]="item?.metaData?.styleProperties?.properties?.labelStyle"
         [style.--input-label-text-decoration]="item?.metaData?.styleProperties?.properties?.labelTextDecoration"
-        [showErrorMsg]="item?.metaData?.showErrorMessage"
+        [showErrorMsg]="item?.errorMessage || item?.metaData?.showErrorMessage"
         [showTime]="item?.metaData?.showTime"
         [hourFormat]="item?.metaData?.hourFormat"
         [stepMinute]="item?.metaData?.stepMinute"
