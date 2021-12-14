@@ -85,22 +85,6 @@ export class VerticalStepperComponent implements OnInit {
     // elmnt?.scrollIntoView({block: "nearest", inline: "nearest"});
   }
   setSelection(item:any) {
-    // switch(item.metaData?.onClickConfig?.action){
-    //   case 'previousStep':
-    //     this.onPrev.emit(this._selectedIndex);
-    //     break;
-    //   case 'nextStep':
-    //     this.onNext.emit(this._selectedIndex);
-    //     break;
-    //   case 'submit':
-    //     this.onBtnClick.emit({data:item});
-    //     break;
-    //   case 'exit':
-    //     break;
-    //   case 'save':
-    //     this.onBtnClick.emit({data:item});
-    //     break;
-    // }
     switch(item.data.metaData?.onClickConfig?.action){
       case 'previousStep':
         this.onPrev.emit(this._selectedIndex);
@@ -110,10 +94,7 @@ export class VerticalStepperComponent implements OnInit {
         this.onNext.emit(this._selectedIndex);
         this.onBtnClick.emit(item);
         break;
-      case 'submit':
-        this.onBtnClick.emit(item);
-        break;
-      case 'save':
+      default:
         this.onBtnClick.emit(item);
         break;
     }
