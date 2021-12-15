@@ -120,7 +120,9 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
 
     return (widgetType==='TextInput' || widgetType==='Email' );
   }
-
+  isError(item){
+    return (item?.errorMessage?.length>0 || item.error===true);
+  }
   ngOnInit() {
     this.transactionDetailsSubscription = this.taskService.transactionDetailsSubject.subscribe(value => {
       if (value) {

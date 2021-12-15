@@ -74,7 +74,7 @@ export class VerticalStepperComponent implements OnInit {
     elmnt?.scrollIntoView({block: "nearest", inline: "nearest"});
   }
   setSelection(item:any) {
-    switch(item.metaData?.onClickConfig?.action){
+    switch(item.metaData?.onClickConfigs[0]?.action){
       case 'previousStep':
         this.onPrev.emit(this._selectedIndex);
         break;
@@ -92,7 +92,7 @@ export class VerticalStepperComponent implements OnInit {
     }
   }
   checkVisibility(item:any,index:number):boolean{
-    switch(item.metaData?.onClickConfig?.action){
+    switch(item.metaData?.onClickConfigs[0]?.action){
       case 'previousStep':
         return this._selectedIndex>0
       case 'nextStep':

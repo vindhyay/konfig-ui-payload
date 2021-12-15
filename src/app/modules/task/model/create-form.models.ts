@@ -1363,6 +1363,7 @@ export class BaseWidget {
   status: boolean;
   error?: boolean;
   errorMsg?: string;
+  errorMessage?:string;
   children: BaseWidget[];
   validators: Validators;
   value: Value;
