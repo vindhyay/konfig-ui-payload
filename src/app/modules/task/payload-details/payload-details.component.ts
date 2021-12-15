@@ -38,7 +38,6 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
   showActions: boolean = true;
   queueType: QUEUE_TYPES = QUEUE_TYPES.NEW;
   sessionFields = {};
-  UIAction=[];
   ngOnInit(): void {
     this.currentUser = this.authService.getCurrentUser();
     this.queueType = getValueFromObjectByPath(this.activatedRoute, "snapshot.data.queueType");
