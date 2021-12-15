@@ -260,7 +260,7 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
   getGlobalStyles(item) {
     if (!item?.metaData || item?.metaData?.widgetType !== this.Container) return {};
     let style = {};
-    if (item.metaData
+    if (item.rows && item.metaData
       && item.metaData?.styleProperties
       && Object.keys(item.metaData.styleProperties).length
       && item.metaData?.styleProperties?.properties) {
