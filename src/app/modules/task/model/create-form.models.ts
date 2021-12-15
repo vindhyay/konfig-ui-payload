@@ -481,20 +481,30 @@ export class DropdownMetaData extends MetaData {
   optionType: string;
   optionPopulateConfig: Array<OptionConfig>;
   onChangeConfig: OnChangeTriggerConfig;
+  errorMessage: string;
+  showErrorMessage: boolean;
+  styleProperties: { id: "" };
+  allowLabelWrapping: boolean;
+  showFieldDependencyConfig: boolean;
   constructor(data) {
     super(data);
     const {
       placeholder = "Select",
       tooltip = "",
-      optionLabel = "",
-      optionValue = "",
+      optionLabel = "name",
+      optionValue = "value",
       options = [],
       optionType = "manual",
       isLabelAndValue = false,
       optionPopulateConfig = [],
-      onChangeConfig = {}
+      onChangeConfig = {},
+      errorMessage = "",
+      showErrorMessage = true,
+      styleProperties = {},
+      allowLabelWrapping = false,
+      showFieldDependencyConfig = false
     } = data;
-    this.placeholder = placeholder;
+    this.placeholder = placeholder || "Select";
     this.optionType = optionType;
     this.optionLabel = optionLabel;
     this.optionValue = optionValue;
@@ -503,6 +513,11 @@ export class DropdownMetaData extends MetaData {
     this.isLabelAndValue = isLabelAndValue;
     this.optionPopulateConfig = optionPopulateConfig;
     this.onChangeConfig = new OnChangeTriggerConfig(onChangeConfig);
+    this.errorMessage = errorMessage;
+    this.showErrorMessage = showErrorMessage;
+    this.styleProperties = styleProperties;
+    this.allowLabelWrapping = allowLabelWrapping;
+    this.showFieldDependencyConfig = showFieldDependencyConfig;
   }
 }
 
@@ -1070,6 +1085,10 @@ export class CheckboxGroupMetaData extends CheckboxMetaData {
   optionValue: string;
   dataResourceId: string;
   datalistId: string;
+  alignOptions: string;
+  columns: number;
+  allowLabelWrapping: boolean;
+  showFieldDependencyConfig: boolean;
   constructor(data) {
     super(data);
     const {
@@ -1079,8 +1098,12 @@ export class CheckboxGroupMetaData extends CheckboxMetaData {
       optionLabel = "name",
       optionValue = "value",
       isLabelAndValue = false,
-      dataResourceId = "",
-      datalistId = ""
+      dataResourceId = null,
+      datalistId = null,
+      alignOptions = "Horizontal",
+      columns = 1,
+      allowLabelWrapping = false,
+      showFieldDependencyConfig = false
     } = data;
     this.optionType = optionType;
     this.tooltip = tooltip;
@@ -1090,6 +1113,10 @@ export class CheckboxGroupMetaData extends CheckboxMetaData {
     this.optionValue = optionValue;
     this.datalistId = datalistId;
     this.dataResourceId = dataResourceId;
+    this.alignOptions = alignOptions;
+    this.columns = columns;
+    this.allowLabelWrapping = allowLabelWrapping;
+    this.showFieldDependencyConfig = showFieldDependencyConfig;
   }
 }
 
@@ -1101,6 +1128,11 @@ export class RadioGroupMetaData extends CheckboxMetaData {
   optionLabel: string;
   optionValue: string;
   alignOptions: string;
+  columns: number;
+  allowLabelWrapping: boolean;
+  showErrorMessage: boolean;
+  errorMessage: string;
+  showFieldDependencyConfig: boolean;
   constructor(data) {
     super(data);
     const {
@@ -1110,7 +1142,12 @@ export class RadioGroupMetaData extends CheckboxMetaData {
       optionLabel = "name",
       optionValue = "value",
       isLabelAndValue = false,
-      alignOptions = "Horizontal"
+      alignOptions = "Vertical",
+      columns = 1,
+      allowLabelWrapping = false,
+      showErrorMessage = true,
+      errorMessage = "",
+      showFieldDependencyConfig = false
     } = data;
     this.optionType = optionType;
     this.tooltip = tooltip;
@@ -1119,6 +1156,11 @@ export class RadioGroupMetaData extends CheckboxMetaData {
     this.optionLabel = optionLabel;
     this.optionValue = optionValue;
     this.alignOptions = alignOptions;
+    this.columns = columns;
+    this.allowLabelWrapping = allowLabelWrapping;
+    this.showErrorMessage = showErrorMessage;
+    this.errorMessage = errorMessage;
+    this.showFieldDependencyConfig = showFieldDependencyConfig;
   }
 }
 
