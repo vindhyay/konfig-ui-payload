@@ -8,7 +8,7 @@ import { NotificationService } from "../../../services/notification.service";
 import { UserDataModel } from "../../auth/models";
 import { addOriginalPosition, getValueFromObjectByPath, parseApiResponse } from "../../../utils";
 import { TaskService } from "../services/task.service";
-import { BaseWidget, DATA_TYPES, WidgetTypes } from "../model/create-form.models";
+import { BaseWidget, ButtonActions, DATA_TYPES, WidgetTypes } from "../model/create-form.models";
 import { EditorService } from "../editor.service";
 
 @Component({
@@ -38,6 +38,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
   showActions: boolean = true;
   queueType: QUEUE_TYPES = QUEUE_TYPES.NEW;
   sessionFields = {};
+  UIAction=[];
   ngOnInit(): void {
     this.currentUser = this.authService.getCurrentUser();
     this.queueType = getValueFromObjectByPath(this.activatedRoute, "snapshot.data.queueType");
@@ -223,8 +224,18 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
         }
       );
   }
-
-
+  uiAction(eventData){
+    this.UIAction=eventData.data;
+  }
+  triggerUIAction(){
+    if(this.UIAction?.length){
+      this.UIAction.forEach(item=>{
+        if(item.action===ButtonActions.logout){
+          this.authService.logoff(false, this.activatedRoute);
+        }
+      })
+    }
+  }
   submitTransaction(payloadData: any) {
     const { payloadFields: payloadMetaData, payload: screenDataJson, files = [], itemData: {data:{ metaData: { status: statusId = "" } = {} },triggerId} } = payloadData;
     const params = {
@@ -262,6 +273,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
                   this.transactionDetails = data;
                   this.taskService.setTransactionDetails(data);
                   this.id = data.id;
+                  this.triggerUIAction();
                 } else {
                   this.notificationService.error(error.errorMessage, "Error");
                 }

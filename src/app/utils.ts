@@ -3,7 +3,7 @@ import { result } from "./state/model/api-response";
 import { FormControl, Validators } from "@angular/forms";
 import { ButtonActions, WidgetTypes } from "./modules/task/model/create-form.models";
 
-export const Action_Config_UI= [ButtonActions.logout];
+export const Action_Config_UI= [ButtonActions.logout,ButtonActions.nextStep,ButtonActions.previousStep];
 
 
 const uid = new ShortUniqueId();

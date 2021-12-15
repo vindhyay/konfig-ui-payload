@@ -28,6 +28,7 @@ export class PayloadViewFormComponent implements OnInit {
   @Output() onPopulate = new EventEmitter();
   @Output() onUniqueFieldChange = new EventEmitter();
   @Output() onGetScreen = new EventEmitter();
+  @Output() onUIAction = new EventEmitter();
   _payloadFields = [];
 
   constructor(
@@ -212,13 +213,6 @@ export class PayloadViewFormComponent implements OnInit {
   }
 
   onBtnClick($event) {
-    // const {
-    //   data: {
-    //     isUnique = false,
-    //     metaData: { onClickConfigs: { action: type = "", parameters = [] } = {} }
-    //   },
-    //   data: { id }
-    // } = $event;
     const {
       data: {
         metaData: { onClickConfigs = [] },
@@ -281,6 +275,9 @@ export class PayloadViewFormComponent implements OnInit {
     }
     if(!error){
       this.submit({triggerId: id,data:$event?.data});
+    }
+    if(UIAction){
+     this.onUIAction.emit({data:UIAction});
     }
   }
 
