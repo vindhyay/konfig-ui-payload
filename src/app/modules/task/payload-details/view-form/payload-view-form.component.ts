@@ -28,7 +28,6 @@ export class PayloadViewFormComponent implements OnInit {
   @Output() onPopulate = new EventEmitter();
   @Output() onUniqueFieldChange = new EventEmitter();
   @Output() onGetScreen = new EventEmitter();
-  @Output() onUIAction = new EventEmitter();
   _payloadFields = [];
 
   constructor(
@@ -114,7 +113,7 @@ export class PayloadViewFormComponent implements OnInit {
     });
     return { result, errorFields }
   }
-  submit(data) {
+  triggerClicksAll(data) {
     const {result, errorFields} =  this.validateFields(this._payloadFields)
     if (result) {
       this.onSubmit.emit({ payload: this.convertPayload(this._payloadFields), itemData:data, payloadFields: this.updateValuesFromOptions(this._payloadFields) });
@@ -219,7 +218,7 @@ export class PayloadViewFormComponent implements OnInit {
         id
       },
     } = $event;
-    const UIAction= onClickConfigs.filter(item=>Action_Config_UI.includes(item.action));
+    const uiAction= onClickConfigs.filter(item=>Action_Config_UI.includes(item.action));
     const populateAction= onClickConfigs.find(item=>item.action===ButtonActions.populate) || null;
     let error = false;
     // if (type === ButtonActions.submit) {
@@ -274,10 +273,7 @@ export class PayloadViewFormComponent implements OnInit {
       // }
     }
     if(!error){
-      this.submit({triggerId: id,data:$event?.data});
-    }
-    if(UIAction){
-     this.onUIAction.emit({data:UIAction});
+      this.triggerClicksAll({triggerId: id,data:$event?.data,uiAction:uiAction});
     }
   }
 

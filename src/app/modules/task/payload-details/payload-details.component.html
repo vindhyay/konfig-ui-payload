@@ -5,11 +5,10 @@
       [showActions]="showActions"
       [payloadFields]="formFields"
       (onGetScreen)="getScreenData($event)"
-      (onSubmit)="submitTransaction($event)"
+      (onSubmit)="triggerClicksAll($event)"
       (onSave)="saveTransaction($event)"
       (onPopulate)="populateTransaction($event)"
       (onUniqueFieldChange)="uniqueFieldChange($event)"
-      (onUIAction)="uiAction($event)"
     >
     </app-payload-view-form>
   </div>
