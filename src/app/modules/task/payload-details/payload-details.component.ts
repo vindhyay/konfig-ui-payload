@@ -8,7 +8,7 @@ import { NotificationService } from "../../../services/notification.service";
 import { UserDataModel } from "../../auth/models";
 import { addOriginalPosition, getValueFromObjectByPath, parseApiResponse } from "../../../utils";
 import { TaskService } from "../services/task.service";
-import { BaseWidget, DATA_TYPES, WidgetTypes } from "../model/create-form.models";
+import { BaseWidget, ButtonActions, DATA_TYPES, WidgetTypes } from "../model/create-form.models";
 import { EditorService } from "../editor.service";
 
 @Component({
@@ -54,19 +54,19 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
     this.taskService.transactionDetailsSubject.subscribe(value => {
       if (value) {
         this.transactionDetails = value;
-        if(this.formFields.length){
-          if(this.formFields?.length!==value?.uiPayload?.length){
-            this.formFields = value?.uiPayload || [];
-          }else{
-            this.formFields.forEach((element,index) => {
-              for (const prop in element) {
-                this.formFields[index][prop]=value.uiPayload[index][prop];
-              }
-            });
-          }
-        }else{
+        // if(this.formFields.length){
+        //   if(this.formFields?.length!==value?.uiPayload?.length){
+        //     this.formFields = value?.uiPayload || [];
+        //   }else{
+        //     this.formFields.forEach((element,index) => {
+        //       for (const prop in element) {
+        //         this.formFields[index][prop]=value.uiPayload[index][prop];
+        //       }
+        //     });
+        //   }
+        // }else{
           this.formFields = value?.uiPayload || [];
-        }
+        //}
         this.formFields = this.formFields.sort((a,b)=> a?.y - b?.y);
         const header = this.formFields.find(item => item?.metaData?.widgetType === WidgetTypes.Header);
         const errorContainer = this.formFields.find(item => item?.metaData?.widgetType === WidgetTypes.ErrorContainer);
@@ -90,7 +90,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
             movement: null,
             value: { value: this.transactionDetails.errorMessage }
           });
-          this.formFields.push(errorContainer);
+           this.formFields.push(errorContainer);
           setTimeout(() => {
             errorContainer.rows = errorRows;
             errorContainer.metaData.movement = "DOWN";
@@ -223,21 +223,27 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
         }
       );
   }
-
-  submitTransaction(payloadData: any) {
-    const { payloadFields: payloadMetaData, payload: screenDataJson, files = [], data: { metaData: { status: statusId = "" } = {} } = {} } = payloadData;
+  triggerUIAction(uiAction){
+    if(uiAction?.length){
+      uiAction.forEach(item=>{
+        if(item.action===ButtonActions.logout){
+          this.authService.logoff(false, this.activatedRoute);
+        }
+      })
+    }
+  }
+  triggerClicksAll(payloadData: any) {
+    const { payloadFields: payloadMetaData, payload: screenDataJson, files = [], itemData: {data:{ metaData: { status: statusId = "" } = {} },triggerId,uiAction} } = payloadData;
     const params = {
-      userId: this.currentUser?.userId,
-      statusId,
+      triggerId,
       screenId: this.transactionDetails.screenId,
-      transactionId: this.transactionDetails.transactionId || ""
     };
     const appId = this.transactionDetails?.application?.appId;
     if (!appId) {
       this.notificationService.error("Application not found", "Failed to submit");
       return;
     }
-    this.userService.saveAndValidateScreen({ statusId, screenId: this.transactionDetails?.screenId, transactionId: this.transactionDetails.transactionId }, payloadMetaData)
+    this.userService.saveTransaction({ transactionId: this.transactionDetails?.transactionId, screenId: this.transactionDetails?.screenId }, this.formFields)
       .subscribe(result => {
           this.loading = false;
           const { data, error } = parseApiResponse(result);
@@ -250,7 +256,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
               payload.append("files", file);
             });
             this.loading = true;
-            this.userService.submitTransaction(appId, params, payload).subscribe(
+            this.userService.submitMuliplAction(this.transactionDetails.transactionId,params, payload).subscribe(
               result => {
                 this.loading = false;
                 const { data, error } = parseApiResponse(result);
@@ -259,6 +265,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
                   this.transactionDetails = data;
                   this.taskService.setTransactionDetails(data);
                   this.id = data.id;
+                  this.triggerUIAction(uiAction);
                 } else {
                   this.notificationService.error(error.errorMessage, "Error");
                 }
