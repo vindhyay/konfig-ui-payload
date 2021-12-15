@@ -533,11 +533,11 @@ export class TextInputMetaData extends MetaData {
   errorMessage: string;
   showErrorMessage: boolean;
   styleProperties: { id: "", properties: any };
+  adornmentBackgroundColor: string;
   allowLabelWrapping: boolean;
   showClearButton: boolean;
-  adornmentBackgroundColor: boolean;
-  prefixText: "";
-  suffixText: "";
+  prefixText: string;
+  suffixText: string;
   constructor(data) {
     super(data);
     const {
@@ -552,9 +552,9 @@ export class TextInputMetaData extends MetaData {
       errorMessage = "",
       showErrorMessage = true,
       styleProperties = {},
+      adornmentBackgroundColor = "#ffffff",
       allowLabelWrapping = false,
       showClearButton = false,
-      adornmentBackgroundColor = "#ffffff",
       prefixText = "",
       suffixText = ""
     } = data;
@@ -569,9 +569,9 @@ export class TextInputMetaData extends MetaData {
     this.errorMessage = errorMessage;
     this.showErrorMessage = showErrorMessage;
     this.styleProperties = styleProperties;
+    this.adornmentBackgroundColor = adornmentBackgroundColor;
     this.allowLabelWrapping = allowLabelWrapping;
     this.showClearButton = showClearButton;
-    this.adornmentBackgroundColor = adornmentBackgroundColor;
     this.prefixText = prefixText;
     this.suffixText = suffixText;
   }
@@ -583,21 +583,54 @@ export class PasswordInputMetaData extends MetaData {
   tooltip: string;
   leftIcon: string;
   rightIcon: string;
-  isFormulaField: boolean;
-  formula = [];
-  rules : any;
   showIcon: string;
   hideIcon: string;
+  isFormulaField: boolean;
+  formula = [];
+  rules: {
+    oneLowerCase: boolean;
+    oneUpperCase: boolean;
+    oneNumber: boolean;
+    oneSpecialchar: boolean;
+    minLength: number;
+  };
+  errorMessage: string;
+  showErrorMessage: boolean;
+  styleProperties: { id: "", properties: any };
+  adornmentBackgroundColor: string;
+  allowLabelWrapping: boolean;
+  showClearButton: boolean;
+  prefixText: string;
+  suffixText: string;
   constructor(data) {
     super(data);
-    const { mask = "", icon = "", tooltip = "", placeholder = "********", leftIcon = "", rightIcon = "",showIcon = "pi pi-eye",
-    hideIcon = "pi pi-eye-slash",isFormulaField, formula,rules = {
-      oneLowerCase: true,
-      oneUpperCase: true,
-      oneNumber: true,
-      oneSpecialchar: true,
-      minLength : 8,
-    } } = data;
+    const {
+      mask = "",
+      icon = "",
+      tooltip = "",
+      placeholder = "********",
+      leftIcon = "",
+      rightIcon = "",
+      showIcon = "pi pi-eye",
+      hideIcon = "pi pi-eye-slash",
+      isFormulaField,
+      formula,
+      rules = {
+        oneLowerCase: true,
+        oneUpperCase: true,
+        oneNumber: true,
+        oneSpecialchar: true,
+        minLength: 8
+      },
+      errorMessage = "",
+      showErrorMessage = true,
+      styleProperties = {},
+      adornmentBackgroundColor = "#ffffff",
+      allowLabelWrapping = false,
+      showClearButton = false,
+      prefixText = "",
+      suffixText = ""
+    } = data;
     this.mask = mask;
     this.icon = icon;
     this.tooltip = tooltip;
@@ -608,7 +641,15 @@ export class PasswordInputMetaData extends MetaData {
     this.hideIcon = hideIcon;
     this.isFormulaField = isFormulaField;
     this.formula = formula;
-    this.rules= rules;
+    this.rules = rules;
+    this.errorMessage = errorMessage;
+    this.showErrorMessage = showErrorMessage;
+    this.styleProperties = styleProperties;
+    this.adornmentBackgroundColor = adornmentBackgroundColor;
+    this.allowLabelWrapping = allowLabelWrapping;
+    this.showClearButton = showClearButton;
+    this.prefixText = prefixText;
+    this.suffixText = suffixText;
   }
 }
 
@@ -640,7 +681,15 @@ export class SSNInputMetaData extends MetaData {
   isFormulaField: boolean;
   formula = [];
   selectedInput: string;
-  patterns:any;
+  patterns: any;
+  errorMessage: string;
+  showErrorMessage: boolean;
+  styleProperties: { id: "" };
+  adornmentBackgroundColor: string;
+  allowLabelWrapping: boolean;
+  showClearButton: boolean;
+  prefixText: string;
+  suffixText: string;
   constructor(data) {
     super(data);
     const {
@@ -656,11 +705,20 @@ export class SSNInputMetaData extends MetaData {
       hideIcon = "pi pi-eye",
       isFormulaField,
       formula,
-      selectedInput='SSN',
+      selectedInput = "SSN",
       patterns = {
-        SSN: "^(?!\\b(\\d)\\1+-(\\d)\\1+-(\\d)\\1+\\b)(?!123-45-6789|219-09-9999|078-05-1120)(?!666|000|9\\d{2})\\d{3}-(?!00)\\d{2}-(?!0{4})\\d{4}$",
+        SSN:
+          "^(?!\\b(\\d)\\1+-(\\d)\\1+-(\\d)\\1+\\b)(?!123-45-6789|219-09-9999|078-05-1120)(?!666|000|9\\d{2})\\d{3}-(?!00)\\d{2}-(?!0{4})\\d{4}$",
         ITIN: "^(9\\d{2})-([7]\\d|8[0-8])-(\\d{4})$"
-      }
+      },
+      errorMessage = "",
+      showErrorMessage = true,
+      styleProperties = {},
+      adornmentBackgroundColor = "#ffffff",
+      allowLabelWrapping = false,
+      showClearButton = false,
+      prefixText = "",
+      suffixText = ""
     } = data;
     this.mask = mask;
     this.icon = icon;
@@ -672,10 +730,18 @@ export class SSNInputMetaData extends MetaData {
     this.hideIcon = hideIcon;
     this.isFormulaField = isFormulaField;
     this.formula = formula;
-    this.selectedInput= selectedInput;
-    this.patterns=patterns;
-    this.showMask=showMask;
-    this.hideMask=hideMask;
+    this.selectedInput = selectedInput;
+    this.patterns = patterns;
+    this.showMask = showMask;
+    this.hideMask = hideMask;
+    this.errorMessage = errorMessage;
+    this.showErrorMessage = showErrorMessage;
+    this.styleProperties = styleProperties;
+    this.adornmentBackgroundColor = adornmentBackgroundColor;
+    this.allowLabelWrapping = allowLabelWrapping;
+    this.showClearButton = showClearButton;
+    this.prefixText = prefixText;
+    this.suffixText = suffixText;
   }
 }
 
@@ -688,9 +754,34 @@ export class EmailMetaData extends MetaData {
   rightIcon: string;
   isFormulaField: boolean;
   formula = [];
+  errorMessage: string;
+  showErrorMessage: boolean;
+  adornmentBackgroundColor: string;
+  allowLabelWrapping: boolean;
+  showClearButton: boolean;
+  prefixText: string;
+  suffixText: string;
+  styleProperties: { id: "", properties: any };
   constructor(data) {
     super(data);
-    const { mask = "", icon = "", tooltip = "", placeholder = "example@domain.com", leftIcon = "", rightIcon = "", isFormulaField, formula } = data;
+    const {
+      mask = "",
+      icon = "",
+      tooltip = "",
+      placeholder = "example@domain.com",
+      leftIcon = "",
+      rightIcon = "",
+      isFormulaField,
+      formula,
+      errorMessage = "",
+      showErrorMessage = true,
+      styleProperties = {},
+      adornmentBackgroundColor = "#ffffff",
+      allowLabelWrapping = false,
+      showClearButton = false,
+      prefixText = "",
+      suffixText = ""
+    } = data;
     this.mask = mask;
     this.icon = icon;
     this.tooltip = tooltip;
@@ -699,6 +790,14 @@ export class EmailMetaData extends MetaData {
     this.rightIcon = rightIcon;
     this.isFormulaField = isFormulaField;
     this.formula = formula;
+    this.errorMessage = errorMessage;
+    this.showErrorMessage = showErrorMessage;
+    this.styleProperties = styleProperties;
+    this.adornmentBackgroundColor = adornmentBackgroundColor;
+    this.allowLabelWrapping = allowLabelWrapping;
+    this.showClearButton = showClearButton;
+    this.prefixText = prefixText;
+    this.suffixText = suffixText;
   }
 }
 
@@ -711,9 +810,34 @@ export class PhonenumberInputMetaData extends MetaData {
   rightIcon: string;
   isFormulaField: boolean;
   formula = [];
+  errorMessage: string;
+  showErrorMessage: boolean;
+  styleProperties: { id: "", properties: any };
+  adornmentBackgroundColor: string;
+  allowLabelWrapping: boolean;
+  showClearButton: boolean;
+  prefixText: string;
+  suffixText: string;
   constructor(data) {
     super(data);
-    const { mask = "000-000-0000", icon = "", tooltip = "", placeholder = "000-000-0000", leftIcon = "", rightIcon = "", isFormulaField, formula } = data;
+    const {
+      mask = "000-000-0000",
+      icon = "",
+      tooltip = "",
+      placeholder = "000-000-0000",
+      leftIcon = "",
+      rightIcon = "",
+      isFormulaField,
+      formula,
+      errorMessage = "",
+      showErrorMessage = true,
+      styleProperties = {},
+      adornmentBackgroundColor = "#ffffff",
+      allowLabelWrapping = false,
+      showClearButton = false,
+      prefixText = "",
+      suffixText = ""
+    } = data;
     this.mask = mask;
     this.icon = icon;
     this.tooltip = tooltip;
@@ -722,6 +846,14 @@ export class PhonenumberInputMetaData extends MetaData {
     this.rightIcon = rightIcon;
     this.isFormulaField = isFormulaField;
     this.formula = formula;
+    this.errorMessage = errorMessage;
+    this.showErrorMessage = showErrorMessage;
+    this.styleProperties = styleProperties;
+    this.adornmentBackgroundColor = adornmentBackgroundColor;
+    this.allowLabelWrapping = allowLabelWrapping;
+    this.showClearButton = showClearButton;
+    this.prefixText = prefixText;
+    this.suffixText = suffixText;
   }
 }
 
@@ -787,23 +919,70 @@ export class DatePickerMetaData extends MetaData {
 }
 
 export class NumberMetaData extends MetaData {
-  format: boolean;
   prefix: string;
   suffix: string;
+  mode: string;
+  currency: string;
+  minFractionDigits: number;
+  maxFractionDigits: number;
   placeholder: string;
   tooltip: string;
   isFormulaField: boolean;
   formula = [];
+  errorMessage: string;
+  showErrorMessage: boolean;
+  showStepperButtons: boolean;
+  step: number;
+  styleProperties: { id: ""; properties: any };
+  allowLabelWrapping: false;
+  showClearButton: false;
+  adornmentBackgroundColor: "#ffffff";
+  prefixText: "";
+  suffixText: "";
   constructor(data) {
     super(data);
-    const { prefix = "", suffix = "", tooltip = "", placeholder = "", format = false, isFormulaField, formula } = data;
-    this.format = format;
+    const {
+      prefix = "",
+      suffix = "",
+      mode,
+      currency,
+      minFractionDigits,
+      maxFractionDigits,
+      tooltip = "",
+      placeholder = "",
+      isFormulaField,
+      formula,
+      errorMessage = "",
+      showErrorMessage = true,
+      showStepperButtons = false,
+      step = 1,
+      styleProperties = {},
+      allowLabelWrapping = false,
+      showClearButton = false,
+      adornmentBackgroundColor = "#ffffff",
+      prefixText = "",
+      suffixText = ""
+    } = data;
     this.prefix = prefix;
     this.suffix = suffix;
+    this.mode = mode;
+    this.currency = currency;
+    this.minFractionDigits = minFractionDigits;
+    this.maxFractionDigits = maxFractionDigits;
     this.tooltip = tooltip;
     this.placeholder = placeholder;
     this.isFormulaField = isFormulaField;
     this.formula = formula;
+    this.errorMessage = errorMessage;
+    this.showErrorMessage = showErrorMessage;
+    this.showStepperButtons = showStepperButtons;
+    this.step = step;
+    this.styleProperties = styleProperties;
+    this.allowLabelWrapping = allowLabelWrapping;
+    this.showClearButton = showClearButton;
+    this.adornmentBackgroundColor = adornmentBackgroundColor;
+    this.prefixText = prefixText;
+    this.suffixText = suffixText;
   }
 }
 
