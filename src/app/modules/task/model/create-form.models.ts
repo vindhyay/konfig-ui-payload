@@ -92,18 +92,40 @@ export enum DATA_TYPES {
   ARRAY = "array"
 }
 
+export enum CELL_ALIGNMENTS_TYPES {
+  LEFT = "left",
+  RIGHT = "right",
+  CENTER = "center"
+}
+export enum TABLE_OVERFLOW {
+  PAGINATION = "pagination",
+  SCROLL = "scroll"
+}
+export enum TABLE_PAGINATION_POSITIONS {
+  TOP = "top",
+  BOTTOM = "bottom"
+}
+
 
 export class TableActions {
   editRow: boolean;
   deleteRow: boolean;
   width: any;
   label: string;
+  alignment: CELL_ALIGNMENTS_TYPES;
   constructor(data) {
-    const { editRow = false, deleteRow = false, width = 30, label = "Actions" } = data;
+    const {
+      editRow = true,
+      deleteRow = true,
+      width = 100,
+      label = "Actions",
+      align = CELL_ALIGNMENTS_TYPES.LEFT
+    } = data;
     this.editRow = editRow;
     this.deleteRow = deleteRow;
     this.width = width;
     this.label = label;
+    this.alignment = align;
   }
 }
 
@@ -249,10 +271,51 @@ export class MetaData {
     this.conditions = conditions;
   }
 }
+export class SubColumn {
+  columnId: string;
+  populateResponsePath: string;
+  name: string;
+  constructor(data) {
+    const { columnId, populateResponsePath, name } = data;
+    this.columnId = columnId;
+    this.populateResponsePath = populateResponsePath;
+    this.name = name;
+  }
+}
+export class TablePopulateConfig {
+  populateConfigType: string;
+  columns: Array<SubColumn>;
+  parameters: Array<any>;
+  populateTriggerId: string;
+  populateResponsePath: string;
+  datalistId: string;
+  dataResourceId: string;
+  resourceId: string;
+  constructor(data) {
+    const {
+      populateConfigType = null,
+      columns = [],
+      parameters = [],
+      populateTriggerId = null,
+      populateResponsePath = null,
+      datalistId = null,
+      dataResourceId = null,
+      resourceId = null
+    } = data;
+    this.populateConfigType = populateConfigType;
+    this.columns = columns;
+    this.parameters = parameters;
+    this.populateTriggerId = populateTriggerId;
+    this.populateResponsePath = populateResponsePath;
+    this.datalistId = datalistId;
+    this.dataResourceId = dataResourceId;
+    this.resourceId = resourceId;
+  }
+}
 
 export class Column {
   type: DATA_TYPES;
-  colType: string;
+  colType: WidgetTypes;
   columnId: string;
   label: string;
   name: string;
@@ -261,6 +324,8 @@ export class Column {
   width?: string;
   editable: boolean;
   validators: Validators;
+  children: BaseWidget[];
+  alignment: CELL_ALIGNMENTS_TYPES;
   metaData:
     | TextMetaData
     | TextInputMetaData
@@ -287,7 +352,9 @@ export class Column {
       width = "100",
       editable = true,
       validators = {},
-      metaData
+      metaData,
+      children = [],
+      alignment = CELL_ALIGNMENTS_TYPES.LEFT
     } = data;
     if (metaData) {
       switch (colType) {
@@ -337,6 +404,8 @@ export class Column {
     } else {
       this.metaData = metaData;
     }
+    this.alignment = alignment;
+    this.children = children || [];
     this.colType = colType;
     this.type = type;
     this.label = label;
@@ -349,41 +418,93 @@ export class Column {
     this.validators = new Validators(validators);
   }
 }
-export class TableMetaData extends MetaData {
-  columns: Array<Column>;
-  populateConfigType: string;
+
+export class TableMetaData<T> extends MetaData {
+  color: string;
+  bgColor: string;
   heading: string;
   sort: boolean;
   filter: boolean;
-  pagination: boolean;
   addRows: boolean;
+  hideHeader: boolean;
+  horizontalBorder: boolean;
+  verticalBorder: boolean;
+  tableBorder: boolean;
+  borderColor: string;
+  actions: TableActions;
+  optionPopulateConfig: Array<TablePopulateConfig>;
+  columns: Array<T>;
+  overflow: TABLE_OVERFLOW;
   options: Array<any>;
-  color: string;
-  bgColor: string;
+  bodyCellColor: string;
+  bodyCellBgColor: string;
+
+  pagination: boolean;
+  paginatorPosition: TABLE_PAGINATION_POSITIONS;
+  paginatorColor: string;
+  paginatorBgColor: string;
+
   constructor(data) {
     super(data);
     const {
-      columns = [],
-      populateConfigType = PopulateConfigOptionTypes.onload,
       heading = "",
       sort = false,
       filter = false,
       pagination = false,
-      addRows = false,
-      options = [],
-      color = "#000000",
-      bgColor = "#ffffff"
+      color = "#6a6a6a",
+      bgColor = "#ededed",
+      bodyCellColor = "#6a6a6a",
+      bodyCellBgColor = "#fff",
+      optionsPopulateConfig = [],
+      columns = [],
+      addRows = true,
+      hideHeader = false,
+      horizontalBorder = true,
+      verticalBorder = true,
+      tableBorder = true,
+      borderColor = "#cccccc",
+      actions = {},
+      overflow = TABLE_OVERFLOW.PAGINATION,
+      paginatorPosition = TABLE_PAGINATION_POSITIONS.BOTTOM,
+      paginatorBgColor = "#ededed",
+      paginatorColor = "#6a6a6a",
+      options = []
     } = data;
     this.columns = columns;
-    this.populateConfigType = populateConfigType;
     this.heading = heading;
     this.sort = sort;
     this.filter = filter;
     this.pagination = pagination;
-    this.options = options;
     this.color = color;
     this.bgColor = bgColor;
+    this.optionPopulateConfig = optionsPopulateConfig;
     this.addRows = addRows;
+    this.hideHeader = hideHeader;
+    this.horizontalBorder = horizontalBorder;
+    this.verticalBorder = verticalBorder;
+    this.tableBorder = tableBorder;
+    this.borderColor = borderColor;
+
+    this.actions = new TableActions(actions);
+    this.overflow = overflow;
+
+    this.pagination = paginatorPosition;
+    this.paginatorPosition = paginatorPosition;
+    this.paginatorBgColor = paginatorBgColor;
+    this.paginatorColor = paginatorColor;
+
+    this.bodyCellColor = bodyCellColor;
+    this.bodyCellBgColor = bodyCellBgColor;
+    this.options = options;
+  }
+}
+
+export class SavedTransactionMetaData extends TableMetaData<SavedColumn> {
+  statusIds: Array<string>;
+  constructor(data) {
+    super(data);
+    const { statusIds = [] } = data;
+    this.statusIds = statusIds;
   }
 }
 
@@ -437,38 +558,6 @@ export class SavedColumn {
   path: string;
   type: string;
   columnId: string;
-}
-
-export class SavedTransactionMetaData extends MetaData {
-  color: string;
-  bgColor: string;
-  heading: string;
-  sort: boolean;
-  filter: boolean;
-  pagination: boolean;
-  columns: Array<SavedColumn>;
-  statusIds: Array<string>;
-  constructor(data) {
-    super(data);
-    const {
-      heading = "",
-      sort = false,
-      filter = false,
-      pagination = false,
-      color = "#000000",
-      bgColor = "#ffffff",
-      columns = [],
-      statusIds = []
-    } = data;
-    this.columns = columns;
-    this.heading = heading;
-    this.sort = sort;
-    this.filter = filter;
-    this.pagination = pagination;
-    this.color = color;
-    this.bgColor = bgColor;
-    this.statusIds = statusIds;
-  }
 }
 
 export class DropdownMetaData extends MetaData {
@@ -1319,6 +1408,7 @@ export class BaseWidget {
   maxItemCols: number;
   minItemRows: number;
   maxItemRows: number;
+  width?: any;
 
   hideRows: number;
   defaultRows: number;
@@ -1343,7 +1433,7 @@ export class BaseWidget {
     | RadioGroupMetaData
     | TextAreaMetaData
     | ButtonMetaData
-    | TableMetaData
+    | TableMetaData<Column>
     | UploadMetaData
     | CollapseContainerMetaData
     | ErrorContainerMetadata
@@ -1391,8 +1481,9 @@ export class BaseWidget {
       minItemCols,
       minItemRows,
       maxItemCols,
-      maxItemRows
-    } = data;
+      maxItemRows,
+      width = 100,
+  } = data;
     if (!metaData) {
       switch (widgetType) {
         case WidgetTypes.Text:
@@ -1502,5 +1593,6 @@ export class BaseWidget {
     this.minItemRows = minItemRows;
     this.maxItemCols = maxItemCols;
     this.maxItemRows = maxItemRows;
+    this.width = width;
   }
 }

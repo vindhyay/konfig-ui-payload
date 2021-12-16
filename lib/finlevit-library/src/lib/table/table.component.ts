@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import {Column, ColumnTypes} from '../../../../../src/app/modules/task/model/create-form.models';
+import { Column, ColumnTypes, WidgetTypes } from "../../../../../src/app/modules/task/model/create-form.models";
 import {getUniqueId} from '../utils';
 import {scrollToBottom,getValidators} from '../../../../../src/app/utils';
 
@@ -24,7 +24,7 @@ export class TableComponent implements OnInit {
   @Input()
   set columns(columns) {
     this._columns = columns.map(column => {
-      if (column.colType === ColumnTypes.DatePicker) {
+      if (column.colType === WidgetTypes.DatePicker) {
         if (column?.validators?.minDate) {
           column.validators.minDate = new Date(column.validators.minDate);
         }

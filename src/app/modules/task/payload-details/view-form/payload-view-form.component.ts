@@ -130,7 +130,7 @@ export class PayloadViewFormComponent implements OnInit {
     data.forEach(field => {
       if (field?.metaData?.widgetType === WidgetTypes.Table) {
         if (field?.value) {
-          field.value.value = field.value.value ? field.value.value : field.metaData.options;
+          field.value.value = field.value?.value?.length ? field.value.value : field.metaData.options;
         } else {
           field.value = { id: null, value: field.metaData.options };
         }

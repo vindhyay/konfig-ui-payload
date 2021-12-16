@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from "@angu
 import { FormControl, Validators } from "@angular/forms";
 import { FieldData } from "../model/field-data.model";
 import { DataTypes } from "../model/payload-field.model";
-import { BaseWidget, NESTED_MIN_COLUMNS, TableMetaData, WidgetTypes } from "../model/create-form.models";
+import { BaseWidget, Column, NESTED_MIN_COLUMNS, TableMetaData, WidgetTypes } from "../model/create-form.models";
 import { getErrorMessages, getFieldFromFields, getValidators, validateFields } from "../../../utils";
 import { TaskService } from "../services/task.service";
 import { AuthService } from "../../auth/services/auth.service";
@@ -72,13 +72,9 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
     if (!data.value || typeof data.value != "object" || !data.value.value) {
       data.value = { id: "", value: data?.value?.value ? data.value : null };
     }
-    if (data?.metaData?.widgetType === WidgetTypes.Table || data?.metaData?.widgetType === WidgetTypes.AdvTable) {
-      const metaData = data.metaData as TableMetaData;
-      if (metaData.configure) {
-        metaData.options = metaData.options || [];
-      } else {
-        data.value = { id: "", value: data?.value?.value || [] };
-      }
+    if (data?.metaData?.widgetType === WidgetTypes.Table) {
+      const metaData = data.metaData as TableMetaData<Column>;
+      data.value = { id: "", value: data?.value?.value?.length ? data.value.value : metaData?.options?.length ? metaData.options : [] };
     }
     if(data?.metaData?.widgetType === WidgetTypes.Checkbox) {
       data.value = {id: "", value: data?.value?.value || false}
