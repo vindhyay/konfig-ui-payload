@@ -282,9 +282,6 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
       this.verticalStepIndex=this.item.children.length-1;
     }
   }
-  selectionChange($event) {
-    console.log($event);
-  }
   onCollapse(status, item) {
     if (!status) {
       this.item.rows = item?.metaData?.hideRows || 0;

@@ -52,7 +52,6 @@ export class VerticalStepperComponent implements OnInit {
   }
 
   @Input() set selectedIndex(number) {
-    console.log(number);
     let reviewArray=[];
     if(this.children && number===this.children.length-1 && this.metaData?.isReviewer){
       this.children.forEach(child=>{
@@ -60,7 +59,6 @@ export class VerticalStepperComponent implements OnInit {
       })
       reviewArray.pop();
       this.reviewData =reviewArray;
-      console.log(this.reviewData);
     }
     this._selectedIndex=number;
     setTimeout(()=>{
@@ -106,7 +104,6 @@ export class VerticalStepperComponent implements OnInit {
     return false;
   }
   checkHeight(containerName?) {
-    console.log('parent',this.children[this._selectedIndex].children);
     this.editorService.setAdjustableHeight(this.children[this._selectedIndex].children, ".content");
   }
   onSelectIndexChange = index => {

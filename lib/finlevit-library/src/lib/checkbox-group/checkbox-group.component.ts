@@ -66,7 +66,6 @@ export class CheckboxGroupComponent implements OnInit, ControlValueAccessor {
   }
 
   writeValue(value: any): void {
-    console.log('value from coed', value);
     this._selectedValues = value || [];
   }
   registerOnChange(fn: any): void {
