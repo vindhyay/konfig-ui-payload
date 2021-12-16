@@ -160,6 +160,8 @@ export class AppConfigService {
       // Wizard Screen APIs
       saveAndValidateScreenURL: ACCOUNT_WORKFLOW_BASE_URL + '/transaction/save-and-validate',
       getScreenDataURL: ACCOUNT_WORKFLOW_BASE_URL + '/transaction',
+      //MultipleClickActionSubmit
+      submitMultipleAction:  ACCOUNT_WORKFLOW_BASE_URL + '/transaction/click-trigger'
     }
   }
 }

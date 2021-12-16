@@ -116,7 +116,9 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
 
     return (widgetType==='TextInput' || widgetType==='Email' );
   }
-
+  isError(item){
+    return (item?.errorMessage?.length>0 || item.error===true);
+  }
   ngOnInit() {
     this.transactionDetailsSubscription = this.taskService.transactionDetailsSubject.subscribe(value => {
       if (value) {
@@ -275,9 +277,6 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
     if(this.verticalStepIndex>this.item.children.length-1){
       this.verticalStepIndex=this.item.children.length-1;
     }
-  }
-  selectionChange($event) {
-    console.log($event);
   }
   onCollapse(status, item) {
     if (!status) {
