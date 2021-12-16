@@ -1166,10 +1166,33 @@ export class RadioGroupMetaData extends CheckboxMetaData {
 
 export class ImageMetaData extends MetaData {
   url: string;
+  altText: string;
+  fromLocalOrRemote: string; // 'Local' or 'Remote'
+  remoteKey: string;
+  isCoverOrContain: string; // 'Cover' or 'Contain'
+  horizontalAlign: string;
+  shorterEdge: string
+  styleProperties: { id: "", properties: any };
   constructor(data) {
     super(data);
-    const { url = "" } = data;
+    const { 
+      url = "",
+      altText = "",
+      fromLocalOrRemote = 'Local',
+      remoteKey = "",
+      isCoverOrContain = "Contain",
+      horizontalAlign = "Center",
+      shorterEdge = "height",
+      styleProperties = {}
+    } = data;
     this.url = url;
+    this.altText = altText;
+    this.fromLocalOrRemote = fromLocalOrRemote;
+    this.remoteKey = remoteKey;
+    this.isCoverOrContain = isCoverOrContain;
+    this.horizontalAlign = horizontalAlign;
+    this.shorterEdge = shorterEdge;
+    this.styleProperties = styleProperties;
   }
 }
 

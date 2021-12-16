@@ -126,6 +126,8 @@ export class AppConfigService {
       getNewAnalyticsURL: ACCOUNT_WORKFLOW_BASE_URL + '/analytics/get-project-summary',
       // Demo analytics export URl
       exportDemoTableURL: ACCOUNT_WORKFLOW_BASE_URL + '/export/project-report',
+      // GET IMAGE URL
+      getImageURL: WORKFLOW_ADMIN_BASE_URL + "/field/image",
       // Payload
       // get all transactions
       getAllTransactionsURL: ACCOUNT_WORKFLOW_BASE_URL + '/transaction/get-all-transactions',

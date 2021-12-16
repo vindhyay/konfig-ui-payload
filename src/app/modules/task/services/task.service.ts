@@ -67,6 +67,9 @@ export class TaskService extends BaseService {
     const url = `${this.config.getApiUrls().transactionTableURL}`;
     return this.getData(url, params);
   };
+  getImageUrl = (): string => {
+    return this.config.getApiUrls().getImageURL;
+  }
   checkCondition(conditions) {
     let result = null;
     const allFields = this.transactionDetailsSubject.value?.uiPayload || [];
