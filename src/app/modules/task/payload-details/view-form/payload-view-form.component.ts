@@ -145,10 +145,6 @@ export class PayloadViewFormComponent implements OnInit {
   saveForLater(data) {
     this.onSave.emit({ payloadFields: this.updateValuesFromOptions(this._payloadFields), data });
   }
-  onEditField($event: any) {
-    console.log("i got it", $event);
-  }
-
   onOptionChange($event) {
     const {
       data: {
@@ -158,7 +154,6 @@ export class PayloadViewFormComponent implements OnInit {
         id
       }
     } = $event;
-    console.log("iam here in check unique", $event);
     if (isUnique) {
       this.onUniqueFieldChange.emit({ id, value });
       return;

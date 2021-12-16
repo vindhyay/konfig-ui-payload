@@ -34,7 +34,6 @@ export class ModalComponent implements OnInit {
     })
   }
   onFooterClick(item:any) {
-    console.log('$event',item)
     switch(item.data.metaData?.onClickConfigs[0]?.action){
       case 'previousStep':
         this.onPrev.emit(this._selectedIndex);
