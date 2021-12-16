@@ -150,7 +150,6 @@ export class GridsterDraggable {
     ) {
       return;
     }
-    // console.log('drag leave', e.target);
     // @ts-ignore
     // document.querySelectorAll('.gridster-preview').forEach(node => node.style.display = '');
   }
@@ -165,7 +164,6 @@ export class GridsterDraggable {
     ) {
       return;
     }
-    // console.log('drag enter', e.target);
   }
 
   // Newly added end

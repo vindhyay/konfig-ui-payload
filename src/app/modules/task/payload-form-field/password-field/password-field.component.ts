@@ -81,7 +81,6 @@ export class PasswordFieldComponent implements OnInit {
       metaData.rightIcon= metaData?.showIcon;
       this._type='password';
     }
-    console.log('onRightIconClick',metaData);
   }
   validateField($event: any){
     this.onValueChange.emit($event);

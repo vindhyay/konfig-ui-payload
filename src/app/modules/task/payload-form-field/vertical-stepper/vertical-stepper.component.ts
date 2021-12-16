@@ -60,7 +60,6 @@ export class VerticalStepperComponent implements OnInit {
   }
 
   @Input() set selectedIndex(number) {
-    console.log(number);
     let reviewArray=[];
     if(this.children && number===this.children.length-1 && this.metaData?.isReviewer){
       this.children.forEach(child=>{
@@ -68,7 +67,6 @@ export class VerticalStepperComponent implements OnInit {
       })
       reviewArray.pop();
       this.reviewData =reviewArray;
-      console.log(this.reviewData);
     }
     this._selectedIndex=number;
     setTimeout(()=>{
@@ -85,7 +83,7 @@ export class VerticalStepperComponent implements OnInit {
     // elmnt?.scrollIntoView({block: "nearest", inline: "nearest"});
   }
   setSelection(item:any) {
-    switch(item.data.metaData?.onClickConfig?.action){
+    switch(item.metaData?.onClickConfigs[0]?.action){
       case 'previousStep':
         this.onPrev.emit(this._selectedIndex);
         this.onBtnClick.emit(item);
@@ -101,7 +99,7 @@ export class VerticalStepperComponent implements OnInit {
   }
   checkVisibility(){
     this.metaData.buttonContainer['children'] = this.metaData.buttonContainer['children'].map((item)=>{
-      switch(item.metaData?.onClickConfig?.action){
+      switch(item.metaData?.onClickConfigs[0]?.action){
         case 'previousStep':
            return {...item, metaData:{ ...item.metaData,isHidden:this._selectedIndex<=0}};
         case 'nextStep':
@@ -114,7 +112,6 @@ export class VerticalStepperComponent implements OnInit {
     })
   }
   checkHeight(containerName?) {
-    console.log('parent',this.children[this._selectedIndex].children);
     this.editorService.setAdjustableHeight(this.children[this._selectedIndex].children, ".content");
   }
   onSelectIndexChange = index => {

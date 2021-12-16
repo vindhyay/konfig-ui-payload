@@ -34,15 +34,14 @@ export class ModalComponent implements OnInit {
     })
   }
   onFooterClick(item:any) {
-    console.log('$event',item)
-    switch(item.data.metaData?.onClickConfig?.action){
+    switch(item.data.metaData?.onClickConfigs[0]?.action){
       case 'previousStep':
         this.onPrev.emit(this._selectedIndex);
-        this.onBtnClick.emit(item);
+        // this.onBtnClick.emit(item);
         break;
       case 'nextStep':
         this.onNext.emit(this._selectedIndex);
-        this.onBtnClick.emit(item);
+        // this.onBtnClick.emit(item);
         break;
       case 'submit':
         this.onBtnClick.emit(item);
@@ -79,7 +78,7 @@ export class ModalComponent implements OnInit {
   }
   checkVisibility(){
     this.metaData.buttonContainer.children = this.metaData.buttonContainer.children.map((item)=>{
-      switch(item.metaData?.onClickConfig?.action){
+      switch(item.metaData?.onClickConfigs[0]?.action){
         case 'previousStep':
            return {...item, metaData:{ ...item.metaData,isHidden:this._selectedIndex<=0}};
         case 'nextStep':
