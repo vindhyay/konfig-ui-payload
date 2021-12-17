@@ -46,6 +46,7 @@ export class VerticalStepperComponent implements OnInit {
   _selectedIndex=1;
   @ViewChild("contentConatiner", { read: ElementRef }) contentConatiner: ElementRef;
   @ViewChild("stepperBody", { read: ElementRef }) stepperBody: ElementRef;
+  isInteract=false;
   ngOnInit() {
     setTimeout(()=>{
       this.checkHeight();
@@ -73,24 +74,22 @@ export class VerticalStepperComponent implements OnInit {
       this.checkHeight();
       this.checkVisibility();
       this.scrollTo(this._selectedIndex);
-      this.contentConatiner.nativeElement.scrollIntoView();
     },100)
   }
   private scrollTo(_index: any) {
-    // console.log(this.stepperBody.nativeElement);
-    // let elmnt = document.querySelectorAll('.stepper-body>li')[];
-    this.stepperBody.nativeElement?.children[this._selectedIndex]?.scrollIntoView({block: "nearest", inline: "nearest"});
-    // elmnt?.scrollIntoView({block: "nearest", inline: "nearest"});
+    if(this.isInteract)
+    this.stepperBody.nativeElement?.querySelectorAll('li')[this._selectedIndex]?.scrollIntoView({block: "nearest", inline: "nearest"});
   }
   setSelection(item:any) {
-    switch(item.metaData?.onClickConfigs[0]?.action){
+    this.isInteract=true;
+    switch(item.data.metaData?.onClickConfigs[0]?.action){
       case 'previousStep':
         this.onPrev.emit(this._selectedIndex);
-        // this.onBtnClick.emit(item);
+        this.onBtnClick.emit(item);
         break;
       case 'nextStep':
         this.onNext.emit(this._selectedIndex);
-        // this.onBtnClick.emit(item);
+        this.onBtnClick.emit(item);
         break;
       default:
         this.onBtnClick.emit(item);
@@ -115,6 +114,7 @@ export class VerticalStepperComponent implements OnInit {
     this.editorService.setAdjustableHeight(this.children[this._selectedIndex].children, ".content");
   }
   onSelectIndexChange = index => {
+    this.isInteract=true;
     this.onSelect.emit(index);
   };
 }
