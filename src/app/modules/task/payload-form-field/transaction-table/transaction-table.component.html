@@ -23,6 +23,7 @@
       [tableBorder]="item?.metaData?.tableBorder"
       [horizontalBorder]="item?.metaData?.horizontalBorder"
       [verticalBorder]="item?.metaData?.verticalBorder"
+      (onRowClick)="onRowClick($event)"
     ></finlevit-custom-table>
 </div>
 <app-loader [loading]="loading"></app-loader>

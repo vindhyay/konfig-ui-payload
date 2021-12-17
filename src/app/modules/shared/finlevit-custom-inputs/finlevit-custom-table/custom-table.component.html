@@ -99,7 +99,7 @@
           ></ng-container>
         </ng-container>
         <ng-template #bodyRow let-rowData let-rowIndex="rowIndex">
-          <div class="f-tr-group">
+          <div class="f-tr-group" (click)="onRowClick.emit(rowData)">
             <div
               class="f-tr"
               [ngStyle]="{

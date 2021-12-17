@@ -70,14 +70,14 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
   }
   set item(data: BaseWidget) {
     if (!data.value || typeof data.value != "object" || !data.value.value) {
-      data.value = { id: "", value: data?.value?.value ? data.value : null };
+      data.value = { id: data?.value?.id, value: data?.value?.value ? data.value : null };
     }
     if (data?.metaData?.widgetType === WidgetTypes.Table) {
       const metaData = data.metaData as TableMetaData<Column>;
-      data.value = { id: "", value: data?.value?.value?.length ? data.value.value : metaData?.options?.length ? metaData.options : [] };
+      data.value = { id: data?.value?.id, value: data?.value?.value?.length ? data.value.value : metaData?.options?.length ? metaData.options : [] };
     }
     if(data?.metaData?.widgetType === WidgetTypes.Checkbox) {
-      data.value = {id: "", value: data?.value?.value || false}
+      data.value = {id: data?.value?.id, value: data?.value?.value || false}
     }
     if (data?.validators?.minDate) {
       data.validators.minDate = new Date(data?.validators?.minDate);

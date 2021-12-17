@@ -136,7 +136,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
       if (this.isPaginationEnabled) {
         this.updateRowsLimit();
       }
-    });
+    }, 100);
   }
   ngOnChanges(changes: SimpleChanges) {
     if (this.isPaginationEnabled) {
