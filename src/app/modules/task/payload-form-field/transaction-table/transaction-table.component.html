@@ -7,6 +7,8 @@
       [actions]="item?.metaData?.actions"
       [rows]="item?.rows"
       [tableData]="tableData"
+      [isServerSidePagination]="true"
+      [totalRecords]="totalRecords"
       [addRows]="item?.metaData?.addRows"
       [filter]="item?.metaData?.filter"
       [sort]="item?.metaData?.sort"
@@ -24,6 +26,7 @@
       [horizontalBorder]="item?.metaData?.horizontalBorder"
       [verticalBorder]="item?.metaData?.verticalBorder"
       (onRowClick)="onRowClick($event)"
+      (onPageChange)="onPageChange($event)"
     ></finlevit-custom-table>
 </div>
 <app-loader [loading]="loading"></app-loader>

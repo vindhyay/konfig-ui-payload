@@ -83,7 +83,7 @@
           *ngFor="
             let rowData of (tableFilters?.filtersEnabled ? filteredTableData : tableData)
               | paginationFilter
-                : { page: this.currentPage - 1, limit: this.limitPerPage, isPaginationEnabled: isPaginationEnabled };
+                : { page: this.currentPage - 1, limit: this.limitPerPage, isPaginationEnabled: isPaginationEnabled && !isServerSidePagination };
             let rowIndex = index
           "
         >
@@ -375,7 +375,7 @@
       </div>
       <div [ngClass]="{ '-center': true, 'show-pagination': isPaginationEnabled }">
         <div class="-previous">
-          <button class="footer-btn" (click)="pagination.prev()"><i class="pi pi-angle-left"></i></button>
+          <button class="footer-btn" [disabled]="pagination.isFirst" (click)="pagination.prev()"><i class="pi pi-angle-left"></i></button>
         </div>
         <span class="-pageInfo">
           <div class="-pageJump">
@@ -385,7 +385,7 @@
               [totalPages]="getTotalPages()"
               [pageNo]="currentPage"
               [limit]="limitPerPage"
-              [totalRecords]="tableFilters?.filtersEnabled ? filteredTableData.length : tableData.length"
+              [totalRecords]="isServerSidePagination ? totalRecords : tableFilters?.filtersEnabled ? filteredTableData.length : tableData.length"
               (pageChange)="handlePageChange($event)"
               class="page-input"
               aria-label="Page number"
@@ -396,7 +396,7 @@
           of <span class="-totalPages">{{ pagination.totalPages }}</span></span
         >
         <div class="-next">
-          <button class="footer-btn" (click)="pagination.next()"><i class="pi pi-angle-right"></i></button>
+          <button class="footer-btn" [disabled]="pagination.isLast" (click)="pagination.next()"><i class="pi pi-angle-right"></i></button>
         </div>
       </div>
       <div

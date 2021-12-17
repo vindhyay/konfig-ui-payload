@@ -82,6 +82,8 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
   }
   @Input() paginatorPosition: TABLE_PAGINATION_POSITIONS = TABLE_PAGINATION_POSITIONS.BOTTOM;
   @Input() rows = 0;
+  @Input() isServerSidePagination = false;
+  @Input() totalRecords = 0;
   _tableData = [];
   filteredTableData = [];
   @Input()
@@ -128,11 +130,14 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
     setTimeout(() => {
       if (this.isPaginationEnabled) {
         this.updateRowsLimit();
+        if(this.isServerSidePagination){
+          this.onPageChange.emit({limit: this.limitPerPage, page: this.currentPage})
+        }
       }
     }, 100);
   }
   ngOnChanges(changes: SimpleChanges) {
-    if (this.isPaginationEnabled) {
+    if (this.isPaginationEnabled && changes.rows) {
       this.currentPage = 1;
       this.updateRowsLimit();
     }
@@ -318,13 +323,20 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
   }
   handlePageChange($event) {
     this.currentPage = $event;
+    if(this.isServerSidePagination){
+      this.onPageChange.emit({limit: this.limitPerPage, page: $event})
+    }
   }
   getTotalPages() {
     let pages = 0;
-    if (!this.tableFilters?.filtersEnabled) {
-      pages = Math.ceil(this.tableData.length / this.limitPerPage) || 1
-    } else {
-      pages = Math.ceil(this.filteredTableData.length / this.limitPerPage) || 1;
+    if(this.isServerSidePagination){
+      pages = Math.ceil(this.totalRecords / this.limitPerPage) || 1;
+    }else {
+      if (!this.tableFilters?.filtersEnabled) {
+        pages = Math.ceil(this.tableData.length / this.limitPerPage) || 1
+      } else {
+        pages = Math.ceil(this.filteredTableData.length / this.limitPerPage) || 1;
+      }
     }
     if(this.currentPage > pages){
       this.currentPage = pages;
