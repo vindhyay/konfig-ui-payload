@@ -43,7 +43,7 @@ export class VerticalStepperComponent implements OnInit {
   @Input() completedSteps = {};
   @Input() showEdit = false;
   reviewData=[];
-  _selectedIndex=0;
+  _selectedIndex=1;
   @ViewChild("contentConatiner", { read: ElementRef }) contentConatiner: ElementRef;
   @ViewChild("stepperBody", { read: ElementRef }) stepperBody: ElementRef;
   ngOnInit() {
@@ -86,11 +86,11 @@ export class VerticalStepperComponent implements OnInit {
     switch(item.metaData?.onClickConfigs[0]?.action){
       case 'previousStep':
         this.onPrev.emit(this._selectedIndex);
-        this.onBtnClick.emit(item);
+        // this.onBtnClick.emit(item);
         break;
       case 'nextStep':
         this.onNext.emit(this._selectedIndex);
-        this.onBtnClick.emit(item);
+        // this.onBtnClick.emit(item);
         break;
       default:
         this.onBtnClick.emit(item);
@@ -98,10 +98,10 @@ export class VerticalStepperComponent implements OnInit {
     }
   }
   checkVisibility(){
-    this.metaData.buttonContainer['children'] = this.metaData.buttonContainer['children'].map((item)=>{
+    this.children[0].children = this.children[0].children .map((item)=>{
       switch(item.metaData?.onClickConfigs[0]?.action){
         case 'previousStep':
-           return {...item, metaData:{ ...item.metaData,isHidden:this._selectedIndex<=0}};
+           return {...item, metaData:{ ...item.metaData,isHidden:this._selectedIndex<=1}};
         case 'nextStep':
           return {...item, metaData:{ ...item.metaData,isHidden:this._selectedIndex===this.children.length-1}};
         case 'submit':
