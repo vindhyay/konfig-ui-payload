@@ -768,64 +768,66 @@
   <ng-container *ngIf="item?.metaData?.widgetType === Table">
     <div
       [ngClass]="{
-        'input-container': true,
-        'paginated-table-container': item?.metaData?.pagination,
-        'no-data-table': item?.metaData?.configure ? !item?.metaData?.options?.length : !item?.value?.value?.length
+        'input-container': true
       }"
     >
-      <finlevit-table
-        class="table-container"
-        noDataMessage="No Data Found"
-        [headerColor]="item?.metaData?.color"
-        [headerBgColor]="item?.metaData?.bgColor"
-        [pagination]="item?.metaData?.pagination"
-        [addRows]="item?.metaData?.addRows"
-        [sort]="item?.metaData?.sort"
-        [filter]="item?.metaData?.filter"
+      <finlevit-custom-table
+        [columns]="item?.metaData?.columns"
+        [actions]="item?.metaData?.actions"
+        [rows]="item?.rows"
         [tableData]="
           item?.value?.value?.length
             ? item?.value?.value
-            : item?.metaData?.configure
+            : item?.metaData?.options?.length
             ? item?.metaData?.options
             : item?.value?.value || []
         "
-        [tableHeading]="item?.metaData?.heading"
-        [columns]="item?.metaData?.columns"
-        (onColDataChange)="onColDataChange($event)"
-        [editRow]="item?.metaData?.actions?.editRow"
+        [addRows]="item?.metaData?.addRows"
+        [filter]="item?.metaData?.filter"
+        [sort]="item?.metaData?.sort"
+        [overflowType]="item?.metaData?.overflow"
+        [paginatorPosition]="item?.metaData?.paginatorPosition"
         [hideHeader]="item?.metaData?.hideHeader"
-        [cellBorder]="item?.metaData?.cellBorder"
-        [deleteRow]="item?.metaData?.actions?.deleteRow"
-        [actionWidth]="item?.metaData?.actions?.width"
-        [actionLabel]="item?.metaData?.actions?.label"
-      ></finlevit-table>
+        [style.--header-cell-background-color]="item?.metaData?.bgColor"
+        [style.--header-cell-color]="item?.metaData?.color"
+        [style.--body-cell-background-color]="item?.metaData?.bodyCellBgColor"
+        [style.--body-cell-color]="item?.metaData?.bodyCellColor"
+        [style.--paginator-color]="item?.metaData?.paginatorColor"
+        [style.--paginator-background-color]="item?.metaData?.paginatorBgColor"
+        [style.--table-border-color]="item?.metaData?.borderColor"
+        [tableBorder]="item?.metaData?.tableBorder"
+        [horizontalBorder]="item?.metaData?.horizontalBorder"
+        [verticalBorder]="item?.metaData?.verticalBorder"
+      ></finlevit-custom-table>
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === AdvTable">
     <div
       [ngClass]="{
-        'input-container': true,
-        'paginated-table-container': item?.metaData?.pagination,
-        'no-data-table': item?.metaData?.configure ? !item?.metaData?.options?.length : !item?.value?.value?.length
+        'input-container': true
       }"
     >
-      <app-adv-table
-        class="table-container"
-        noDataMessage="User can enter data or auto populate in application"
-        [sort]="item?.metaData?.sort"
-        [pagination]="item?.metaData?.pagination"
-        [filter]="item?.metaData?.filter"
-        [headerColor]="item?.metaData?.color"
-        [headerBgColor]="item?.metaData?.bgColor"
-        [tableHeading]="item?.metaData?.heading"
+      <finlevit-custom-adv-table
         [columns]="item?.metaData?.columns"
-        [addRows]="item?.metaData?.addRows"
-        [hideHeader]="item?.metaData?.hideHeader"
-        [cellBorder]="item?.metaData?.cellBorder"
-        [editRow]="item?.metaData?.actions?.editRow"
-        [deleteRow]="item?.metaData?.actions?.deleteRow"
-        [actionCol]="item?.metaData?.actions"
+        [actions]="item?.metaData?.actions"
+        [rows]="item?.rows"
         [tableData]="item?.children"
+        [addRows]="item?.metaData?.addRows"
+        [filter]="item?.metaData?.filter"
+        [sort]="item?.metaData?.sort"
+        [overflowType]="item?.metaData?.overflow"
+        [paginatorPosition]="item?.metaData?.paginatorPosition"
+        [hideHeader]="item?.metaData?.hideHeader"
+        [style.--header-cell-background-color]="item?.metaData?.bgColor"
+        [style.--header-cell-color]="item?.metaData?.color"
+        [style.--body-cell-background-color]="item?.metaData?.bodyCellBgColor"
+        [style.--body-cell-color]="item?.metaData?.bodyCellColor"
+        [style.--paginator-color]="item?.metaData?.paginatorColor"
+        [style.--paginator-background-color]="item?.metaData?.paginatorBgColor"
+        [style.--table-border-color]="item?.metaData?.borderColor"
+        [tableBorder]="item?.metaData?.tableBorder"
+        [horizontalBorder]="item?.metaData?.horizontalBorder"
+        [verticalBorder]="item?.metaData?.verticalBorder"
         [showEdit]="showEdit"
         [viewMode]="viewMode"
         [isDisabled]="disable"
@@ -833,7 +835,7 @@
         (onBtnClick)="onBtnClick.emit($event)"
         (onTableDataChange)="onTableDataChange.emit($event)"
         (onOptionChange)="optionChange($event, $event.data)"
-      ></app-adv-table>
+      ></finlevit-custom-adv-table>
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === TransactionTable">
