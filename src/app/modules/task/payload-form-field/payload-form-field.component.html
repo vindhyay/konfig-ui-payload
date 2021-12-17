@@ -978,9 +978,9 @@
         (onTableDataChange)="onTableDataChange.emit($event)"
         (onOptionChange)="optionChange($event, $event.data)"
         (selectionChange)="OnStepChange($event)" 
-        [selectedIndex]="verticalStepIndex || 0"
-        (onNext)="onNextClick($event)" 
-        (onPrev)="onPrevClick($event)"
+        [selectedIndex]="modalStepIndex || 0"
+        (onNext)="onNextClick($event,'modal')" 
+        (onPrev)="onPrevClick($event,'modal')"
       ></app-modal>
     </div>
   </ng-container>
@@ -1110,9 +1110,9 @@
       [children]="item?.children" 
       [metaData]="item?.metaData"
       [viewMode]="viewMode" 
-      (onNext)="onNextClick($event)" 
+      (onNext)="onNextClick($event,'stepper')" 
       (onSelect)="onSelectionClick($event,item.metaData)" 
-      (onPrev)="onPrevClick($event)"
+      (onPrev)="onPrevClick($event,'stepper')"
       (onBtnClick)="onBtnClick.emit($event)"
       [showEdit]="showEdit"
       [headerContent]= "item?.metaData?.headerContent" 
