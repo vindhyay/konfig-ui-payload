@@ -53,6 +53,7 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
   activeStepperIndexes = {};
   modalStatus = {};
   verticalStepIndex:number =1 ;
+  modalStepIndex:number = 0 ;
   completedSteps = {};
   selectedStep = 0;
   transactionStatus = null;
@@ -251,9 +252,20 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
       stepperRef.next();
     }
   }
-  onPrevClick($event){
+  onPrevClick($event,type=''){
+    let index=1;
+    if(type=='stepper'){
+      index=this.verticalStepIndex;
+    }else{
+      index=this.modalStepIndex;
+    }
     if($event>1){
-      this.verticalStepIndex -=1;
+      index -=1;
+    }
+    if(type=='stepper'){
+      this.verticalStepIndex = index
+    }else{
+      this.modalStepIndex = index;
     }
   }
   onSelectionClick($event,metaData){
@@ -267,15 +279,26 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
       }
     }
   }
-  onNextClick($event) {
-    const child=this.item.children[this.verticalStepIndex]
+  onNextClick($event,type='') {
+    let index=1;
+    if(type=='stepper'){
+      index=this.verticalStepIndex;
+    }else{
+      index=this.modalStepIndex;
+    }
+    const child=this.item.children[index]
     const validate = validateFields(child.children);
     if (validate) {
       this.completedSteps[child?.metaData?.widgetId] = true;
-      this.verticalStepIndex +=1;
+      index +=1;
     }
-    if(this.verticalStepIndex>this.item.children.length-1){
-      this.verticalStepIndex=this.item.children.length-1;
+    if(index>this.item.children.length-1){
+      index=this.item.children.length-1;
+    }
+    if(type=='stepper'){
+      this.verticalStepIndex = index
+    }else{
+      this.modalStepIndex = index;
     }
   }
   onCollapse(status, item) {
