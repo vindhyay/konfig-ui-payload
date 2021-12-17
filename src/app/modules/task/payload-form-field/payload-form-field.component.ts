@@ -52,7 +52,7 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
   activeTabIndexes = {};
   activeStepperIndexes = {};
   modalStatus = {};
-  verticalStepIndex:number =0 ;
+  verticalStepIndex:number =1 ;
   completedSteps = {};
   selectedStep = 0;
   transactionStatus = null;
@@ -252,7 +252,7 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
     }
   }
   onPrevClick($event){
-    if($event>0){
+    if($event>1){
       this.verticalStepIndex -=1;
     }
   }
@@ -419,7 +419,7 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
     return formulaValue;
   }
   OnStepChange($event){
-    const { selectedIndex = 0 } = $event;
+    const { selectedIndex = 1 } = $event;
     this.editorService.activeStepperIndexes[this.item.metaData.widgetId] = selectedIndex;
     this.selectedStep = selectedIndex;
     window.dispatchEvent(new Event("resize"));

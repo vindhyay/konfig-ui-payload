@@ -1106,7 +1106,7 @@
   <ng-container *ngIf="item?.metaData?.widgetType === StepperContainer">
     <app-vertical-stepper *ngIf="item?.metaData?.stepperType==='Vertical'" 
       [completedSteps]="completedSteps" 
-      [selectedIndex]="verticalStepIndex" 
+      [selectedIndex]="verticalStepIndex || 1" 
       [children]="item?.children" 
       [metaData]="item?.metaData"
       [viewMode]="viewMode" 
