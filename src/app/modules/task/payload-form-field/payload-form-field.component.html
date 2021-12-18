@@ -978,7 +978,7 @@
         (onTableDataChange)="onTableDataChange.emit($event)"
         (onOptionChange)="optionChange($event, $event.data)"
         (selectionChange)="OnStepChange($event)" 
-        [selectedIndex]="modalStepIndex || 0"
+        [selectedIndex]="modalStepIndex || 1"
         (onNext)="onNextClick($event,'modal')" 
         (onPrev)="onPrevClick($event,'modal')"
       ></app-modal>
