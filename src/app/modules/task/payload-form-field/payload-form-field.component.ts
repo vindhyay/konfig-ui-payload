@@ -53,7 +53,7 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
   activeStepperIndexes = {};
   modalStatus = {};
   verticalStepIndex:number =1 ;
-  modalStepIndex:number = 0 ;
+  modalStepIndex:number = 1;
   completedSteps = {};
   selectedStep = 0;
   transactionStatus = null;

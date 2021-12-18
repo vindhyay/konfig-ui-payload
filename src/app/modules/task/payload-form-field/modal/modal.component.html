@@ -64,7 +64,7 @@
     <div
       [ngClass]="{ 'footer-content': true }"
       [style]="{
-        'background-color':metaData?.buttonContainer?.bgColor,
+        'background-color':metaData?.footerbgColor,
         height: metaData?.footerHeight + 'px'
       }"
     >
@@ -72,9 +72,11 @@
         <finlevit-grid
           [viewMode]="viewMode"
           [showEdit]="showEdit"
-          [parent]="metaData?.buttonContainer"
-          [items]="metaData?.buttonContainer?.children"
+          [parent]="item.children[0]"
+          [items]="item.children[0]?.children"
           (onBtnClick)="onFooterClick($event)"
+          (onTableDataChange)="onTableDataChange.emit($event)"
+          (onOptionChange)="optionChange($event, $event.data)"
         ></finlevit-grid>
       </ng-container>
     </div>
