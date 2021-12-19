@@ -560,7 +560,7 @@
         </ng-template>
       </div>
     </div>
-    <div class="-pagination">
+    <div [ngClass]="{ '-pagination': true, 'table-footer': !hideFooter }">
       <div class="-left d-flex">
         <div class="table-results-counter" *ngIf="!Object.keys(editCells).length; else cellEditActions">
           <ng-container *ngIf="pagination?.totalRecords && isPaginationEnabled; else zeroRecordsResult">

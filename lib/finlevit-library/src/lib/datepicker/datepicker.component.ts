@@ -1,6 +1,6 @@
-import { Component, Input, OnInit, Optional, Self } from '@angular/core';
-import { ControlValueAccessor, NgControl, ValidatorFn, Validators } from '@angular/forms';
-import { hasRequiredField } from '../utils';
+import { Component, Input, OnInit, Optional, Self } from "@angular/core";
+import { ControlValueAccessor, NgControl, ValidatorFn, Validators } from "@angular/forms";
+import { hasRequiredField } from "../utils";
 
 enum LabelPos {
   Left = "Left",
@@ -10,9 +10,9 @@ enum LabelPos {
 }
 
 @Component({
-  selector: 'finlevit-lib-datepicker',
-  templateUrl: './datepicker.component.html',
-  styleUrls: ['./datepicker.component.scss']
+  selector: "finlevit-lib-datepicker",
+  templateUrl: "./datepicker.component.html",
+  styleUrls: ["./datepicker.component.scss"]
 })
 export class DatepickerComponent implements ControlValueAccessor, OnInit {
   constructor(@Optional() @Self() public controlDir: NgControl) {
@@ -60,7 +60,6 @@ export class DatepickerComponent implements ControlValueAccessor, OnInit {
   @Input() hourFormat: number = 12;
   @Input() stepHour: number = 1;
   @Input() stepMinute: number = 1;
-
 
   _value: any = null;
   labelPosTypes = LabelPos;

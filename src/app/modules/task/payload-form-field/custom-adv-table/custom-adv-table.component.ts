@@ -94,6 +94,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
     return this._tableData;
   }
   @Input() hideHeader = false;
+  @Input() hideFooter = false;
   @Input() actions: TableActions = null;
   @Output() onColDataChange = new EventEmitter();
   @Output() onRowClick = new EventEmitter();
