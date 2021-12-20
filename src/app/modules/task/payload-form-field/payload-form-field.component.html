@@ -771,6 +771,7 @@
         'input-container': true
       }"
     >
+      {{item?.value?.value}}
       <finlevit-custom-table
         [columns]="item?.metaData?.columns"
         [actions]="item?.metaData?.actions"
@@ -788,6 +789,7 @@
         [overflowType]="item?.metaData?.overflow"
         [paginatorPosition]="item?.metaData?.paginatorPosition"
         [hideHeader]="item?.metaData?.hideHeader"
+        [hideFooter]="item?.metaData?.hideFooter"
         [style.--header-cell-background-color]="item?.metaData?.bgColor"
         [style.--header-cell-color]="item?.metaData?.color"
         [style.--body-cell-background-color]="item?.metaData?.bodyCellBgColor"
@@ -818,6 +820,7 @@
         [overflowType]="item?.metaData?.overflow"
         [paginatorPosition]="item?.metaData?.paginatorPosition"
         [hideHeader]="item?.metaData?.hideHeader"
+        [hideFooter]="item?.metaData?.hideFooter"
         [style.--header-cell-background-color]="item?.metaData?.bgColor"
         [style.--header-cell-color]="item?.metaData?.color"
         [style.--body-cell-background-color]="item?.metaData?.bodyCellBgColor"

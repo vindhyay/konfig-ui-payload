@@ -313,112 +313,6 @@ export class TablePopulateConfig {
   }
 }
 
-export class Column {
-  type: DATA_TYPES;
-  colType: WidgetTypes;
-  columnId: string;
-  label: string;
-  name: string;
-  displayName: string;
-  populateResponsePath: string;
-  width?: string;
-  editable: boolean;
-  validators: Validators;
-  children: BaseWidget[];
-  alignment: CELL_ALIGNMENTS_TYPES;
-  metaData:
-    | TextMetaData
-    | TextInputMetaData
-    | NumberMetaData
-    | CheckboxMetaData
-    | ImageMetaData
-    | CheckboxGroupMetaData
-    | DropdownMetaData
-    | DatePickerMetaData
-    | RadioGroupMetaData
-    | TextAreaMetaData
-    | ButtonMetaData
-    | UploadMetaData
-    | ModalMetaData;
-  constructor(data) {
-    const {
-      type = DATA_TYPES.STRING,
-      colType = WidgetTypes.TextInput,
-      label = "",
-      name = "",
-      displayName = "",
-      populateResponsePath = "",
-      columnId = "",
-      width = "100",
-      editable = true,
-      validators = {},
-      metaData,
-      children = [],
-      alignment = CELL_ALIGNMENTS_TYPES.LEFT
-    } = data;
-    if (metaData) {
-      switch (colType) {
-        case WidgetTypes.Text:
-          this.metaData = new TextMetaData(data);
-          break;
-        case WidgetTypes.TextInput:
-          this.metaData = new TextInputMetaData(data);
-          break;
-        case WidgetTypes.Number:
-          this.metaData = new NumberMetaData(data);
-          break;
-        case WidgetTypes.Checkbox:
-          this.metaData = new CheckboxMetaData(data);
-          break;
-        case WidgetTypes.Image:
-          this.metaData = new ImageMetaData(data);
-          break;
-        case WidgetTypes.CheckboxGroup:
-          this.metaData = new CheckboxGroupMetaData(data);
-          break;
-        case WidgetTypes.Dropdown:
-          this.metaData = new DropdownMetaData(data);
-          break;
-        case WidgetTypes.DatePicker:
-          this.metaData = new DatePickerMetaData(data);
-          break;
-        case WidgetTypes.RadioGroup:
-          this.metaData = new RadioGroupMetaData(data);
-          break;
-        case WidgetTypes.TextArea:
-          this.metaData = new TextAreaMetaData(data);
-          break;
-        case WidgetTypes.Button:
-          this.metaData = new ButtonMetaData(data);
-          break;
-        case WidgetTypes.Upload:
-          this.metaData = new UploadMetaData(data);
-          break;
-        case WidgetTypes.Modal:
-          this.metaData = new ModalMetaData(data);
-          break;
-        default:
-          this.metaData = null;
-          break;
-      }
-    } else {
-      this.metaData = metaData;
-    }
-    this.alignment = alignment;
-    this.children = children || [];
-    this.colType = colType;
-    this.type = type;
-    this.label = label;
-    this.columnId = columnId || getUniqueId("column");
-    this.name = name;
-    this.displayName = displayName;
-    this.populateResponsePath = populateResponsePath;
-    this.width = width;
-    this.editable = editable;
-    this.validators = new Validators(validators);
-  }
-}
-
 export class TableMetaData<T> extends MetaData {
   color: string;
   bgColor: string;
@@ -443,6 +337,7 @@ export class TableMetaData<T> extends MetaData {
   paginatorPosition: TABLE_PAGINATION_POSITIONS;
   paginatorColor: string;
   paginatorBgColor: string;
+  hideFooter: boolean;
 
   constructor(data) {
     super(data);
@@ -468,7 +363,8 @@ export class TableMetaData<T> extends MetaData {
       paginatorPosition = TABLE_PAGINATION_POSITIONS.BOTTOM,
       paginatorBgColor = "#ededed",
       paginatorColor = "#6a6a6a",
-      options = []
+      options = [],
+      hideFooter = false,
     } = data;
     this.columns = columns;
     this.heading = heading;
@@ -496,6 +392,7 @@ export class TableMetaData<T> extends MetaData {
     this.bodyCellColor = bodyCellColor;
     this.bodyCellBgColor = bodyCellBgColor;
     this.options = options;
+    this.hideFooter = hideFooter;
   }
 }
 
@@ -1694,5 +1591,35 @@ export class BaseWidget {
     this.maxItemCols = maxItemCols;
     this.maxItemRows = maxItemRows;
     this.width = width;
+  }
+}
+export class Column extends BaseWidget {
+  type: DATA_TYPES;
+  colType: WidgetTypes;
+  columnId: string;
+  name: string;
+  populateResponsePath: string;
+  alignment: CELL_ALIGNMENTS_TYPES;
+  constructor(data) {
+    super(data);
+    const {
+      type = DATA_TYPES.STRING,
+      colType = WidgetTypes.TextInput,
+      label = "",
+      name = "",
+      populateResponsePath = "",
+      columnId = "",
+      children = [],
+      alignment = CELL_ALIGNMENTS_TYPES.LEFT
+    } = data;
+    this.alignment = alignment;
+    this.children = children || [];
+    this.colType = colType;
+    this.type = type;
+    this.label = label;
+    this.columnId = columnId || getUniqueId("column");
+    this.name = name;
+    this.displayName = this.columnId;
+    this.populateResponsePath = populateResponsePath;
   }
 }

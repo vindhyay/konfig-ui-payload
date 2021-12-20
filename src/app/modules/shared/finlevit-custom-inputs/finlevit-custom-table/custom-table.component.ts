@@ -96,6 +96,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
     return this._tableData;
   }
   @Input() hideHeader = false;
+  @Input() hideFooter = false;
   @Input() actions: TableActions = null;
   @Output() onColDataChange = new EventEmitter();
   @Output() onRowClick = new EventEmitter();
@@ -293,20 +294,10 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
     });
     return _validators;
   };
-  getColumnDefaultValue(column) {
-    switch (column.type) {
-      case "string":
-        return "";
-      case "number":
-        return null;
-      default:
-        return null;
-    }
-  }
   addRow() {
     const newRow: any = {};
     this.columns.forEach(eachColumn => {
-      Object.assign(newRow, { [eachColumn.columnId]: this.getColumnDefaultValue(eachColumn) });
+      Object.assign(newRow, { [eachColumn.columnId]: eachColumn?.value?.value || null });
     });
     this.tableData.push(newRow);
     this.tableData = [...this.tableData];
