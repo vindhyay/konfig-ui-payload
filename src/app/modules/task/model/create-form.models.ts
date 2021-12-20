@@ -1066,7 +1066,7 @@ export class ContainerMetaData extends MetaData {
   title: string;
   icon: string;
   header: ContainerHeader;
-  onClickConfig: OnChangeTriggerConfig;
+  onClickConfigs: Array<OnChangeTriggerConfig>;
   externalLink: string;
   styleProperties: { id: "", properties: any };
   constructor(data) {
@@ -1075,7 +1075,7 @@ export class ContainerMetaData extends MetaData {
     this.title = title;
     this.icon = icon;
     this.styleProperties = styleProperties;
-    this.onClickConfig = new OnChangeTriggerConfig(onClickConfig);
+    this.onClickConfigs = [new OnChangeTriggerConfig(onClickConfig)];
     this.externalLink = externalLink;
     this.header = new ContainerHeader(header);
   }
