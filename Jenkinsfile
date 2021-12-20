@@ -56,14 +56,14 @@ environment {
       stage('Build Docker Image'){
          steps {
 //		     echo "Running ${VERSION} on ${env.JENKINS_URL}"
-            sh 'docker build --force-rm=true -t ${REPO}/${NAME}:${BUILD_NUMBER} .'
+            sh 'docker build --force-rm=true -t ${REPO}/${NAME}:r-${BUILD_NUMBER} .'
          }
       }
        stage('Docker Image Testing'){
          steps {
           echo"unit testing"
-          sh'docker image inspect ${REPO}/${NAME}:${BUILD_NUMBER}'
-          sh 'docker run --rm -p 3700:8081 --detach ${REPO}/${NAME}:${BUILD_NUMBER}'
+          sh'docker image inspect ${REPO}/${NAME}:r-${BUILD_NUMBER}'
+          sh 'docker run --rm -p 3700:8081 --detach ${REPO}/${NAME}:r-${BUILD_NUMBER}'
           sleep(20)
           sh 'docker stop $(docker ps -a -q)'
          }
@@ -76,7 +76,7 @@ environment {
     }
          steps {
             echo"Publishing the source files to remote registry"
-            sh 'docker push ${REPO}/${NAME}:${BUILD_NUMBER}'
+            sh 'docker push ${REPO}/${NAME}:r-${BUILD_NUMBER}'
          }
       }
 		stage('Deploy to Demo-Dev'){
@@ -87,7 +87,7 @@ environment {
 			}
         steps{
             echo"Deploying the latest version"
-			sh 'ssh root@10.10.5.41 "kubectl -n design set image deployments/${DNAME} ${NAME}=${REPO}/${NAME}:${BUILD_NUMBER}"'
+			sh 'ssh root@10.10.5.41 "kubectl -n design set image deployments/${DNAME} ${NAME}=${REPO}/${NAME}:r-${BUILD_NUMBER}"'
             sh 'ssh root@10.10.5.41 "kubectl -n design rollout restart deployment ${DNAME}"'
             echo"Successfully deployed the latest version of the Application"
 			}
