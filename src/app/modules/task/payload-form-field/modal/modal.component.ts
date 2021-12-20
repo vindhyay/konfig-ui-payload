@@ -21,7 +21,7 @@ export class ModalComponent implements OnInit {
   @Output() onNext = new EventEmitter();
   @Output() onPrev = new EventEmitter();
   @Input() selectionChange;
-  _selectedIndex = 0;
+  _selectedIndex = 1;
   modalStatus = false;
   get metaData(): ModalMetaData {
     return this.item.metaData as ModalMetaData;
@@ -34,7 +34,8 @@ export class ModalComponent implements OnInit {
     })
   }
   onFooterClick(item:any) {
-    switch(item.data.metaData?.onClickConfigs[0]?.action){
+    const indexObj=item.data.metaData['onClickConfigs'].filter(subitem=>subitem.action==='previousStep' || subitem.action==='nextStep' || subitem.action==='submit');
+    switch(indexObj[0]?.action){
       case 'previousStep':
         this.onPrev.emit(this._selectedIndex);
         // this.onBtnClick.emit(item);
@@ -43,10 +44,7 @@ export class ModalComponent implements OnInit {
         this.onNext.emit(this._selectedIndex);
         // this.onBtnClick.emit(item);
         break;
-      case 'submit':
-        this.onBtnClick.emit(item);
-        break;
-      case 'save':
+      default:
         this.onBtnClick.emit(item);
         break;
     }
@@ -77,10 +75,13 @@ export class ModalComponent implements OnInit {
     })
   }
   checkVisibility(){
-    this.metaData.buttonContainer.children = this.metaData.buttonContainer.children.map((item)=>{
-      switch(item.metaData?.onClickConfigs[0]?.action){
+    if(this.item.children[0].children.length && this.item.metaData['modalType']==='MultiPage')
+    this.item.children[0].children = this.item.children[0].children.map((item)=>{
+      const index=item?.metaData['onClickConfigs'].findIndex(subitem=>subitem.action==='previousStep' || subitem.action==='nextStep' || subitem.action==='submit');
+      if(index>=0)
+      switch(item.metaData['onClickConfigs'][index]?.action){
         case 'previousStep':
-           return {...item, metaData:{ ...item.metaData,isHidden:this._selectedIndex<=0}};
+           return {...item, metaData:{ ...item.metaData,isHidden:this._selectedIndex<0}};
         case 'nextStep':
           return {...item, metaData:{ ...item.metaData,isHidden:this._selectedIndex===this.item.children.length-1}};
         case 'submit':

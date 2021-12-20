@@ -54,19 +54,19 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
     this.taskService.transactionDetailsSubject.subscribe(value => {
       if (value) {
         this.transactionDetails = value;
-        // if(this.formFields.length){
-        //   if(this.formFields?.length!==value?.uiPayload?.length){
-        //     this.formFields = value?.uiPayload || [];
-        //   }else{
-        //     this.formFields.forEach((element,index) => {
-        //       for (const prop in element) {
-        //         this.formFields[index][prop]=value.uiPayload[index][prop];
-        //       }
-        //     });
-        //   }
-        // }else{
+        if(this.formFields.length){
+          if(this.formFields?.length!==value?.uiPayload?.length){
+            this.formFields = value?.uiPayload || [];
+          }else{
+            this.formFields.forEach((element,index) => {
+              for (const prop in element) {
+                this.formFields[index][prop]=value.uiPayload[index][prop];
+              }
+            });
+          }
+        }else{
           this.formFields = value?.uiPayload || [];
-        //}
+        }
         this.formFields = this.formFields.sort((a,b)=> a?.y - b?.y);
         const header = this.formFields.find(item => item?.metaData?.widgetType === WidgetTypes.Header);
         const errorContainer = this.formFields.find(item => item?.metaData?.widgetType === WidgetTypes.ErrorContainer);

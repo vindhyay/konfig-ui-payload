@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from "@angu
 import { FormControl, Validators } from "@angular/forms";
 import { FieldData } from "../model/field-data.model";
 import { DataTypes } from "../model/payload-field.model";
-import { BaseWidget, NESTED_MIN_COLUMNS, TableMetaData, WidgetTypes } from "../model/create-form.models";
+import { BaseWidget, Column, NESTED_MIN_COLUMNS, TableMetaData, WidgetTypes } from "../model/create-form.models";
 import { getErrorMessages, getFieldFromFields, getValidators, validateFields } from "../../../utils";
 import { TaskService } from "../services/task.service";
 import { AuthService } from "../../auth/services/auth.service";
@@ -52,7 +52,8 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
   activeTabIndexes = {};
   activeStepperIndexes = {};
   modalStatus = {};
-  verticalStepIndex:number =0 ;
+  verticalStepIndex:number =1 ;
+  modalStepIndex:number = 1;
   completedSteps = {};
   selectedStep = 0;
   transactionStatus = null;
@@ -71,18 +72,14 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
   }
   set item(data: BaseWidget) {
     if (!data.value || typeof data.value != "object" || !data.value.value) {
-      data.value = { id: "", value: data?.value?.value ? data.value : null };
+      data.value = { id: data?.value?.id, value: data?.value?.value ? data.value : null };
     }
-    if (data?.metaData?.widgetType === WidgetTypes.Table || data?.metaData?.widgetType === WidgetTypes.AdvTable) {
-      const metaData = data.metaData as TableMetaData;
-      if (metaData.configure) {
-        metaData.options = metaData.options || [];
-      } else {
-        data.value = { id: "", value: data?.value?.value || [] };
-      }
+    if (data?.metaData?.widgetType === WidgetTypes.Table) {
+      const metaData = data.metaData as TableMetaData<Column>;
+      data.value = { id: data?.value?.id, value: data?.value?.value?.length ? data.value.value : metaData?.options?.length ? metaData.options : [] };
     }
     if(data?.metaData?.widgetType === WidgetTypes.Checkbox) {
-      data.value = {id: "", value: data?.value?.value || false}
+      data.value = {id: data?.value?.id, value: data?.value?.value || false}
     }
     if (data?.validators?.minDate) {
       data.validators.minDate = new Date(data?.validators?.minDate);
@@ -256,9 +253,20 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
       stepperRef.next();
     }
   }
-  onPrevClick($event){
-    if($event>0){
-      this.verticalStepIndex -=1;
+  onPrevClick($event,type=''){
+    let index=1;
+    if(type=='stepper'){
+      index=this.verticalStepIndex;
+    }else{
+      index=this.modalStepIndex;
+    }
+    if($event>1){
+      index -=1;
+    }
+    if(type=='stepper'){
+      this.verticalStepIndex = index
+    }else{
+      this.modalStepIndex = index;
     }
   }
   onSelectionClick($event,metaData){
@@ -272,15 +280,26 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
       }
     }
   }
-  onNextClick($event) {
-    const child=this.item.children[this.verticalStepIndex]
+  onNextClick($event,type='') {
+    let index=1;
+    if(type=='stepper'){
+      index=this.verticalStepIndex;
+    }else{
+      index=this.modalStepIndex;
+    }
+    const child=this.item.children[index]
     const validate = validateFields(child.children);
     if (validate) {
       this.completedSteps[child?.metaData?.widgetId] = true;
-      this.verticalStepIndex +=1;
+      index +=1;
     }
-    if(this.verticalStepIndex>this.item.children.length-1){
-      this.verticalStepIndex=this.item.children.length-1;
+    if(index>this.item.children.length-1){
+      index=this.item.children.length-1;
+    }
+    if(type=='stepper'){
+      this.verticalStepIndex = index
+    }else{
+      this.modalStepIndex = index;
     }
   }
   onCollapse(status, item) {
@@ -424,7 +443,7 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
     return formulaValue;
   }
   OnStepChange($event){
-    const { selectedIndex = 0 } = $event;
+    const { selectedIndex = 1 } = $event;
     this.editorService.activeStepperIndexes[this.item.metaData.widgetId] = selectedIndex;
     this.selectedStep = selectedIndex;
     window.dispatchEvent(new Event("resize"));

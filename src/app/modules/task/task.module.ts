@@ -20,12 +20,12 @@ import {PasswordFieldComponent} from './payload-form-field/password-field/passwo
 import {PhonenumberFieldComponent} from './payload-form-field/phonenumber-field/phonenumber-field.component';
 import {ssnInputFieldComponent} from './payload-form-field/ssninput-field/ssninput-field.component';
 import { AdvTableComponent } from './payload-form-field/adv-table/adv-table.component';
-import { CustomTableFiltersComponent } from './payload-form-field/adv-table/custom-table-filters/custom-table-filters.component';
 import { VerticalStepperComponent } from './payload-form-field/vertical-stepper/vertical-stepper.component';
 import { DividerComponent } from "./payload-form-field/divider/divider.component";
 import { SpacerComponent } from "./payload-form-field/spacer/spacer.component";
 import { ContainerComponent } from "./payload-form-field/container/container.component";
 import { IconComponent } from "./payload-form-field/icon/icon.component";
+import { CustomAdvTableComponent } from "./payload-form-field/custom-adv-table/custom-adv-table.component";
 
 @NgModule({
   declarations: [
@@ -44,12 +44,12 @@ import { IconComponent } from "./payload-form-field/icon/icon.component";
     ssnInputFieldComponent,
     AdvTableComponent,
     PasswordFieldComponent,
-    CustomTableFiltersComponent,
     VerticalStepperComponent,
     DividerComponent,
     SpacerComponent,
     ContainerComponent,
-    IconComponent
+    IconComponent,
+    CustomAdvTableComponent
   ],
   imports: [CommonModule, GridsterModule, SharedModule, ExtendedModule],
   providers: [TaskService, AuthService]

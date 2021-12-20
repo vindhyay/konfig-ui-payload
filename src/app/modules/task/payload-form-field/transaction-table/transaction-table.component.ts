@@ -53,10 +53,10 @@ export class TransactionTableComponent extends BaseComponent implements OnInit {
     }
   }
   onPageChange($event){
-    const { page = 1, rows = 10} = $event || {}
+    const { page = 1, limit = 10} = $event || {}
     const { applicationId } = this.taskService.getTransactionDetails();
     const {id:fieldId} = this.item
-    const params = {applicationId, fieldId, pageNo: page -1, recordNo:rows}
+    const params = {applicationId, fieldId, pageNo: page -1, recordNo:limit}
     this.getTransactionTableData(params);
   }
   getTransactionDetails(id) {
