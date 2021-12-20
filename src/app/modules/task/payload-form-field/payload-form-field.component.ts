@@ -60,7 +60,6 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
   hide = false;
   disable = false;
   collapseContainerStatus = true;
-  getImageUrl = this.taskService.getImageUrl();
   constructor(
     private taskService: TaskService,
     private authService: AuthService,

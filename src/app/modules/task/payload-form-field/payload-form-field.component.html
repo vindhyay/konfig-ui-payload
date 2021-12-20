@@ -761,71 +761,7 @@
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Image">
-    <div class="image-container" *ngIf="item?.metaData?.fromLocalOrRemote === 'Remote'"
-      [style.justify-content]="item?.metaData?.isCoverOrContain === 'Contain' ? item?.metaData?.horizontalAlign : 'center'"
-      >
-      <img *ngIf="item?.metaData?.url" [src]="item?.metaData?.url" alt="{{item?.metaData?.altText}}"
-        [style.width]="(item?.metaData?.isCoverOrContain === 'Cover' || item?.metaData?.shorterEdge === 'width')  ? '100%' : ''"
-        [style.height]="(item?.metaData?.isCoverOrContain === 'Cover' || item?.metaData?.shorterEdge === 'height')  ? '100%' : ''"
-        [ngStyle]="item?.metaData?.styleProperties?.properties?.independentBorder ? {
-          'aspect-ratio': item?.metaData?.isCoverOrContain === 'Contain' ? 'inherit' : '',
-          'borderTopStyle':item?.metaData?.styleProperties?.properties?.borderTopStyle,
-          'borderTopWidth':item?.metaData?.styleProperties?.properties?.borderTopWidth,
-          'borderTopColor':item?.metaData?.styleProperties?.properties?.borderTopColor,
-          'borderTopRightRadius':item?.metaData?.styleProperties?.properties?.borderTopRightRadius,
-          'borderLeftStyle':item?.metaData?.styleProperties?.properties?.borderLeftStyle,
-          'borderLeftWidth':item?.metaData?.styleProperties?.properties?.borderLeftWidth,
-          'borderLeftColor':item?.metaData?.styleProperties?.properties?.borderLeftColor,
-          'borderTopLeftRadius':item?.metaData?.styleProperties?.properties?.borderTopLeftRadius,
-          'borderBottomStyle':item?.metaData?.styleProperties?.properties?.borderBottomStyle,
-          'borderBottomWidth':item?.metaData?.styleProperties?.properties?.borderBottomWidth,
-          'borderBottomColor':item?.metaData?.styleProperties?.properties?.borderBottomColor,
-          'borderBottomLeftRadius':item?.metaData?.styleProperties?.properties?.borderBottomLeftRadius,
-          'borderRightStyle':item?.metaData?.styleProperties?.properties?.borderRightStyle,
-          'borderRightWidth':item?.metaData?.styleProperties?.properties?.borderRightWidth,
-          'borderRightColor':item?.metaData?.styleProperties?.properties?.borderRightColor,
-          'borderBottomRightRadius':item?.metaData?.styleProperties?.properties?.borderBottomRightRadius
-          } : {
-            'aspect-ratio': item?.metaData?.isCoverOrContain === 'Contain' ? 'inherit' : '',
-            'borderStyle':item?.metaData?.styleProperties?.properties?.borderStyle,
-            'borderWidth':item?.metaData?.styleProperties?.properties?.borderWidth,
-            'borderColor':item?.metaData?.styleProperties?.properties?.borderColor,
-            'borderRadius':item?.metaData?.styleProperties?.properties?.borderRadius
-          }"
-         />
-    </div>
-    <div class="image-container" *ngIf="item?.metaData?.fromLocalOrRemote === 'Local'"
-      [style.justify-content]="item?.metaData?.isCoverOrContain === 'Contain' ? item?.metaData?.horizontalAlign : 'center'">
-      <img *ngIf="item?.metaData?.remoteKey" [src]="getImageUrl + '/' + item?.metaData?.remoteKey" crossorigin="use-credentials" alt="{{item?.metaData?.altText}}"
-      [style.width]="(item?.metaData?.isCoverOrContain === 'Cover' || item?.metaData?.shorterEdge === 'width')  ? '100%' : ''"
-      [style.height]="(item?.metaData?.isCoverOrContain === 'Cover' || item?.metaData?.shorterEdge === 'height')  ? '100%' : ''"
-        [ngStyle]="item?.metaData?.styleProperties?.properties?.independentBorder ? {
-          'aspect-ratio': item?.metaData?.isCoverOrContain === 'Contain' ? 'inherit' : '',
-          'borderTopStyle':item?.metaData?.styleProperties?.properties?.borderTopStyle,
-          'borderTopWidth':item?.metaData?.styleProperties?.properties?.borderTopWidth,
-          'borderTopColor':item?.metaData?.styleProperties?.properties?.borderTopColor,
-          'borderTopRightRadius':item?.metaData?.styleProperties?.properties?.borderTopRightRadius,
-          'borderLeftStyle':item?.metaData?.styleProperties?.properties?.borderLeftStyle,
-          'borderLeftWidth':item?.metaData?.styleProperties?.properties?.borderLeftWidth,
-          'borderLeftColor':item?.metaData?.styleProperties?.properties?.borderLeftColor,
-          'borderTopLeftRadius':item?.metaData?.styleProperties?.properties?.borderTopLeftRadius,
-          'borderBottomStyle':item?.metaData?.styleProperties?.properties?.borderBottomStyle,
-          'borderBottomWidth':item?.metaData?.styleProperties?.properties?.borderBottomWidth,
-          'borderBottomColor':item?.metaData?.styleProperties?.properties?.borderBottomColor,
-          'borderBottomLeftRadius':item?.metaData?.styleProperties?.properties?.borderBottomLeftRadius,
-          'borderRightStyle':item?.metaData?.styleProperties?.properties?.borderRightStyle,
-          'borderRightWidth':item?.metaData?.styleProperties?.properties?.borderRightWidth,
-          'borderRightColor':item?.metaData?.styleProperties?.properties?.borderRightColor,
-          'borderBottomRightRadius':item?.metaData?.styleProperties?.properties?.borderBottomRightRadius
-          } : {
-            'aspect-ratio': item?.metaData?.isCoverOrContain === 'Contain' ? 'inherit' : '',
-            'borderStyle':item?.metaData?.styleProperties?.properties?.borderStyle,
-            'borderWidth':item?.metaData?.styleProperties?.properties?.borderWidth,
-            'borderColor':item?.metaData?.styleProperties?.properties?.borderColor,
-            'borderRadius':item?.metaData?.styleProperties?.properties?.borderRadius
-          }"
-        />
-    </div>
+    <app-image [item]="item"></app-image>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Table">
     <div
