@@ -83,7 +83,11 @@
           *ngFor="
             let rowData of (tableFilters?.filtersEnabled ? filteredTableData : tableData)
               | paginationFilter
-                : { page: this.currentPage - 1, limit: this.limitPerPage, isPaginationEnabled: isPaginationEnabled && !isServerSidePagination };
+                : {
+                    page: this.currentPage - 1,
+                    limit: this.limitPerPage,
+                    isPaginationEnabled: isPaginationEnabled && !isServerSidePagination
+                  };
             let rowIndex = index
           "
         >
@@ -138,7 +142,7 @@
                               col?.validators?.editable &&
                               (editRows[rowIndex] ||
                                 newRows[rowIndex] ||
-                                (editCells[rowIndex] && editCells[rowIndex][col.columnId]))
+                                (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.columnId)))
                             )
                           "
                         >
@@ -149,7 +153,7 @@
                             col?.validators?.editable &&
                             (editRows[rowIndex] ||
                               newRows[rowIndex] ||
-                              (editCells[rowIndex] && editCells[rowIndex][col.columnId]))
+                              (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.columnId)))
                           "
                           [leftIcon]="col?.metaData?.leftIcon"
                           [rightIcon]="col?.metaData?.rightIcon"
@@ -176,29 +180,53 @@
                           [style.--input-label-color]="col?.metaData?.styleProperties?.properties?.labelColor"
                           [style.--input-label-font-family]="col?.metaData?.styleProperties?.properties?.labelFontStyle"
                           [style.--input-label-align]="col?.metaData?.styleProperties?.properties?.labelAlignment"
-                          [style.--input-label-font-weight]="col?.metaData?.styleProperties?.properties?.labelFontWeight"
+                          [style.--input-label-font-weight]="
+                            col?.metaData?.styleProperties?.properties?.labelFontWeight
+                          "
                           [style.--input-label-font-style]="col?.metaData?.styleProperties?.properties?.labelStyle"
-                          [style.--input-label-text-decoration]="col?.metaData?.styleProperties?.properties?.labelTextDecoration"
+                          [style.--input-label-text-decoration]="
+                            col?.metaData?.styleProperties?.properties?.labelTextDecoration
+                          "
                           [style.--input-adornment-background-color]="col?.metaData?.adornmentBackgroundColor"
                           [style.--input-border-width]="col?.metaData?.styleProperties?.properties?.borderWidth"
                           [style.--input-label-font-size]="col?.metaData?.styleProperties?.properties?.labelFontSize"
                           [style.--input-label-width]="col?.metaData?.styleProperties?.properties?.labelWidth + '%'"
                           [style.--input-border-top]="col?.metaData?.styleProperties?.properties?.borderTopStyle"
-                          [style.--input-border-radius-top-left]="col?.metaData?.styleProperties?.properties?.borderTopLeftRadius"
+                          [style.--input-border-radius-top-left]="
+                            col?.metaData?.styleProperties?.properties?.borderTopLeftRadius
+                          "
                           [style.--input-border-top-color]="col?.metaData?.styleProperties?.properties?.borderTopColor"
                           [style.--input-border-top-width]="col?.metaData?.styleProperties?.properties?.borderTopWidth"
                           [style.--input-border-right]="col?.metaData?.styleProperties?.properties?.borderRightStyle"
-                          [style.--input-border-radius-top-right]="col?.metaData?.styleProperties?.properties?.borderTopRightRadius"
-                          [style.--input-border-right-color]="col?.metaData?.styleProperties?.properties?.borderRightColor"
-                          [style.--input-border-right-width]="col?.metaData?.styleProperties?.properties?.borderRightWidth"
+                          [style.--input-border-radius-top-right]="
+                            col?.metaData?.styleProperties?.properties?.borderTopRightRadius
+                          "
+                          [style.--input-border-right-color]="
+                            col?.metaData?.styleProperties?.properties?.borderRightColor
+                          "
+                          [style.--input-border-right-width]="
+                            col?.metaData?.styleProperties?.properties?.borderRightWidth
+                          "
                           [style.--input-border-bottom]="col?.metaData?.styleProperties?.properties?.borderBottomStyle"
-                          [style.--input-border-radius-bottom-right]="col?.metaData?.styleProperties?.properties?.borderBottomRightRadius"
-                          [style.--input-border-bottom-color]="col?.metaData?.styleProperties?.properties?.borderBottomColor"
-                          [style.--input-border-bottom-width]="col?.metaData?.styleProperties?.properties?.borderBottomWidth"
+                          [style.--input-border-radius-bottom-right]="
+                            col?.metaData?.styleProperties?.properties?.borderBottomRightRadius
+                          "
+                          [style.--input-border-bottom-color]="
+                            col?.metaData?.styleProperties?.properties?.borderBottomColor
+                          "
+                          [style.--input-border-bottom-width]="
+                            col?.metaData?.styleProperties?.properties?.borderBottomWidth
+                          "
                           [style.--input-border-left]="col?.metaData?.styleProperties?.properties?.borderLeftStyle"
-                          [style.--input-border-radius-bottom-left]="col?.metaData?.styleProperties?.properties?.borderBottomLeftRadius"
-                          [style.--input-border-left-color]="col?.metaData?.styleProperties?.properties?.borderLeftColor"
-                          [style.--input-border-left-width]="col?.metaData?.styleProperties?.properties?.borderLeftWidth"
+                          [style.--input-border-radius-bottom-left]="
+                            col?.metaData?.styleProperties?.properties?.borderBottomLeftRadius
+                          "
+                          [style.--input-border-left-color]="
+                            col?.metaData?.styleProperties?.properties?.borderLeftColor
+                          "
+                          [style.--input-border-left-width]="
+                            col?.metaData?.styleProperties?.properties?.borderLeftWidth
+                          "
                           [independentBorders]="col?.metaData?.styleProperties?.properties?.independentBorder"
                           [allowLabelWrapping]="col?.metaData?.allowLabelWrapping"
                           [showClearButton]="col?.metaData?.showClearButton"
@@ -225,7 +253,7 @@
                               col?.validators?.editable &&
                               (editRows[rowIndex] ||
                                 newRows[rowIndex] ||
-                                (editCells[rowIndex] && editCells[rowIndex][col.columnId]))
+                                (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.columnId)))
                             )
                           "
                         >
@@ -236,7 +264,7 @@
                             col?.validators?.editable &&
                             (editRows[rowIndex] ||
                               newRows[rowIndex] ||
-                              (editCells[rowIndex] && editCells[rowIndex][col.columnId]))
+                              (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.columnId)))
                           "
                           [autoResize]="col?.metaData?.autoResize"
                           [rows]="col?.metaData?.rowsCount"
@@ -260,29 +288,55 @@
                           [style.--input-label-color]="col?.metaData?.styleProperties?.properties?.labelColor"
                           [style.--input-label-font-family]="col?.metaData?.styleProperties?.properties?.labelFontStyle"
                           [style.--input-label-align]="col?.metaData?.styleProperties?.properties?.labelAlignment"
-                          [style.--input-label-font-weight]="col?.metaData?.styleProperties?.properties?.labelFontWeight"
+                          [style.--input-label-font-weight]="
+                            col?.metaData?.styleProperties?.properties?.labelFontWeight
+                          "
                           [style.--input-label-font-style]="col?.metaData?.styleProperties?.properties?.labelStyle"
-                          [style.--input-label-text-decoration]="col?.metaData?.styleProperties?.properties?.labelTextDecoration"
-                          [style.--input-adornment-background-color]="col?.metaData?.styleProperties?.properties?.adornmentBackgroundColor"
+                          [style.--input-label-text-decoration]="
+                            col?.metaData?.styleProperties?.properties?.labelTextDecoration
+                          "
+                          [style.--input-adornment-background-color]="
+                            col?.metaData?.styleProperties?.properties?.adornmentBackgroundColor
+                          "
                           [style.--input-border-width]="col?.metaData?.styleProperties?.properties?.borderWidth"
                           [style.--input-label-font-size]="col?.metaData?.styleProperties?.properties?.labelFontSize"
                           [style.--input-label-width]="col?.metaData?.styleProperties?.properties?.labelWidth + '%'"
                           [style.--input-border-top]="col?.metaData?.styleProperties?.properties?.borderTopStyle"
-                          [style.--input-border-radius-top-left]="col?.metaData?.styleProperties?.properties?.borderTopLeftRadius"
+                          [style.--input-border-radius-top-left]="
+                            col?.metaData?.styleProperties?.properties?.borderTopLeftRadius
+                          "
                           [style.--input-border-top-color]="col?.metaData?.styleProperties?.properties?.borderTopColor"
                           [style.--input-border-top-width]="col?.metaData?.styleProperties?.properties?.borderTopWidth"
                           [style.--input-border-right]="col?.metaData?.styleProperties?.properties?.borderRightStyle"
-                          [style.--input-border-radius-top-right]="col?.metaData?.styleProperties?.properties?.borderTopRightRadius"
-                          [style.--input-border-right-color]="col?.metaData?.styleProperties?.properties?.borderRightColor"
-                          [style.--input-border-right-width]="col?.metaData?.styleProperties?.properties?.borderRightWidth"
+                          [style.--input-border-radius-top-right]="
+                            col?.metaData?.styleProperties?.properties?.borderTopRightRadius
+                          "
+                          [style.--input-border-right-color]="
+                            col?.metaData?.styleProperties?.properties?.borderRightColor
+                          "
+                          [style.--input-border-right-width]="
+                            col?.metaData?.styleProperties?.properties?.borderRightWidth
+                          "
                           [style.--input-border-bottom]="col?.metaData?.styleProperties?.properties?.borderBottomStyle"
-                          [style.--input-border-radius-bottom-right]="col?.metaData?.styleProperties?.properties?.borderBottomRightRadius"
-                          [style.--input-border-bottom-color]="col?.metaData?.styleProperties?.properties?.borderBottomColor"
-                          [style.--input-border-bottom-width]="col?.metaData?.styleProperties?.properties?.borderBottomWidth"
+                          [style.--input-border-radius-bottom-right]="
+                            col?.metaData?.styleProperties?.properties?.borderBottomRightRadius
+                          "
+                          [style.--input-border-bottom-color]="
+                            col?.metaData?.styleProperties?.properties?.borderBottomColor
+                          "
+                          [style.--input-border-bottom-width]="
+                            col?.metaData?.styleProperties?.properties?.borderBottomWidth
+                          "
                           [style.--input-border-left]="col?.metaData?.styleProperties?.properties?.borderLeftStyle"
-                          [style.--input-border-radius-bottom-left]="col?.metaData?.styleProperties?.properties?.borderBottomLeftRadius"
-                          [style.--input-border-left-color]="col?.metaData?.styleProperties?.properties?.borderLeftColor"
-                          [style.--input-border-left-width]="col?.metaData?.styleProperties?.properties?.borderLeftWidth"
+                          [style.--input-border-radius-bottom-left]="
+                            col?.metaData?.styleProperties?.properties?.borderBottomLeftRadius
+                          "
+                          [style.--input-border-left-color]="
+                            col?.metaData?.styleProperties?.properties?.borderLeftColor
+                          "
+                          [style.--input-border-left-width]="
+                            col?.metaData?.styleProperties?.properties?.borderLeftWidth
+                          "
                           [independentBorders]="col?.metaData?.styleProperties?.properties?.independentBorder"
                           [allowLabelWrapping]="col?.metaData?.styleProperties?.properties?.allowLabelWrapping"
                           [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
@@ -309,7 +363,7 @@
                               col?.validators?.editable &&
                               (editRows[rowIndex] ||
                                 newRows[rowIndex] ||
-                                (editCells[rowIndex] && editCells[rowIndex][col.columnId]))
+                                (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.columnId)))
                             )
                           "
                         >
@@ -320,7 +374,7 @@
                             col?.validators?.editable &&
                             (editRows[rowIndex] ||
                               newRows[rowIndex] ||
-                              (editCells[rowIndex] && editCells[rowIndex][col.columnId]))
+                              (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.columnId)))
                           "
                           [placeholder]="col?.metaData?.placeholder"
                           [tooltip]="col?.metaData?.tooltip"
@@ -348,29 +402,53 @@
                           [style.--input-label-color]="col?.metaData?.styleProperties?.properties?.labelColor"
                           [style.--input-label-font-family]="col?.metaData?.styleProperties?.properties?.labelFontStyle"
                           [style.--input-label-align]="col?.metaData?.styleProperties?.properties?.labelAlignment"
-                          [style.--input-label-font-weight]="col?.metaData?.styleProperties?.properties?.labelFontWeight"
+                          [style.--input-label-font-weight]="
+                            col?.metaData?.styleProperties?.properties?.labelFontWeight
+                          "
                           [style.--input-label-font-style]="col?.metaData?.styleProperties?.properties?.labelStyle"
-                          [style.--input-label-text-decoration]="col?.metaData?.styleProperties?.properties?.labelTextDecoration"
+                          [style.--input-label-text-decoration]="
+                            col?.metaData?.styleProperties?.properties?.labelTextDecoration
+                          "
                           [style.--input-adornment-background-color]="col?.metaData?.adornmentBackgroundColor"
                           [style.--input-border-width]="col?.metaData?.styleProperties?.properties?.borderWidth"
                           [style.--input-label-font-size]="col?.metaData?.styleProperties?.properties?.labelFontSize"
                           [style.--input-label-width]="col?.metaData?.styleProperties?.properties?.labelWidth + '%'"
                           [style.--input-border-top]="col?.metaData?.styleProperties?.properties?.borderTopStyle"
-                          [style.--input-border-radius-top-left]="col?.metaData?.styleProperties?.properties?.borderTopLeftRadius"
+                          [style.--input-border-radius-top-left]="
+                            col?.metaData?.styleProperties?.properties?.borderTopLeftRadius
+                          "
                           [style.--input-border-top-color]="col?.metaData?.styleProperties?.properties?.borderTopColor"
                           [style.--input-border-top-width]="col?.metaData?.styleProperties?.properties?.borderTopWidth"
                           [style.--input-border-right]="col?.metaData?.styleProperties?.properties?.borderRightStyle"
-                          [style.--input-border-radius-top-right]="col?.metaData?.styleProperties?.properties?.borderTopRightRadius"
-                          [style.--input-border-right-color]="col?.metaData?.styleProperties?.properties?.borderRightColor"
-                          [style.--input-border-right-width]="col?.metaData?.styleProperties?.properties?.borderRightWidth"
+                          [style.--input-border-radius-top-right]="
+                            col?.metaData?.styleProperties?.properties?.borderTopRightRadius
+                          "
+                          [style.--input-border-right-color]="
+                            col?.metaData?.styleProperties?.properties?.borderRightColor
+                          "
+                          [style.--input-border-right-width]="
+                            col?.metaData?.styleProperties?.properties?.borderRightWidth
+                          "
                           [style.--input-border-bottom]="col?.metaData?.styleProperties?.properties?.borderBottomStyle"
-                          [style.--input-border-radius-bottom-right]="col?.metaData?.styleProperties?.properties?.borderBottomRightRadius"
-                          [style.--input-border-bottom-color]="col?.metaData?.styleProperties?.properties?.borderBottomColor"
-                          [style.--input-border-bottom-width]="col?.metaData?.styleProperties?.properties?.borderBottomWidth"
+                          [style.--input-border-radius-bottom-right]="
+                            col?.metaData?.styleProperties?.properties?.borderBottomRightRadius
+                          "
+                          [style.--input-border-bottom-color]="
+                            col?.metaData?.styleProperties?.properties?.borderBottomColor
+                          "
+                          [style.--input-border-bottom-width]="
+                            col?.metaData?.styleProperties?.properties?.borderBottomWidth
+                          "
                           [style.--input-border-left]="col?.metaData?.styleProperties?.properties?.borderLeftStyle"
-                          [style.--input-border-radius-bottom-left]="col?.metaData?.styleProperties?.properties?.borderBottomLeftRadius"
-                          [style.--input-border-left-color]="col?.metaData?.styleProperties?.properties?.borderLeftColor"
-                          [style.--input-border-left-width]="col?.metaData?.styleProperties?.properties?.borderLeftWidth"
+                          [style.--input-border-radius-bottom-left]="
+                            col?.metaData?.styleProperties?.properties?.borderBottomLeftRadius
+                          "
+                          [style.--input-border-left-color]="
+                            col?.metaData?.styleProperties?.properties?.borderLeftColor
+                          "
+                          [style.--input-border-left-width]="
+                            col?.metaData?.styleProperties?.properties?.borderLeftWidth
+                          "
                           [independentBorders]="col?.metaData?.styleProperties?.properties?.independentBorder"
                           [allowLabelWrapping]="col?.metaData?.allowLabelWrapping"
                           [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
@@ -402,7 +480,7 @@
                               col?.validators?.editable &&
                               (editRows[rowIndex] ||
                                 newRows[rowIndex] ||
-                                (editCells[rowIndex] && editCells[rowIndex][col.columnId]))
+                                (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.columnId)))
                             )
                           "
                         >
@@ -413,7 +491,7 @@
                             col?.validators?.editable &&
                             (editRows[rowIndex] ||
                               newRows[rowIndex] ||
-                              (editCells[rowIndex] && editCells[rowIndex][col.columnId]))
+                              (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.columnId)))
                           "
                           [isRequired]="col?.validators?.required"
                           [tooltip]="col?.metaData?.tooltip"
@@ -439,34 +517,60 @@
                           [style.--input-label-color]="col?.metaData?.styleProperties?.properties?.labelColor"
                           [style.--input-label-font-family]="col?.metaData?.styleProperties?.properties?.labelFontStyle"
                           [style.--input-label-align]="col?.metaData?.styleProperties?.properties?.labelAlignment"
-                          [style.--input-label-font-weight]="col?.metaData?.styleProperties?.properties?.labelFontWeight"
+                          [style.--input-label-font-weight]="
+                            col?.metaData?.styleProperties?.properties?.labelFontWeight
+                          "
                           [style.--input-label-font-style]="col?.metaData?.styleProperties?.properties?.labelStyle"
-                          [style.--input-label-text-decoration]="col?.metaData?.styleProperties?.properties?.labelTextDecoration"
+                          [style.--input-label-text-decoration]="
+                            col?.metaData?.styleProperties?.properties?.labelTextDecoration
+                          "
                           [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
                           [showTime]="col?.metaData?.showTime"
                           [hourFormat]="col?.metaData?.hourFormat"
                           [stepMinute]="col?.metaData?.stepMinute"
                           [stepHour]="col?.metaData?.stepHour"
-                          [style.--input-adornment-background-color]="col?.metaData?.styleProperties?.properties?.adornmentBackgroundColor"
+                          [style.--input-adornment-background-color]="
+                            col?.metaData?.styleProperties?.properties?.adornmentBackgroundColor
+                          "
                           [style.--input-border-width]="col?.metaData?.styleProperties?.properties?.borderWidth"
                           [style.--input-label-font-size]="col?.metaData?.styleProperties?.properties?.labelFontSize"
                           [style.--input-label-width]="col?.metaData?.styleProperties?.properties?.labelWidth + '%'"
                           [style.--input-border-top]="col?.metaData?.styleProperties?.properties?.borderTopStyle"
-                          [style.--input-border-radius-top-left]="col?.metaData?.styleProperties?.properties?.borderTopLeftRadius"
+                          [style.--input-border-radius-top-left]="
+                            col?.metaData?.styleProperties?.properties?.borderTopLeftRadius
+                          "
                           [style.--input-border-top-color]="col?.metaData?.styleProperties?.properties?.borderTopColor"
                           [style.--input-border-top-width]="col?.metaData?.styleProperties?.properties?.borderTopWidth"
                           [style.--input-border-right]="col?.metaData?.styleProperties?.properties?.borderRightStyle"
-                          [style.--input-border-radius-top-right]="col?.metaData?.styleProperties?.properties?.borderTopRightRadius"
-                          [style.--input-border-right-color]="col?.metaData?.styleProperties?.properties?.borderRightColor"
-                          [style.--input-border-right-width]="col?.metaData?.styleProperties?.properties?.borderRightWidth"
+                          [style.--input-border-radius-top-right]="
+                            col?.metaData?.styleProperties?.properties?.borderTopRightRadius
+                          "
+                          [style.--input-border-right-color]="
+                            col?.metaData?.styleProperties?.properties?.borderRightColor
+                          "
+                          [style.--input-border-right-width]="
+                            col?.metaData?.styleProperties?.properties?.borderRightWidth
+                          "
                           [style.--input-border-bottom]="col?.metaData?.styleProperties?.properties?.borderBottomStyle"
-                          [style.--input-border-radius-bottom-right]="col?.metaData?.styleProperties?.properties?.borderBottomRightRadius"
-                          [style.--input-border-bottom-color]="col?.metaData?.styleProperties?.properties?.borderBottomColor"
-                          [style.--input-border-bottom-width]="col?.metaData?.styleProperties?.properties?.borderBottomWidth"
+                          [style.--input-border-radius-bottom-right]="
+                            col?.metaData?.styleProperties?.properties?.borderBottomRightRadius
+                          "
+                          [style.--input-border-bottom-color]="
+                            col?.metaData?.styleProperties?.properties?.borderBottomColor
+                          "
+                          [style.--input-border-bottom-width]="
+                            col?.metaData?.styleProperties?.properties?.borderBottomWidth
+                          "
                           [style.--input-border-left]="col?.metaData?.styleProperties?.properties?.borderLeftStyle"
-                          [style.--input-border-radius-bottom-left]="col?.metaData?.styleProperties?.properties?.borderBottomLeftRadius"
-                          [style.--input-border-left-color]="col?.metaData?.styleProperties?.properties?.borderLeftColor"
-                          [style.--input-border-left-width]="col?.metaData?.styleProperties?.properties?.borderLeftWidth"
+                          [style.--input-border-radius-bottom-left]="
+                            col?.metaData?.styleProperties?.properties?.borderBottomLeftRadius
+                          "
+                          [style.--input-border-left-color]="
+                            col?.metaData?.styleProperties?.properties?.borderLeftColor
+                          "
+                          [style.--input-border-left-width]="
+                            col?.metaData?.styleProperties?.properties?.borderLeftWidth
+                          "
                           [independentBorders]="col?.metaData?.styleProperties?.properties?.independentBorder"
                           [allowLabelWrapping]="col?.metaData?.styleProperties?.properties?.allowLabelWrapping"
                           [(ngModel)]="modifyingData[rowIndex][col.columnId]"
@@ -518,8 +622,10 @@
                     }"
                   >
                     <ng-container *ngIf="editRows[rowIndex]">
-                      <div class="row-actions edit-action-mode">
-                        <i class="pi pi-check save-icon" (click)="onRowSave(rowIndex, modifyingData[rowIndex])"></i>
+                      <div
+                        [ngClass]="{ 'row-actions edit-action-mode': true, disabled: Object.keys(editCells).length }"
+                      >
+                        <i *ngIf="actions.editRow" class="pi pi-check save-icon" (click)="onRowSave(rowIndex, modifyingData[rowIndex])"></i>
                         <i
                           class="pi pi-times cancel-icon"
                           (click)="onRowEditCancel(rowIndex, modifyingData[rowIndex])"
@@ -527,8 +633,9 @@
                       </div>
                     </ng-container>
                     <ng-container *ngIf="!editRows[rowIndex] && newRows[rowIndex]">
-                      <div class="row-actions new-action-mode">
+                      <div [ngClass]="{ 'row-actions new-action-mode': true, disabled: Object.keys(editCells).length }">
                         <i
+                          *ngIf="actions.editRow"
                           class="pi pi-check save-icon"
                           (click)="onRowSave(rowIndex, modifyingData[rowIndex], true)"
                         ></i>
@@ -539,7 +646,7 @@
                       </div>
                     </ng-container>
                     <ng-container *ngIf="!editRows[rowIndex] && !newRows[rowIndex]">
-                      <div class="row-actions">
+                      <div [ngClass]="{ 'row-actions': true, disabled: Object.keys(editCells).length }">
                         <span class="edit-action" *ngIf="actions?.editRow" (click)="onEdit(rowIndex, rowData)">
                           <i class="pi pi-pencil"></i>
                         </span>
@@ -564,9 +671,9 @@
       <div class="-left d-flex">
         <div class="table-results-counter" *ngIf="!Object.keys(editCells).length; else cellEditActions">
           <ng-container *ngIf="pagination?.totalRecords && isPaginationEnabled; else zeroRecordsResult">
-            showing {{ pagination?.start }} - {{ pagination?.end }} of {{ pagination?.totalRecords }}
+            Showing {{ pagination?.start }} - {{ pagination?.end }} of {{ pagination?.totalRecords }}
           </ng-container>
-          <ng-template #zeroRecordsResult> showing {{ pagination?.totalRecords }} results </ng-template>
+          <ng-template #zeroRecordsResult> Showing {{ pagination?.totalRecords }} results </ng-template>
         </div>
         <ng-template #cellEditActions>
           <div class="p-ml-2 p-mr-2">
@@ -585,7 +692,9 @@
       </div>
       <div [ngClass]="{ '-center': true, 'show-pagination': isPaginationEnabled }">
         <div class="-previous">
-          <button class="footer-btn" [disabled]="pagination.isFirst" (click)="pagination.prev()"><i class="pi pi-angle-left"></i></button>
+          <button class="footer-btn" [disabled]="pagination.isFirst" (click)="pagination.prev()">
+            <i class="pi pi-angle-left"></i>
+          </button>
         </div>
         <span class="-pageInfo">
           <div class="-pageJump">
@@ -595,7 +704,13 @@
               [totalPages]="getTotalPages()"
               [pageNo]="currentPage"
               [limit]="limitPerPage"
-              [totalRecords]="isServerSidePagination ? totalRecords : tableFilters?.filtersEnabled ? filteredTableData.length : tableData.length"
+              [totalRecords]="
+                isServerSidePagination
+                  ? totalRecords
+                  : tableFilters?.filtersEnabled
+                  ? filteredTableData.length
+                  : tableData.length
+              "
               (pageChange)="handlePageChange($event)"
               class="page-input"
               aria-label="Page number"
@@ -606,7 +721,9 @@
           of <span class="-totalPages">{{ pagination.totalPages }}</span></span
         >
         <div class="-next">
-          <button class="footer-btn" [disabled]="pagination.isLast" (click)="pagination.next()"><i class="pi pi-angle-right"></i></button>
+          <button class="footer-btn" [disabled]="pagination.isLast" (click)="pagination.next()">
+            <i class="pi pi-angle-right"></i>
+          </button>
         </div>
       </div>
       <div

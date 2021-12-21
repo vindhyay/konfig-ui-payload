@@ -210,6 +210,9 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
       if (this.validateRow(index, this.modifyingData[index])) {
         this.tableData[index] = { ...this.tableData[index], ...this.modifyingData[index] };
         this.tableData = [...this.tableData];
+        if (this.newRows[index]) {
+          delete this.newRows[index];
+        }
         delete this.editRows[index];
         delete this.editCells[index];
         delete this.modifyingData[index];
@@ -218,6 +221,11 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
   }
   onColSaveCancel($event) {
     this.editCells = {};
+    Object.keys(this.modifyingData).forEach(rowIndex => {
+      if (this.newRows[rowIndex]) {
+        this.onDelete(rowIndex, this.modifyingData[rowIndex], true);
+      }
+    });
     this.modifyingData = {};
     this.editRows = {};
   }
@@ -309,8 +317,17 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
         scrollToBottom(tableBodyElement);
       });
     }
-    this.newRows[this.tableData.length - 1] = newRow;
-    this.modifyingData[this.tableData.length - 1] = newRow;
+    const rowIndex = this.tableData.length - 1;
+    this.newRows[rowIndex] = newRow;
+    this.modifyingData[rowIndex] = newRow;
+    if (!this.actions.editRow) {
+      if (!this.editCells[rowIndex]) {
+        this.editCells[rowIndex] = {};
+      }
+      Object.keys(newRow).forEach(col => {
+        this.editCells[rowIndex][col] = newRow[col];
+      });
+    }
   }
   handlePageChange($event) {
     this.currentPage = $event;
@@ -377,7 +394,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
           const rule = rules[i];
           const fieldValue = rowData[rule?.fieldId];
           let result = false;
-          if (rule.operator === "notEquals") {
+          if (rule.condition === "notEquals") {
             if (String(fieldValue) !== String(rule.value)) {
               result = true;
             }
@@ -386,7 +403,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
               result = true;
             }
           }
-          condMatched = i === 0 ? result : rule.condition === "AND" ? condMatched && result : condMatched || result;
+          condMatched = i === 0 ? result : rule.operator === "AND" ? condMatched && result : condMatched || result;
         }
         return condMatched;
       });

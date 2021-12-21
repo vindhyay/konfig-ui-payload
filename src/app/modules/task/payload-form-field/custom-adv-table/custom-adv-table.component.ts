@@ -83,12 +83,15 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
   }
   @Input() paginatorPosition: TABLE_PAGINATION_POSITIONS = TABLE_PAGINATION_POSITIONS.BOTTOM;
   @Input() rows = 0;
+  @Input() isServerSidePagination = false;
+  @Input() totalRecords = 0;
   _tableData = [];
   filteredTableData = [];
   @Input()
   set tableData(data) {
     this._tableData = data;
     this.filteredTableData = data;
+    this.updateRowsLimit();
   }
   get tableData() {
     return this._tableData;
@@ -136,6 +139,9 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
     setTimeout(() => {
       if (this.isPaginationEnabled) {
         this.updateRowsLimit();
+        if (this.isServerSidePagination) {
+          this.onPageChange.emit({ limit: this.limitPerPage, page: this.currentPage });
+        }
       }
     }, 100);
   }
@@ -151,7 +157,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
   getMinWidth() {
     let sum = 0;
     this.columns.forEach(col => {
-      sum = sum + Number(col.width);
+      sum = sum + Number(col.width || 100);
     });
     if (this.actions?.editRow || this.actions?.deleteRow) {
       sum = sum + Number(this.actions?.width || 100);
@@ -231,6 +237,9 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
           eachColumn.value.value = rowData[eachColumn?.metaData?.widgetId];
         });
         this.tableData = [...this.tableData];
+        if (this.newRows[index]) {
+          delete this.newRows[index];
+        }
         delete this.editRows[index];
         delete this.editCells[index];
         delete this.modifyingData[index];
@@ -239,6 +248,11 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
   }
   onColSaveCancel($event) {
     this.editCells = {};
+    Object.keys(this.modifyingData).forEach(rowIndex => {
+      if (this.newRows[rowIndex]) {
+        this.onDelete(rowIndex, this.modifyingData[rowIndex], true);
+      }
+    });
     this.modifyingData = {};
     this.editRows = {};
   }
@@ -319,31 +333,40 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
         scrollToBottom(tableBodyElement);
       });
     }
-    this.newRows[this.tableData.length - 1] = newRow;
-    this.modifyingData[this.tableData.length - 1] = newRowData;
+    const rowIndex = this.tableData.length - 1;
+    this.newRows[rowIndex] = newRow;
+    this.modifyingData[rowIndex] = newRowData;
     this.tableData = [...this.tableData];
+    if (!this.actions?.editRow) {
+      if (!this.editCells[rowIndex]) {
+        this.editCells[rowIndex] = {};
+      }
+      Object.keys(newRow).forEach(col => {
+        this.editCells[rowIndex][col] = newRow[col];
+      });
+    }
   }
   handlePageChange($event) {
     this.currentPage = $event;
+    if (this.isServerSidePagination) {
+      this.onPageChange.emit({ limit: this.limitPerPage, page: $event });
+    }
   }
   getTotalPages() {
-    if (!this.tableFilters?.filtersEnabled) {
-      return Math.ceil(this.tableData.length / this.limitPerPage) || 1;
+    let pages = 0;
+    if (this.isServerSidePagination) {
+      pages = Math.ceil(this.totalRecords / this.limitPerPage) || 1;
     } else {
-      return Math.ceil(this.filteredTableData.length / this.limitPerPage) || 1;
+      if (!this.tableFilters?.filtersEnabled) {
+        pages = Math.ceil(this.tableData.length / this.limitPerPage) || 1;
+      } else {
+        pages = Math.ceil(this.filteredTableData.length / this.limitPerPage) || 1;
+      }
     }
-  }
-  getRecordsText() {
-    const start = this.currentPage === 1 ? 1 : (this.currentPage - 1) * this.limitPerPage + 1;
-    const end =
-      start + (this.limitPerPage - 1) < this.tableData.length ? start + this.limitPerPage - 1 : this.tableData.length;
-    let msg = "";
-    if (!this.tableData.length) {
-      msg = "showing 0 results";
-    } else {
-      msg = "showing " + start + " - " + end + " of " + this.tableData.length;
+    if (this.currentPage > pages) {
+      this.currentPage = pages;
     }
-    return msg;
+    return pages;
   }
   onSortChange($event) {
     const order = $event.direction === "asc" ? 1 : $event.direction === "desc" ? -1 : 0;
@@ -394,7 +417,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
           const rule = rules[i];
           const fieldValue = rowDataInObject[rule?.fieldId];
           let result = false;
-          if (rule.operator === "notEquals") {
+          if (rule.condition === "notEquals") {
             if (String(fieldValue) !== String(rule.value)) {
               result = true;
             }
@@ -403,7 +426,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
               result = true;
             }
           }
-          condMatched = i === 0 ? result : rule.condition === "AND" ? condMatched && result : condMatched || result;
+          condMatched = i === 0 ? result : rule.operator === "AND" ? condMatched && result : condMatched || result;
         }
         return condMatched;
       });
