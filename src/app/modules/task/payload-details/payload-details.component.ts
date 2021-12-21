@@ -233,7 +233,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
     }
   }
   triggerClicksAll(payloadData: any) {
-    const { payloadFields: payloadMetaData, payload: screenDataJson, files = [], itemData: {data:{ metaData: { status: statusId = "" } = {} },triggerId,uiAction} } = payloadData;
+    const { payloadFields: payloadMetaData, payload: screenDataJson, files = [], itemData: {data:{ metaData: { status: statusId = "", toastMsg = "" } = {} },triggerId,uiAction} } = payloadData;
     const params = {
       triggerId,
       screenId: this.transactionDetails.screenId,
@@ -264,6 +264,9 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
                 if (data && !error) {
                   if(isSubmit)
                     this.notificationService.success("Transaction Submitted Successfully", "Success");
+                  if(toastMsg){
+                    this.notificationService.success(toastMsg, "Success");
+                  }
                   this.transactionDetails = data;
                   this.taskService.setTransactionDetails(data);
                   this.id = data.id;
