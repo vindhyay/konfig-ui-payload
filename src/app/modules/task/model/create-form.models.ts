@@ -233,7 +233,7 @@ export class MetaData {
   defaultRows: number;
   defaultMinItemRows: number;
   conditions: any;
-
+  errorMessage: string;
   constructor(data) {
     const {
       widgetId,
@@ -251,7 +251,8 @@ export class MetaData {
       defaultRows,
       defaultMinItemRows,
       hideRows,
-      conditions
+      conditions,
+      errorMessage = "",
     } = data;
     this.widgetId = widgetId || getUniqueId("widget");
     this.widgetType = widgetType;
@@ -269,6 +270,7 @@ export class MetaData {
     this.defaultRows = defaultRows;
     this.hideRows = hideRows;
     this.conditions = conditions;
+    this.errorMessage = errorMessage;
   }
 }
 export class SubColumn {
