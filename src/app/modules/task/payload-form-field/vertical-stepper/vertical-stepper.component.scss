@@ -1,4 +1,41 @@
-
+:host {
+  --input-border-color: #ced4da;
+  --input-background-color: #ffffff;
+  --content-background-color:#ffffff;
+  --footer-background-color: #ffffff;
+  --current-step-color:#000000;
+  --completed-step-color:#185c07;
+  --completed-bar-color: #185c07;
+  --default-bar-color: #495057;
+  --input-color: #495057;
+  --input-label-color: #373f51;
+  --validation-message-color: #dc3545;
+  --input-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  --input-text-decoration: none;
+  --input-text-align: left;
+  --input-font-size: 16px;
+  --input-border: solid;
+  --input-border-radius: 4px;
+  --input-border-width: 1px;
+  --input-font-style: normal;
+  --input-font-weight: normal;
+  --input-border-top: var(--input-border);
+  --input-border-top-width: var(--input-border-width);
+  --input-border-top-color: var(--input-border-color);
+  --input-border-radius-top-left: var(--input-border-radius);
+  --input-border-right: var(--input-border);
+  --input-border-right-width: var(--input-border-width);
+  --input-border-right-color: var(--input-border-color);
+  --input-border-radius-top-right: var(--input-border-radius);
+  --input-border-bottom: var(--input-border);
+  --input-border-bottom-width: var(--input-border-width);
+  --input-border-bottom-color: var(--input-border-color);
+  --input-border-radius-bottom-right: var(--input-border-radius);
+  --input-border-left: var(--input-border);
+  --input-border-left-width: var(--input-border-width);
+  --input-border-left-color: var(--input-border-color);
+  --input-border-radius-bottom-left: var(--input-border-radius);
+}
 .stepper-container {
   width: 100%;
   .wrapper {
@@ -17,6 +54,13 @@
           height: 100%;
           position: relative;
         }
+        &>div{
+          background-color: var(--content-background-color) !important;
+          height: 100%;
+        }
+        gridster{
+          background-color: var(--content-background-color) !important;
+        }
       }
     }
   }
@@ -32,6 +76,10 @@
   height: 60px;
   display: flex;
   align-items: center;
+  background-color: var(--footer-background-color) !important;
+  gridster{
+    background-color: var(--footer-background-color) !important;
+  }
 }
 
 .stepper-btn-container.alignEnd{
@@ -41,7 +89,20 @@
 ::ng-deep .stepper-btn-container .p-button{
   width: 100% !important;
 }
-
+::ng-deep{
+  .stepper-btn-container {
+    gridster{
+      background-color: var(--footer-background-color) !important;
+    }
+  }
+  .stepper-container{
+    .scrollView{
+      gridster{
+        background-color: var(--content-background-color) !important;
+      }
+    }
+  }
+}
 .progressbar {
   margin: 0;
   width: 27%;
@@ -50,6 +111,7 @@
   background: white;
   max-width: 350px;
   overflow: hidden;
+  background: var(--input-background-color);
   .stepper-header{
     width: 100%;
     padding: 10px 10px 0 10px;
@@ -124,8 +186,23 @@ li .step-label {
 
   &>p{
     padding: 0;
-    margin: 0
+    margin: 0;
+    color: var(--input-color);
+    font-style: var(--input-font-style);
+    font-weight: var(--input-font-weight);
+    text-decoration: var(--input-text-decoration);
+    font-family: var(--input-font-family);
   }
+  &>p.defaultColor{
+    color: var(--input-color);
+  }
+  &>p.completedStep{
+    color: var(--completed-step-color);
+  }
+  &>p.currentStep{
+    color: var(--current-step-color);
+  }
+
 
   &>p.sub-lable {
     color: #808080;
@@ -192,7 +269,12 @@ li.completed .indicator {
 li .indicator.box-pattern{
   border-radius: 0px;
 }
-
+.progressbar li span.completedBar{
+  background-color: var(--completed-bar-color);
+}
+.progressbar li span.currentBar{
+  background-color: var( --default-bar-color);
+}
 .disabled {
   pointer-events: none;
   opacity: 0.7;
@@ -243,51 +325,6 @@ li .indicator.box-pattern{
     border-radius: 12px;
     margin-top: -18px;
     padding: 3px 12px;
-  }
-}
-
-.text-content {
-  display: flex !important;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  &.text-style-h1 {
-    font-size: 2rem;
-    font-weight: bold;
-  }
-  &.text-style-h2 {
-    font-size: 1.5rem;
-    font-weight: bold;
-  }
-  &.text-style-h3 {
-    font-size: 1.17rem;
-    font-weight: bold;
-  }
-  &.text-style-h4 {
-    font-size: 1rem;
-    font-weight: bold;
-  }
-  &.text-style-h5 {
-    display: block;
-    font-size: 0.83rem;
-    font-weight: bold;
-  }
-  &.text-style-h6 {
-    display: block;
-    font-size: 0.67rem;
-    font-weight: bold;
-  }
-  &.text-style-subtitle1 {
-    font-size: 0.8rem;
-    font-weight: 400;
-    line-height: 1.75;
-    letter-spacing: 0.00938rem;
-  }
-  &.text-style-body1 {
-    font-size: 1rem;
-    font-weight: 500;
-    line-height: 1.5;
-    letter-spacing: 0.00938rem;
   }
 }
 

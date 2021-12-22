@@ -1,10 +1,5 @@
 <div class="stepper-container">
-  <div
-    class="progressbar"
-    [ngStyle]="{
-      background: metaData.leftPanelBgColor
-    }"
-  >
+  <div  class="progressbar">
     <div class="stepper-header" *ngIf="metaData.showHeader"  [ngStyle]="{
       height: metaData.headerHeight+'px'
     }">
@@ -36,27 +31,16 @@
         </div>
         <div class="step-label">
           <p
-            [class]="'text-content text-style-' + metaData?.textStyle"
-            [ngStyle]="{
-              color:
-                _selectedIndex > i
-                  ? metaData.completedStepColor
-                  : _selectedIndex === i
-                  ? metaData.currentStepColor
-                  : metaData.color,
-              'font-weight': metaData.fontWeight,
-              'font-style': metaData.fontStyle,
-              'text-decoration': metaData.textDecortation
-            }"
+            [ngClass]="{'completedStep':selectedIndex > i, 'currentStep':selectedIndex === i, 'defaultColor': i > selectedIndex }"
           >
             {{ child.label }}
           </p>
           <p class="sub-lable">{{ child?.metaData?.sublabel }}</p>
         </div>
         <span
-          [ngStyle]="{
-            background: _selectedIndex > i ? metaData.completedBarColor : metaData.defaultBarColor
-          }"
+          [ngClass]="{
+            completedBar: selectedIndex > i,
+            currentBar: selectedIndex <= i }" 
         ></span>
       </li>
     </ul>
@@ -66,9 +50,6 @@
       <div class="scrollView">
         <div
           class="content"
-          [ngStyle]="{
-            background: metaData.conentBgColor
-          }"
           #contentConatiner
         >
           <finlevit-grid
