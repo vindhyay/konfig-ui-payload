@@ -43,7 +43,7 @@
                   center: col?.metaData?.alignment === CellAlignTypes.CENTER
                 }"
               >
-                {{ col?.label || col?.displayName }}
+                {{ col?.label || col.displayName }}
               </div>
             </div>
             <div class="f-resizer" (resizable)="onResize($event, col)"></div>
@@ -157,7 +157,6 @@
                           "
                           [(ngModel)]="modifyingData[rowIndex][col.metaData.widgetId]"
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
-                          [isSmall]="true"
                           [leftIcon]="col?.metaData?.leftIcon"
                           [rightIcon]="col?.metaData?.rightIcon"
                           [tooltip]="col?.metaData?.tooltip"
@@ -234,7 +233,7 @@
                           [prefixText]="col?.metaData?.prefixText"
                           [suffixText]="col?.metaData?.suffixText"
                           [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
-                          [showErrorMsg]="false"
+                          [showErrorMsg]="true"
                           [error]="
                             rowErrors[rowIndex] && rowErrors[rowIndex][col?.metaData?.widgetId]
                               ? rowErrors[rowIndex][col?.metaData?.widgetId]['error']
@@ -283,6 +282,74 @@
                               ? col?.metaData?.optionValue
                               : ''
                           "
+                          [style.--input-color]="col?.metaData?.styleProperties?.properties?.textColor"
+                          [style.--input-text-align]="col?.metaData?.styleProperties?.properties?.textHorizontalAlign"
+                          [style.--input-background-color]="col?.metaData?.styleProperties?.properties?.backgroundColor"
+                          [style.--input-border-color]="col?.metaData?.styleProperties?.properties?.borderColor"
+                          [style.--input-font-family]="col?.metaData?.styleProperties?.properties?.textFontStyle"
+                          [style.--input-border]="col?.metaData?.styleProperties?.properties?.borderStyle"
+                          [style.--input-border-radius]="col?.metaData?.styleProperties?.properties?.borderRadius"
+                          [style.--input-font-size]="col?.metaData?.styleProperties?.properties?.fontSize"
+                          [style.--input-word-spacing]="col?.metaData?.styleProperties?.properties?.wordSpacing"
+                          [style.--input-letter-spacing]="col?.metaData?.styleProperties?.properties?.letterSpacing"
+                          [style.--input-line-spacing]="col?.metaData?.styleProperties?.properties?.lineSpacing"
+                          [style.--input-font-weight]="col?.metaData?.styleProperties?.properties?.fontWeight"
+                          [style.--input-font-style]="col?.metaData?.styleProperties?.properties?.fontStyle"
+                          [style.--input-text-decoration]="col?.metaData?.styleProperties?.properties?.textDecoration"
+                          [style.--input-label-color]="col?.metaData?.styleProperties?.properties?.labelColor"
+                          [style.--input-label-font-family]="col?.metaData?.styleProperties?.properties?.labelFontStyle"
+                          [style.--input-label-align]="col?.metaData?.styleProperties?.properties?.labelAlignment"
+                          [style.--input-label-font-weight]="
+                            col?.metaData?.styleProperties?.properties?.labelFontWeight
+                          "
+                          [style.--input-label-font-style]="col?.metaData?.styleProperties?.properties?.labelStyle"
+                          [style.--input-label-text-decoration]="
+                            col?.metaData?.styleProperties?.properties?.labelTextDecoration
+                          "
+                          [style.--input-adornment-background-color]="col?.metaData?.adornmentBackgroundColor"
+                          [style.--input-border-width]="col?.metaData?.styleProperties?.properties?.borderWidth"
+                          [style.--input-label-font-size]="col?.metaData?.styleProperties?.properties?.labelFontSize"
+                          [style.--input-label-width]="col?.metaData?.styleProperties?.properties?.labelWidth + '%'"
+                          [style.--input-border-top]="col?.metaData?.styleProperties?.properties?.borderTopStyle"
+                          [style.--input-border-radius-top-left]="
+                            col?.metaData?.styleProperties?.properties?.borderTopLeftRadius
+                          "
+                          [style.--input-border-top-color]="col?.metaData?.styleProperties?.properties?.borderTopColor"
+                          [style.--input-border-top-width]="col?.metaData?.styleProperties?.properties?.borderTopWidth"
+                          [style.--input-border-right]="col?.metaData?.styleProperties?.properties?.borderRightStyle"
+                          [style.--input-border-radius-top-right]="
+                            col?.metaData?.styleProperties?.properties?.borderTopRightRadius
+                          "
+                          [style.--input-border-right-color]="
+                            col?.metaData?.styleProperties?.properties?.borderRightColor
+                          "
+                          [style.--input-border-right-width]="
+                            col?.metaData?.styleProperties?.properties?.borderRightWidth
+                          "
+                          [style.--input-border-bottom]="col?.metaData?.styleProperties?.properties?.borderBottomStyle"
+                          [style.--input-border-radius-bottom-right]="
+                            col?.metaData?.styleProperties?.properties?.borderBottomRightRadius
+                          "
+                          [style.--input-border-bottom-color]="
+                            col?.metaData?.styleProperties?.properties?.borderBottomColor
+                          "
+                          [style.--input-border-bottom-width]="
+                            col?.metaData?.styleProperties?.properties?.borderBottomWidth
+                          "
+                          [style.--input-border-left]="col?.metaData?.styleProperties?.properties?.borderLeftStyle"
+                          [style.--input-border-radius-bottom-left]="
+                            col?.metaData?.styleProperties?.properties?.borderBottomLeftRadius
+                          "
+                          [style.--input-border-left-color]="
+                            col?.metaData?.styleProperties?.properties?.borderLeftColor
+                          "
+                          [style.--input-border-left-width]="
+                            col?.metaData?.styleProperties?.properties?.borderLeftWidth
+                          "
+                          [independentBorders]="col?.metaData?.styleProperties?.properties?.independentBorder"
+                          [allowLabelWrapping]="col?.metaData?.allowLabelWrapping"
+                          [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
+                          [showErrorMsg]="true"
                           [error]="
                             rowErrors[rowIndex] && rowErrors[rowIndex][col?.metaData?.widgetId]
                               ? rowErrors[rowIndex][col?.metaData?.widgetId]['error']
@@ -330,7 +397,83 @@
                               ? rowErrors[rowIndex][col?.metaData?.widgetId]['errorMsg']
                               : false
                           "
+                          [leftIcon]="col?.metaData?.leftIcon"
+                          [rightIcon]="col?.metaData?.rightIcon"
+                          [tooltip]="col?.metaData?.tooltip"
+                          [isRequired]="col?.validators?.required"
+                          [showMaxCharLimit]="col?.validators?.maxLength"
+                          [maxCharLimit]="col?.validators?.maxLength"
                           [pattern]="col?.validators?.pattern || null"
+                          [style.--input-color]="col?.metaData?.styleProperties?.properties?.textColor"
+                          [style.--input-text-align]="col?.metaData?.styleProperties?.properties?.textHorizontalAlign"
+                          [style.--input-background-color]="col?.metaData?.styleProperties?.properties?.backgroundColor"
+                          [style.--input-border-color]="col?.metaData?.styleProperties?.properties?.borderColor"
+                          [style.--input-font-family]="col?.metaData?.styleProperties?.properties?.textFontStyle"
+                          [style.--input-border]="col?.metaData?.styleProperties?.properties?.borderStyle"
+                          [style.--input-border-radius]="col?.metaData?.styleProperties?.properties?.borderRadius"
+                          [style.--input-font-size]="col?.metaData?.styleProperties?.properties?.fontSize"
+                          [style.--input-word-spacing]="col?.metaData?.styleProperties?.properties?.wordSpacing"
+                          [style.--input-letter-spacing]="col?.metaData?.styleProperties?.properties?.letterSpacing"
+                          [style.--input-line-spacing]="col?.metaData?.styleProperties?.properties?.lineSpacing"
+                          [style.--input-font-weight]="col?.metaData?.styleProperties?.properties?.fontWeight"
+                          [style.--input-font-style]="col?.metaData?.styleProperties?.properties?.fontStyle"
+                          [style.--input-text-decoration]="col?.metaData?.styleProperties?.properties?.textDecoration"
+                          [style.--input-label-color]="col?.metaData?.styleProperties?.properties?.labelColor"
+                          [style.--input-label-font-family]="col?.metaData?.styleProperties?.properties?.labelFontStyle"
+                          [style.--input-label-align]="col?.metaData?.styleProperties?.properties?.labelAlignment"
+                          [style.--input-label-font-weight]="
+                            col?.metaData?.styleProperties?.properties?.labelFontWeight
+                          "
+                          [style.--input-label-font-style]="col?.metaData?.styleProperties?.properties?.labelStyle"
+                          [style.--input-label-text-decoration]="
+                            col?.metaData?.styleProperties?.properties?.labelTextDecoration
+                          "
+                          [style.--input-adornment-background-color]="col?.metaData?.adornmentBackgroundColor"
+                          [style.--input-border-width]="col?.metaData?.styleProperties?.properties?.borderWidth"
+                          [style.--input-label-font-size]="col?.metaData?.styleProperties?.properties?.labelFontSize"
+                          [style.--input-label-width]="col?.metaData?.styleProperties?.properties?.labelWidth + '%'"
+                          [style.--input-border-top]="col?.metaData?.styleProperties?.properties?.borderTopStyle"
+                          [style.--input-border-radius-top-left]="
+                            col?.metaData?.styleProperties?.properties?.borderTopLeftRadius
+                          "
+                          [style.--input-border-top-color]="col?.metaData?.styleProperties?.properties?.borderTopColor"
+                          [style.--input-border-top-width]="col?.metaData?.styleProperties?.properties?.borderTopWidth"
+                          [style.--input-border-right]="col?.metaData?.styleProperties?.properties?.borderRightStyle"
+                          [style.--input-border-radius-top-right]="
+                            col?.metaData?.styleProperties?.properties?.borderTopRightRadius
+                          "
+                          [style.--input-border-right-color]="
+                            col?.metaData?.styleProperties?.properties?.borderRightColor
+                          "
+                          [style.--input-border-right-width]="
+                            col?.metaData?.styleProperties?.properties?.borderRightWidth
+                          "
+                          [style.--input-border-bottom]="col?.metaData?.styleProperties?.properties?.borderBottomStyle"
+                          [style.--input-border-radius-bottom-right]="
+                            col?.metaData?.styleProperties?.properties?.borderBottomRightRadius
+                          "
+                          [style.--input-border-bottom-color]="
+                            col?.metaData?.styleProperties?.properties?.borderBottomColor
+                          "
+                          [style.--input-border-bottom-width]="
+                            col?.metaData?.styleProperties?.properties?.borderBottomWidth
+                          "
+                          [style.--input-border-left]="col?.metaData?.styleProperties?.properties?.borderLeftStyle"
+                          [style.--input-border-radius-bottom-left]="
+                            col?.metaData?.styleProperties?.properties?.borderBottomLeftRadius
+                          "
+                          [style.--input-border-left-color]="
+                            col?.metaData?.styleProperties?.properties?.borderLeftColor
+                          "
+                          [style.--input-border-left-width]="
+                            col?.metaData?.styleProperties?.properties?.borderLeftWidth
+                          "
+                          [independentBorders]="col?.metaData?.styleProperties?.properties?.independentBorder"
+                          [allowLabelWrapping]="col?.metaData?.allowLabelWrapping"
+                          [showClearButton]="col?.metaData?.showClearButton"
+                          [prefixText]="col?.metaData?.prefixText"
+                          [suffixText]="col?.metaData?.suffixText"
+                          [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
                         ></finlevit-text>
                       </div>
                       <div class="p-pl-1 adv-checkbox" *ngSwitchCase="Checkbox">
@@ -355,9 +498,31 @@
                           "
                           [(ngModel)]="modifyingData[rowIndex][col.metaData.widgetId]"
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
-                          [label]="col?.label"
                           [isRequired]="col?.validators?.required"
                           [tooltip]="col?.metaData?.tooltip"
+                          [style.--input-font-weight]="col?.metaData?.styleProperties?.properties?.fontWeight"
+                          [style.--input-font-style]="col?.metaData?.styleProperties?.properties?.fontStyle"
+                          [style.--input-text-decoration]="col?.metaData?.styleProperties?.properties?.textDecoration"
+                          [style.--input-color]="col?.metaData?.styleProperties?.properties?.textColor"
+                          [style.--input-font-family]="col?.metaData?.styleProperties?.properties?.textFontStyle"
+                          [style.--input-font-size]="col?.metaData?.styleProperties?.properties?.fontSize"
+                          [style.--input-word-spacing]="col?.metaData?.styleProperties?.properties?.wordSpacing"
+                          [style.--input-letter-spacing]="col?.metaData?.styleProperties?.properties?.letterSpacing"
+                          [style.--input-unchecked-background-color]="
+                            col?.metaData?.styleProperties?.properties?.uncheckedBackgroundColor
+                          "
+                          [style.--input-unchecked-border-color]="
+                            col?.metaData?.styleProperties?.properties?.uncheckedBorderColor
+                          "
+                          [style.--input-checked-background-color]="
+                            col?.metaData?.styleProperties?.properties?.checkedBackgroundColor
+                          "
+                          [style.--input-checked-border-color]="
+                            col?.metaData?.styleProperties?.properties?.checkedBorderColor
+                          "
+                          [style.--input-check-icon-color]="col?.metaData?.styleProperties?.properties?.checkIconColor"
+                          [style.--input-flex-direction]="col?.metaData?.styleProperties?.properties?.checkboxAlign"
+                          [style.--input-checkbox-size]="col?.metaData?.styleProperties?.properties?.checkboxSize"
                           [error]="
                             rowErrors[rowIndex] && rowErrors[rowIndex][col?.metaData?.widgetId]
                               ? rowErrors[rowIndex][col?.metaData?.widgetId]['error']
@@ -428,8 +593,88 @@
                           "
                           [(ngModel)]="modifyingData[rowIndex][col.metaData.widgetId]"
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
-                          [isSmall]="true"
                           [placeholder]="col?.metaData?.placeholder"
+                          [tooltip]="col?.metaData?.tooltip"
+                          [mode]="col?.metaData?.mode"
+                          [currency]="col?.metaData?.currency"
+                          [minFractionDigits]="col?.metaData?.minFractionDigits"
+                          [maxFractionDigits]="col?.metaData?.maxFractionDigits"
+                          [isRequired]="col?.validators?.required"
+                          [maxLength]="col?.validators?.maxLength"
+                          [showMaxCharLimit]="col?.validators?.maxLength"
+                          [style.--input-color]="col?.metaData?.styleProperties?.properties?.textColor"
+                          [style.--input-text-align]="col?.metaData?.styleProperties?.properties?.textHorizontalAlign"
+                          [style.--input-background-color]="col?.metaData?.styleProperties?.properties?.backgroundColor"
+                          [style.--input-border-color]="col?.metaData?.styleProperties?.properties?.borderColor"
+                          [style.--input-font-family]="col?.metaData?.styleProperties?.properties?.textFontStyle"
+                          [style.--input-border]="col?.metaData?.styleProperties?.properties?.borderStyle"
+                          [style.--input-border-radius]="col?.metaData?.styleProperties?.properties?.borderRadius"
+                          [style.--input-font-size]="col?.metaData?.styleProperties?.properties?.fontSize"
+                          [style.--input-word-spacing]="col?.metaData?.styleProperties?.properties?.wordSpacing"
+                          [style.--input-letter-spacing]="col?.metaData?.styleProperties?.properties?.letterSpacing"
+                          [style.--input-line-spacing]="col?.metaData?.styleProperties?.properties?.lineSpacing"
+                          [style.--input-font-weight]="col?.metaData?.styleProperties?.properties?.fontWeight"
+                          [style.--input-font-style]="col?.metaData?.styleProperties?.properties?.fontStyle"
+                          [style.--input-text-decoration]="col?.metaData?.styleProperties?.properties?.textDecoration"
+                          [style.--input-label-color]="col?.metaData?.styleProperties?.properties?.labelColor"
+                          [style.--input-label-font-family]="col?.metaData?.styleProperties?.properties?.labelFontStyle"
+                          [style.--input-label-align]="col?.metaData?.styleProperties?.properties?.labelAlignment"
+                          [style.--input-label-font-weight]="
+                            col?.metaData?.styleProperties?.properties?.labelFontWeight
+                          "
+                          [style.--input-label-font-style]="col?.metaData?.styleProperties?.properties?.labelStyle"
+                          [style.--input-label-text-decoration]="
+                            col?.metaData?.styleProperties?.properties?.labelTextDecoration
+                          "
+                          [style.--input-adornment-background-color]="col?.metaData?.adornmentBackgroundColor"
+                          [style.--input-border-width]="col?.metaData?.styleProperties?.properties?.borderWidth"
+                          [style.--input-label-font-size]="col?.metaData?.styleProperties?.properties?.labelFontSize"
+                          [style.--input-label-width]="col?.metaData?.styleProperties?.properties?.labelWidth + '%'"
+                          [style.--input-border-top]="col?.metaData?.styleProperties?.properties?.borderTopStyle"
+                          [style.--input-border-radius-top-left]="
+                            col?.metaData?.styleProperties?.properties?.borderTopLeftRadius
+                          "
+                          [style.--input-border-top-color]="col?.metaData?.styleProperties?.properties?.borderTopColor"
+                          [style.--input-border-top-width]="col?.metaData?.styleProperties?.properties?.borderTopWidth"
+                          [style.--input-border-right]="col?.metaData?.styleProperties?.properties?.borderRightStyle"
+                          [style.--input-border-radius-top-right]="
+                            col?.metaData?.styleProperties?.properties?.borderTopRightRadius
+                          "
+                          [style.--input-border-right-color]="
+                            col?.metaData?.styleProperties?.properties?.borderRightColor
+                          "
+                          [style.--input-border-right-width]="
+                            col?.metaData?.styleProperties?.properties?.borderRightWidth
+                          "
+                          [style.--input-border-bottom]="col?.metaData?.styleProperties?.properties?.borderBottomStyle"
+                          [style.--input-border-radius-bottom-right]="
+                            col?.metaData?.styleProperties?.properties?.borderBottomRightRadius
+                          "
+                          [style.--input-border-bottom-color]="
+                            col?.metaData?.styleProperties?.properties?.borderBottomColor
+                          "
+                          [style.--input-border-bottom-width]="
+                            col?.metaData?.styleProperties?.properties?.borderBottomWidth
+                          "
+                          [style.--input-border-left]="col?.metaData?.styleProperties?.properties?.borderLeftStyle"
+                          [style.--input-border-radius-bottom-left]="
+                            col?.metaData?.styleProperties?.properties?.borderBottomLeftRadius
+                          "
+                          [style.--input-border-left-color]="
+                            col?.metaData?.styleProperties?.properties?.borderLeftColor
+                          "
+                          [style.--input-border-left-width]="
+                            col?.metaData?.styleProperties?.properties?.borderLeftWidth
+                          "
+                          [independentBorders]="col?.metaData?.styleProperties?.properties?.independentBorder"
+                          [allowLabelWrapping]="col?.metaData?.allowLabelWrapping"
+                          [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
+                          [showErrorMsg]="col?.metaData?.showErrorMessage"
+                          [prefixText]="col?.metaData?.prefixText"
+                          [suffixText]="col?.metaData?.suffixText"
+                          [showClearButton]="col?.metaData?.showClearButton"
+                          [step]="col?.metaData?.step"
+                          [showButtons]="col?.metaData?.showStepperButtons"
                           [error]="
                             rowErrors[rowIndex] && rowErrors[rowIndex][col?.metaData?.widgetId]
                               ? rowErrors[rowIndex][col?.metaData?.widgetId]['error']
@@ -464,8 +709,82 @@
                           "
                           [(ngModel)]="modifyingData[rowIndex][col.metaData.widgetId]"
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
-                          [isSmall]="true"
+                          [autoResize]="col?.metaData?.autoResize"
+                          [rows]="col?.metaData?.rowsCount"
+                          [tooltip]="col?.metaData?.tooltip"
                           [placeholder]="col?.metaData?.placeholder"
+                          [isRequired]="col?.validators?.required"
+                          [style.--input-color]="col?.metaData?.styleProperties?.properties?.textColor"
+                          [style.--input-text-align]="col?.metaData?.styleProperties?.properties?.textHorizontalAlign"
+                          [style.--input-background-color]="col?.metaData?.styleProperties?.properties?.backgroundColor"
+                          [style.--input-border-color]="col?.metaData?.styleProperties?.properties?.borderColor"
+                          [style.--input-font-family]="col?.metaData?.styleProperties?.properties?.textFontStyle"
+                          [style.--input-border]="col?.metaData?.styleProperties?.properties?.borderStyle"
+                          [style.--input-border-radius]="col?.metaData?.styleProperties?.properties?.borderRadius"
+                          [style.--input-font-size]="col?.metaData?.styleProperties?.properties?.fontSize"
+                          [style.--input-word-spacing]="col?.metaData?.styleProperties?.properties?.wordSpacing"
+                          [style.--input-letter-spacing]="col?.metaData?.styleProperties?.properties?.letterSpacing"
+                          [style.--input-line-spacing]="col?.metaData?.styleProperties?.properties?.lineSpacing"
+                          [style.--input-font-weight]="col?.metaData?.styleProperties?.properties?.fontWeight"
+                          [style.--input-font-style]="col?.metaData?.styleProperties?.properties?.fontStyle"
+                          [style.--input-text-decoration]="col?.metaData?.styleProperties?.properties?.textDecoration"
+                          [style.--input-label-color]="col?.metaData?.styleProperties?.properties?.labelColor"
+                          [style.--input-label-font-family]="col?.metaData?.styleProperties?.properties?.labelFontStyle"
+                          [style.--input-label-align]="col?.metaData?.styleProperties?.properties?.labelAlignment"
+                          [style.--input-label-font-weight]="
+                            col?.metaData?.styleProperties?.properties?.labelFontWeight
+                          "
+                          [style.--input-label-font-style]="col?.metaData?.styleProperties?.properties?.labelStyle"
+                          [style.--input-label-text-decoration]="
+                            col?.metaData?.styleProperties?.properties?.labelTextDecoration
+                          "
+                          [style.--input-adornment-background-color]="
+                            col?.metaData?.styleProperties?.properties?.adornmentBackgroundColor
+                          "
+                          [style.--input-border-width]="col?.metaData?.styleProperties?.properties?.borderWidth"
+                          [style.--input-label-font-size]="col?.metaData?.styleProperties?.properties?.labelFontSize"
+                          [style.--input-label-width]="col?.metaData?.styleProperties?.properties?.labelWidth + '%'"
+                          [style.--input-border-top]="col?.metaData?.styleProperties?.properties?.borderTopStyle"
+                          [style.--input-border-radius-top-left]="
+                            col?.metaData?.styleProperties?.properties?.borderTopLeftRadius
+                          "
+                          [style.--input-border-top-color]="col?.metaData?.styleProperties?.properties?.borderTopColor"
+                          [style.--input-border-top-width]="col?.metaData?.styleProperties?.properties?.borderTopWidth"
+                          [style.--input-border-right]="col?.metaData?.styleProperties?.properties?.borderRightStyle"
+                          [style.--input-border-radius-top-right]="
+                            col?.metaData?.styleProperties?.properties?.borderTopRightRadius
+                          "
+                          [style.--input-border-right-color]="
+                            col?.metaData?.styleProperties?.properties?.borderRightColor
+                          "
+                          [style.--input-border-right-width]="
+                            col?.metaData?.styleProperties?.properties?.borderRightWidth
+                          "
+                          [style.--input-border-bottom]="col?.metaData?.styleProperties?.properties?.borderBottomStyle"
+                          [style.--input-border-radius-bottom-right]="
+                            col?.metaData?.styleProperties?.properties?.borderBottomRightRadius
+                          "
+                          [style.--input-border-bottom-color]="
+                            col?.metaData?.styleProperties?.properties?.borderBottomColor
+                          "
+                          [style.--input-border-bottom-width]="
+                            col?.metaData?.styleProperties?.properties?.borderBottomWidth
+                          "
+                          [style.--input-border-left]="col?.metaData?.styleProperties?.properties?.borderLeftStyle"
+                          [style.--input-border-radius-bottom-left]="
+                            col?.metaData?.styleProperties?.properties?.borderBottomLeftRadius
+                          "
+                          [style.--input-border-left-color]="
+                            col?.metaData?.styleProperties?.properties?.borderLeftColor
+                          "
+                          [style.--input-border-left-width]="
+                            col?.metaData?.styleProperties?.properties?.borderLeftWidth
+                          "
+                          [independentBorders]="col?.metaData?.styleProperties?.properties?.independentBorder"
+                          [allowLabelWrapping]="col?.metaData?.styleProperties?.properties?.allowLabelWrapping"
+                          [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
+                          [showErrorMsg]="col?.metaData?.showErrorMessage"
+                          [showCharCount]="col?.metaData?.styleProperties?.properties?.showCharCount"
                           [error]="
                             rowErrors[rowIndex] && rowErrors[rowIndex][col?.metaData?.widgetId]
                               ? rowErrors[rowIndex][col?.metaData?.widgetId]['error']
@@ -500,7 +819,56 @@
                           "
                           [(ngModel)]="modifyingData[rowIndex][col.metaData.widgetId]"
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
-                          [isSmall]="true"
+                          [isRequired]="col?.validators?.required"
+                          [items]="col?.metaData?.options"
+                          [alignOptions]="col?.metaData?.alignOptions"
+                          [optionLabel]="col?.metaData?.isLabelAndValue ? col?.metaData?.optionLabel : 'name'"
+                          [optionValue]="col?.metaData?.isLabelAndValue ? col?.metaData?.optionValue : 'name'"
+                          [columns]="col?.metaData?.columns"
+                          [tooltip]="col?.metaData?.tooltip"
+                          [style.--input-label-font-weight]="
+                            col?.metaData?.styleProperties?.properties?.labelFontWeight
+                          "
+                          [style.--input-label-font-style]="col?.metaData?.styleProperties?.properties?.labelStyle"
+                          [style.--input-label-text-decoration]="
+                            col?.metaData?.styleProperties?.properties?.labelTextDecoration
+                          "
+                          [style.--input-label-color]="col?.metaData?.styleProperties?.properties?.labelColor"
+                          [style.--input-label-font-family]="col?.metaData?.styleProperties?.properties?.labelFontStyle"
+                          [style.--input-label-font-size]="col?.metaData?.styleProperties?.properties?.labelFontSize"
+                          [style.--input-word-spacing]="col?.metaData?.styleProperties?.properties?.wordSpacing"
+                          [style.--input-letter-spacing]="col?.metaData?.styleProperties?.properties?.letterSpacing"
+                          [style.--input-unselected-background-color]="
+                            col?.metaData?.styleProperties?.properties?.unselectedBackgroundColor
+                          "
+                          [style.--input-unselected-border-color]="
+                            col?.metaData?.styleProperties?.properties?.unselectedBorderColor
+                          "
+                          [style.--input-selected-background-color]="
+                            col?.metaData?.styleProperties?.properties?.selectedBackgroundColor
+                          "
+                          [style.--input-selected-border-color]="
+                            col?.metaData?.styleProperties?.properties?.selectedBorderColor
+                          "
+                          [style.--input-flex-direction]="col?.metaData?.styleProperties?.properties?.radioAlign"
+                          [style.--input-color]="col?.metaData?.styleProperties?.properties?.textColor"
+                          [style.--input-text-align]="col?.metaData?.styleProperties?.properties?.textHorizontalAlign"
+                          [style.--input-background-color]="col?.metaData?.styleProperties?.properties?.backgroundColor"
+                          [style.--input-border-color]="col?.metaData?.styleProperties?.properties?.borderColor"
+                          [style.--input-font-family]="col?.metaData?.styleProperties?.properties?.textFontStyle"
+                          [style.--input-border]="col?.metaData?.styleProperties?.properties?.borderStyle"
+                          [style.--input-border-radius]="col?.metaData?.styleProperties?.properties?.borderRadius"
+                          [style.--input-font-size]="col?.metaData?.styleProperties?.properties?.fontSize"
+                          [style.--input-line-spacing]="col?.metaData?.styleProperties?.properties?.lineSpacing"
+                          [style.--input-font-weight]="col?.metaData?.styleProperties?.properties?.fontWeight"
+                          [style.--input-font-style]="col?.metaData?.styleProperties?.properties?.fontStyle"
+                          [style.--input-label-align]="col?.metaData?.styleProperties?.properties?.labelAlignment"
+                          [style.--input-text-decoration]="col?.metaData?.styleProperties?.properties?.textDecoration"
+                          [allowLabelWrapping]="col?.metaData?.allowLabelWrapping"
+                          [showErrorMsg]="col?.metaData?.showErrorMessage"
+                          [style.--input-label-width]="col?.metaData?.styleProperties?.properties?.labelWidth + '%'"
+                          [style.--input-radiobutton-size]="col?.metaData?.styleProperties?.properties?.radiobuttonSize"
+                          [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
                           [error]="
                             rowErrors[rowIndex] && rowErrors[rowIndex][col?.metaData?.widgetId]
                               ? rowErrors[rowIndex][col?.metaData?.widgetId]['error']
@@ -511,11 +879,6 @@
                               ? rowErrors[rowIndex][col?.metaData?.widgetId]['errorMsg']
                               : false
                           "
-                          [isRequired]="col?.validators?.required"
-                          [items]="col?.metaData?.options"
-                          [alignOptions]="col?.metaData?.alignOptions"
-                          [optionLabel]="col?.metaData?.isLabelAndValue ? col?.metaData?.optionLabel : 'name'"
-                          [optionValue]="col?.metaData?.isLabelAndValue ? col?.metaData?.optionValue : 'name'"
                         ></finlevit-radio-group>
                       </div>
                       <div class="p-pl-1" *ngSwitchCase="DatePicker">
@@ -540,10 +903,89 @@
                           "
                           [(ngModel)]="modifyingData[rowIndex][col.metaData.widgetId]"
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
-                          [isSmall]="true"
+                          [isRequired]="col?.validators?.required"
+                          [tooltip]="col?.metaData?.tooltip"
                           [placeholder]="col?.metaData?.placeholder"
+                          [viewDateFormat]="col?.metaData?.viewDateFormat"
+                          [returnDateFormat]="col?.metaData?.returnDateFormat"
                           [minDate]="col?.validators?.minDate"
                           [maxDate]="col?.validators?.maxDate"
+                          [yearNavigator]="true"
+                          [monthNavigator]="true"
+                          [style.--input-color]="col?.metaData?.styleProperties?.properties?.textColor"
+                          [style.--input-text-align]="col?.metaData?.styleProperties?.properties?.textHorizontalAlign"
+                          [style.--input-background-color]="col?.metaData?.styleProperties?.properties?.backgroundColor"
+                          [style.--input-border-color]="col?.metaData?.styleProperties?.properties?.borderColor"
+                          [style.--input-font-family]="col?.metaData?.styleProperties?.properties?.textFontStyle"
+                          [style.--input-border]="col?.metaData?.styleProperties?.properties?.borderStyle"
+                          [style.--input-border-radius]="col?.metaData?.styleProperties?.properties?.borderRadius"
+                          [style.--input-font-size]="col?.metaData?.styleProperties?.properties?.fontSize"
+                          [style.--input-word-spacing]="col?.metaData?.styleProperties?.properties?.wordSpacing"
+                          [style.--input-letter-spacing]="col?.metaData?.styleProperties?.properties?.letterSpacing"
+                          [style.--input-line-spacing]="col?.metaData?.styleProperties?.properties?.lineSpacing"
+                          [style.--input-font-weight]="col?.metaData?.styleProperties?.properties?.fontWeight"
+                          [style.--input-font-style]="col?.metaData?.styleProperties?.properties?.fontStyle"
+                          [style.--input-text-decoration]="col?.metaData?.styleProperties?.properties?.textDecoration"
+                          [style.--input-label-color]="col?.metaData?.styleProperties?.properties?.labelColor"
+                          [style.--input-label-font-family]="col?.metaData?.styleProperties?.properties?.labelFontStyle"
+                          [style.--input-label-align]="col?.metaData?.styleProperties?.properties?.labelAlignment"
+                          [style.--input-label-font-weight]="
+                            col?.metaData?.styleProperties?.properties?.labelFontWeight
+                          "
+                          [style.--input-label-font-style]="col?.metaData?.styleProperties?.properties?.labelStyle"
+                          [style.--input-label-text-decoration]="
+                            col?.metaData?.styleProperties?.properties?.labelTextDecoration
+                          "
+                          [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
+                          [showErrorMsg]="col?.metaData?.showErrorMessage"
+                          [showTime]="col?.metaData?.showTime"
+                          [hourFormat]="col?.metaData?.hourFormat"
+                          [stepMinute]="col?.metaData?.stepMinute"
+                          [stepHour]="col?.metaData?.stepHour"
+                          [style.--input-adornment-background-color]="
+                            col?.metaData?.styleProperties?.properties?.adornmentBackgroundColor
+                          "
+                          [style.--input-border-width]="col?.metaData?.styleProperties?.properties?.borderWidth"
+                          [style.--input-label-font-size]="col?.metaData?.styleProperties?.properties?.labelFontSize"
+                          [style.--input-label-width]="col?.metaData?.styleProperties?.properties?.labelWidth + '%'"
+                          [style.--input-border-top]="col?.metaData?.styleProperties?.properties?.borderTopStyle"
+                          [style.--input-border-radius-top-left]="
+                            col?.metaData?.styleProperties?.properties?.borderTopLeftRadius
+                          "
+                          [style.--input-border-top-color]="col?.metaData?.styleProperties?.properties?.borderTopColor"
+                          [style.--input-border-top-width]="col?.metaData?.styleProperties?.properties?.borderTopWidth"
+                          [style.--input-border-right]="col?.metaData?.styleProperties?.properties?.borderRightStyle"
+                          [style.--input-border-radius-top-right]="
+                            col?.metaData?.styleProperties?.properties?.borderTopRightRadius
+                          "
+                          [style.--input-border-right-color]="
+                            col?.metaData?.styleProperties?.properties?.borderRightColor
+                          "
+                          [style.--input-border-right-width]="
+                            col?.metaData?.styleProperties?.properties?.borderRightWidth
+                          "
+                          [style.--input-border-bottom]="col?.metaData?.styleProperties?.properties?.borderBottomStyle"
+                          [style.--input-border-radius-bottom-right]="
+                            col?.metaData?.styleProperties?.properties?.borderBottomRightRadius
+                          "
+                          [style.--input-border-bottom-color]="
+                            col?.metaData?.styleProperties?.properties?.borderBottomColor
+                          "
+                          [style.--input-border-bottom-width]="
+                            col?.metaData?.styleProperties?.properties?.borderBottomWidth
+                          "
+                          [style.--input-border-left]="col?.metaData?.styleProperties?.properties?.borderLeftStyle"
+                          [style.--input-border-radius-bottom-left]="
+                            col?.metaData?.styleProperties?.properties?.borderBottomLeftRadius
+                          "
+                          [style.--input-border-left-color]="
+                            col?.metaData?.styleProperties?.properties?.borderLeftColor
+                          "
+                          [style.--input-border-left-width]="
+                            col?.metaData?.styleProperties?.properties?.borderLeftWidth
+                          "
+                          [independentBorders]="col?.metaData?.styleProperties?.properties?.independentBorder"
+                          [allowLabelWrapping]="col?.metaData?.styleProperties?.properties?.allowLabelWrapping"
                           [error]="
                             rowErrors[rowIndex] && rowErrors[rowIndex][col?.metaData?.widgetId]
                               ? rowErrors[rowIndex][col?.metaData?.widgetId]['error']

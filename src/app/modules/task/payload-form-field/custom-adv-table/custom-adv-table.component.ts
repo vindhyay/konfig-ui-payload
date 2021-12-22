@@ -19,7 +19,7 @@ import {
   WidgetTypes
 } from "../../model/create-form.models";
 import { DeepCopy, getUniqueId, scrollToBottom, superClone } from "../../../../utils";
-import { Validators } from "@angular/forms";
+import { FormControl, Validators } from "@angular/forms";
 import { PaginationDirective } from "../../../shared/finlevit-custom-inputs/finlevit-custom-table/table-utils/pagination.directive";
 import { CustomTableFiltersComponent } from "../../../shared/finlevit-custom-inputs/finlevit-custom-table/table-utils/custom-table-filters/custom-table-filters.component";
 
@@ -228,7 +228,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
   onColSave($event) {
     Object.keys(this.modifyingData).map(index => {
       const rowData = this.modifyingData[index];
-      if (this.validateRow(index, this.modifyingData[index])) {
+      if (this.validateRow(index, rowData)) {
         const oldRowData = this.tableData[index];
         (oldRowData || []).forEach(eachColumn => {
           if (!eachColumn?.value) {
@@ -256,8 +256,35 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
     this.modifyingData = {};
     this.editRows = {};
   }
-  validateRow(index, rowData, column: BaseWidget = null) {
-    return true;
+  validateRow(index, rowData, columnData: BaseWidget = null) {
+    let valid = true;
+    this.columns.forEach(eachCol => {
+      if (
+        columnData &&
+        columnData?.metaData?.widgetId &&
+        columnData?.metaData?.widgetId !== eachCol.metaData.widgetId
+      ) {
+        return;
+      }
+      const columnValue = rowData[eachCol?.metaData?.widgetId];
+      const tempFormControl = new FormControl(columnValue, this.getValidators(eachCol.validators) || []);
+      if (tempFormControl.valid) {
+        if (!this.rowErrors[index]) {
+          this.rowErrors[index] = {};
+        }
+        this.rowErrors[index][eachCol.metaData.widgetId] = { error: false, errorMsg: "" };
+      } else {
+        valid = false;
+        if (!this.rowErrors[index]) {
+          this.rowErrors[index] = {};
+        }
+        this.rowErrors[index][eachCol.metaData.widgetId] = {
+          error: true,
+          errorMsg: eachCol?.metaData?.errorMessage || this.getErrorMessages(tempFormControl.errors, eachCol.label)[0]
+        };
+      }
+    });
+    return valid;
   }
   getErrorMessages = (errors: any, label: any) => {
     const errorMessages: string[] = [];

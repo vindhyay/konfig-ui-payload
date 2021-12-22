@@ -250,7 +250,8 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
         }
         this.rowErrors[index][column] = {
           error: true,
-          errorMsg: this.getErrorMessages(tempFormControl.errors, columnConfig.label)[0]
+          errorMsg:
+            columnConfig?.metaData?.errorMessage || this.getErrorMessages(tempFormControl.errors, columnConfig.label)[0]
         };
       }
     });

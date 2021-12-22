@@ -233,7 +233,7 @@
                           [prefixText]="col?.metaData?.prefixText"
                           [suffixText]="col?.metaData?.suffixText"
                           [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
-                          [showErrorMsg]="false"
+                          [showErrorMsg]="true"
                           [error]="
                             rowErrors[rowIndex] && rowErrors[rowIndex][col.columnId]
                               ? rowErrors[rowIndex][col.columnId]['error']
@@ -343,7 +343,7 @@
                           [(ngModel)]="modifyingData[rowIndex][col.columnId]"
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col.columnId)"
                           [isSmall]="true"
-                          [showErrorMsg]="false"
+                          [showErrorMsg]="true"
                           [error]="
                             rowErrors[rowIndex] && rowErrors[rowIndex][col.columnId]
                               ? rowErrors[rowIndex][col.columnId]['error']
@@ -460,7 +460,7 @@
                           [(ngModel)]="modifyingData[rowIndex][col.columnId]"
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col.columnId)"
                           [isSmall]="true"
-                          [showErrorMsg]="false"
+                          [showErrorMsg]="true"
                           [error]="
                             rowErrors[rowIndex] && rowErrors[rowIndex][col.columnId]
                               ? rowErrors[rowIndex][col.columnId]['error']
@@ -576,7 +576,7 @@
                           [(ngModel)]="modifyingData[rowIndex][col.columnId]"
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col.columnId)"
                           [isSmall]="true"
-                          [showErrorMsg]="false"
+                          [showErrorMsg]="true"
                           [minDate]="col?.validators?.minDate"
                           [maxDate]="col?.validators?.maxDate"
                           [error]="
