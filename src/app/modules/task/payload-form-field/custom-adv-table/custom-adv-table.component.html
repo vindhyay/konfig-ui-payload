@@ -233,7 +233,7 @@
                           [prefixText]="col?.metaData?.prefixText"
                           [suffixText]="col?.metaData?.suffixText"
                           [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
-                          [showErrorMsg]="true"
+                          [showErrorMsg]="col?.metaData?.showErrorMessage"
                           [error]="
                             rowErrors[rowIndex] && rowErrors[rowIndex][col?.metaData?.widgetId]
                               ? rowErrors[rowIndex][col?.metaData?.widgetId]['error']
@@ -349,7 +349,7 @@
                           [independentBorders]="col?.metaData?.styleProperties?.properties?.independentBorder"
                           [allowLabelWrapping]="col?.metaData?.allowLabelWrapping"
                           [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
-                          [showErrorMsg]="true"
+                          [showErrorMsg]="col?.metaData?.showErrorMessage"
                           [error]="
                             rowErrors[rowIndex] && rowErrors[rowIndex][col?.metaData?.widgetId]
                               ? rowErrors[rowIndex][col?.metaData?.widgetId]['error']
@@ -474,6 +474,7 @@
                           [prefixText]="col?.metaData?.prefixText"
                           [suffixText]="col?.metaData?.suffixText"
                           [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
+                          [showErrorMsg]="col?.metaData?.showErrorMessage"
                         ></finlevit-text>
                       </div>
                       <div class="p-pl-1 adv-checkbox" *ngSwitchCase="Checkbox">
@@ -533,6 +534,7 @@
                               ? rowErrors[rowIndex][col?.metaData?.widgetId]['errorMsg']
                               : false
                           "
+                          [showErrorMsg]="col?.metaData?.showErrorMessage"
                         ></finlevit-lib-checkbox>
                       </div>
                       <div class="p-pl-1" *ngSwitchCase="Image">
