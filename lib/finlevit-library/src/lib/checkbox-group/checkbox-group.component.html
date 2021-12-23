@@ -29,6 +29,7 @@
                 [(ngModel)]="_selectedValues"
                 (ngModelChange)="onLocalChange()"
                 [ngClass]="{ 'p-inputtext-sm': isSmall, 'p-inputtext-lg': isLarge, 'error-border': checkError() }"
+                [disabled]="isDisabled"
         ></p-checkbox>
         <label [for]="_id + i">{{ optionLabel ? item[optionLabel] : item.hasOwnProperty('name') ? item?.name : item }}</label>
         <em class="label-tooltip pi pi-question-circle" [pTooltip]="item[optionTooltip]" *ngIf="item[optionTooltip]"></em>
