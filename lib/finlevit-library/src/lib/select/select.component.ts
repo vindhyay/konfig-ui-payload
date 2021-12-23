@@ -31,18 +31,21 @@ export class SelectComponent implements ControlValueAccessor, OnInit {
     if (data && Array.isArray(data) && typeof data[0] !== 'object') {
       this._options = this._options.map(option => {
         return {
-          label: option,
+          name: option,
           value: option
         };
       });
+      if (!this.optionValue) {
+        this.optionValue = "value";
+      }
     }
   }
   get options() {
     return this._options;
   }
 
-  @Input() optionLabel: string = '';
-  @Input() optionValue: string = '';
+  @Input() optionLabel: string = "name";
+  @Input() optionValue: string = "";
   @Input() isRequired = false;
   @Input() validators: any = [];
   @Input() placeholder: string = '';
