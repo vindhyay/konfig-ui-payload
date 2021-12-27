@@ -97,8 +97,11 @@ export class VerticalStepperComponent implements OnInit {
     }
   }
   checkVisibility(){
-    this.children[0].children = this.children[0].children .map((item)=>{
-      switch(item.metaData?.onClickConfigs[0]?.action){
+    if(this.children[0].children.length)
+    this.children[0].children = this.children[0].children.map((item)=>{
+      const index=item?.metaData['onClickConfigs'].findIndex(subitem=>subitem.action==='previousStep' || subitem.action==='nextStep' || subitem.action==='submit');
+      if(index>=0)
+      switch(item.metaData['onClickConfigs'][index]?.action){
         case 'previousStep':
            return {...item, metaData:{ ...item.metaData,isHidden:this._selectedIndex<=1}};
         case 'nextStep':

@@ -58,6 +58,7 @@ export class ModalComponent implements OnInit {
     this.modalStatus = this.editorService.modalStatus[this.modalId];
     setTimeout(()=>{
       this.checkHeight();
+      this.checkVisibility();
     })
     this.taskService.transactionDetailsSubject.subscribe(value => {
       setTimeout(()=>{
@@ -82,7 +83,7 @@ export class ModalComponent implements OnInit {
       if(index>=0)
       switch(item.metaData['onClickConfigs'][index]?.action){
         case 'previousStep':
-           return {...item, metaData:{ ...item.metaData,isHidden:this._selectedIndex<0}};
+           return {...item, metaData:{ ...item.metaData,isHidden:this._selectedIndex<=1}};
         case 'nextStep':
           return {...item, metaData:{ ...item.metaData,isHidden:this._selectedIndex===this.item.children.length-1}};
         case 'submit':
