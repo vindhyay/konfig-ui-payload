@@ -20,6 +20,7 @@ export class ModalComponent implements OnInit {
   @Output() onTableDataChange = new EventEmitter();
   @Output() onNext = new EventEmitter();
   @Output() onPrev = new EventEmitter();
+  @Input() styles;
   @Input() selectionChange;
   _selectedIndex = 1;
   modalStatus = false;

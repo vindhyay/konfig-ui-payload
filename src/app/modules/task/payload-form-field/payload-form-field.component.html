@@ -983,6 +983,7 @@
         [selectedIndex]="modalStepIndex || 1"
         (onNext)="onNextClick($event,'modal')" 
         (onPrev)="onPrevClick($event,'modal')"
+        [styles]="item?.metaData?.styleProperties"
       ></app-modal>
     </div>
   </ng-container>

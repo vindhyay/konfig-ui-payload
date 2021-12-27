@@ -1284,6 +1284,7 @@ export class ModalMetaData extends MetaData {
   modalHeader: any;
   modalType: string;
   buttonContainer: any;
+  styleProperties: { id: "" };
   constructor(data) {
     super(data);
     const {
@@ -1306,7 +1307,8 @@ export class ModalMetaData extends MetaData {
       footerHeight= 50,
       modalHeader=[],
       buttonContainer = {},
-      modalType = "SinglePage"
+      modalType = "SinglePage",
+      styleProperties = {}
     } = data;
     this.title = title;
     this.icon = icon;
@@ -1328,6 +1330,7 @@ export class ModalMetaData extends MetaData {
     this.modalHeader = modalHeader;
     this.modalType = modalType;
     this.buttonContainer = buttonContainer;
+    this.styleProperties= styleProperties;
   }
 }
 
