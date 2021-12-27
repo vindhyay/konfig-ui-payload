@@ -28,7 +28,7 @@ export class SelectComponent implements ControlValueAccessor, OnInit {
   @Input()
   set options(data) {
     this._options = data;
-    if (data && Array.isArray(data) && typeof data[0] !== 'object') {
+    if (data && Array.isArray(data) && data.length && typeof data[0] !== "object") {
       this._options = this._options.map(option => {
         return {
           name: option,
