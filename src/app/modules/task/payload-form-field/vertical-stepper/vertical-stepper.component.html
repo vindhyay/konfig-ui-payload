@@ -31,7 +31,7 @@
         </div>
         <div class="step-label">
           <p
-            [ngClass]="{'completedStep':selectedIndex > i, 'currentStep':selectedIndex === i, 'defaultColor': i > selectedIndex }"
+            [ngClass]="{'completedStep':_selectedIndex > i, 'currentStep':_selectedIndex === i, 'defaultColor': i > _selectedIndex }"
           >
             {{ child.label }}
           </p>
@@ -39,8 +39,8 @@
         </div>
         <span
           [ngClass]="{
-            completedBar: selectedIndex > i,
-            currentBar: selectedIndex <= i }" 
+            completedBar: _selectedIndex > i,
+            currentBar: _selectedIndex <= i }" 
         ></span>
       </li>
     </ul>

@@ -58,7 +58,7 @@
           background-color: var(--content-background-color) !important;
           height: 100%;
         }
-        gridster{
+        .gridster{
           background-color: var(--content-background-color) !important;
         }
       }
@@ -90,14 +90,12 @@
   width: 100% !important;
 }
 ::ng-deep{
-  .stepper-btn-container {
-    gridster{
-      background-color: var(--footer-background-color) !important;
-    }
+  .stepper-btn-container>finlevit-grid>gridster{
+    background-color: var(--footer-background-color) !important;
   }
   .stepper-container{
     .scrollView{
-      gridster{
+      .content>finlevit-grid>gridster{
         background-color: var(--content-background-color) !important;
       }
     }
