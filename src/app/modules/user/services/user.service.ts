@@ -242,4 +242,8 @@ export class UserService extends BaseService implements OnDestroy {
   const url = `${this.config.getApiUrls().getScreenDataURL}/${transactionId}`;
   return this.getData(url, params);
 };
+submitMuliplAction=(transactionId,params, payload: any): Observable<any> => {
+  const url = `${this.config.getApiUrls().submitMultipleAction}/${transactionId}`;
+  return this.postData(url, {}, params);
+};
 }

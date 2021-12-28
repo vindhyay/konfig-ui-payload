@@ -1,0 +1,284 @@
+:host {
+  --header-cell-background-color: #f1f1f1;
+  --header-cell-color: #000;
+  --header-font-size: 11px;
+
+  --body-cell-background-color: #fff;
+  --body-cell-color: #312929;
+  --body-font-size: 12px;
+  --body-cell-padding: 11px;
+
+  --paginator-background-color: #ededed;
+  --paginator-color: #6a6a6a;
+
+  --table-border-color: #cccccc;
+  --table-header-right-border-color: var(--table-border-color);
+  --table-header-bottom-border-color: var(--table-border-color);
+  --table-cell-right-border-color: var(--table-border-color);
+  --table-cell-bottom-border-color: var(--table-border-color);
+
+  .table-widget {
+    width: 100%;
+    height: 100%;
+    border: 1px solid var(--table-border-color);
+  }
+  .finlevit-table {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    &.pagination-bottom {
+      flex-direction: column;
+    }
+    &.pagination-top {
+      flex-direction: column-reverse;
+    }
+  }
+  .finlevit-table .f-table {
+    flex: auto 1;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    height: 100%;
+    border-collapse: collapse;
+    overflow: auto;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+  }
+  .finlevit-table .f-thead {
+    display: flex;
+    flex: 1 0 auto;
+    flex-direction: column;
+    user-select: none;
+    margin-top: -1px;
+    border-bottom: 1px solid var(--table-header-bottom-border-color);
+    position: sticky;
+    z-index: 3;
+    top: 0;
+  }
+  .finlevit-table .f-tr {
+    flex: 1 0 auto;
+    display: inline-flex;
+  }
+  .finlevit-table .f-tbody {
+    flex: 99999 1 auto;
+    display: flex;
+    flex-direction: column;
+    font-size: var(--body-font-size);
+    background: var(--body-cell-background-color);
+    color: var(--body-cell-color);
+    overflow: auto;
+  }
+  .f-table .f-tbody .f-tr-group {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    flex: 1 0 auto;
+  }
+  .finlevit-table .f-thead .f-th {
+    padding: 10px 10px;
+    position: relative;
+    border-right: 1px solid var(--table-header-right-border-color);
+    &:last-of-type{
+      border-right: none !important;
+    }
+    cursor: pointer;
+    line-height: normal;
+    background-color: var(--header-cell-background-color);
+    color: var(--header-cell-color);
+    .f-resizer {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      background: black;
+      opacity: 0;
+      width: 10px;
+      right: 0;
+      cursor: col-resize;
+      &:hover {
+        opacity: 0.1;
+      }
+    }
+    .f-resizable-header-content {
+      width: 100%;
+      font-size: var(--header-font-size);
+      text-align: left;
+      font-weight: 600;
+      display: inherit;
+      .f-column-header-name {
+        &.left {
+          text-align: left;
+        }
+        &.right {
+          text-align: right;
+        }
+        &.center {
+          text-align: center;
+        }
+      }
+    }
+    &:last-of-type {
+      border-right: none;
+    }
+  }
+  .finlevit-table .cell-container {
+    position: relative;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--table-cell-bottom-border-color);
+    border-right: 1px solid var(--table-cell-right-border-color);
+  }
+  .finlevit-table .f-tbody .f-td:last-of-type {
+    .cell-container {
+      border-right: none !important;
+    }
+  }
+  .inner-cell-container {
+    width: 100%;
+    padding: 0 var(--body-cell-padding);
+    overflow: hidden;
+    &.left {
+      text-align: left;
+    }
+    &.right {
+      text-align: right;
+    }
+    &.center {
+      text-align: center;
+    }
+  }
+  .table-row-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .row-actions{
+      width: 100%;
+    }
+    .edit-action {
+      margin: 0 0.5rem;
+    }
+    .edit-action-mode,
+    .new-action-mode {
+      .save-icon {
+        color: #0dd60d;
+        margin: 0 0.5rem;
+      }
+      .cancel-icon {
+        color: #d41111;
+        margin: 0 0.5rem;
+      }
+      .delete-icon {
+        color: #d41111;
+      }
+    }
+    .delete-action {
+      margin: 0 0.5rem;
+      .delete-icon {
+        color: #d41111;
+      }
+    }
+  }
+  .pagination-bottom {
+    .-pagination {
+      border-bottom-width: 1px;
+      border-top: 1px solid var(--table-border-color);
+      margin-top: -1px;
+      border-bottom-color: transparent;
+    }
+  }
+  .pagination-top {
+    .-pagination {
+      border-top-width: 1px;
+      border-bottom: 1px solid solid var(--table-border-color);
+      border-top-color: transparent;
+    }
+  }
+  .table-widget .-pagination {
+    position: relative;
+    z-index: 1;
+    display: none;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    flex: 1;
+    text-align: center;
+    box-shadow: none;
+    align-items: center;
+    padding: 4px 12px;
+    color: var(--paginator-color);
+    background-color: var(--paginator-background-color);
+    .table-results-counter {
+      font-size: 12px;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      line-height: 26px;
+      margin-right: 8px;
+    }
+    .-previous,
+    .-next {
+      flex: 1;
+      text-align: center;
+    }
+    .-center {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      flex: 1.5;
+      text-align: center;
+      margin-bottom: 0;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-around;
+      display: none;
+      &.show-pagination{
+        display: flex;
+      }
+    }
+    .-pageInfo {
+      display: inline-block;
+      margin: 3px 10px;
+      white-space: nowrap;
+    }
+    .-pageJump {
+      display: inline-block;
+    }
+    .page-input {
+      width: 24px;
+      text-align: center;
+      margin-right: 4px;
+    }
+    .footer-btn {
+      border: none;
+      display: flex;
+      align-items: center;
+      background-color: inherit;
+    }
+    .table-actions {
+      display: flex;
+    }
+    .-left {
+      ::ng-deep {
+        .p-button {
+          padding: 0.1375rem 0.65625rem;
+        }
+      }
+    }
+    &.table-footer{
+      display: flex;
+    }
+  }
+  ::ng-deep {
+    .p-field {
+      margin-bottom: 0;
+    }
+    .p-inputtext:enabled:focus {
+      box-shadow: none;
+    }
+  }
+}
