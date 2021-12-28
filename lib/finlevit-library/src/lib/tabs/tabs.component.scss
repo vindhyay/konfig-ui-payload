@@ -1,0 +1,47 @@
+::ng-deep {
+  .p-tabmenu .p-tabmenu-nav {
+    background: #ffffff;
+    border: 1px solid #dee2e6;
+    border-width: 0 0 2px 0;
+  }
+
+  .p-tabmenu .p-tabmenu-nav .p-tabmenuitem {
+    margin-right: 0;
+  }
+
+  .p-tabmenu .p-tabmenu-nav .p-tabmenuitem .p-menuitem-link {
+    border: solid #dee2e6;
+    border-width: 0 0 2px 0;
+    border-color: transparent transparent #dee2e6 transparent;
+    background: #ffffff;
+    color: #6c757d;
+    padding: 0.5rem;
+    border-top-right-radius: 3px;
+    border-top-left-radius: 3px;
+    transition: box-shadow 0.2s;
+    margin: 0 0 -2px 0;
+    font-size: 0.8rem;
+  }
+
+  .p-tabmenu .p-tabmenu-nav .p-tabmenuitem .p-menuitem-link .p-menuitem-icon {
+    margin-right: 0.5rem;
+  }
+
+  .p-tabmenu .p-tabmenu-nav .p-tabmenuitem .p-menuitem-link:not(.p-disabled):focus {
+    outline: 0 none;
+    outline-offset: 0;
+    box-shadow: none;
+  }
+
+  .p-tabmenu .p-tabmenu-nav .p-tabmenuitem:not(.p-highlight):not(.p-disabled):hover .p-menuitem-link {
+    background: #ffffff;
+    border-color: #6c757d;
+    color: #6c757d;
+  }
+
+  .p-tabmenu .p-tabmenu-nav .p-tabmenuitem.p-highlight .p-menuitem-link {
+    background: #ffffff;
+    border-color: #3f51b5;
+    color: #3f51b5;
+  }
+}

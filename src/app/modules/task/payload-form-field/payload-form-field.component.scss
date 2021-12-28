@@ -1,0 +1,299 @@
+@import '../../../../assets/scss/var';
+.preview-container {
+  position: relative;
+  height: 100%;
+  ul {
+    .opt-icon {
+      font-size: 0.8rem;
+    }
+  }
+  ul:not(.list) {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background: rgba(255, 255, 255, 0);
+  }
+  ul li:not(.list-item) {
+    float: left;
+    width: 30px;
+    cursor: pointer;
+    text-align: center;
+    transition: 0.5s;
+    transform-origin: right;
+    .material-icons {
+      font-size: 15px;
+      color: #4153b6;
+    }
+  }
+}
+.card-container {
+  height: 100%;
+  background: #ffffff;
+  border: 1px solid #dddddd;
+  gridster {
+    background: #ffffff;
+  }
+}
+.text-content {
+  display: flex !important;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  &.text-style-h1 {
+    font-size: 2rem;
+    font-weight: bold;
+  }
+  &.text-style-h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  &.text-style-h3 {
+    font-size: 1.17rem;
+    font-weight: bold;
+  }
+  &.text-style-h4 {
+    font-size: 1rem;
+    font-weight: bold;
+  }
+  &.text-style-h5 {
+    display: block;
+    font-size: 0.83rem;
+    font-weight: bold;
+  }
+  &.text-style-h6 {
+    display: block;
+    font-size: 0.67rem;
+    font-weight: bold;
+  }
+  &.text-style-subtitle1 {
+    font-size: 0.8rem;
+    font-weight: 400;
+    line-height: 1.75;
+    letter-spacing: 0.00938rem;
+  }
+  &.text-style-body1 {
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.5;
+    letter-spacing: 0.00938rem;
+  }
+}
+.input-container,
+.select-container {
+  padding: 2px;
+}
+.image-container {
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  img {
+    height: 100%;
+  }
+}
+.input-container{
+  height: 100%;
+}
+.table-container{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  ::ng-deep{
+    p-table{
+      height: 100%;
+    }
+  }
+  ::ng-deep{
+    .p-datatable{
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    .p-datatable-wrapper {
+      height: 100%;
+      overflow: scroll;
+      background: #ffff;
+      border: 1px solid #dee2e6;
+    }
+    .p-datatable-thead{
+      th {
+        border-top: none
+      }
+      th:first-child{
+        border-left: none
+      }
+      th:last-child{
+        border-right: none;
+      }
+    }
+    .p-datatable-tbody{
+      tr:last-child{
+        td{
+          //border-bottom: none;
+        }
+      }
+      td:first-child{
+        border-left: none;
+      }
+      td:last-child{
+        border-right: none;
+      }
+    }
+  }
+  &.no-data-table{
+    ::ng-deep {
+      .p-datatable {
+        height: auto;
+      }
+      .p-datatable-thead {
+        th {
+          border-bottom: none
+        }
+      }
+    }
+  }
+}
+.nested-grid-container {
+  height: 100%;
+  &.empty-child {
+    position: relative;
+    ::ng-deep {
+      .container-help-text {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        font-size: 13px;
+        justify-content: center;
+        color: gray;
+        position: absolute;
+        z-index: 1;
+        height: 100%;
+        left: 0;
+        right: 0;
+        pointer-events: none;
+      }
+    }
+  }
+  .container-title {
+    height: 40px;
+    background-color: lightgray;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    line-height: 16px;
+    letter-spacing: 0.03em;
+    color: gray;
+    padding-left: 18px;
+    padding-right: 18px;
+    border-radius: 4px 4px 0 0;
+  }
+  ::ng-deep {
+    gridster {
+      background: #ffffff;
+    }
+    .card-container {
+      height: 100%;
+      background: #ffffff;
+      border: 1px solid #dddddd;
+      gridster {
+        background: #ffffff;
+      }
+    }
+  }
+  &.footer-container {
+    ::ng-deep {
+      gridster {
+        background: #31383e;
+        color: #ffffff;
+      }
+    }
+  }
+}
+.collapse-container{
+  ::ng-deep{
+    .input-label, .checkbox-label {
+      font-weight: normal;
+    }
+  }
+}
+::ng-deep{
+  .p-tabview .p-tabview-nav {
+    background: #ffffff;
+    border: 1px solid #dee2e6;
+    border-width: 0 0 2px 0;
+    position: relative;
+  }
+  .p-tabview .p-tabview-nav li {
+    margin-right: 0;
+  }
+  .p-tabview .p-tabview-nav li .p-tabview-nav-link {
+    border: solid #dee2e6;
+    border-width: 0 0 2px 0;
+    border-color: transparent transparent #dee2e6 transparent;
+    background: #ffffff;
+    color: #5b737b;
+    padding: 1rem;
+    font-weight: 600;
+    border-top-right-radius: 3px;
+    border-top-left-radius: 3px;
+    transition: box-shadow 0.2s;
+    margin: 0 0 -2px 0;
+  }
+  .p-tabview .p-tabview-nav li .p-tabview-nav-link:not(.p-disabled):focus {
+    outline: 0 none;
+    outline-offset: 0;
+    box-shadow: 0 0 0 0.2rem #a6d5fa;
+  }
+  .p-tabview .p-tabview-nav li:not(.p-highlight):not(.p-disabled):hover .p-tabview-nav-link {
+    background: #ffffff;
+    border-color: #6c757d;
+    color: #6c757d;
+  }
+  .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+    background: #ffffff;
+    border-color: #2d4881;;
+    color: #000;
+    font-weight: 500;
+  }
+  .p-tabview .p-tabview-left-icon {
+    margin-right: 0.5rem;
+  }
+  .p-tabview .p-tabview-right-icon {
+    margin-left: 0.5rem;
+  }
+  .p-tabview .p-tabview-close {
+    margin-left: 0.5rem;
+  }
+  .p-tabview .p-tabview-panels {
+    background: #ffffff;
+    padding: 1rem;
+    border: 0 none;
+    color: #495057;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+  }
+  .p-tabview .p-tabview-nav .p-tabview-ink-bar {
+    z-index: 1;
+    display: block;
+    position: absolute;
+    bottom: -2px;
+    height: 2px;
+    background-color: #2d4881;
+    transition: 500ms cubic-bezier(0.35, 0, 0.25, 1);
+  }
+  .p-tabview .p-tabview-nav li .p-tabview-nav-link {
+    transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
+  }
+}

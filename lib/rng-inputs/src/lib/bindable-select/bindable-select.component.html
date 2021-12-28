@@ -1,0 +1,18 @@
+<mat-form-field [ngClass]="fieldCSS" [appearance]="appearance" [floatLabel]="floatLabel" color="accent">
+  <mat-label *ngIf="label">{{ label }}</mat-label>
+  <mat-select
+    [disabled]="disabled"
+    [multiple]="multiple"
+    [formControl]="valueControl"
+    [placeholder]="valueName"
+    [disableOptionCentering]="disableOptionCentering"
+  >
+    <mat-option *ngFor="let item of items" [value]="returnKey ? item[returnKey] : item">
+      <div *ngIf="item.color" class="complex-option">
+        <rng-type-label [data]="item"></rng-type-label><span class="value">{{ item.name }}</span>
+      </div>
+      <span *ngIf="!item.color && item[nameKey]">{{ item[nameKey] }} </span>
+      <span *ngIf="!item[nameKey]"> {{ item }}</span>
+    </mat-option>
+  </mat-select>
+</mat-form-field>

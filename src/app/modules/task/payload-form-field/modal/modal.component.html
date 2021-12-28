@@ -1,0 +1,82 @@
+<finlevit-button
+  [icon]="metaData?.icon"
+  [iconPos]="metaData?.iconPos"
+  [color]="metaData?.button?.color"
+  [bgColor]="metaData?.button?.bgColor"
+  [label]="item?.label"
+  [variant]="metaData?.variant"
+  [type]="metaData?.type"
+  (btnClick)="toggleModal()"
+  [class]="'text-content text-style-' + metaData?.textStyle"
+  [style.--button-label-font-style]="metaData?.fontStyle"
+  [ngStyle]="{
+    width: '100%',
+    height: '100%',
+    'font-weight': metaData?.fontWeight,
+    'font-style': metaData?.fontStyle,
+    'text-decoration': metaData?.textDecortation,
+    'color': metaData?.button?.color
+  }"
+></finlevit-button>
+<p-dialog
+  appendTo="body"
+  [blockScroll]="false"
+  [draggable]="false"
+  [resizable]="false"
+  [style]="{ height: metaData.height, width: metaData.width, 'flex-grow': 'inherit' }"
+  [styleClass]="item?.metaData?.widgetId + ' activeModal'"
+  contentStyleClass="field-modal-content"
+  [modal]="true"
+  [(visible)]="modalStatus"
+  [autoZIndex]="false"
+  [closeOnEscape]="true"
+  (onShow)="onShow($event)"
+  (onHide)="onHide($event)"
+>
+  <ng-template pTemplate="header">
+    <div
+      [class]="'header-content text-content text-style-' + metaData?.modalHeader[0]?.textStyle"
+      [style]="{
+        'background-color': metaData?.modalHeader[0]?.headerbgColor,
+        'color': metaData?.modalHeader[0]?.color,
+        'font-weight': metaData?.modalHeader[0]?.fontWeight,
+        'font-style': metaData?.modalHeader[0]?.fontStyle,
+        'text-decoration': metaData?.modalHeader[0]?.textDecortation,
+        height: metaData?.modalHeader[0]?.headerHeight + 'px'
+      }"
+    >
+      {{ metaData?.modalHeader[_selectedIndex].title }}
+    </div>
+  </ng-template>
+  <div [class]="'modal' + item?.metaData?.widgetId">
+    <finlevit-grid
+      [viewMode]="viewMode"
+      [showEdit]="showEdit"
+      [parent]="item"
+      (onBtnClick)="onBtnClick.emit($event)"
+      (onTableDataChange)="onTableDataChange.emit($event)"
+      (onOptionChange)="optionChange($event, $event.data)"
+      (checkHeight)="checkHeight()"
+      [items]="item.children[_selectedIndex].children"
+    ></finlevit-grid>
+  </div>
+  <ng-template pTemplate="footer">
+    <div
+      [ngClass]="{ 'footer-content': true }"
+      [style]="{
+        'background-color':metaData?.buttonContainer?.bgColor,
+        height: metaData?.footerHeight + 'px'
+      }"
+    >
+      <ng-container>
+        <finlevit-grid
+          [viewMode]="viewMode"
+          [showEdit]="showEdit"
+          [parent]="metaData?.buttonContainer"
+          [items]="metaData?.buttonContainer?.children"
+          (onBtnClick)="onFooterClick($event)"
+        ></finlevit-grid>
+      </ng-container>
+    </div>
+  </ng-template>
+</p-dialog>

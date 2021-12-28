@@ -1,0 +1,11 @@
+<div class="p-field-checkbox">
+    <p-checkbox [disabled]="isDisabled" [styleClass]="checkError() ? 'error-input' : ''" [(ngModel)]="_value" (ngModelChange)="onLocalChange({ value: $event })"  [binary]="true" [inputId]="_id"></p-checkbox>
+    <label [for]="_id" [ngClass]="{ 'checkbox-label': true, 'checkbox-label-sm': isSmall, 'checkbox-label-lg': isLarge }">
+        {{ label}}
+        <span class="required" *ngIf="isRequired"> *</span>
+        <em class="label-tooltip pi pi-info-circle p-pl-2" [pTooltip]="tooltip" *ngIf="tooltip"></em>
+    </label>
+</div>
+<div *ngIf="checkError() && showErrorMsg">
+    <small class="p-error">{{ errorMsg  }}</small>
+</div>

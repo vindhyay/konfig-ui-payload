@@ -1,0 +1,19 @@
+<div class="details-container">
+  <app-loader [loading]="loading"></app-loader>
+  <div *ngIf="formFields && formFields.length">
+    <app-payload-view-form
+      [showActions]="showActions"
+      [payloadFields]="formFields"
+      (onGetScreen)="getScreenData($event)"
+      (onSubmit)="submitTransaction($event)"
+      (onSave)="saveTransaction($event)"
+      (onPopulate)="populateTransaction($event)"
+      (onUniqueFieldChange)="uniqueFieldChange($event)"
+    >
+    </app-payload-view-form>
+  </div>
+  <div *ngIf="!loading && !formFields.length" class="no-data-container">
+    <img src="/assets/images/cross-platform-view.svg" alt="no-design-view" />
+    <div class="help-text">Please design view or Contact Admin</div>
+  </div>
+</div>

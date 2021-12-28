@@ -1,0 +1,42 @@
+<gridster
+  #gridsterComponent
+  [options]="options"
+  [ngClass]="{ 'display-grid': false, 'gridster-overflow': parent?.metaData?.widgetType === Container || parent?.metaData?.widgetType === CollapseContainer }"
+  [ngStyle]="{
+    'background-color': parent?.metaData?.bgColor || parent?.metaData?.backgroundColor,
+    color: parent?.metaData?.color,
+    backgroundImage: parent?.metaData?.bgImageUrl ? 'url(' + parent?.metaData?.bgImageUrl + ')' : 'none',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    'border-bottom-left-radius': globalStyle?.independentBorder ? globalStyle?.borderBottomLeftRadius : globalStyle?.borderRadius,
+    'border-bottom-right-radius': globalStyle?.independentBorder ? globalStyle?.borderBottomRightRadius : globalStyle?.borderRadius,
+    'border-top-left-radius': parent?.metaData?.title ? '' : (globalStyle?.independentBorder ? globalStyle?.borderTopLeftRadius : globalStyle?.borderRadius),
+    'border-top-right-radius': parent?.metaData?.title ? '' : (globalStyle?.independentBorder ? globalStyle?.borderTopRightRadius : globalStyle?.borderRadius)
+  }"
+>
+  <ng-container *ngFor="let item of items">
+    <gridster-item
+      [ngClass]="{
+        'card-container': item?.metaData?.widgetType === Container,
+        'text-container': item?.metaData?.widgetType === Text,
+        'header-container': item?.metaData?.widgetType === Header,
+        'footer-container': item?.metaData?.widgetType === Footer,
+        'button-container': item?.metaData?.widgetType === Button,
+        'error-container': item?.metaData?.widgetType === ErrorContainer
+      }"
+      [item]="item"
+      [ngStyle]="getGlobalStyles(item)"
+    >
+      <app-payload-form-field
+        *ngIf="!item?.metaData?.isHidden"
+        [viewMode]="viewMode"
+        [showEdit]="showEdit"
+        (edit)="onEdit($event)"
+        (onBtnClick)="onBtnClick.emit($event)"
+        (onOptionChange)="onOptionChange.emit($event)"
+        (onTableDataChange)="onTableDataChange.emit($event)"
+        [item]="item"
+      ></app-payload-form-field>
+    </gridster-item>
+  </ng-container>
+</gridster>

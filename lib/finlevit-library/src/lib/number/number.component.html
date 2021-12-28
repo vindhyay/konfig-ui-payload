@@ -1,0 +1,57 @@
+<div [ngClass]="{ 'p-field': true}">
+    <div
+            [ngClass]="{
+            'label-top': labelPos === labelPosTypes.Top,
+            'label-left': labelPos === labelPosTypes.Left,
+            'label-down': labelPos === labelPosTypes.Down,
+            'label-right': labelPos === labelPosTypes.Right
+            }"
+    >
+        <div *ngIf="label" class="d-flex flex-row lib-label-container">
+            <div [ngClass]="{ 'input-label': true, 'input-label-sm': isSmall, 'input-label-lg': isLarge, 'label' : true,
+            'overflow-hide': !allowLabelWrapping}">
+                {{ label }}<span class="required" *ngIf="isRequired"> *</span>
+                <em class="label-tooltip pi pi-info-circle p-pl-2" [pTooltip]="tooltip" *ngIf="tooltip"></em>
+            </div>
+        </div>
+        <div [ngClass]="{'border-error': checkError(), 'extended-input-1': !independentBorders, 'extended-input-2' : independentBorders,
+        'd-flex flex-row': prefixText || suffixText || showClearButton}">
+            <div class="prefix-text" *ngIf="prefixText">
+                {{prefixText}}
+            </div>
+            <div [ngClass]="{'lib-input-container': true, 'no-label-input-container': !label}">
+                <p-inputNumber
+                        [placeholder]="_placeholder"
+                        [disabled]="isDisabled"
+                        [min]="minValue"
+                        [max]="maxValue"
+                        [ngModel]="_value"
+                        (ngModelChange)="onLocalChange({ value: $event })"
+                        (onInput)="onLocalChange($event)"
+                        (onBlur)="onLocalTouched($event)"
+                        [inputStyleClass]="isSmall ? 'p-inputtext-sm' : isLarge ? 'p-inputtext-lg' : ''"
+                        [suffix]="suffix"
+                        [prefix]="prefix"
+                        [format]="format"
+                        [maxlength]="maxLength"
+                        [mode]="mode" [currency]="currency"
+                        [minFractionDigits]="minFractionDigits"
+                        [maxFractionDigits]="maxFractionDigits"
+                        [showButtons]="showButtons"
+                        [step]="step"
+                >
+                </p-inputNumber>
+            </div>
+            <div *ngIf="showClearButton">
+                <em class="pi pi-times-circle clear-icon" (click)="clearValue()"></em>
+            </div>
+            <div class="suffix-text" *ngIf="suffixText">
+                {{suffixText}}
+            </div>
+        </div>
+    </div>
+    <div *ngIf="checkError() && showErrorMsg">
+        <small class="validation-message">{{ errorMsg || getErrorMessages()[0] }}</small>
+    </div>
+</div>
+

@@ -1,0 +1,14 @@
+@import 'normalize';
+@import 'bootstrap-variables';
+
+@import '~bootstrap/scss/bootstrap-grid';
+
+// library goes before project styles as there are some vars wich should be overrided by the host project
+@import './rng-scss/index.scss';
+
+@import 'var'; // will override vars defined in library
+@import 'global';
+
+@import 'icons';
+@import 'buttons';
+@import 'dialogs';

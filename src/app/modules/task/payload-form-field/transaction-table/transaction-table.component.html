@@ -1,0 +1,23 @@
+<div
+        [ngClass]="{
+        'input-container': true
+        }">
+    <finlevit-table
+            class="table-container"
+            noDataMessage="No Data Found"
+            [headerColor]="item?.metaData?.color"
+            [headerBgColor]="item?.metaData?.bgColor"
+            [pagination]="item?.metaData?.pagination"
+            [sort]="item?.metaData?.sort"
+            [filter]="item?.metaData?.filter"
+            [tableData]='tableData'
+            [totalRecords]="totalRecords"
+            [tableHeading]="item?.metaData?.heading"
+            [columns]="item?.metaData?.columns"
+            (onRowClick)="onRowClick($event)"
+            (onPageChange)="onPageChange($event)"
+            [viewMode]="true"
+            [lazyLoad]="true"
+    ></finlevit-table>
+</div>
+<app-loader [loading]="loading"></app-loader>

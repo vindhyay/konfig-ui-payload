@@ -1,0 +1,5 @@
+{
+  "authBaseUrl": "http://security-service.dev.finlevit.io/ss",
+  "workflowAdminBaseURL": "http://wf-admin-m.dev.finlevit.io/wfAdmin",
+  "accountWorkflowBaseURL": "http://workflow-service.dev.finlevit.io/workflowService"
+}

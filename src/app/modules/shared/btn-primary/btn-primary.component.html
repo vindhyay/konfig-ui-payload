@@ -1,0 +1,10 @@
+<button
+  mat-raised-button
+  class="badged-button"
+  [ngClass]="class"
+  [disabled]="disabled"
+  (click)="btnClick.emit()"
+  color="primary"
+>
+  <ng-content></ng-content>
+</button>

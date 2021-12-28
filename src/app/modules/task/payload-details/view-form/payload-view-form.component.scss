@@ -1,0 +1,51 @@
+@import 'src/assets/scss/var';
+
+.form-container {
+  border-radius: 4px;
+  margin: auto;
+}
+.each-field {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.layout-container {
+  margin: 18px 0;
+}
+.action-btn-container {
+  display: flex;
+  justify-content: space-between;
+  min-width: 200px;
+}
+
+.editor-container {
+  min-height: 100vh;
+  margin: auto;
+  .editor {
+    background: #ffffff;
+  }
+}
+.gridster-container {
+  height: 1500px;
+  min-height: 100vh;
+  position: relative;
+}
+.grid-item-preview-overlay {
+  will-change: transform;
+  z-index: 10000;
+  background-color: #add8f7;
+  opacity: 0.6;
+  transform-origin: top left;
+  transition: background-color 1s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.drag-layer-container {
+  z-index: 2000;
+  position: fixed;
+  pointer-events: none;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}

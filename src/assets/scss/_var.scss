@@ -1,0 +1,87 @@
+@import "mixins";
+@import "bootstrap-variables";
+
+$grid-columns: 12;
+$grid-gutter-width: 24px;
+$grid-float-breakpoint: 768px;
+
+$maxWidth: 1792px;
+$minWidth: 320px;
+$minWidthAdmin: map-get($grid-breakpoints, "md");
+$minWidthUser: map-get($grid-breakpoints, "sm");
+$maxContentWidth: 960px;
+$mainContentPadding: 72px;
+$containerMarginsBreakpoint: $minWidthAdmin;
+$contentHolderMaxWidth: 1564px;
+
+$iconFont: "POC-icons";
+
+$widgetRadius: 22px;
+$cardRadius: 4px;
+
+//
+$cardShadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+$cardShadowHover: 0 1px 6px rgba(0, 0, 0, 0.45);
+$dropdownShadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+
+//$primary: #3F51B5;
+$primary: #3f51b5;
+//$primary: #2981FF;
+$secondary: #3f51b5;
+//$secondary: #2981FF;
+//$accent: #2981FF;
+$accent: #3f51b5;
+$success: #05c04c;
+$warn: #f50022;
+$error: #f50022;
+//colors
+$orange: #f99733;
+$darkOrange: #b9943c;
+$red: #f50022;
+$pink: #cb79b7;
+$green: #49bd6c;
+$lightGreen: #afb93c;
+$blue: #44b5d7;
+$darkenBlue: #3c9cb9;
+$darkBlue: #3c5db9;
+$purple: #6e3cb9;
+$brown: #b94d3c;
+$dark: #424242;
+$gray: #9b9b9b;
+
+$widgetTitleColor: $primary;
+$help-text-color: #6c7b85;
+
+$checkboxActiveColor: #3f51b5;
+$checkboxColor: $gray;
+
+$textColor: #373f51;
+$textColorLight: rgba(0, 0, 0, 0.6);
+
+$borderColor: rgba(0, 0, 0, 0.12);
+//$tableHeaderColor: #878b97;
+$tableHeaderColor: #efeff6;
+$tableHeaderTextColor: #363e51;
+
+$iconColor: #96aac6;
+$iconColorHover: #a8aece;
+$navMenuTextColor: #17262b;
+
+$titleColor: $textColor;
+$titleColorLignt: $textColorLight;
+$card-header: #3f51b5;
+
+//$mainBG: #fff;
+$mainBG: #fff;
+$disabledBG: #f3f6f9;
+$activeHover: #f3f6f9;
+$optionHover: #f3f6f9;
+$optionSelect: rgba(41, 129, 255, 0.16);
+$activeHoverAccent: #1bc98e;
+$tableHover: #1bc98e;
+$errorInfo: #f15f78;
+
+$buttonToggleColour: rgb(41, 129, 255, 0.16);
+
+$primaryBtnBg: #1bc98e;
+$primaryBtnHoverBg: #159c6e;
