@@ -214,28 +214,10 @@ export class PayloadViewFormComponent implements OnInit {
       },
     } = $event;
     const uiAction= onClickConfigs.filter(item=>Action_Config_UI.includes(item.action));
-    const populateAction= onClickConfigs.find(item=>item.action===ButtonActions.populate) || null;
+    const populateActionIndex= onClickConfigs.findIndex(item=>item.action===ButtonActions.populate) || null;
     let error = false;
-    // if (type === ButtonActions.submit) {
-    //   this.submit($event?.data);
-    // }
-    // if (type === ButtonActions.save) {
-    //   this.saveForLater($event?.data);
-    // }
-    // if (type === ButtonActions.nextStep || type === ButtonActions.previousStep) {
-    //   this.saveForLater($event?.data);
-    // }
-    // if (type === ButtonActions.logout) {
-    //   this.authService.logoff(false, this.activatedRoute);
-    // }
-    // if(type === ButtonActions.next || type === ButtonActions.previous) {
-    //   this.getScreen($event?.data);
-    // }
-    // if(type === ButtonActions.serviceProviders){
-    //   this.onPopulate.emit({ triggerId: id, parameters: null, payloadFields: this._payloadFields });
-    // }
-    if (populateAction) {
-      const { action: type = "", parameters = [] } = populateAction;
+    if (populateActionIndex === 0) {
+      const { action: type = "", parameters = [] } = onClickConfigs[populateActionIndex];
       const reqParams = JSON.parse(JSON.stringify(parameters));
       reqParams.map(parameter => {
         const { value, valueType } = parameter;
@@ -263,9 +245,6 @@ export class PayloadViewFormComponent implements OnInit {
           }
         }
       });
-      // if (!error) {
-      //   this.onPopulate.emit({ triggerId: id, parameters: reqParams, payloadFields: this._payloadFields });
-      // }
     }
     if(!error){
       this.triggerClicksAll({triggerId: id,data:$event?.data,uiAction:uiAction});

@@ -96,6 +96,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
     return this._tableData;
   }
   @Input() hideHeader = false;
+  @Input() hideFooter = false;
   @Input() actions: TableActions = null;
   @Output() onColDataChange = new EventEmitter();
   @Output() onRowClick = new EventEmitter();
@@ -209,6 +210,9 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
       if (this.validateRow(index, this.modifyingData[index])) {
         this.tableData[index] = { ...this.tableData[index], ...this.modifyingData[index] };
         this.tableData = [...this.tableData];
+        if (this.newRows[index]) {
+          delete this.newRows[index];
+        }
         delete this.editRows[index];
         delete this.editCells[index];
         delete this.modifyingData[index];
@@ -217,6 +221,11 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
   }
   onColSaveCancel($event) {
     this.editCells = {};
+    Object.keys(this.modifyingData).forEach(rowIndex => {
+      if (this.newRows[rowIndex]) {
+        this.onDelete(rowIndex, this.modifyingData[rowIndex], true);
+      }
+    });
     this.modifyingData = {};
     this.editRows = {};
   }
@@ -241,7 +250,8 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
         }
         this.rowErrors[index][column] = {
           error: true,
-          errorMsg: this.getErrorMessages(tempFormControl.errors, columnConfig.label)[0]
+          errorMsg:
+            columnConfig?.metaData?.errorMessage || this.getErrorMessages(tempFormControl.errors, columnConfig.label)[0]
         };
       }
     });
@@ -293,20 +303,10 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
     });
     return _validators;
   };
-  getColumnDefaultValue(column) {
-    switch (column.type) {
-      case "string":
-        return "";
-      case "number":
-        return null;
-      default:
-        return null;
-    }
-  }
   addRow() {
     const newRow: any = {};
     this.columns.forEach(eachColumn => {
-      Object.assign(newRow, { [eachColumn.columnId]: this.getColumnDefaultValue(eachColumn) });
+      Object.assign(newRow, { [eachColumn.columnId]: eachColumn?.value?.value || null });
     });
     this.tableData.push(newRow);
     this.tableData = [...this.tableData];
@@ -318,8 +318,17 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
         scrollToBottom(tableBodyElement);
       });
     }
-    this.newRows[this.tableData.length - 1] = newRow;
-    this.modifyingData[this.tableData.length - 1] = newRow;
+    const rowIndex = this.tableData.length - 1;
+    this.newRows[rowIndex] = newRow;
+    this.modifyingData[rowIndex] = newRow;
+    if (!this.actions.editRow) {
+      if (!this.editCells[rowIndex]) {
+        this.editCells[rowIndex] = {};
+      }
+      Object.keys(newRow).forEach(col => {
+        this.editCells[rowIndex][col] = newRow[col];
+      });
+    }
   }
   handlePageChange($event) {
     this.currentPage = $event;
@@ -386,7 +395,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
           const rule = rules[i];
           const fieldValue = rowData[rule?.fieldId];
           let result = false;
-          if (rule.operator === "notEquals") {
+          if (rule.condition === "notEquals") {
             if (String(fieldValue) !== String(rule.value)) {
               result = true;
             }
@@ -395,7 +404,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
               result = true;
             }
           }
-          condMatched = i === 0 ? result : rule.condition === "AND" ? condMatched && result : condMatched || result;
+          condMatched = i === 0 ? result : rule.operator === "AND" ? condMatched && result : condMatched || result;
         }
         return condMatched;
       });
