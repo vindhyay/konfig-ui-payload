@@ -1212,9 +1212,9 @@ export class RadioGroupMetaData extends CheckboxMetaData {
 export class ImageMetaData extends MetaData {
   url: string;
   altText: string;
-  fromLocalOrRemote: string; // 'Local' or 'Remote'
+  source: string; // 'Local' or 'Remote'
   remoteKey: string;
-  isCoverOrContain: string; // 'Cover' or 'Contain'
+  position: string; // 'Cover' or 'Contain'
   horizontalAlign: string;
   shorterEdge: string
   styleProperties: { id: "", properties: any };
@@ -1223,18 +1223,18 @@ export class ImageMetaData extends MetaData {
     const { 
       url = "",
       altText = "",
-      fromLocalOrRemote = 'Local',
+      source = 'Local',
       remoteKey = "",
-      isCoverOrContain = "Contain",
+      position = "Contain",
       horizontalAlign = "Center",
       shorterEdge = "height",
       styleProperties = {}
     } = data;
     this.url = url;
     this.altText = altText;
-    this.fromLocalOrRemote = fromLocalOrRemote;
+    this.source = source;
     this.remoteKey = remoteKey;
-    this.isCoverOrContain = isCoverOrContain;
+    this.position = position;
     this.horizontalAlign = horizontalAlign;
     this.shorterEdge = shorterEdge;
     this.styleProperties = styleProperties;

@@ -1,10 +1,10 @@
-<div class="image-container" *ngIf="metaData?.fromLocalOrRemote === 'Remote'"
-    [style.justify-content]="metaData?.isCoverOrContain === 'Contain' ? metaData?.horizontalAlign : 'center'">
+<div class="image-container" *ngIf="metaData?.source === 'Remote'"
+    [style.justify-content]="metaData?.position === 'Contain' ? metaData?.horizontalAlign : 'center'">
     <img *ngIf="metaData?.url" [src]="metaData?.url" alt="{{metaData?.altText}}"
-        [style.width]="(metaData?.isCoverOrContain === 'Cover' || metaData?.shorterEdge === 'width')  ? '100%' : ''"
-        [style.height]="(metaData?.isCoverOrContain === 'Cover' || metaData?.shorterEdge === 'height')  ? '100%' : ''"
+        [style.width]="(metaData?.position === 'Cover' || metaData?.shorterEdge === 'width')  ? '100%' : ''"
+        [style.height]="(metaData?.position === 'Cover' || metaData?.shorterEdge === 'height')  ? '100%' : ''"
         [ngStyle]="metaData?.styleProperties?.properties?.independentBorder ? {
-        'aspect-ratio': metaData?.isCoverOrContain === 'Contain' ? 'inherit' : '',
+        'aspect-ratio': metaData?.position === 'Contain' ? 'inherit' : '',
         'borderTopStyle':metaData?.styleProperties?.properties?.borderTopStyle,
         'borderTopWidth':metaData?.styleProperties?.properties?.borderTopWidth,
         'borderTopColor':metaData?.styleProperties?.properties?.borderTopColor,
@@ -22,21 +22,21 @@
         'borderRightColor':metaData?.styleProperties?.properties?.borderRightColor,
         'borderBottomRightRadius':metaData?.styleProperties?.properties?.borderBottomRightRadius
         } : {
-          'aspect-ratio': metaData?.isCoverOrContain === 'Contain' ? 'inherit' : '',
+          'aspect-ratio': metaData?.position === 'Contain' ? 'inherit' : '',
           'borderStyle':metaData?.styleProperties?.properties?.borderStyle,
           'borderWidth':metaData?.styleProperties?.properties?.borderWidth,
           'borderColor':metaData?.styleProperties?.properties?.borderColor,
           'borderRadius':metaData?.styleProperties?.properties?.borderRadius
         }" />
 </div>
-<div class="image-container" *ngIf="metaData?.fromLocalOrRemote === 'Local'"
-    [style.justify-content]="metaData?.isCoverOrContain === 'Contain' ? metaData?.horizontalAlign : 'center'">
+<div class="image-container" *ngIf="metaData?.source === 'Local'"
+    [style.justify-content]="metaData?.position === 'Contain' ? metaData?.horizontalAlign : 'center'">
     <img *ngIf="metaData?.remoteKey" [src]="getImageUrl + '/' + metaData?.remoteKey" crossorigin="use-credentials"
         alt="{{metaData?.altText}}"
-        [style.width]="(metaData?.isCoverOrContain === 'Cover' || metaData?.shorterEdge === 'width')  ? '100%' : ''"
-        [style.height]="(metaData?.isCoverOrContain === 'Cover' || metaData?.shorterEdge === 'height')  ? '100%' : ''"
+        [style.width]="(metaData?.position === 'Cover' || metaData?.shorterEdge === 'width')  ? '100%' : ''"
+        [style.height]="(metaData?.position === 'Cover' || metaData?.shorterEdge === 'height')  ? '100%' : ''"
         [ngStyle]="metaData?.styleProperties?.properties?.independentBorder ? {
-        'aspect-ratio': metaData?.isCoverOrContain === 'Contain' ? 'inherit' : '',
+        'aspect-ratio': metaData?.position === 'Contain' ? 'inherit' : '',
         'borderTopStyle':metaData?.styleProperties?.properties?.borderTopStyle,
         'borderTopWidth':metaData?.styleProperties?.properties?.borderTopWidth,
         'borderTopColor':metaData?.styleProperties?.properties?.borderTopColor,
@@ -54,7 +54,7 @@
         'borderRightColor':metaData?.styleProperties?.properties?.borderRightColor,
         'borderBottomRightRadius':metaData?.styleProperties?.properties?.borderBottomRightRadius
         } : {
-          'aspect-ratio': metaData?.isCoverOrContain === 'Contain' ? 'inherit' : '',
+          'aspect-ratio': metaData?.position === 'Contain' ? 'inherit' : '',
           'borderStyle':metaData?.styleProperties?.properties?.borderStyle,
           'borderWidth':metaData?.styleProperties?.properties?.borderWidth,
           'borderColor':metaData?.styleProperties?.properties?.borderColor,
