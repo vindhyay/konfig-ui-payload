@@ -57,6 +57,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
         if(this.formFields.length){
           if(this.formFields?.length!==value?.uiPayload?.length){
             this.formFields = value?.uiPayload || [];
+            addOriginalPosition(this.formFields);
           }else{
             this.formFields.forEach((element,index) => {
               for (const prop in element) {
@@ -66,6 +67,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
           }
         }else{
           this.formFields = value?.uiPayload || [];
+          addOriginalPosition(this.formFields);
         }
         this.formFields = this.formFields.sort((a,b)=> a?.y - b?.y);
         const header = this.formFields.find(item => item?.metaData?.widgetType === WidgetTypes.Header);
