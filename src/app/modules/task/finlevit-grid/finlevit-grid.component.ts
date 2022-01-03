@@ -130,7 +130,7 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
         return isSame;
       }
       const checkIsBottom = (item, baseItem) => {
-        if(item?.metaData?.originalHeight >= baseOriginalHeight){
+       if(item?.metaData?.originalHeight >= baseOriginalHeight){
           return true
         }
         return false;
@@ -187,6 +187,7 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
       if (eligibleItems.length) {
         widgetGridItem.updateOptions();
         widgetGridItem.setSize();
+        eligibleItems.sort((item1, item2) => { return parseFloat(item1.item.y) - parseFloat(item2.item.y)});
         eligibleItems.forEach((gridItem, index) => {
           const eachGridItem = gridItem.item;
           if (changeGridItemData?.metaData?.movement === "UP") {
