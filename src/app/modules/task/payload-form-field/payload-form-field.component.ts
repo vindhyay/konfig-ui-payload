@@ -92,7 +92,7 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
   @Input() fieldIndex: number = 0;
   @Input() addMode = true;
   @Input() showEdit = true;
-  @Input() viewMode = true;
+  @Input() viewMode = false;
   @Input() showDelete = true;
   @Input() restrictHeight = true;
   @Input() list = null;
@@ -317,7 +317,7 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
   }
   onChange($event) {
     const ifConditions = this.item.metaData?.conditions?.ifConditions || [];
-    this.taskService.checkCondition(ifConditions);
+    // this.taskService.checkCondition(ifConditions);
   }
   calculateFormulaValue(itemMetaData, id) : any{
     let formulaValue = '';

@@ -89,13 +89,13 @@ export class PayloadViewFormComponent implements OnInit {
     let result = true;
     let errorFields = [];
     fields.forEach((field: any) => {
-      if (field.children && field.children.length) {
+      if (field?.children && field?.children?.length) {
         const {result:validationStatus, errorFields: errorFieldsData} = this.validateFields(field.children)
         if (!validationStatus) {
           result = false;
           errorFields = errorFields.concat(errorFieldsData)
         }
-      } else {
+      } else if(field) {
         const tempFormControl = new FormControl(field?.value?.value, getValidators(field?.validators || {}));
         if (tempFormControl.valid || field?.rows === 0 || field?.metaData?.isHidden) {
           field.error = false;
@@ -114,16 +114,17 @@ export class PayloadViewFormComponent implements OnInit {
     return { result, errorFields }
   }
   triggerClicksAll(data) {
-    const {result, errorFields} =  this.validateFields(this._payloadFields)
-    if (result) {
-      this.onSubmit.emit({ payload: this.convertPayload(this._payloadFields), itemData:data, payloadFields: this.updateValuesFromOptions(this._payloadFields) });
-    } else {
-      let errorMsg = "Failed to validate: "
-      if(errorFields.length){
-        errorMsg = errorMsg + ' ' + errorFields[0]?.label;
-      }
-      this.notificationService.error(errorMsg, "Validation error");
-    }
+    // const {result, errorFields} =  this.validateFields(this._payloadFields)
+    // if (result) {
+    //   this.onSubmit.emit({ payload: this.convertPayload(this._payloadFields), itemData:data, payloadFields: this.updateValuesFromOptions(this._payloadFields) });
+    // } else {
+    //   let errorMsg = "Failed to validate: "
+    //   if(errorFields.length){
+    //     errorMsg = errorMsg + ' ' + errorFields[0]?.label;
+    //   }
+    //   this.notificationService.error(errorMsg, "Validation error");
+    // }
+    this.onSubmit.emit({ payload: this.convertPayload(this._payloadFields), itemData:data, payloadFields: this.updateValuesFromOptions(this._payloadFields) });
   }
   updateValuesFromOptions(data: any) {
     let payload = [];
