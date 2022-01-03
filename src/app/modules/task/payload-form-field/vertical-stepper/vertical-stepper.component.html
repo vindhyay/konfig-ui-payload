@@ -49,7 +49,7 @@
     <div class="inner-wrapper">
       <div class="scrollView">
         <div
-          class="content"
+          [ngClass]="'content'+' content'+metaData['widgetId']"
           #contentConatiner
         >
           <finlevit-grid

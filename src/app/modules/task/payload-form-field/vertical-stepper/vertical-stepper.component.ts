@@ -114,7 +114,7 @@ export class VerticalStepperComponent implements OnInit {
     })
   }
   checkHeight(containerName?) {
-    this.editorService.setAdjustableHeight(this.children[this._selectedIndex].children, ".content");
+    this.editorService.setAdjustableHeight(this.children[this._selectedIndex].children, ".content"+this.metaData['widgetId']);
   }
   onSelectIndexChange = index => {
     this.isInteract=true;
