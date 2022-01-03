@@ -1211,10 +1211,33 @@ export class RadioGroupMetaData extends CheckboxMetaData {
 
 export class ImageMetaData extends MetaData {
   url: string;
+  altText: string;
+  source: string; // 'Local' or 'Remote'
+  remoteKey: string;
+  position: string; // 'Cover' or 'Contain'
+  horizontalAlign: string;
+  shorterEdge: string
+  styleProperties: { id: "", properties: any };
   constructor(data) {
     super(data);
-    const { url = "" } = data;
+    const { 
+      url = "",
+      altText = "",
+      source = 'Local',
+      remoteKey = "",
+      position = "Contain",
+      horizontalAlign = "Center",
+      shorterEdge = "height",
+      styleProperties = {}
+    } = data;
     this.url = url;
+    this.altText = altText;
+    this.source = source;
+    this.remoteKey = remoteKey;
+    this.position = position;
+    this.horizontalAlign = horizontalAlign;
+    this.shorterEdge = shorterEdge;
+    this.styleProperties = styleProperties;
   }
 }
 

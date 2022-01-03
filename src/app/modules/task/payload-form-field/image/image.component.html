@@ -1,0 +1,63 @@
+<div class="image-container" *ngIf="metaData?.source === 'Remote'"
+    [style.justify-content]="metaData?.position === 'Contain' ? metaData?.horizontalAlign : 'center'">
+    <img *ngIf="metaData?.url" [src]="metaData?.url" alt="{{metaData?.altText}}"
+        [style.width]="(metaData?.position === 'Cover' || metaData?.shorterEdge === 'width')  ? '100%' : ''"
+        [style.height]="(metaData?.position === 'Cover' || metaData?.shorterEdge === 'height')  ? '100%' : ''"
+        [ngStyle]="metaData?.styleProperties?.properties?.independentBorder ? {
+        'aspect-ratio': metaData?.position === 'Contain' ? 'inherit' : '',
+        'borderTopStyle':metaData?.styleProperties?.properties?.borderTopStyle,
+        'borderTopWidth':metaData?.styleProperties?.properties?.borderTopWidth,
+        'borderTopColor':metaData?.styleProperties?.properties?.borderTopColor,
+        'borderTopRightRadius':metaData?.styleProperties?.properties?.borderTopRightRadius,
+        'borderLeftStyle':metaData?.styleProperties?.properties?.borderLeftStyle,
+        'borderLeftWidth':metaData?.styleProperties?.properties?.borderLeftWidth,
+        'borderLeftColor':metaData?.styleProperties?.properties?.borderLeftColor,
+        'borderTopLeftRadius':metaData?.styleProperties?.properties?.borderTopLeftRadius,
+        'borderBottomStyle':metaData?.styleProperties?.properties?.borderBottomStyle,
+        'borderBottomWidth':metaData?.styleProperties?.properties?.borderBottomWidth,
+        'borderBottomColor':metaData?.styleProperties?.properties?.borderBottomColor,
+        'borderBottomLeftRadius':metaData?.styleProperties?.properties?.borderBottomLeftRadius,
+        'borderRightStyle':metaData?.styleProperties?.properties?.borderRightStyle,
+        'borderRightWidth':metaData?.styleProperties?.properties?.borderRightWidth,
+        'borderRightColor':metaData?.styleProperties?.properties?.borderRightColor,
+        'borderBottomRightRadius':metaData?.styleProperties?.properties?.borderBottomRightRadius
+        } : {
+          'aspect-ratio': metaData?.position === 'Contain' ? 'inherit' : '',
+          'borderStyle':metaData?.styleProperties?.properties?.borderStyle,
+          'borderWidth':metaData?.styleProperties?.properties?.borderWidth,
+          'borderColor':metaData?.styleProperties?.properties?.borderColor,
+          'borderRadius':metaData?.styleProperties?.properties?.borderRadius
+        }" />
+</div>
+<div class="image-container" *ngIf="metaData?.source === 'Local'"
+    [style.justify-content]="metaData?.position === 'Contain' ? metaData?.horizontalAlign : 'center'">
+    <img *ngIf="metaData?.remoteKey" [src]="getImageUrl + '/' + metaData?.remoteKey" crossorigin="use-credentials"
+        alt="{{metaData?.altText}}"
+        [style.width]="(metaData?.position === 'Cover' || metaData?.shorterEdge === 'width')  ? '100%' : ''"
+        [style.height]="(metaData?.position === 'Cover' || metaData?.shorterEdge === 'height')  ? '100%' : ''"
+        [ngStyle]="metaData?.styleProperties?.properties?.independentBorder ? {
+        'aspect-ratio': metaData?.position === 'Contain' ? 'inherit' : '',
+        'borderTopStyle':metaData?.styleProperties?.properties?.borderTopStyle,
+        'borderTopWidth':metaData?.styleProperties?.properties?.borderTopWidth,
+        'borderTopColor':metaData?.styleProperties?.properties?.borderTopColor,
+        'borderTopRightRadius':metaData?.styleProperties?.properties?.borderTopRightRadius,
+        'borderLeftStyle':metaData?.styleProperties?.properties?.borderLeftStyle,
+        'borderLeftWidth':metaData?.styleProperties?.properties?.borderLeftWidth,
+        'borderLeftColor':metaData?.styleProperties?.properties?.borderLeftColor,
+        'borderTopLeftRadius':metaData?.styleProperties?.properties?.borderTopLeftRadius,
+        'borderBottomStyle':metaData?.styleProperties?.properties?.borderBottomStyle,
+        'borderBottomWidth':metaData?.styleProperties?.properties?.borderBottomWidth,
+        'borderBottomColor':metaData?.styleProperties?.properties?.borderBottomColor,
+        'borderBottomLeftRadius':metaData?.styleProperties?.properties?.borderBottomLeftRadius,
+        'borderRightStyle':metaData?.styleProperties?.properties?.borderRightStyle,
+        'borderRightWidth':metaData?.styleProperties?.properties?.borderRightWidth,
+        'borderRightColor':metaData?.styleProperties?.properties?.borderRightColor,
+        'borderBottomRightRadius':metaData?.styleProperties?.properties?.borderBottomRightRadius
+        } : {
+          'aspect-ratio': metaData?.position === 'Contain' ? 'inherit' : '',
+          'borderStyle':metaData?.styleProperties?.properties?.borderStyle,
+          'borderWidth':metaData?.styleProperties?.properties?.borderWidth,
+          'borderColor':metaData?.styleProperties?.properties?.borderColor,
+          'borderRadius':metaData?.styleProperties?.properties?.borderRadius
+        }" />
+</div>
