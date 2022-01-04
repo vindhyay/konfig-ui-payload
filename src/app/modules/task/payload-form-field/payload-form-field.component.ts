@@ -253,13 +253,14 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
     }
   }
   onPrevClick($event,type=''){
+    const {stepIndex=0,item={}}=$event;
     let index=1;
     if(type=='stepper'){
       index=this.verticalStepIndex;
     }else{
       index=this.modalStepIndex;
     }
-    if($event>1){
+    if(stepIndex>1){
       index -=1;
     }
     if(type=='stepper'){
@@ -280,6 +281,7 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
     }
   }
   onNextClick($event,type='') {
+    const {stepIndex=0,item={}}=$event;
     let index=1;
     if(type=='stepper'){
       index=this.verticalStepIndex;
@@ -291,6 +293,7 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
     if (validate) {
       this.completedSteps[child?.metaData?.widgetId] = true;
       index +=1;
+      this.onBtnClick.emit(item)
     }
     if(index>this.item.children.length-1){
       index=this.item.children.length-1;

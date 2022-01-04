@@ -64,7 +64,7 @@
           'text-decoration': styles?.properties?.labelTextDecoration
       }"
     >
-      {{ metaData?.modalHeader[_selectedIndex].title }}
+      {{ metaData?.modalHeader[_selectedIndex]?.title }}
     </div>
   </ng-template>
   <div [class]="'modalcontent modal'+item?.metaData?.widgetId" [style]="{
