@@ -27,6 +27,9 @@ import { ContainerComponent } from "./payload-form-field/container/container.com
 import { IconComponent } from "./payload-form-field/icon/icon.component";
 import { CustomAdvTableComponent } from "./payload-form-field/custom-adv-table/custom-adv-table.component";
 import { ImageComponent } from "./payload-form-field/image/image.component";
+import {AvatarComponent} from "./payload-form-field/avatar/avatar.component";
+import {TooltipModule} from "primeng/tooltip";
+import {AvatarModule} from "primeng/avatar";
 
 @NgModule({
   declarations: [
@@ -51,9 +54,10 @@ import { ImageComponent } from "./payload-form-field/image/image.component";
     ContainerComponent,
     IconComponent,
     CustomAdvTableComponent,
-    ImageComponent
+    ImageComponent,
+    AvatarComponent
   ],
-  imports: [CommonModule, GridsterModule, SharedModule, ExtendedModule],
+  imports: [CommonModule, GridsterModule, SharedModule, ExtendedModule, TooltipModule, AvatarModule],
   providers: [TaskService, AuthService]
 })
 export class TaskModule {}

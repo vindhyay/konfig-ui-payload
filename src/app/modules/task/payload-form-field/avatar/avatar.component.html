@@ -1,0 +1,13 @@
+<div class="avatar">
+    <div *ngIf="!metaData?.imageUrl && !metaData?.remoteKey">
+        <p-avatar [label]="convertFallbackText()" shape="circle" class="avatar-icon" icon="pi pi-user"></p-avatar>
+    </div>
+    <div *ngIf="metaData?.source && (metaData?.imageUrl || metaData?.remoteKey)">
+        <img *ngIf="metaData?.imageUrl" [src]="metaData?.imageUrl"/>
+        <img *ngIf="metaData?.remoteKey" [src]="getImageUrl + '/' + metaData?.remoteKey" crossorigin="use-credentials"/>
+    </div>
+    <div class="avatar-text">
+        <div class="avatar-label" [pTooltip]="metaData?.tooltip" tooltipPosition="top">{{ metaData?.configure ? item?.value?.value : item?.label}}</div>
+        <div class="avatar-caption">{{metaData?.caption}}</div>
+    </div>
+</div>
