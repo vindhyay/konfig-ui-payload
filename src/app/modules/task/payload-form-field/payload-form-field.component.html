@@ -1164,7 +1164,8 @@
       (selectionChange)="OnStepChange($event)"
       #stepper
     >
-      <mat-step *ngFor="let child of item.children; let i = index">
+    <ng-container *ngFor="let child of item.children; let i = index">
+      <mat-step *ngIf="i>0">
         <ng-template matStepLabel
           ><i [class]="child.metaData.icon"></i> <span class="mat-step-label-text">{{ child.label }}</span></ng-template
         >
@@ -1198,6 +1199,7 @@
           </div>
         </div>
       </mat-step>
+    </ng-container>
     </mat-horizontal-stepper>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === TabContainer">
