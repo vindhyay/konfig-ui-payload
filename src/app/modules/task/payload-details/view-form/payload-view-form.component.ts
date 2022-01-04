@@ -113,18 +113,21 @@ export class PayloadViewFormComponent implements OnInit {
     });
     return { result, errorFields }
   }
-  triggerClicksAll(data) {
-    // const {result, errorFields} =  this.validateFields(this._payloadFields)
-    // if (result) {
-    //   this.onSubmit.emit({ payload: this.convertPayload(this._payloadFields), itemData:data, payloadFields: this.updateValuesFromOptions(this._payloadFields) });
-    // } else {
-    //   let errorMsg = "Failed to validate: "
-    //   if(errorFields.length){
-    //     errorMsg = errorMsg + ' ' + errorFields[0]?.label;
-    //   }
-    //   this.notificationService.error(errorMsg, "Validation error");
-    // }
-    this.onSubmit.emit({ payload: this.convertPayload(this._payloadFields), itemData:data, payloadFields: this.updateValuesFromOptions(this._payloadFields) });
+  triggerClicksAll(data,isValidate) {
+    if(!isValidate){
+      this.onSubmit.emit({ payload: this.convertPayload(this._payloadFields), itemData:data, payloadFields: this.updateValuesFromOptions(this._payloadFields) });
+    }else{
+      const {result, errorFields} =  this.validateFields(this._payloadFields)
+      if (result) {
+        this.onSubmit.emit({ payload: this.convertPayload(this._payloadFields), itemData:data, payloadFields: this.updateValuesFromOptions(this._payloadFields) });
+      } else {
+        let errorMsg = "Failed to validate: "
+        if(errorFields.length){
+          errorMsg = errorMsg + ' ' + errorFields[0]?.label;
+        }
+        this.notificationService.error(errorMsg, "Validation error");
+      }
+    }
   }
   updateValuesFromOptions(data: any) {
     let payload = [];
@@ -217,6 +220,7 @@ export class PayloadViewFormComponent implements OnInit {
     const uiAction= onClickConfigs.filter(item=>Action_Config_UI.includes(item.action));
     const populateActionIndex= onClickConfigs.findIndex(item=>item.action===ButtonActions.populate) || null;
     let error = false;
+    const isValidate= onClickConfigs.length && (onClickConfigs[0].action === ButtonActions.submit || onClickConfigs[0].action === ButtonActions.next)
     if (populateActionIndex === 0) {
       const { action: type = "", parameters = [] } = onClickConfigs[populateActionIndex];
       const reqParams = JSON.parse(JSON.stringify(parameters));
@@ -248,7 +252,7 @@ export class PayloadViewFormComponent implements OnInit {
       });
     }
     if(!error){
-      this.triggerClicksAll({triggerId: id,data:$event?.data,uiAction:uiAction});
+      this.triggerClicksAll({triggerId: id,data:$event?.data,uiAction:uiAction},isValidate);
     }
   }
 
