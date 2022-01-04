@@ -41,14 +41,14 @@ export class PayloadViewFormComponent implements OnInit {
   convertPayload(data: any, isArray = false) {
     let payload: any = isArray ? [] : {};
     data.forEach((field: any) => {
-      if (field.type === DataTypes.object) {
+      if (field?.type === DataTypes.object) {
         if (isArray) {
           payload.push(this.convertPayload(field.children, field.type === DataTypes.array));
         } else {
           payload[field.widgetName] = this.convertPayload(field.children, field.type === DataTypes.array);
         }
       }
-      if (field.type === DataTypes.array) {
+      if (field?.type === DataTypes.array) {
         if (isArray) {
           if (field?.children?.length) {
             payload.push(this.convertPayload(field.children, field.type === DataTypes.array));
@@ -74,7 +74,7 @@ export class PayloadViewFormComponent implements OnInit {
           }
         }
       }
-      if (field.type !== DataTypes.array && field.type !== DataTypes.object) {
+      if (!!field && field?.type !== DataTypes.array && field?.type !== DataTypes.object) {
         if (isArray) {
           payload.push(getValueFromObjectByPath(field, "value.value") || "");
         } else {
