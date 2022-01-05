@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { FormControl, Validators } from "@angular/forms";
 import { DataTypes } from "../../model/payload-field.model";
-import { getErrorMessages, getValidators, getValueFromObjectByPath } from "../../../../utils";
+import { Action_Config_UI, getErrorMessages, getValidators, getValueFromObjectByPath } from "../../../../utils";
 import { EditorService } from "../../editor.service";
 import { ButtonActions, WidgetTypes } from "../../model/create-form.models";
 import { ActivatedRoute } from "@angular/router";
@@ -113,10 +113,10 @@ export class PayloadViewFormComponent implements OnInit {
     });
     return { result, errorFields }
   }
-  submit(data) {
+  triggerClicksAll(data) {
     const {result, errorFields} =  this.validateFields(this._payloadFields)
     if (result) {
-      this.onSubmit.emit({ payload: this.convertPayload(this._payloadFields), data, payloadFields: this.updateValuesFromOptions(this._payloadFields) });
+      this.onSubmit.emit({ payload: this.convertPayload(this._payloadFields), itemData:data, payloadFields: this.updateValuesFromOptions(this._payloadFields) });
     } else {
       let errorMsg = "Failed to validate: "
       if(errorFields.length){
@@ -130,7 +130,7 @@ export class PayloadViewFormComponent implements OnInit {
     data.forEach(field => {
       if (field?.metaData?.widgetType === WidgetTypes.Table) {
         if (field?.value) {
-          field.value.value = field.value.value ? field.value.value : field.metaData.options;
+          field.value.value = field.value?.value?.length ? field.value.value : field.metaData.options;
         } else {
           field.value = { id: null, value: field.metaData.options };
         }
@@ -145,10 +145,6 @@ export class PayloadViewFormComponent implements OnInit {
   saveForLater(data) {
     this.onSave.emit({ payloadFields: this.updateValuesFromOptions(this._payloadFields), data });
   }
-  onEditField($event: any) {
-    console.log("i got it", $event);
-  }
-
   onOptionChange($event) {
     const {
       data: {
@@ -158,7 +154,6 @@ export class PayloadViewFormComponent implements OnInit {
         id
       }
     } = $event;
-    console.log("iam here in check unique", $event);
     if (isUnique) {
       this.onUniqueFieldChange.emit({ id, value });
       return;
@@ -214,28 +209,15 @@ export class PayloadViewFormComponent implements OnInit {
   onBtnClick($event) {
     const {
       data: {
-        isUnique = false,
-        metaData: { onClickConfig: { action: type = "", parameters = [] } = {} }
+        metaData: { onClickConfigs = [] },
+        id
       },
-      data: { id }
     } = $event;
-    if (type === ButtonActions.submit) {
-      this.submit($event?.data);
-    }
-    if (type === ButtonActions.save) {
-      this.saveForLater($event?.data);
-    }
-    if (type === ButtonActions.nextStep || type === ButtonActions.previousStep) {
-      this.saveForLater($event?.data);
-    }
-    if (type === ButtonActions.logout) {
-      this.authService.logoff(false, this.activatedRoute);
-    }
-    if(type === ButtonActions.next || type === ButtonActions.previous) {
-      this.getScreen($event?.data);
-    }
-    if (type === ButtonActions.populate) {
-      let error = false;
+    const uiAction= onClickConfigs.filter(item=>Action_Config_UI.includes(item.action));
+    const populateActionIndex= onClickConfigs.findIndex(item=>item.action===ButtonActions.populate) || null;
+    let error = false;
+    if (populateActionIndex === 0) {
+      const { action: type = "", parameters = [] } = onClickConfigs[populateActionIndex];
       const reqParams = JSON.parse(JSON.stringify(parameters));
       reqParams.map(parameter => {
         const { value, valueType } = parameter;
@@ -263,12 +245,9 @@ export class PayloadViewFormComponent implements OnInit {
           }
         }
       });
-      if (!error) {
-        this.onPopulate.emit({ triggerId: id, parameters: reqParams, payloadFields: this._payloadFields });
-      }
     }
-    if(type === ButtonActions.serviceProviders){
-      this.onPopulate.emit({ triggerId: id, parameters: null, payloadFields: this._payloadFields });
+    if(!error){
+      this.triggerClicksAll({triggerId: id,data:$event?.data,uiAction:uiAction});
     }
   }
 

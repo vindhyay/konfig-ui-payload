@@ -125,6 +125,9 @@
     background-color: var(--input-background-color);
     width: 100%;
   }
+  .border-error{
+    border-color: #dc3545;
+  }
   .overflow-hide{
     overflow: hidden;
     text-overflow: ellipsis;
@@ -156,4 +159,8 @@
   font-style: var(--input-label-font-style);
   font-weight: var(--input-label-font-weight);
   text-decoration: var(--input-label-text-decoration);
+}
+
+.validation-message {
+  color: var(--validation-message-color);
 }

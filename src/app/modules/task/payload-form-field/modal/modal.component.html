@@ -1,22 +1,39 @@
 <finlevit-button
   [icon]="metaData?.icon"
   [iconPos]="metaData?.iconPos"
-  [color]="metaData?.button?.color"
-  [bgColor]="metaData?.button?.bgColor"
   [label]="item?.label"
-  [variant]="metaData?.variant"
   [type]="metaData?.type"
   (btnClick)="toggleModal()"
-  [class]="'text-content text-style-' + metaData?.textStyle"
-  [style.--button-label-font-style]="metaData?.fontStyle"
-  [ngStyle]="{
-    width: '100%',
-    height: '100%',
-    'font-weight': metaData?.fontWeight,
-    'font-style': metaData?.fontStyle,
-    'text-decoration': metaData?.textDecortation,
-    'color': metaData?.button?.color
-  }"
+  [bgColor]="styles?.properties?.backgroundColor"
+  [borderColor]="styles?.properties?.borderColor"
+  [style.--button-border]="styles?.properties?.borderStyle"
+  [style.--button-border-radius]="styles?.properties?.borderRadius"
+  [style.--button-label-font-weight]="styles?.properties?.fontWeight"
+  [style.--button-label-font-style]="styles?.properties?.fontStyle"
+  [style.--button-label-text-decoration]="styles?.properties?.textDecoration"
+  [color]="styles?.properties?.labelColor"
+  [style.--button-label-font-family]="styles?.properties?.labelFontStyle"
+  [style.--button-label-align]="styles?.properties?.labelAlignment"
+  [style.--button-border-width]="styles?.properties?.borderWidth"
+  [style.--button-label-font-size]="styles?.properties?.labelFontSize"
+  [style.--button-border-top]="styles?.properties?.borderTopStyle"
+  [style.--button-border-radius-top-left]="styles?.properties?.borderTopLeftRadius"
+  [borderTopColor]="styles?.properties?.borderTopColor"
+  [style.--button-border-top-width]="styles?.properties?.borderTopWidth"
+  [style.--button-border-right]="styles?.properties?.borderRightStyle"
+  [style.--button-border-radius-top-right]="styles?.properties?.borderTopRightRadius"
+  [borderRightColor]="styles?.properties?.borderRightColor"
+  [style.--button-border-right-width]="styles?.properties?.borderRightWidth"
+  [style.--button-border-bottom]="styles?.properties?.borderBottomStyle"
+  [style.--button-border-radius-bottom-right]="styles?.properties?.borderBottomRightRadius"
+  [borderBottomColor]="styles?.properties?.borderBottomColor"
+  [style.--button-border-bottom-width]="styles?.properties?.borderBottomWidth"
+  [style.--button-border-left]="styles?.properties?.borderLeftStyle"
+  [style.--button-border-radius-bottom-left]="styles?.properties?.borderBottomLeftRadius"
+  [borderLeftColor]="styles?.properties?.borderLeftColor"
+  [style.--button-border-left-width]="styles?.properties?.borderLeftWidth"
+  [independentBorders]="styles?.properties?.independentBorder"
+  [variant]="styles?.properties?.variant"
 ></finlevit-button>
 <p-dialog
   appendTo="body"
@@ -35,20 +52,24 @@
 >
   <ng-template pTemplate="header">
     <div
-      [class]="'header-content text-content text-style-' + metaData?.modalHeader[0]?.textStyle"
+      [class]="'header-content'"
       [style]="{
-        'background-color': metaData?.modalHeader[0]?.headerbgColor,
-        'color': metaData?.modalHeader[0]?.color,
-        'font-weight': metaData?.modalHeader[0]?.fontWeight,
-        'font-style': metaData?.modalHeader[0]?.fontStyle,
-        'text-decoration': metaData?.modalHeader[0]?.textDecortation,
-        height: metaData?.modalHeader[0]?.headerHeight + 'px'
+        'height': metaData?.modalHeader[0]?.headerHeight+'px',
+        'background-color': styles?.properties?.headerBackgroundColor,
+        'font-family':styles?.properties?.headerFontFamily,
+        'color': styles?.properties?.headerLabelColor,
+        'font-size': styles?.properties?.headerFontSize,
+          'font-weight': styles?.properties?.labelFontWeight,
+          'font-style': styles?.properties?.labelStyle,
+          'text-decoration': styles?.properties?.labelTextDecoration
       }"
     >
       {{ metaData?.modalHeader[_selectedIndex].title }}
     </div>
   </ng-template>
-  <div [class]="'modal' + item?.metaData?.widgetId">
+  <div [class]="'modalcontent modal'+item?.metaData?.widgetId" [style]="{
+    'background-color': styles?.properties?.contentBackgroundColor
+  }">
     <finlevit-grid
       [viewMode]="viewMode"
       [showEdit]="showEdit"
@@ -64,7 +85,7 @@
     <div
       [ngClass]="{ 'footer-content': true }"
       [style]="{
-        'background-color':metaData?.buttonContainer?.bgColor,
+        'background-color':styles?.properties?.footerBackgroundColor,
         height: metaData?.footerHeight + 'px'
       }"
     >
@@ -72,9 +93,12 @@
         <finlevit-grid
           [viewMode]="viewMode"
           [showEdit]="showEdit"
-          [parent]="metaData?.buttonContainer"
-          [items]="metaData?.buttonContainer?.children"
+          [parent]="item.children[0]"
+          [items]="item.children[0]?.children"
           (onBtnClick)="onFooterClick($event)"
+          (onTableDataChange)="onTableDataChange.emit($event)"
+          (onOptionChange)="optionChange($event, $event.data)"
+          [style]="{width:'100%', 'background-color': styles?.properties?.footerBackgroundColor}"
         ></finlevit-grid>
       </ng-container>
     </div>

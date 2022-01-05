@@ -104,65 +104,6 @@
 .input-container{
   height: 100%;
 }
-.table-container{
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  ::ng-deep{
-    p-table{
-      height: 100%;
-    }
-  }
-  ::ng-deep{
-    .p-datatable{
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-    }
-    .p-datatable-wrapper {
-      height: 100%;
-      overflow: scroll;
-      background: #ffff;
-      border: 1px solid #dee2e6;
-    }
-    .p-datatable-thead{
-      th {
-        border-top: none
-      }
-      th:first-child{
-        border-left: none
-      }
-      th:last-child{
-        border-right: none;
-      }
-    }
-    .p-datatable-tbody{
-      tr:last-child{
-        td{
-          //border-bottom: none;
-        }
-      }
-      td:first-child{
-        border-left: none;
-      }
-      td:last-child{
-        border-right: none;
-      }
-    }
-  }
-  &.no-data-table{
-    ::ng-deep {
-      .p-datatable {
-        height: auto;
-      }
-      .p-datatable-thead {
-        th {
-          border-bottom: none
-        }
-      }
-    }
-  }
-}
 .nested-grid-container {
   height: 100%;
   &.empty-child {

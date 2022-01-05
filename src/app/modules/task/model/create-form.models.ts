@@ -92,18 +92,40 @@ export enum DATA_TYPES {
   ARRAY = "array"
 }
 
+export enum CELL_ALIGNMENTS_TYPES {
+  LEFT = "left",
+  RIGHT = "right",
+  CENTER = "center"
+}
+export enum TABLE_OVERFLOW {
+  PAGINATION = "pagination",
+  SCROLL = "scroll"
+}
+export enum TABLE_PAGINATION_POSITIONS {
+  TOP = "top",
+  BOTTOM = "bottom"
+}
+
 
 export class TableActions {
   editRow: boolean;
   deleteRow: boolean;
   width: any;
   label: string;
+  alignment: CELL_ALIGNMENTS_TYPES;
   constructor(data) {
-    const { editRow = false, deleteRow = false, width = 30, label = "Actions" } = data;
+    const {
+      editRow = true,
+      deleteRow = true,
+      width = 100,
+      label = "Actions",
+      align = CELL_ALIGNMENTS_TYPES.LEFT
+    } = data;
     this.editRow = editRow;
     this.deleteRow = deleteRow;
     this.width = width;
     this.label = label;
+    this.alignment = align;
   }
 }
 
@@ -211,7 +233,7 @@ export class MetaData {
   defaultRows: number;
   defaultMinItemRows: number;
   conditions: any;
-
+  errorMessage: string;
   constructor(data) {
     const {
       widgetId,
@@ -229,7 +251,8 @@ export class MetaData {
       defaultRows,
       defaultMinItemRows,
       hideRows,
-      conditions
+      conditions,
+      errorMessage = "",
     } = data;
     this.widgetId = widgetId || getUniqueId("widget");
     this.widgetType = widgetType;
@@ -247,143 +270,140 @@ export class MetaData {
     this.defaultRows = defaultRows;
     this.hideRows = hideRows;
     this.conditions = conditions;
+    this.errorMessage = errorMessage;
+  }
+}
+export class SubColumn {
+  columnId: string;
+  populateResponsePath: string;
+  name: string;
+  constructor(data) {
+    const { columnId, populateResponsePath, name } = data;
+    this.columnId = columnId;
+    this.populateResponsePath = populateResponsePath;
+    this.name = name;
+  }
+}
+export class TablePopulateConfig {
+  populateConfigType: string;
+  columns: Array<SubColumn>;
+  parameters: Array<any>;
+  populateTriggerId: string;
+  populateResponsePath: string;
+  datalistId: string;
+  dataResourceId: string;
+  resourceId: string;
+  constructor(data) {
+    const {
+      populateConfigType = null,
+      columns = [],
+      parameters = [],
+      populateTriggerId = null,
+      populateResponsePath = null,
+      datalistId = null,
+      dataResourceId = null,
+      resourceId = null
+    } = data;
+    this.populateConfigType = populateConfigType;
+    this.columns = columns;
+    this.parameters = parameters;
+    this.populateTriggerId = populateTriggerId;
+    this.populateResponsePath = populateResponsePath;
+    this.datalistId = datalistId;
+    this.dataResourceId = dataResourceId;
+    this.resourceId = resourceId;
   }
 }
 
-export class Column {
-  type: DATA_TYPES;
-  colType: string;
-  columnId: string;
-  label: string;
-  name: string;
-  displayName: string;
-  populateResponsePath: string;
-  width?: string;
-  editable: boolean;
-  validators: Validators;
-  metaData:
-    | TextMetaData
-    | TextInputMetaData
-    | NumberMetaData
-    | CheckboxMetaData
-    | ImageMetaData
-    | CheckboxGroupMetaData
-    | DropdownMetaData
-    | DatePickerMetaData
-    | RadioGroupMetaData
-    | TextAreaMetaData
-    | ButtonMetaData
-    | UploadMetaData
-    | ModalMetaData;
-  constructor(data) {
-    const {
-      type = DATA_TYPES.STRING,
-      colType = WidgetTypes.TextInput,
-      label = "",
-      name = "",
-      displayName = "",
-      populateResponsePath = "",
-      columnId = "",
-      width = "100",
-      editable = true,
-      validators = {},
-      metaData
-    } = data;
-    if (metaData) {
-      switch (colType) {
-        case WidgetTypes.Text:
-          this.metaData = new TextMetaData(data);
-          break;
-        case WidgetTypes.TextInput:
-          this.metaData = new TextInputMetaData(data);
-          break;
-        case WidgetTypes.Number:
-          this.metaData = new NumberMetaData(data);
-          break;
-        case WidgetTypes.Checkbox:
-          this.metaData = new CheckboxMetaData(data);
-          break;
-        case WidgetTypes.Image:
-          this.metaData = new ImageMetaData(data);
-          break;
-        case WidgetTypes.CheckboxGroup:
-          this.metaData = new CheckboxGroupMetaData(data);
-          break;
-        case WidgetTypes.Dropdown:
-          this.metaData = new DropdownMetaData(data);
-          break;
-        case WidgetTypes.DatePicker:
-          this.metaData = new DatePickerMetaData(data);
-          break;
-        case WidgetTypes.RadioGroup:
-          this.metaData = new RadioGroupMetaData(data);
-          break;
-        case WidgetTypes.TextArea:
-          this.metaData = new TextAreaMetaData(data);
-          break;
-        case WidgetTypes.Button:
-          this.metaData = new ButtonMetaData(data);
-          break;
-        case WidgetTypes.Upload:
-          this.metaData = new UploadMetaData(data);
-          break;
-        case WidgetTypes.Modal:
-          this.metaData = new ModalMetaData(data);
-          break;
-        default:
-          this.metaData = null;
-          break;
-      }
-    } else {
-      this.metaData = metaData;
-    }
-    this.colType = colType;
-    this.type = type;
-    this.label = label;
-    this.columnId = columnId || getUniqueId("column");
-    this.name = name;
-    this.displayName = displayName;
-    this.populateResponsePath = populateResponsePath;
-    this.width = width;
-    this.editable = editable;
-    this.validators = new Validators(validators);
-  }
-}
-export class TableMetaData extends MetaData {
-  columns: Array<Column>;
-  populateConfigType: string;
+export class TableMetaData<T> extends MetaData {
+  color: string;
+  bgColor: string;
   heading: string;
   sort: boolean;
   filter: boolean;
-  pagination: boolean;
   addRows: boolean;
+  hideHeader: boolean;
+  horizontalBorder: boolean;
+  verticalBorder: boolean;
+  tableBorder: boolean;
+  borderColor: string;
+  actions: TableActions;
+  optionPopulateConfig: Array<TablePopulateConfig>;
+  columns: Array<T>;
+  overflow: TABLE_OVERFLOW;
   options: Array<any>;
-  color: string;
-  bgColor: string;
+  bodyCellColor: string;
+  bodyCellBgColor: string;
+
+  pagination: boolean;
+  paginatorPosition: TABLE_PAGINATION_POSITIONS;
+  paginatorColor: string;
+  paginatorBgColor: string;
+  hideFooter: boolean;
+
   constructor(data) {
     super(data);
     const {
-      columns = [],
-      populateConfigType = PopulateConfigOptionTypes.onload,
       heading = "",
       sort = false,
       filter = false,
       pagination = false,
-      addRows = false,
+      color = "#6a6a6a",
+      bgColor = "#ededed",
+      bodyCellColor = "#6a6a6a",
+      bodyCellBgColor = "#fff",
+      optionsPopulateConfig = [],
+      columns = [],
+      addRows = true,
+      hideHeader = false,
+      horizontalBorder = true,
+      verticalBorder = true,
+      tableBorder = true,
+      borderColor = "#cccccc",
+      actions = {},
+      overflow = TABLE_OVERFLOW.PAGINATION,
+      paginatorPosition = TABLE_PAGINATION_POSITIONS.BOTTOM,
+      paginatorBgColor = "#ededed",
+      paginatorColor = "#6a6a6a",
       options = [],
-      color = "#000000",
-      bgColor = "#ffffff"
+      hideFooter = false,
     } = data;
     this.columns = columns;
-    this.populateConfigType = populateConfigType;
     this.heading = heading;
     this.sort = sort;
     this.filter = filter;
     this.pagination = pagination;
-    this.options = options;
     this.color = color;
     this.bgColor = bgColor;
+    this.optionPopulateConfig = optionsPopulateConfig;
     this.addRows = addRows;
+    this.hideHeader = hideHeader;
+    this.horizontalBorder = horizontalBorder;
+    this.verticalBorder = verticalBorder;
+    this.tableBorder = tableBorder;
+    this.borderColor = borderColor;
+
+    this.actions = new TableActions(actions);
+    this.overflow = overflow;
+
+    this.pagination = paginatorPosition;
+    this.paginatorPosition = paginatorPosition;
+    this.paginatorBgColor = paginatorBgColor;
+    this.paginatorColor = paginatorColor;
+
+    this.bodyCellColor = bodyCellColor;
+    this.bodyCellBgColor = bodyCellBgColor;
+    this.options = options;
+    this.hideFooter = hideFooter;
+  }
+}
+
+export class SavedTransactionMetaData extends TableMetaData<SavedColumn> {
+  statusIds: Array<string>;
+  constructor(data) {
+    super(data);
+    const { statusIds = [] } = data;
+    this.statusIds = statusIds;
   }
 }
 
@@ -439,38 +459,6 @@ export class SavedColumn {
   columnId: string;
 }
 
-export class SavedTransactionMetaData extends MetaData {
-  color: string;
-  bgColor: string;
-  heading: string;
-  sort: boolean;
-  filter: boolean;
-  pagination: boolean;
-  columns: Array<SavedColumn>;
-  statusIds: Array<string>;
-  constructor(data) {
-    super(data);
-    const {
-      heading = "",
-      sort = false,
-      filter = false,
-      pagination = false,
-      color = "#000000",
-      bgColor = "#ffffff",
-      columns = [],
-      statusIds = []
-    } = data;
-    this.columns = columns;
-    this.heading = heading;
-    this.sort = sort;
-    this.filter = filter;
-    this.pagination = pagination;
-    this.color = color;
-    this.bgColor = bgColor;
-    this.statusIds = statusIds;
-  }
-}
-
 export class DropdownMetaData extends MetaData {
   tooltip: string;
   placeholder: string;
@@ -481,20 +469,30 @@ export class DropdownMetaData extends MetaData {
   optionType: string;
   optionPopulateConfig: Array<OptionConfig>;
   onChangeConfig: OnChangeTriggerConfig;
+  errorMessage: string;
+  showErrorMessage: boolean;
+  styleProperties: { id: "" };
+  allowLabelWrapping: boolean;
+  showFieldDependencyConfig: boolean;
   constructor(data) {
     super(data);
     const {
       placeholder = "Select",
       tooltip = "",
-      optionLabel = "",
-      optionValue = "",
+      optionLabel = "name",
+      optionValue = "value",
       options = [],
       optionType = "manual",
       isLabelAndValue = false,
       optionPopulateConfig = [],
-      onChangeConfig = {}
+      onChangeConfig = {},
+      errorMessage = "",
+      showErrorMessage = true,
+      styleProperties = {},
+      allowLabelWrapping = false,
+      showFieldDependencyConfig = false
     } = data;
-    this.placeholder = placeholder;
+    this.placeholder = placeholder || "Select";
     this.optionType = optionType;
     this.optionLabel = optionLabel;
     this.optionValue = optionValue;
@@ -503,6 +501,11 @@ export class DropdownMetaData extends MetaData {
     this.isLabelAndValue = isLabelAndValue;
     this.optionPopulateConfig = optionPopulateConfig;
     this.onChangeConfig = new OnChangeTriggerConfig(onChangeConfig);
+    this.errorMessage = errorMessage;
+    this.showErrorMessage = showErrorMessage;
+    this.styleProperties = styleProperties;
+    this.allowLabelWrapping = allowLabelWrapping;
+    this.showFieldDependencyConfig = showFieldDependencyConfig;
   }
 }
 
@@ -518,11 +521,11 @@ export class TextInputMetaData extends MetaData {
   errorMessage: string;
   showErrorMessage: boolean;
   styleProperties: { id: "", properties: any };
+  adornmentBackgroundColor: string;
   allowLabelWrapping: boolean;
   showClearButton: boolean;
-  adornmentBackgroundColor: boolean;
-  prefixText: "";
-  suffixText: "";
+  prefixText: string;
+  suffixText: string;
   constructor(data) {
     super(data);
     const {
@@ -537,9 +540,9 @@ export class TextInputMetaData extends MetaData {
       errorMessage = "",
       showErrorMessage = true,
       styleProperties = {},
+      adornmentBackgroundColor = "#ffffff",
       allowLabelWrapping = false,
       showClearButton = false,
-      adornmentBackgroundColor = "#ffffff",
       prefixText = "",
       suffixText = ""
     } = data;
@@ -554,9 +557,9 @@ export class TextInputMetaData extends MetaData {
     this.errorMessage = errorMessage;
     this.showErrorMessage = showErrorMessage;
     this.styleProperties = styleProperties;
+    this.adornmentBackgroundColor = adornmentBackgroundColor;
     this.allowLabelWrapping = allowLabelWrapping;
     this.showClearButton = showClearButton;
-    this.adornmentBackgroundColor = adornmentBackgroundColor;
     this.prefixText = prefixText;
     this.suffixText = suffixText;
   }
@@ -568,21 +571,54 @@ export class PasswordInputMetaData extends MetaData {
   tooltip: string;
   leftIcon: string;
   rightIcon: string;
-  isFormulaField: boolean;
-  formula = [];
-  rules : any;
   showIcon: string;
   hideIcon: string;
+  isFormulaField: boolean;
+  formula = [];
+  rules: {
+    oneLowerCase: boolean;
+    oneUpperCase: boolean;
+    oneNumber: boolean;
+    oneSpecialchar: boolean;
+    minLength: number;
+  };
+  errorMessage: string;
+  showErrorMessage: boolean;
+  styleProperties: { id: "", properties: any };
+  adornmentBackgroundColor: string;
+  allowLabelWrapping: boolean;
+  showClearButton: boolean;
+  prefixText: string;
+  suffixText: string;
   constructor(data) {
     super(data);
-    const { mask = "", icon = "", tooltip = "", placeholder = "********", leftIcon = "", rightIcon = "",showIcon = "pi pi-eye",
-    hideIcon = "pi pi-eye-slash",isFormulaField, formula,rules = {
-      oneLowerCase: true,
-      oneUpperCase: true,
-      oneNumber: true,
-      oneSpecialchar: true,
-      minLength : 8,
-    } } = data;
+    const {
+      mask = "",
+      icon = "",
+      tooltip = "",
+      placeholder = "********",
+      leftIcon = "",
+      rightIcon = "",
+      showIcon = "pi pi-eye",
+      hideIcon = "pi pi-eye-slash",
+      isFormulaField,
+      formula,
+      rules = {
+        oneLowerCase: true,
+        oneUpperCase: true,
+        oneNumber: true,
+        oneSpecialchar: true,
+        minLength: 8
+      },
+      errorMessage = "",
+      showErrorMessage = true,
+      styleProperties = {},
+      adornmentBackgroundColor = "#ffffff",
+      allowLabelWrapping = false,
+      showClearButton = false,
+      prefixText = "",
+      suffixText = ""
+    } = data;
     this.mask = mask;
     this.icon = icon;
     this.tooltip = tooltip;
@@ -593,22 +629,87 @@ export class PasswordInputMetaData extends MetaData {
     this.hideIcon = hideIcon;
     this.isFormulaField = isFormulaField;
     this.formula = formula;
-    this.rules= rules;
+    this.rules = rules;
+    this.errorMessage = errorMessage;
+    this.showErrorMessage = showErrorMessage;
+    this.styleProperties = styleProperties;
+    this.adornmentBackgroundColor = adornmentBackgroundColor;
+    this.allowLabelWrapping = allowLabelWrapping;
+    this.showClearButton = showClearButton;
+    this.prefixText = prefixText;
+    this.suffixText = suffixText;
   }
 }
 
 export class StepperContainerMetaData extends MetaData {
-  sublabel:string;
+  sublabel: string;
   stepperType: string;
-  isReviewer:boolean;
-  isFreeflow:boolean;
+  isReviewer: boolean;
+  isFreeflow: boolean;
+  showHeader: boolean;
+  indicatorPattern: string;
+  color: string;
+  currentStepColor: string;
+  completedStepColor: string;
+  fontWeight: string;
+  textStyle: string;
+  fontStyle: string;
+  textDecortation: string;
+  completedBarColor: string;
+  defaultBarColor: string;
+  buttonContainer: any;
+  footerBgColor: string;
+  leftPanelBgColor: string;
+  conentBgColor: string;
+  headerContent: any;
+  headerHeight: number;
+  stepperHeight?: any;
   constructor(data) {
     super(data);
-    const {sublabel='',stepperType="Horizontal",isReviewer=false,isFreeflow=false}=data;
-    this.sublabel=sublabel;
-    this.stepperType=stepperType;
-    this.isReviewer=isReviewer;
-    this.isFreeflow=isFreeflow;
+    const {
+      sublabel = "",
+      stepperType = "Vertical",
+      isReviewer = false,
+      isFreeflow = false,
+      indicatorPattern = "circle",
+      textStyle = TextStyles.BODY1,
+      color = "#898585",
+      currentStepColor = "#000000",
+      completedStepColor = "#898585",
+      defaultBarColor = "",
+      fontStyle = "",
+      textDecortation = "",
+      completedBarColor = "",
+      fontWeight = 400,
+      buttonContainer = {},
+      footerBgColor = "#fff",
+      leftPanelBgColor = "#fff",
+      conentBgColor = "#fff",
+      showHeader = false,
+      headerContent = [],
+      headerHeight = 0
+    } = data;
+    this.sublabel = sublabel;
+    this.stepperType = stepperType;
+    this.isReviewer = isReviewer;
+    this.isFreeflow = isFreeflow;
+    this.indicatorPattern = indicatorPattern;
+    this.textStyle = textStyle;
+    this.color = color;
+    this.fontWeight = fontWeight;
+    this.currentStepColor = currentStepColor;
+    this.completedStepColor = completedStepColor;
+    this.textDecortation = textDecortation;
+    this.fontStyle = fontStyle;
+    this.defaultBarColor = defaultBarColor;
+    this.completedBarColor = completedBarColor;
+    this.buttonContainer = buttonContainer;
+    this.footerBgColor = footerBgColor;
+    this.leftPanelBgColor = leftPanelBgColor;
+    this.conentBgColor = conentBgColor;
+    this.showHeader = showHeader;
+    this.headerContent = headerContent;
+    this.headerHeight = headerHeight;
   }
 }
 export class SSNInputMetaData extends MetaData {
@@ -625,7 +726,15 @@ export class SSNInputMetaData extends MetaData {
   isFormulaField: boolean;
   formula = [];
   selectedInput: string;
-  patterns:any;
+  patterns: any;
+  errorMessage: string;
+  showErrorMessage: boolean;
+  styleProperties: { id: "" };
+  adornmentBackgroundColor: string;
+  allowLabelWrapping: boolean;
+  showClearButton: boolean;
+  prefixText: string;
+  suffixText: string;
   constructor(data) {
     super(data);
     const {
@@ -641,11 +750,20 @@ export class SSNInputMetaData extends MetaData {
       hideIcon = "pi pi-eye",
       isFormulaField,
       formula,
-      selectedInput='SSN',
+      selectedInput = "SSN",
       patterns = {
-        SSN: "^(?!\\b(\\d)\\1+-(\\d)\\1+-(\\d)\\1+\\b)(?!123-45-6789|219-09-9999|078-05-1120)(?!666|000|9\\d{2})\\d{3}-(?!00)\\d{2}-(?!0{4})\\d{4}$",
+        SSN:
+          "^(?!\\b(\\d)\\1+-(\\d)\\1+-(\\d)\\1+\\b)(?!123-45-6789|219-09-9999|078-05-1120)(?!666|000|9\\d{2})\\d{3}-(?!00)\\d{2}-(?!0{4})\\d{4}$",
         ITIN: "^(9\\d{2})-([7]\\d|8[0-8])-(\\d{4})$"
-      }
+      },
+      errorMessage = "",
+      showErrorMessage = true,
+      styleProperties = {},
+      adornmentBackgroundColor = "#ffffff",
+      allowLabelWrapping = false,
+      showClearButton = false,
+      prefixText = "",
+      suffixText = ""
     } = data;
     this.mask = mask;
     this.icon = icon;
@@ -657,10 +775,18 @@ export class SSNInputMetaData extends MetaData {
     this.hideIcon = hideIcon;
     this.isFormulaField = isFormulaField;
     this.formula = formula;
-    this.selectedInput= selectedInput;
-    this.patterns=patterns;
-    this.showMask=showMask;
-    this.hideMask=hideMask;
+    this.selectedInput = selectedInput;
+    this.patterns = patterns;
+    this.showMask = showMask;
+    this.hideMask = hideMask;
+    this.errorMessage = errorMessage;
+    this.showErrorMessage = showErrorMessage;
+    this.styleProperties = styleProperties;
+    this.adornmentBackgroundColor = adornmentBackgroundColor;
+    this.allowLabelWrapping = allowLabelWrapping;
+    this.showClearButton = showClearButton;
+    this.prefixText = prefixText;
+    this.suffixText = suffixText;
   }
 }
 
@@ -673,9 +799,34 @@ export class EmailMetaData extends MetaData {
   rightIcon: string;
   isFormulaField: boolean;
   formula = [];
+  errorMessage: string;
+  showErrorMessage: boolean;
+  adornmentBackgroundColor: string;
+  allowLabelWrapping: boolean;
+  showClearButton: boolean;
+  prefixText: string;
+  suffixText: string;
+  styleProperties: { id: "", properties: any };
   constructor(data) {
     super(data);
-    const { mask = "", icon = "", tooltip = "", placeholder = "example@domain.com", leftIcon = "", rightIcon = "", isFormulaField, formula } = data;
+    const {
+      mask = "",
+      icon = "",
+      tooltip = "",
+      placeholder = "example@domain.com",
+      leftIcon = "",
+      rightIcon = "",
+      isFormulaField,
+      formula,
+      errorMessage = "",
+      showErrorMessage = true,
+      styleProperties = {},
+      adornmentBackgroundColor = "#ffffff",
+      allowLabelWrapping = false,
+      showClearButton = false,
+      prefixText = "",
+      suffixText = ""
+    } = data;
     this.mask = mask;
     this.icon = icon;
     this.tooltip = tooltip;
@@ -684,6 +835,14 @@ export class EmailMetaData extends MetaData {
     this.rightIcon = rightIcon;
     this.isFormulaField = isFormulaField;
     this.formula = formula;
+    this.errorMessage = errorMessage;
+    this.showErrorMessage = showErrorMessage;
+    this.styleProperties = styleProperties;
+    this.adornmentBackgroundColor = adornmentBackgroundColor;
+    this.allowLabelWrapping = allowLabelWrapping;
+    this.showClearButton = showClearButton;
+    this.prefixText = prefixText;
+    this.suffixText = suffixText;
   }
 }
 
@@ -696,9 +855,34 @@ export class PhonenumberInputMetaData extends MetaData {
   rightIcon: string;
   isFormulaField: boolean;
   formula = [];
+  errorMessage: string;
+  showErrorMessage: boolean;
+  styleProperties: { id: "", properties: any };
+  adornmentBackgroundColor: string;
+  allowLabelWrapping: boolean;
+  showClearButton: boolean;
+  prefixText: string;
+  suffixText: string;
   constructor(data) {
     super(data);
-    const { mask = "000-000-0000", icon = "", tooltip = "", placeholder = "000-000-0000", leftIcon = "", rightIcon = "", isFormulaField, formula } = data;
+    const {
+      mask = "000-000-0000",
+      icon = "",
+      tooltip = "",
+      placeholder = "000-000-0000",
+      leftIcon = "",
+      rightIcon = "",
+      isFormulaField,
+      formula,
+      errorMessage = "",
+      showErrorMessage = true,
+      styleProperties = {},
+      adornmentBackgroundColor = "#ffffff",
+      allowLabelWrapping = false,
+      showClearButton = false,
+      prefixText = "",
+      suffixText = ""
+    } = data;
     this.mask = mask;
     this.icon = icon;
     this.tooltip = tooltip;
@@ -707,6 +891,14 @@ export class PhonenumberInputMetaData extends MetaData {
     this.rightIcon = rightIcon;
     this.isFormulaField = isFormulaField;
     this.formula = formula;
+    this.errorMessage = errorMessage;
+    this.showErrorMessage = showErrorMessage;
+    this.styleProperties = styleProperties;
+    this.adornmentBackgroundColor = adornmentBackgroundColor;
+    this.allowLabelWrapping = allowLabelWrapping;
+    this.showClearButton = showClearButton;
+    this.prefixText = prefixText;
+    this.suffixText = suffixText;
   }
 }
 
@@ -772,23 +964,70 @@ export class DatePickerMetaData extends MetaData {
 }
 
 export class NumberMetaData extends MetaData {
-  format: boolean;
   prefix: string;
   suffix: string;
+  mode: string;
+  currency: string;
+  minFractionDigits: number;
+  maxFractionDigits: number;
   placeholder: string;
   tooltip: string;
   isFormulaField: boolean;
   formula = [];
+  errorMessage: string;
+  showErrorMessage: boolean;
+  showStepperButtons: boolean;
+  step: number;
+  styleProperties: { id: ""; properties: any };
+  allowLabelWrapping: false;
+  showClearButton: false;
+  adornmentBackgroundColor: "#ffffff";
+  prefixText: "";
+  suffixText: "";
   constructor(data) {
     super(data);
-    const { prefix = "", suffix = "", tooltip = "", placeholder = "", format = false, isFormulaField, formula } = data;
-    this.format = format;
+    const {
+      prefix = "",
+      suffix = "",
+      mode,
+      currency,
+      minFractionDigits,
+      maxFractionDigits,
+      tooltip = "",
+      placeholder = "",
+      isFormulaField,
+      formula,
+      errorMessage = "",
+      showErrorMessage = true,
+      showStepperButtons = false,
+      step = 1,
+      styleProperties = {},
+      allowLabelWrapping = false,
+      showClearButton = false,
+      adornmentBackgroundColor = "#ffffff",
+      prefixText = "",
+      suffixText = ""
+    } = data;
     this.prefix = prefix;
     this.suffix = suffix;
+    this.mode = mode;
+    this.currency = currency;
+    this.minFractionDigits = minFractionDigits;
+    this.maxFractionDigits = maxFractionDigits;
     this.tooltip = tooltip;
     this.placeholder = placeholder;
     this.isFormulaField = isFormulaField;
     this.formula = formula;
+    this.errorMessage = errorMessage;
+    this.showErrorMessage = showErrorMessage;
+    this.showStepperButtons = showStepperButtons;
+    this.step = step;
+    this.styleProperties = styleProperties;
+    this.allowLabelWrapping = allowLabelWrapping;
+    this.showClearButton = showClearButton;
+    this.adornmentBackgroundColor = adornmentBackgroundColor;
+    this.prefixText = prefixText;
+    this.suffixText = suffixText;
   }
 }
 
@@ -829,7 +1068,7 @@ export class ContainerMetaData extends MetaData {
   title: string;
   icon: string;
   header: ContainerHeader;
-  onClickConfig: OnChangeTriggerConfig;
+  onClickConfigs: Array<OnChangeTriggerConfig>;
   externalLink: string;
   styleProperties: { id: "", properties: any };
   constructor(data) {
@@ -838,7 +1077,7 @@ export class ContainerMetaData extends MetaData {
     this.title = title;
     this.icon = icon;
     this.styleProperties = styleProperties;
-    this.onClickConfig = new OnChangeTriggerConfig(onClickConfig);
+    this.onClickConfigs = [new OnChangeTriggerConfig(onClickConfig)];
     this.externalLink = externalLink;
     this.header = new ContainerHeader(header);
   }
@@ -891,6 +1130,10 @@ export class CheckboxGroupMetaData extends CheckboxMetaData {
   optionValue: string;
   dataResourceId: string;
   datalistId: string;
+  alignOptions: string;
+  columns: number;
+  allowLabelWrapping: boolean;
+  showFieldDependencyConfig: boolean;
   constructor(data) {
     super(data);
     const {
@@ -900,8 +1143,12 @@ export class CheckboxGroupMetaData extends CheckboxMetaData {
       optionLabel = "name",
       optionValue = "value",
       isLabelAndValue = false,
-      dataResourceId = "",
-      datalistId = ""
+      dataResourceId = null,
+      datalistId = null,
+      alignOptions = "Horizontal",
+      columns = 1,
+      allowLabelWrapping = false,
+      showFieldDependencyConfig = false
     } = data;
     this.optionType = optionType;
     this.tooltip = tooltip;
@@ -911,6 +1158,10 @@ export class CheckboxGroupMetaData extends CheckboxMetaData {
     this.optionValue = optionValue;
     this.datalistId = datalistId;
     this.dataResourceId = dataResourceId;
+    this.alignOptions = alignOptions;
+    this.columns = columns;
+    this.allowLabelWrapping = allowLabelWrapping;
+    this.showFieldDependencyConfig = showFieldDependencyConfig;
   }
 }
 
@@ -922,6 +1173,11 @@ export class RadioGroupMetaData extends CheckboxMetaData {
   optionLabel: string;
   optionValue: string;
   alignOptions: string;
+  columns: number;
+  allowLabelWrapping: boolean;
+  showErrorMessage: boolean;
+  errorMessage: string;
+  showFieldDependencyConfig: boolean;
   constructor(data) {
     super(data);
     const {
@@ -931,7 +1187,12 @@ export class RadioGroupMetaData extends CheckboxMetaData {
       optionLabel = "name",
       optionValue = "value",
       isLabelAndValue = false,
-      alignOptions = "Horizontal"
+      alignOptions = "Vertical",
+      columns = 1,
+      allowLabelWrapping = false,
+      showErrorMessage = true,
+      errorMessage = "",
+      showFieldDependencyConfig = false
     } = data;
     this.optionType = optionType;
     this.tooltip = tooltip;
@@ -940,6 +1201,11 @@ export class RadioGroupMetaData extends CheckboxMetaData {
     this.optionLabel = optionLabel;
     this.optionValue = optionValue;
     this.alignOptions = alignOptions;
+    this.columns = columns;
+    this.allowLabelWrapping = allowLabelWrapping;
+    this.showErrorMessage = showErrorMessage;
+    this.errorMessage = errorMessage;
+    this.showFieldDependencyConfig = showFieldDependencyConfig;
   }
 }
 
@@ -1018,6 +1284,7 @@ export class ModalMetaData extends MetaData {
   modalHeader: any;
   modalType: string;
   buttonContainer: any;
+  styleProperties: { id: "" };
   constructor(data) {
     super(data);
     const {
@@ -1040,7 +1307,8 @@ export class ModalMetaData extends MetaData {
       footerHeight= 50,
       modalHeader=[],
       buttonContainer = {},
-      modalType = "SinglePage"
+      modalType = "SinglePage",
+      styleProperties = {}
     } = data;
     this.title = title;
     this.icon = icon;
@@ -1062,6 +1330,7 @@ export class ModalMetaData extends MetaData {
     this.modalHeader = modalHeader;
     this.modalType = modalType;
     this.buttonContainer = buttonContainer;
+    this.styleProperties= styleProperties;
   }
 }
 
@@ -1140,6 +1409,7 @@ export class BaseWidget {
   maxItemCols: number;
   minItemRows: number;
   maxItemRows: number;
+  width?: any;
 
   hideRows: number;
   defaultRows: number;
@@ -1164,7 +1434,7 @@ export class BaseWidget {
     | RadioGroupMetaData
     | TextAreaMetaData
     | ButtonMetaData
-    | TableMetaData
+    | TableMetaData<Column>
     | UploadMetaData
     | CollapseContainerMetaData
     | ErrorContainerMetadata
@@ -1184,6 +1454,7 @@ export class BaseWidget {
   status: boolean;
   error?: boolean;
   errorMsg?: string;
+  errorMessage?:string;
   children: BaseWidget[];
   validators: Validators;
   value: Value;
@@ -1212,8 +1483,9 @@ export class BaseWidget {
       minItemCols,
       minItemRows,
       maxItemCols,
-      maxItemRows
-    } = data;
+      maxItemRows,
+      width = 100,
+  } = data;
     if (!metaData) {
       switch (widgetType) {
         case WidgetTypes.Text:
@@ -1323,5 +1595,36 @@ export class BaseWidget {
     this.minItemRows = minItemRows;
     this.maxItemCols = maxItemCols;
     this.maxItemRows = maxItemRows;
+    this.width = width;
+  }
+}
+export class Column extends BaseWidget {
+  type: DATA_TYPES;
+  colType: WidgetTypes;
+  columnId: string;
+  name: string;
+  populateResponsePath: string;
+  alignment: CELL_ALIGNMENTS_TYPES;
+  constructor(data) {
+    super(data);
+    const {
+      type = DATA_TYPES.STRING,
+      colType = WidgetTypes.TextInput,
+      label = "",
+      name = "",
+      populateResponsePath = "",
+      columnId = "",
+      children = [],
+      alignment = CELL_ALIGNMENTS_TYPES.LEFT
+    } = data;
+    this.alignment = alignment;
+    this.children = children || [];
+    this.colType = colType;
+    this.type = type;
+    this.label = label;
+    this.columnId = columnId || getUniqueId("column");
+    this.name = name;
+    this.displayName = this.columnId;
+    this.populateResponsePath = populateResponsePath;
   }
 }

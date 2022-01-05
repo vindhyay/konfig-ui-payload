@@ -87,8 +87,8 @@ environment {
 			}
         steps{
             echo"Deploying the latest version"
-			sh 'ssh root@10.10.5.41 "kubectl -n design set image deployments/${DNAME} ${NAME}=${REPO}/${NAME}:r-${BUILD_NUMBER}"'
-            sh 'ssh root@10.10.5.41 "kubectl -n design rollout restart deployment ${DNAME}"'
+			sh 'ssh rke@10.10.5.41 "kubectl -n design set image deployments/${DNAME} ${NAME}=${REPO}/${NAME}:r-${BUILD_NUMBER}"'
+            sh 'ssh rke@10.10.5.41 "kubectl -n design rollout restart deployment ${DNAME}"'
             echo"Successfully deployed the latest version of the Application"
 			}
 		}
