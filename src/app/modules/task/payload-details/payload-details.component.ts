@@ -53,10 +53,10 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
     }
     this.taskService.transactionDetailsSubject.subscribe(value => {
       if (value) {
-        this.transactionDetails = value;
         if(this.formFields.length){
-          if(this.formFields?.length!==value?.uiPayload?.length){
+          if(this.formFields?.length!==value?.uiPayload?.length || this.transactionDetails?.screenId !== value?.screenId){
             this.formFields = value?.uiPayload || [];
+            addOriginalPosition(this.formFields);
           }else{
             this.formFields.forEach((element,index) => {
               for (const prop in element) {
@@ -66,7 +66,9 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
           }
         }else{
           this.formFields = value?.uiPayload || [];
+          addOriginalPosition(this.formFields);
         }
+        this.transactionDetails = value;
         this.formFields = this.formFields.sort((a,b)=> a?.y - b?.y);
         const header = this.formFields.find(item => item?.metaData?.widgetType === WidgetTypes.Header);
         const errorContainer = this.formFields.find(item => item?.metaData?.widgetType === WidgetTypes.ErrorContainer);
@@ -267,7 +269,6 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
                   if(toastMsg){
                     this.notificationService.success(toastMsg, "Success");
                   }
-                  this.transactionDetails = data;
                   this.taskService.setTransactionDetails(data);
                   this.id = data.id;
                   this.triggerUIAction(uiAction);
