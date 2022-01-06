@@ -154,7 +154,7 @@ export class PayloadViewFormComponent implements OnInit {
       data: {
         isUnique = false,
         value: { value = null },
-        metaData: { onChangeConfig: { action: type = "", parameters = [] } = {} } = {},
+        metaData: { onChangeConfigs: [{ action: type = "", parameters = [] }] = [] , } = {},
         id
       }
     } = $event;
