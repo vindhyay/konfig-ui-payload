@@ -68,6 +68,14 @@ export class PhonenumberFieldComponent implements OnInit {
   ngOnInit(): void {
 
   }
+
+  formatPhoneNumber(){
+    let phoneNumber = ('' + 9090909090).replace(/\D/g, '');
+    let match = phoneNumber.match(/^(\d{3})(\d{3})(\d{4})$/);
+    if (match) {
+      return match[1] + '-' + match[2] + '-' + match[3];
+    }
+  }
   
   validateField($event: any){
     this.onValueChange.emit($event);
