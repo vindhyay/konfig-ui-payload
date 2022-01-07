@@ -49,7 +49,6 @@ export class VerticalStepperComponent implements OnInit {
   isInteract=false;
   ngOnInit() {
     setTimeout(()=>{
-      console.log('onInit',this.children[0].children);
       this.checkHeight();
       this.scrollTo(this._selectedIndex);
     },100)
@@ -86,12 +85,10 @@ export class VerticalStepperComponent implements OnInit {
     const actionName=item.data.metaData?.onClickConfigs.find(item=>item.action==='previousStep' || item.action==='nextStep')
     switch(actionName?.action){
       case 'previousStep':
-        // this.resetVisibility();
         this.onPrev.emit({stepIndex:this._selectedIndex,item:item});
         // this.onBtnClick.emit(item);
         break;
       case 'nextStep':
-      //  this.resetVisibility();
         this.onNext.emit({stepIndex:this._selectedIndex,item:item});
         // this.onBtnClick.emit(item);
         break;
@@ -118,23 +115,8 @@ export class VerticalStepperComponent implements OnInit {
       }
       return item;
     })
-    console.log(this.children[0].children);
   }
-  // resetVisibility(){
-  //   if(this.children[0].children.length)
-  //   this.children[0].children = this.children[0].children.map((item)=>{
-  //     const index=item?.metaData['onClickConfigs'].findIndex(subitem=>subitem.action==='previousStep' || subitem.action==='nextStep' || subitem.action==='submit');
-  //     if(index>=0)
-  //     switch(item.metaData['onClickConfigs'][index]?.action){
-  //       case 'previousStep':
-  //       case 'nextStep':
-  //       case 'submit':
-  //          return {...item, metaData:{ ...item.metaData,isHidden:false}};
-  //       default:
-  //         return item;
-  //     }
-  //   })
-  // }
+
   checkHeight(containerName?) {
     this.editorService.setAdjustableHeight(this.children[this._selectedIndex].children, ".content"+this.metaData['widgetId']);
   }
