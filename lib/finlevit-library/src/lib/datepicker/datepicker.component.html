@@ -26,7 +26,6 @@
                 (ngModelChange)="onLocalChange({ value: $event })"
                 (onFocus)="onLocalFocus($event)"
                 (onBlur)="onLocalTouched($event)"
-                (onClose)="onClose($event)"
                 [(ngModel)]="_value"
                 [inputStyleClass]="isSmall ? 'p-inputtext-sm' : isLarge ? 'p-inputtext-lg' : ''"
                 [ngClass]="{ 'error-border': showErrorBorder && checkError() }"

@@ -140,8 +140,4 @@ export class DatepickerComponent implements ControlValueAccessor, OnInit {
     });
     return errorMessages;
   }
-
-  onClose(event){
-
-  }
 }
