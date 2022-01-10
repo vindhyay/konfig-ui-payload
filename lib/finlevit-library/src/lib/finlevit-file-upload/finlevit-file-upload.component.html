@@ -2,7 +2,7 @@
   <label *ngIf="label" [ngClass]="{ 'mr-auto': true }"
   >{{ label }}
     <span class="required" *ngIf="isRequired">*</span>
-    <span [matTooltip]="tooltip" [matTooltipPosition]="'right'" class="material-icons tooltip-icon" *ngIf="tooltip"
+    <span [pTooltip]="tooltip" class="material-icons tooltip-icon" *ngIf="tooltip"
     >help_outline</span
     >
   </label>
