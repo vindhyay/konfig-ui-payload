@@ -1,6 +1,6 @@
 import { Component, HostListener, Input, OnInit } from "@angular/core";
 import { SorterDirective } from "../sorter.directive";
-import { CELL_ALIGNMENTS_TYPES } from "../../../../../task/model/create-form.models";
+import { CELL_ALIGNMENTS_TYPES } from "../../../../task/model/create-form.models";
 
 @Component({
   selector: "[sortHeader]",

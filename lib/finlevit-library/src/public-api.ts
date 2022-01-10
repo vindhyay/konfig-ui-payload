@@ -20,3 +20,4 @@ export * from './lib/tabs/tabs.component';
 export * from './lib/button/button.component';
 export * from  './lib/datepicker/datepicker.component';
 export * from './lib/table/table.component';
+export * from './lib/finlevit-file-upload/finlevit-file-upload.component';

@@ -33,6 +33,7 @@ import {TableModule} from "primeng/table";
 import { NgxMaskModule } from 'ngx-mask';
 
 import { TableComponent } from './table/table.component';
+import { FinlevitFileUploadComponent } from "./finlevit-file-upload/finlevit-file-upload.component";
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { TableComponent } from './table/table.component';
     RadioGroupComponent,
     DatepickerComponent,
     ButtonComponent,
-    TableComponent
+    TableComponent,
+    FinlevitFileUploadComponent
   ],
   imports: [
     CalendarModule,
@@ -88,7 +90,8 @@ import { TableComponent } from './table/table.component';
     DatepickerComponent,
     ButtonComponent,
     TableComponent,
-    TableModule
+    TableModule,
+    FinlevitFileUploadComponent
   ]
 })
 export class FinlevitLibraryModule {}

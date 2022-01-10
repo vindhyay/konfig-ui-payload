@@ -19,7 +19,6 @@ import { CollapseContainerComponent } from './payload-form-field/collapse-contai
 import {PasswordFieldComponent} from './payload-form-field/password-field/password-field.component';
 import {PhonenumberFieldComponent} from './payload-form-field/phonenumber-field/phonenumber-field.component';
 import {ssnInputFieldComponent} from './payload-form-field/ssninput-field/ssninput-field.component';
-import { AdvTableComponent } from './payload-form-field/adv-table/adv-table.component';
 import { VerticalStepperComponent } from './payload-form-field/vertical-stepper/vertical-stepper.component';
 import { DividerComponent } from "./payload-form-field/divider/divider.component";
 import { SpacerComponent } from "./payload-form-field/spacer/spacer.component";
@@ -46,7 +45,6 @@ import {AvatarModule} from "primeng/avatar";
     CollapseContainerComponent,
     PhonenumberFieldComponent,
     ssnInputFieldComponent,
-    AdvTableComponent,
     PasswordFieldComponent,
     VerticalStepperComponent,
     DividerComponent,

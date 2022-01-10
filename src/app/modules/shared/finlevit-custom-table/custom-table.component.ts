@@ -18,8 +18,8 @@ import {
   TABLE_PAGINATION_POSITIONS,
   TableActions,
   WidgetTypes
-} from "../../../task/model/create-form.models";
-import { getUniqueId, scrollToBottom, superClone } from "../../../../utils";
+} from "../../task/model/create-form.models";
+import { getUniqueId, scrollToBottom, superClone } from "../../../utils";
 import { CustomTableFiltersComponent } from "./table-utils/custom-table-filters/custom-table-filters.component";
 import { PaginationDirective } from "./table-utils/pagination.directive";
 

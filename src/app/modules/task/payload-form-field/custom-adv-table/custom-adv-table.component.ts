@@ -20,8 +20,8 @@ import {
 } from "../../model/create-form.models";
 import { DeepCopy, getUniqueId, scrollToBottom, superClone } from "../../../../utils";
 import { FormControl, Validators } from "@angular/forms";
-import { PaginationDirective } from "../../../shared/finlevit-custom-inputs/finlevit-custom-table/table-utils/pagination.directive";
-import { CustomTableFiltersComponent } from "../../../shared/finlevit-custom-inputs/finlevit-custom-table/table-utils/custom-table-filters/custom-table-filters.component";
+import { PaginationDirective } from "../../../shared/finlevit-custom-table/table-utils/pagination.directive";
+import { CustomTableFiltersComponent } from "../../../shared/finlevit-custom-table/table-utils/custom-table-filters/custom-table-filters.component";
 
 const MIN_ROW_HEIGHT = 50;
 
