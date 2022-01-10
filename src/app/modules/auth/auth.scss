@@ -39,23 +39,6 @@
   overflow: hidden;
   border-radius: 4px;
   background: #fff;
-
-  .options-row {
-    mat-checkbox {
-      margin: 12px 16px;
-    }
-
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-content: center;
-    align-items: center;
-    @media screen and (max-width: 380px) {
-      flex-direction: column;
-      align-content: flex-start;
-      align-items: flex-start;
-    }
-  }
 }
 
 .logo-icon {

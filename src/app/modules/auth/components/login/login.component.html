@@ -25,8 +25,8 @@
                     [errorMsg]="LABELS.PASSWORD_ERROR_MSG"
             ></finlevit-text>
           </div>
-          <div class="col-12 options-row">
-            <mat-checkbox name="remember" formControlName="remember">{{ LABELS.REMEMBER_ME_TEXT }}</mat-checkbox>
+          <div class="col-12 pl-4 pr-4">
+              <finlevit-lib-checkbox formControlName="remember" [label]="LABELS.REMEMBER_ME_TEXT"></finlevit-lib-checkbox>
           </div>
         </div>
         <div class="error">{{ loginError }}</div>

@@ -1,6 +1,6 @@
 import {Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Optional, Output, Self} from '@angular/core';
 import { ControlValueAccessor, NgControl, ValidatorFn, Validators } from '@angular/forms';
-import {hasRequiredField} from "../../../../../lib/finlevit-library/src/lib/utils";
+import {hasRequiredField} from "../utils";
 
 @Component({
   selector: 'finlevit-file-upload',

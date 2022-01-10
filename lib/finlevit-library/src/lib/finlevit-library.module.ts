@@ -34,6 +34,8 @@ import { NgxMaskModule } from 'ngx-mask';
 
 import { TableComponent } from './table/table.component';
 import { FinlevitFileUploadComponent } from "./finlevit-file-upload/finlevit-file-upload.component";
+import { LoaderComponent } from "./loader/loader.component";
+import { NgxLoadingModule } from "ngx-loading";
 
 @NgModule({
   declarations: [
@@ -51,7 +53,8 @@ import { FinlevitFileUploadComponent } from "./finlevit-file-upload/finlevit-fil
     DatepickerComponent,
     ButtonComponent,
     TableComponent,
-    FinlevitFileUploadComponent
+    FinlevitFileUploadComponent,
+    LoaderComponent
   ],
   imports: [
     CalendarModule,
@@ -73,7 +76,8 @@ import { FinlevitFileUploadComponent } from "./finlevit-file-upload/finlevit-fil
     ButtonModule,
     RippleModule,
     TableModule,
-    NgxMaskModule.forRoot({})
+    NgxMaskModule.forRoot({}),
+    NgxLoadingModule
   ],
   exports: [
     FinlevitLibraryComponent,
@@ -91,7 +95,8 @@ import { FinlevitFileUploadComponent } from "./finlevit-file-upload/finlevit-fil
     ButtonComponent,
     TableComponent,
     TableModule,
-    FinlevitFileUploadComponent
+    FinlevitFileUploadComponent,
+    LoaderComponent
   ]
 })
 export class FinlevitLibraryModule {}

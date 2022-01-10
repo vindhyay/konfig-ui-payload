@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { LoaderComponent } from './loader.component';
-import { SharedModule } from '../shared.module';
 
 describe('LoaderComponent', () => {
   let component: LoaderComponent;
@@ -10,7 +9,7 @@ describe('LoaderComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [SharedModule],
+        imports: [],
         declarations: []
       }).compileComponents();
     })

@@ -7,7 +7,6 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { FinlevitLibraryModule } from "../../../../lib/finlevit-library/src/lib/finlevit-library.module";
 import { BtnPrimaryComponent } from "./btn-primary/btn-primary.component";
 import { NgxLoadingModule } from "ngx-loading";
-import { LoaderComponent } from "./loader/loader.component";
 import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
 import { ToastrModule } from "ngx-toastr";
 import { TabViewModule } from "primeng/tabview";
@@ -28,7 +27,6 @@ import { CustomTableFiltersComponent } from "./finlevit-custom-table/table-utils
   declarations: [
     BaseComponent,
     BtnPrimaryComponent,
-    LoaderComponent,
     PageNotFoundComponent,
     CustomDropdownComponent,
     CustomTableComponent,
@@ -65,7 +63,6 @@ import { CustomTableFiltersComponent } from "./finlevit-custom-table/table-utils
     ReactiveFormsModule,
     FinlevitLibraryModule,
     BtnPrimaryComponent,
-    LoaderComponent,
     TabViewModule,
     DialogModule,
     ButtonModule,
