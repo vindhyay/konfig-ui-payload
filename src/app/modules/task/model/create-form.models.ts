@@ -169,7 +169,8 @@ export enum WidgetTypes {
   Upload = "Upload",
   Divider = "Divider",
   Spacer = "Spacer",
-  Icon = "Icon"
+  Icon = "Icon",
+  Avatar = "Avatar"
 }
 class Validators {
   required: boolean;
@@ -1241,6 +1242,38 @@ export class ImageMetaData extends MetaData {
   }
 }
 
+export class AvatarMetaData extends MetaData {
+  caption: string;
+  styleProperties: { id: ""; properties: any };
+  source: string;
+  remoteKey: string;
+  tooltip: string;
+  imageUrl: string;
+  fallbackText: string;
+  configureLoginData: boolean;
+  constructor(data) {
+    super(data);
+    const {
+      caption = "avatar caption",
+      styleProperties = {},
+      source = "",
+      remoteKey = "",
+      tooltip = "",
+      imageUrl = "",
+      fallbackText = "Admin",
+      configureLoginData = false
+    } = data;
+    this.caption = caption;
+    this.styleProperties = styleProperties;
+    this.source = source;
+    this.remoteKey = remoteKey;
+    this.tooltip = tooltip;
+    this.imageUrl = imageUrl;
+    this.fallbackText = fallbackText;
+    this.configureLoginData = configureLoginData;
+  }
+}
+
 export class HeaderMetaData extends MetaData {
   backgroundColor: string;
   constructor(data) {
@@ -1465,7 +1498,8 @@ export class BaseWidget {
     | SSNInputMetaData
     | StepperContainerMetaData
     | DividerMetaData
-    | SpacerMetaData;
+    | SpacerMetaData
+    | AvatarMetaData;
   name: string;
   displayName: string;
   label: string;

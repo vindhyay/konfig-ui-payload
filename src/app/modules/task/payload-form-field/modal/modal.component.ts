@@ -80,16 +80,19 @@ export class ModalComponent implements OnInit {
     if(this.item.children[0].children.length && this.item.metaData['modalType']==='MultiPage')
     this.item.children[0].children = this.item.children[0].children.map((item)=>{
       const index=item?.metaData['onClickConfigs'].findIndex(subitem=>subitem.action==='previousStep' || subitem.action==='nextStep' || subitem.action==='submit');
-      if(index>=0)
-      switch(item.metaData['onClickConfigs'][index]?.action){
-        case 'previousStep':
-           return {...item, metaData:{ ...item.metaData,isHidden:this._selectedIndex<=1}};
-        case 'nextStep':
-          return {...item, metaData:{ ...item.metaData,isHidden:this._selectedIndex===this.item.children.length-1}};
-        case 'submit':
-          return {...item, metaData:{ ...item.metaData,isHidden:this._selectedIndex!==this.item.children.length-1}};
-        default:
-          return item;
+      if(index>=0){
+        switch(item.metaData['onClickConfigs'][index]?.action){
+          case 'previousStep':
+             return {...item, metaData:{ ...item.metaData,isHidden:this._selectedIndex<=1}};
+          case 'nextStep':
+            return {...item, metaData:{ ...item.metaData,isHidden:this._selectedIndex===this.item.children.length-1}};
+          case 'submit':
+            return {...item, metaData:{ ...item.metaData,isHidden:this._selectedIndex!==this.item.children.length-1}};
+          default:
+            return item;
+        }
+      }else{
+        return item;
       }
     })
   }

@@ -82,7 +82,8 @@ export class VerticalStepperComponent implements OnInit {
   }
   setSelection(item:any) {
     this.isInteract=true;
-    switch(item.data.metaData?.onClickConfigs[0]?.action){
+    const actionName=item.data.metaData?.onClickConfigs.find(item=>item.action==='previousStep' || item.action==='nextStep')
+    switch(actionName?.action){
       case 'previousStep':
         this.onPrev.emit({stepIndex:this._selectedIndex,item:item});
         // this.onBtnClick.emit(item);
@@ -100,19 +101,22 @@ export class VerticalStepperComponent implements OnInit {
     if(this.children[0].children.length)
     this.children[0].children = this.children[0].children.map((item)=>{
       const index=item?.metaData['onClickConfigs'].findIndex(subitem=>subitem.action==='previousStep' || subitem.action==='nextStep' || subitem.action==='submit');
-      if(index>=0)
-      switch(item.metaData['onClickConfigs'][index]?.action){
-        case 'previousStep':
-           return {...item, metaData:{ ...item.metaData,isHidden:this._selectedIndex<=1}};
-        case 'nextStep':
-          return {...item, metaData:{ ...item.metaData,isHidden:this._selectedIndex===this.children.length-1}};
-        case 'submit':
-          return {...item, metaData:{ ...item.metaData,isHidden:this._selectedIndex!==this.children.length-1}};
-        default:
-          return item;
+      if(index>=0){
+        switch(item.metaData['onClickConfigs'][index]?.action){
+          case 'previousStep':
+             return {...item, metaData:{ ...item.metaData,isHidden:this._selectedIndex<=1}};
+          case 'nextStep':
+            return {...item, metaData:{ ...item.metaData,isHidden:this._selectedIndex===this.children.length-1}};
+          case 'submit':
+            return {...item, metaData:{ ...item.metaData,isHidden:this._selectedIndex!==this.children.length-1}};
+          default:
+            return item;
+        }
       }
+      return item;
     })
   }
+
   checkHeight(containerName?) {
     this.editorService.setAdjustableHeight(this.children[this._selectedIndex].children, ".content"+this.metaData['widgetId']);
   }

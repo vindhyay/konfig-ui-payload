@@ -1252,6 +1252,23 @@
       <app-icon [item]="item"></app-icon>
     </div>
   </ng-container>
+  <ng-container *ngIf="item?.metaData?.widgetType === Avatar">
+    <div class="input-container">
+      <app-avatar
+              [item]="item"
+              [style.--avatar-size]="item?.metaData?.styleProperties?.properties?.avatarSize"
+              [style.--avatar-label-font-size]="item?.metaData?.styleProperties?.properties?.avatarLabelFontSize"
+              [style.--avatar-label-font-color]="item?.metaData?.styleProperties?.properties?.avatarLabelFontColor"
+              [style.--avatar-label-font-family]="item?.metaData?.styleProperties?.properties?.avatarLabelFontStyle"
+              [style.--avatar-caption-font-size]="item?.metaData?.styleProperties?.properties?.avatarCaptionFontSize"
+              [style.--avatar-caption-font-color]="item?.metaData?.styleProperties?.properties?.avatarCaptionFontColor"
+              [style.--avatar-caption-font-family]="item?.metaData?.styleProperties?.properties?.avatarCaptionFontStyle"
+              [style.--avatar-background-color]="item?.metaData?.styleProperties?.properties?.avatarBackgroundColor"
+              [style.--avatar-text-font-color]="item?.metaData?.styleProperties?.properties?.avatarTextFontColor"
+              [style.--avatar-text-font-family]="item?.metaData?.styleProperties?.properties?.avatarTextFontStyle"
+      ></app-avatar>
+    </div>
+  </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Container">
     <div class="input-container">
       <app-container [item]="item" [viewMode]="viewMode" [showEdit]="showEdit"
