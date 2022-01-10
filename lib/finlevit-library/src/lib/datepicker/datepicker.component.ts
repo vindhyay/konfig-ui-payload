@@ -104,7 +104,6 @@ export class DatepickerComponent implements ControlValueAccessor, OnInit {
   onLocalFocus($event: any) {}
 
   onLocalTouched($event: any) {
-    console.log($event)
     this.onTouched();
   }
   onTouched() {}
