@@ -470,6 +470,7 @@ export class DropdownMetaData extends MetaData {
   optionType: string;
   optionPopulateConfig: Array<OptionConfig>;
   onChangeConfig: OnChangeTriggerConfig;
+  onChangeConfigs?: Array<OnChangeTriggerConfig>;
   errorMessage: string;
   showErrorMessage: boolean;
   styleProperties: { id: "" };
@@ -502,6 +503,7 @@ export class DropdownMetaData extends MetaData {
     this.isLabelAndValue = isLabelAndValue;
     this.optionPopulateConfig = optionPopulateConfig;
     this.onChangeConfig = new OnChangeTriggerConfig(onChangeConfig);
+    this.onChangeConfigs = [new OnChangeTriggerConfig(onChangeConfig)];
     this.errorMessage = errorMessage;
     this.showErrorMessage = showErrorMessage;
     this.styleProperties = styleProperties;

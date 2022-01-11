@@ -253,7 +253,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
       this.notificationService.error("Application not found", "Failed to submit");
       return;
     }
-    const isSubmit= payloadData?.itemData?.data?.metaData?.onClickConfigs.filter(item=>item.action===ButtonActions.submit)?.length>0;
+    const isSubmit= payloadData?.itemData?.data?.metaData?.onClickConfigs?.filter(item=>item.action===ButtonActions.submit)?.length>0;
     this.userService.saveTransaction({ transactionId: this.transactionDetails?.transactionId, screenId: this.transactionDetails?.screenId }, this.formFields)
       .subscribe(result => {
           this.loading = false;
