@@ -1,0 +1,31 @@
+<button
+  mat-raised-button
+  class="wrapper-button"
+  [ngClass]="{ selected: t.menuOpen }"
+  [color]="color"
+  [disableRipple]="true"
+  [matMenuTriggerFor]="menu"
+  #t="matMenuTrigger"
+>
+  <div class="wrapper-content">
+    <button
+      mat-flat-button
+      tabindex="-1"
+      [color]="color"
+      class="primary-button"
+      (click)="onPrimaryClick();"
+    >
+      <span>{{ primaryTitle }}</span>
+    </button>
+    <i class="rng-icon rng-icon-arrow_drop_down" *ngIf="!t.menuOpen"></i>
+    <i class="rng-icon rng-icon-arrow_drop_up" *ngIf="t.menuOpen"></i>
+  </div>
+</button>
+<mat-menu #menu="matMenu" class="rng-iconed-menu-list">
+  <button mat-menu-item class="button-menu-item" *ngFor="let item of items" (click)="onItemClick(item)">
+    <div class="button-menu-item-wrapper">
+      <i [ngClass]="item.iconCSS"></i>
+      <span>{{ item[nameKey] }}</span>
+    </div>
+  </button>
+</mat-menu>

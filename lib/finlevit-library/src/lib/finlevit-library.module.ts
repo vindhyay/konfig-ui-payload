@@ -36,6 +36,12 @@ import { TableComponent } from './table/table.component';
 import { FinlevitFileUploadComponent } from "./finlevit-file-upload/finlevit-file-upload.component";
 import { LoaderComponent } from "./loader/loader.component";
 import { NgxLoadingModule } from "ngx-loading";
+import {BackButtonComponent} from "./back-button/back-button.component";
+import {MenuButtonComponent} from "./menu-button/menu-button.component";
+import {OptionsButtonComponent} from "./options-button/options-button.component";
+import {_MatMenuDirectivesModule, MatMenuModule} from "@angular/material/menu";
+import {MatDividerModule} from "@angular/material/divider";
+import {MatButtonModule} from "@angular/material/button";
 
 @NgModule({
   declarations: [
@@ -54,7 +60,10 @@ import { NgxLoadingModule } from "ngx-loading";
     ButtonComponent,
     TableComponent,
     FinlevitFileUploadComponent,
-    LoaderComponent
+    LoaderComponent,
+    BackButtonComponent,
+    MenuButtonComponent,
+    OptionsButtonComponent
   ],
   imports: [
     CalendarModule,
@@ -77,7 +86,11 @@ import { NgxLoadingModule } from "ngx-loading";
     RippleModule,
     TableModule,
     NgxMaskModule.forRoot({}),
-    NgxLoadingModule
+    NgxLoadingModule,
+    _MatMenuDirectivesModule,
+    MatButtonModule,
+    MatMenuModule,
+    MatDividerModule
   ],
   exports: [
     FinlevitLibraryComponent,
@@ -96,7 +109,10 @@ import { NgxLoadingModule } from "ngx-loading";
     TableComponent,
     TableModule,
     FinlevitFileUploadComponent,
-    LoaderComponent
+    LoaderComponent,
+    BackButtonComponent,
+    OptionsButtonComponent,
+    MenuButtonComponent
   ]
 })
 export class FinlevitLibraryModule {}
