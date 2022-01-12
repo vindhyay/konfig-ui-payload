@@ -21,3 +21,7 @@ export * from './lib/button/button.component';
 export * from  './lib/datepicker/datepicker.component';
 export * from './lib/table/table.component';
 export * from './lib/finlevit-file-upload/finlevit-file-upload.component';
+export * from "./lib/back-button/back-button.component";
+export * from "./lib/menu-button/menu-button.component";
+export * from "./lib/options-button/options-button.component";
+export * from './lib/model/common-types';

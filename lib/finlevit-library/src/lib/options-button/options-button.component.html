@@ -1,0 +1,22 @@
+<finlevit-button
+        class="wrapper-button"
+        [ngClass]="{ selected: t.menuOpen }"
+        [color]="color"
+        [matMenuTriggerFor]="menu"
+        #t="matMenuTrigger"
+        (btnClick)="onPrimaryClick()"
+        [label]="primaryTitle"
+        [icon]="t.menuOpen ? 'pi pi-chevron-up' : 'pi pi-chevron-down'"
+        iconPos="right"
+        [bgColor]="'#3F51B5'"
+        [borderColor]="'#3F51B5'"
+>
+</finlevit-button>
+<mat-menu #menu="matMenu" class="rng-iconed-menu-list">
+  <button mat-menu-item class="button-menu-item" *ngFor="let item of items" (click)="onItemClick(item)">
+    <div class="button-menu-item-wrapper">
+      <i [ngClass]="item.iconCSS"></i>
+      <span>{{ item[nameKey] }}</span>
+    </div>
+  </button>
+</mat-menu>

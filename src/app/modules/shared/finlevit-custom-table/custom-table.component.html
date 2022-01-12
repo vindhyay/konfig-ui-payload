@@ -20,6 +20,33 @@
       >
         <div class="f-tr">
           <div
+            *ngIf="selectable"
+            class="f-th"
+            [ngStyle]="{
+              width: selectableConfig.width + 'px',
+              flex: selectableConfig.width + ' 0 auto',
+              'border-right-style': verticalBorder ? 'solid' : 'none'
+            }"
+            [align]="selectableConfig.alignment"
+          >
+            <div class="f-resizable-header-content">
+              <div
+                [ngClass]="{
+                  'f-column-header-name': true,
+                  left: selectableConfig.alignment === CellAlignTypes.LEFT,
+                  right: selectableConfig.alignment === CellAlignTypes.RIGHT,
+                  center: selectableConfig.alignment === CellAlignTypes.CENTER
+                }"
+              >
+                <finlevit-lib-checkbox
+                  name="selectAll"
+                  (ngModelChange)="masterToggle()"
+                  [ngModel]="selection.hasValue() && isAllSelected()"
+                ></finlevit-lib-checkbox>
+              </div>
+            </div>
+          </div>
+          <div
             class="f-th"
             [ngStyle]="{
               width: (col?.width || 100) + 'px',
@@ -49,7 +76,7 @@
             <div class="f-resizer" (resizable)="onResize($event, col)"></div>
           </div>
           <div
-            *ngIf="actions.editRow || actions.deleteRow"
+            *ngIf="actions?.editRow || actions?.deleteRow"
             class="f-th"
             [ngStyle]="{
               width: (actions?.width || 100) + 'px',
@@ -79,6 +106,12 @@
         }"
         #tableBody
       >
+        <app-loader [loading]="isLoading"></app-loader>
+        <ng-container
+          *ngIf="!isLoading && !(tableFilters?.filtersEnabled ? filteredTableData.length : tableData.length)"
+        >
+          <div class="no-data-container"></div>
+        </ng-container>
         <ng-container
           *ngFor="
             let rowData of (tableFilters?.filtersEnabled ? filteredTableData : tableData)
@@ -111,13 +144,45 @@
               }"
             >
               <div
+                *ngIf="selectable"
+                class="f-td"
+                [ngStyle]="{
+                  width: selectableConfig.width + 'px',
+                  flex: selectableConfig.width + ' 0 auto'
+                }"
+              >
+                <div
+                  [ngClass]="{ 'cell-container': true }"
+                  [ngStyle]="{
+                    'border-right-style': verticalBorder ? 'solid' : 'none',
+                    'border-bottom-style': horizontalBorder ? 'solid' : 'none'
+                  }"
+                >
+                  <div
+                    [ngClass]="{
+                      'inner-cell-container': true,
+                      left: selectableConfig.alignment === CellAlignTypes.LEFT,
+                      right: selectableConfig.alignment === CellAlignTypes.RIGHT,
+                      center: selectableConfig.alignment === CellAlignTypes.CENTER
+                    }"
+                  >
+                    <finlevit-lib-checkbox
+                      (click)="$event.stopPropagation()"
+                      [name]="rowIndex"
+                      (ngModelChange)="rowToggle(rowData)"
+                      [ngModel]="selection.isSelected(rowData)"
+                    ></finlevit-lib-checkbox>
+                  </div>
+                </div>
+              </div>
+              <div
                 class="f-td"
                 [ngStyle]="{
                   width: (col?.width || 100) + 'px',
                   flex: (col?.width || 100) + ' 0 auto'
                 }"
                 *ngFor="let col of columns"
-                (dblclick)="onColEdit($event, col, rowIndex, rowData)"
+                (dblclick)="col?.validators?.editable ? onColEdit($event, col, rowIndex, rowData) : null"
               >
                 <div
                   [ngClass]="{ 'cell-container': true }"
@@ -135,471 +200,472 @@
                     }"
                   >
                     <ng-container [ngSwitch]="col.colType">
-                      <div class="p-pl-1" *ngSwitchCase="TextInput">
-                        <ng-container
-                          *ngIf="
-                            !(
-                              col?.validators?.editable &&
-                              (editRows[rowIndex] ||
-                                newRows[rowIndex] ||
-                                (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.columnId)))
-                            )
-                          "
-                        >
-                          {{ rowData[col.columnId] }}
-                        </ng-container>
-                        <finlevit-text
-                          *ngIf="
+                      <ng-container
+                        *ngIf="
+                          !(
                             col?.validators?.editable &&
                             (editRows[rowIndex] ||
                               newRows[rowIndex] ||
                               (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.columnId)))
-                          "
-                          [leftIcon]="col?.metaData?.leftIcon"
-                          [rightIcon]="col?.metaData?.rightIcon"
-                          [tooltip]="col?.metaData?.tooltip"
-                          [placeholder]="col?.metaData?.placeholder"
-                          [isRequired]="col?.validators?.required"
-                          [(ngModel)]="modifyingData[rowIndex][col.columnId]"
-                          (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col.columnId)"
-                          [isSmall]="true"
-                          [style.--input-color]="col?.metaData?.styleProperties?.properties?.textColor"
-                          [style.--input-text-align]="col?.metaData?.styleProperties?.properties?.textHorizontalAlign"
-                          [style.--input-background-color]="col?.metaData?.styleProperties?.properties?.backgroundColor"
-                          [style.--input-border-color]="col?.metaData?.styleProperties?.properties?.borderColor"
-                          [style.--input-font-family]="col?.metaData?.styleProperties?.properties?.textFontStyle"
-                          [style.--input-border]="col?.metaData?.styleProperties?.properties?.borderStyle"
-                          [style.--input-border-radius]="col?.metaData?.styleProperties?.properties?.borderRadius"
-                          [style.--input-font-size]="col?.metaData?.styleProperties?.properties?.fontSize"
-                          [style.--input-word-spacing]="col?.metaData?.styleProperties?.properties?.wordSpacing"
-                          [style.--input-letter-spacing]="col?.metaData?.styleProperties?.properties?.letterSpacing"
-                          [style.--input-line-spacing]="col?.metaData?.styleProperties?.properties?.lineSpacing"
-                          [style.--input-font-weight]="col?.metaData?.styleProperties?.properties?.fontWeight"
-                          [style.--input-font-style]="col?.metaData?.styleProperties?.properties?.fontStyle"
-                          [style.--input-text-decoration]="col?.metaData?.styleProperties?.properties?.textDecoration"
-                          [style.--input-label-color]="col?.metaData?.styleProperties?.properties?.labelColor"
-                          [style.--input-label-font-family]="col?.metaData?.styleProperties?.properties?.labelFontStyle"
-                          [style.--input-label-align]="col?.metaData?.styleProperties?.properties?.labelAlignment"
-                          [style.--input-label-font-weight]="
-                            col?.metaData?.styleProperties?.properties?.labelFontWeight
-                          "
-                          [style.--input-label-font-style]="col?.metaData?.styleProperties?.properties?.labelStyle"
-                          [style.--input-label-text-decoration]="
-                            col?.metaData?.styleProperties?.properties?.labelTextDecoration
-                          "
-                          [style.--input-adornment-background-color]="col?.metaData?.adornmentBackgroundColor"
-                          [style.--input-border-width]="col?.metaData?.styleProperties?.properties?.borderWidth"
-                          [style.--input-label-font-size]="col?.metaData?.styleProperties?.properties?.labelFontSize"
-                          [style.--input-label-width]="col?.metaData?.styleProperties?.properties?.labelWidth + '%'"
-                          [style.--input-border-top]="col?.metaData?.styleProperties?.properties?.borderTopStyle"
-                          [style.--input-border-radius-top-left]="
-                            col?.metaData?.styleProperties?.properties?.borderTopLeftRadius
-                          "
-                          [style.--input-border-top-color]="col?.metaData?.styleProperties?.properties?.borderTopColor"
-                          [style.--input-border-top-width]="col?.metaData?.styleProperties?.properties?.borderTopWidth"
-                          [style.--input-border-right]="col?.metaData?.styleProperties?.properties?.borderRightStyle"
-                          [style.--input-border-radius-top-right]="
-                            col?.metaData?.styleProperties?.properties?.borderTopRightRadius
-                          "
-                          [style.--input-border-right-color]="
-                            col?.metaData?.styleProperties?.properties?.borderRightColor
-                          "
-                          [style.--input-border-right-width]="
-                            col?.metaData?.styleProperties?.properties?.borderRightWidth
-                          "
-                          [style.--input-border-bottom]="col?.metaData?.styleProperties?.properties?.borderBottomStyle"
-                          [style.--input-border-radius-bottom-right]="
-                            col?.metaData?.styleProperties?.properties?.borderBottomRightRadius
-                          "
-                          [style.--input-border-bottom-color]="
-                            col?.metaData?.styleProperties?.properties?.borderBottomColor
-                          "
-                          [style.--input-border-bottom-width]="
-                            col?.metaData?.styleProperties?.properties?.borderBottomWidth
-                          "
-                          [style.--input-border-left]="col?.metaData?.styleProperties?.properties?.borderLeftStyle"
-                          [style.--input-border-radius-bottom-left]="
-                            col?.metaData?.styleProperties?.properties?.borderBottomLeftRadius
-                          "
-                          [style.--input-border-left-color]="
-                            col?.metaData?.styleProperties?.properties?.borderLeftColor
-                          "
-                          [style.--input-border-left-width]="
-                            col?.metaData?.styleProperties?.properties?.borderLeftWidth
-                          "
-                          [independentBorders]="col?.metaData?.styleProperties?.properties?.independentBorder"
-                          [allowLabelWrapping]="col?.metaData?.allowLabelWrapping"
-                          [showClearButton]="col?.metaData?.showClearButton"
-                          [prefixText]="col?.metaData?.prefixText"
-                          [suffixText]="col?.metaData?.suffixText"
-                          [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
-                          [showErrorMsg]="col?.metaData?.showErrorMessage"
-                          [error]="
-                            rowErrors[rowIndex] && rowErrors[rowIndex][col.columnId]
-                              ? rowErrors[rowIndex][col.columnId]['error']
-                              : false
-                          "
-                          [errorMsg]="
-                            rowErrors[rowIndex] && rowErrors[rowIndex][col.columnId]
-                              ? rowErrors[rowIndex][col.columnId]['errorMsg']
-                              : false
-                          "
-                        ></finlevit-text>
-                      </div>
-                      <div class="p-pl-1" *ngSwitchCase="TextArea">
+                          )
+                        "
+                      >
                         <ng-container
-                          *ngIf="
-                            !(
-                              col?.validators?.editable &&
-                              (editRows[rowIndex] ||
-                                newRows[rowIndex] ||
-                                (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.columnId)))
-                            )
-                          "
-                        >
-                          {{ rowData[col.columnId] }}
-                        </ng-container>
-                        <finlevit-lib-textarea
-                          *ngIf="
-                            col?.validators?.editable &&
-                            (editRows[rowIndex] ||
-                              newRows[rowIndex] ||
-                              (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.columnId)))
-                          "
-                          [autoResize]="col?.metaData?.autoResize"
-                          [rows]="col?.metaData?.rowsCount"
-                          [tooltip]="col?.metaData?.tooltip"
-                          [placeholder]="col?.metaData?.placeholder"
-                          [isRequired]="col?.validators?.required"
-                          [style.--input-color]="col?.metaData?.styleProperties?.properties?.textColor"
-                          [style.--input-text-align]="col?.metaData?.styleProperties?.properties?.textHorizontalAlign"
-                          [style.--input-background-color]="col?.metaData?.styleProperties?.properties?.backgroundColor"
-                          [style.--input-border-color]="col?.metaData?.styleProperties?.properties?.borderColor"
-                          [style.--input-font-family]="col?.metaData?.styleProperties?.properties?.textFontStyle"
-                          [style.--input-border]="col?.metaData?.styleProperties?.properties?.borderStyle"
-                          [style.--input-border-radius]="col?.metaData?.styleProperties?.properties?.borderRadius"
-                          [style.--input-font-size]="col?.metaData?.styleProperties?.properties?.fontSize"
-                          [style.--input-word-spacing]="col?.metaData?.styleProperties?.properties?.wordSpacing"
-                          [style.--input-letter-spacing]="col?.metaData?.styleProperties?.properties?.letterSpacing"
-                          [style.--input-line-spacing]="col?.metaData?.styleProperties?.properties?.lineSpacing"
-                          [style.--input-font-weight]="col?.metaData?.styleProperties?.properties?.fontWeight"
-                          [style.--input-font-style]="col?.metaData?.styleProperties?.properties?.fontStyle"
-                          [style.--input-text-decoration]="col?.metaData?.styleProperties?.properties?.textDecoration"
-                          [style.--input-label-color]="col?.metaData?.styleProperties?.properties?.labelColor"
-                          [style.--input-label-font-family]="col?.metaData?.styleProperties?.properties?.labelFontStyle"
-                          [style.--input-label-align]="col?.metaData?.styleProperties?.properties?.labelAlignment"
-                          [style.--input-label-font-weight]="
-                            col?.metaData?.styleProperties?.properties?.labelFontWeight
-                          "
-                          [style.--input-label-font-style]="col?.metaData?.styleProperties?.properties?.labelStyle"
-                          [style.--input-label-text-decoration]="
-                            col?.metaData?.styleProperties?.properties?.labelTextDecoration
-                          "
-                          [style.--input-adornment-background-color]="
-                            col?.metaData?.styleProperties?.properties?.adornmentBackgroundColor
-                          "
-                          [style.--input-border-width]="col?.metaData?.styleProperties?.properties?.borderWidth"
-                          [style.--input-label-font-size]="col?.metaData?.styleProperties?.properties?.labelFontSize"
-                          [style.--input-label-width]="col?.metaData?.styleProperties?.properties?.labelWidth + '%'"
-                          [style.--input-border-top]="col?.metaData?.styleProperties?.properties?.borderTopStyle"
-                          [style.--input-border-radius-top-left]="
-                            col?.metaData?.styleProperties?.properties?.borderTopLeftRadius
-                          "
-                          [style.--input-border-top-color]="col?.metaData?.styleProperties?.properties?.borderTopColor"
-                          [style.--input-border-top-width]="col?.metaData?.styleProperties?.properties?.borderTopWidth"
-                          [style.--input-border-right]="col?.metaData?.styleProperties?.properties?.borderRightStyle"
-                          [style.--input-border-radius-top-right]="
-                            col?.metaData?.styleProperties?.properties?.borderTopRightRadius
-                          "
-                          [style.--input-border-right-color]="
-                            col?.metaData?.styleProperties?.properties?.borderRightColor
-                          "
-                          [style.--input-border-right-width]="
-                            col?.metaData?.styleProperties?.properties?.borderRightWidth
-                          "
-                          [style.--input-border-bottom]="col?.metaData?.styleProperties?.properties?.borderBottomStyle"
-                          [style.--input-border-radius-bottom-right]="
-                            col?.metaData?.styleProperties?.properties?.borderBottomRightRadius
-                          "
-                          [style.--input-border-bottom-color]="
-                            col?.metaData?.styleProperties?.properties?.borderBottomColor
-                          "
-                          [style.--input-border-bottom-width]="
-                            col?.metaData?.styleProperties?.properties?.borderBottomWidth
-                          "
-                          [style.--input-border-left]="col?.metaData?.styleProperties?.properties?.borderLeftStyle"
-                          [style.--input-border-radius-bottom-left]="
-                            col?.metaData?.styleProperties?.properties?.borderBottomLeftRadius
-                          "
-                          [style.--input-border-left-color]="
-                            col?.metaData?.styleProperties?.properties?.borderLeftColor
-                          "
-                          [style.--input-border-left-width]="
-                            col?.metaData?.styleProperties?.properties?.borderLeftWidth
-                          "
-                          [independentBorders]="col?.metaData?.styleProperties?.properties?.independentBorder"
-                          [allowLabelWrapping]="col?.metaData?.styleProperties?.properties?.allowLabelWrapping"
-                          [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
-                          [(ngModel)]="modifyingData[rowIndex][col.columnId]"
-                          (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col.columnId)"
-                          [isSmall]="true"
-                          [showErrorMsg]="col?.metaData?.showErrorMessage"
-                          [error]="
-                            rowErrors[rowIndex] && rowErrors[rowIndex][col.columnId]
-                              ? rowErrors[rowIndex][col.columnId]['error']
-                              : false
-                          "
-                          [errorMsg]="
-                            rowErrors[rowIndex] && rowErrors[rowIndex][col.columnId]
-                              ? rowErrors[rowIndex][col.columnId]['errorMsg']
-                              : false
-                          "
-                        ></finlevit-lib-textarea>
-                      </div>
-                      <div class="p-pl-1" *ngSwitchCase="Number">
-                        <ng-container
-                          *ngIf="
-                            !(
-                              col?.validators?.editable &&
-                              (editRows[rowIndex] ||
-                                newRows[rowIndex] ||
-                                (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.columnId)))
-                            )
-                          "
-                        >
-                          {{ rowData[col.columnId] | number }}
-                        </ng-container>
-                        <finlevit-number
-                          *ngIf="
-                            col?.validators?.editable &&
-                            (editRows[rowIndex] ||
-                              newRows[rowIndex] ||
-                              (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.columnId)))
-                          "
-                          [placeholder]="col?.metaData?.placeholder"
-                          [tooltip]="col?.metaData?.tooltip"
-                          [mode]="col?.metaData?.mode"
-                          [currency]="col?.metaData?.currency"
-                          [minFractionDigits]="col?.metaData?.minFractionDigits"
-                          [maxFractionDigits]="col?.metaData?.maxFractionDigits"
-                          [isRequired]="col?.validators?.required"
-                          [maxLength]="col?.validators?.maxLength"
-                          [showMaxCharLimit]="col?.validators?.maxLength"
-                          [style.--input-color]="col?.metaData?.styleProperties?.properties?.textColor"
-                          [style.--input-text-align]="col?.metaData?.styleProperties?.properties?.textHorizontalAlign"
-                          [style.--input-background-color]="col?.metaData?.styleProperties?.properties?.backgroundColor"
-                          [style.--input-border-color]="col?.metaData?.styleProperties?.properties?.borderColor"
-                          [style.--input-font-family]="col?.metaData?.styleProperties?.properties?.textFontStyle"
-                          [style.--input-border]="col?.metaData?.styleProperties?.properties?.borderStyle"
-                          [style.--input-border-radius]="col?.metaData?.styleProperties?.properties?.borderRadius"
-                          [style.--input-font-size]="col?.metaData?.styleProperties?.properties?.fontSize"
-                          [style.--input-word-spacing]="col?.metaData?.styleProperties?.properties?.wordSpacing"
-                          [style.--input-letter-spacing]="col?.metaData?.styleProperties?.properties?.letterSpacing"
-                          [style.--input-line-spacing]="col?.metaData?.styleProperties?.properties?.lineSpacing"
-                          [style.--input-font-weight]="col?.metaData?.styleProperties?.properties?.fontWeight"
-                          [style.--input-font-style]="col?.metaData?.styleProperties?.properties?.fontStyle"
-                          [style.--input-text-decoration]="col?.metaData?.styleProperties?.properties?.textDecoration"
-                          [style.--input-label-color]="col?.metaData?.styleProperties?.properties?.labelColor"
-                          [style.--input-label-font-family]="col?.metaData?.styleProperties?.properties?.labelFontStyle"
-                          [style.--input-label-align]="col?.metaData?.styleProperties?.properties?.labelAlignment"
-                          [style.--input-label-font-weight]="
-                            col?.metaData?.styleProperties?.properties?.labelFontWeight
-                          "
-                          [style.--input-label-font-style]="col?.metaData?.styleProperties?.properties?.labelStyle"
-                          [style.--input-label-text-decoration]="
-                            col?.metaData?.styleProperties?.properties?.labelTextDecoration
-                          "
-                          [style.--input-adornment-background-color]="col?.metaData?.adornmentBackgroundColor"
-                          [style.--input-border-width]="col?.metaData?.styleProperties?.properties?.borderWidth"
-                          [style.--input-label-font-size]="col?.metaData?.styleProperties?.properties?.labelFontSize"
-                          [style.--input-label-width]="col?.metaData?.styleProperties?.properties?.labelWidth + '%'"
-                          [style.--input-border-top]="col?.metaData?.styleProperties?.properties?.borderTopStyle"
-                          [style.--input-border-radius-top-left]="
-                            col?.metaData?.styleProperties?.properties?.borderTopLeftRadius
-                          "
-                          [style.--input-border-top-color]="col?.metaData?.styleProperties?.properties?.borderTopColor"
-                          [style.--input-border-top-width]="col?.metaData?.styleProperties?.properties?.borderTopWidth"
-                          [style.--input-border-right]="col?.metaData?.styleProperties?.properties?.borderRightStyle"
-                          [style.--input-border-radius-top-right]="
-                            col?.metaData?.styleProperties?.properties?.borderTopRightRadius
-                          "
-                          [style.--input-border-right-color]="
-                            col?.metaData?.styleProperties?.properties?.borderRightColor
-                          "
-                          [style.--input-border-right-width]="
-                            col?.metaData?.styleProperties?.properties?.borderRightWidth
-                          "
-                          [style.--input-border-bottom]="col?.metaData?.styleProperties?.properties?.borderBottomStyle"
-                          [style.--input-border-radius-bottom-right]="
-                            col?.metaData?.styleProperties?.properties?.borderBottomRightRadius
-                          "
-                          [style.--input-border-bottom-color]="
-                            col?.metaData?.styleProperties?.properties?.borderBottomColor
-                          "
-                          [style.--input-border-bottom-width]="
-                            col?.metaData?.styleProperties?.properties?.borderBottomWidth
-                          "
-                          [style.--input-border-left]="col?.metaData?.styleProperties?.properties?.borderLeftStyle"
-                          [style.--input-border-radius-bottom-left]="
-                            col?.metaData?.styleProperties?.properties?.borderBottomLeftRadius
-                          "
-                          [style.--input-border-left-color]="
-                            col?.metaData?.styleProperties?.properties?.borderLeftColor
-                          "
-                          [style.--input-border-left-width]="
-                            col?.metaData?.styleProperties?.properties?.borderLeftWidth
-                          "
-                          [independentBorders]="col?.metaData?.styleProperties?.properties?.independentBorder"
-                          [allowLabelWrapping]="col?.metaData?.allowLabelWrapping"
-                          [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
-                          [prefixText]="col?.metaData?.prefixText"
-                          [suffixText]="col?.metaData?.suffixText"
-                          [showClearButton]="col?.metaData?.showClearButton"
-                          [step]="col?.metaData?.step"
-                          [showButtons]="col?.metaData?.showStepperButtons"
-                          [(ngModel)]="modifyingData[rowIndex][col.columnId]"
-                          (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col.columnId)"
-                          [isSmall]="true"
-                          [showErrorMsg]="col?.metaData?.showErrorMessage"
-                          [error]="
-                            rowErrors[rowIndex] && rowErrors[rowIndex][col.columnId]
-                              ? rowErrors[rowIndex][col.columnId]['error']
-                              : false
-                          "
-                          [errorMsg]="
-                            rowErrors[rowIndex] && rowErrors[rowIndex][col.columnId]
-                              ? rowErrors[rowIndex][col.columnId]['errorMsg']
-                              : false
-                          "
-                        ></finlevit-number>
-                      </div>
-                      <div class="p-pl-1" *ngSwitchCase="DatePicker">
-                        <ng-container
-                          *ngIf="
-                            !(
-                              col?.validators?.editable &&
-                              (editRows[rowIndex] ||
-                                newRows[rowIndex] ||
-                                (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.columnId)))
-                            )
-                          "
-                        >
-                          {{ rowData[col.columnId] | date }}
-                        </ng-container>
-                        <finlevit-lib-datepicker
-                          *ngIf="
-                            col?.validators?.editable &&
-                            (editRows[rowIndex] ||
-                              newRows[rowIndex] ||
-                              (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.columnId)))
-                          "
-                          [isRequired]="col?.validators?.required"
-                          [tooltip]="col?.metaData?.tooltip"
-                          [placeholder]="col?.metaData?.placeholder"
-                          [viewDateFormat]="col?.metaData?.viewDateFormat"
-                          [returnDateFormat]="col?.metaData?.returnDateFormat"
-                          [yearNavigator]="true"
-                          [monthNavigator]="true"
-                          [style.--input-color]="col?.metaData?.styleProperties?.properties?.textColor"
-                          [style.--input-text-align]="col?.metaData?.styleProperties?.properties?.textHorizontalAlign"
-                          [style.--input-background-color]="col?.metaData?.styleProperties?.properties?.backgroundColor"
-                          [style.--input-border-color]="col?.metaData?.styleProperties?.properties?.borderColor"
-                          [style.--input-font-family]="col?.metaData?.styleProperties?.properties?.textFontStyle"
-                          [style.--input-border]="col?.metaData?.styleProperties?.properties?.borderStyle"
-                          [style.--input-border-radius]="col?.metaData?.styleProperties?.properties?.borderRadius"
-                          [style.--input-font-size]="col?.metaData?.styleProperties?.properties?.fontSize"
-                          [style.--input-word-spacing]="col?.metaData?.styleProperties?.properties?.wordSpacing"
-                          [style.--input-letter-spacing]="col?.metaData?.styleProperties?.properties?.letterSpacing"
-                          [style.--input-line-spacing]="col?.metaData?.styleProperties?.properties?.lineSpacing"
-                          [style.--input-font-weight]="col?.metaData?.styleProperties?.properties?.fontWeight"
-                          [style.--input-font-style]="col?.metaData?.styleProperties?.properties?.fontStyle"
-                          [style.--input-text-decoration]="col?.metaData?.styleProperties?.properties?.textDecoration"
-                          [style.--input-label-color]="col?.metaData?.styleProperties?.properties?.labelColor"
-                          [style.--input-label-font-family]="col?.metaData?.styleProperties?.properties?.labelFontStyle"
-                          [style.--input-label-align]="col?.metaData?.styleProperties?.properties?.labelAlignment"
-                          [style.--input-label-font-weight]="
-                            col?.metaData?.styleProperties?.properties?.labelFontWeight
-                          "
-                          [style.--input-label-font-style]="col?.metaData?.styleProperties?.properties?.labelStyle"
-                          [style.--input-label-text-decoration]="
-                            col?.metaData?.styleProperties?.properties?.labelTextDecoration
-                          "
-                          [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
-                          [showTime]="col?.metaData?.showTime"
-                          [hourFormat]="col?.metaData?.hourFormat"
-                          [stepMinute]="col?.metaData?.stepMinute"
-                          [stepHour]="col?.metaData?.stepHour"
-                          [style.--input-adornment-background-color]="
-                            col?.metaData?.styleProperties?.properties?.adornmentBackgroundColor
-                          "
-                          [style.--input-border-width]="col?.metaData?.styleProperties?.properties?.borderWidth"
-                          [style.--input-label-font-size]="col?.metaData?.styleProperties?.properties?.labelFontSize"
-                          [style.--input-label-width]="col?.metaData?.styleProperties?.properties?.labelWidth + '%'"
-                          [style.--input-border-top]="col?.metaData?.styleProperties?.properties?.borderTopStyle"
-                          [style.--input-border-radius-top-left]="
-                            col?.metaData?.styleProperties?.properties?.borderTopLeftRadius
-                          "
-                          [style.--input-border-top-color]="col?.metaData?.styleProperties?.properties?.borderTopColor"
-                          [style.--input-border-top-width]="col?.metaData?.styleProperties?.properties?.borderTopWidth"
-                          [style.--input-border-right]="col?.metaData?.styleProperties?.properties?.borderRightStyle"
-                          [style.--input-border-radius-top-right]="
-                            col?.metaData?.styleProperties?.properties?.borderTopRightRadius
-                          "
-                          [style.--input-border-right-color]="
-                            col?.metaData?.styleProperties?.properties?.borderRightColor
-                          "
-                          [style.--input-border-right-width]="
-                            col?.metaData?.styleProperties?.properties?.borderRightWidth
-                          "
-                          [style.--input-border-bottom]="col?.metaData?.styleProperties?.properties?.borderBottomStyle"
-                          [style.--input-border-radius-bottom-right]="
-                            col?.metaData?.styleProperties?.properties?.borderBottomRightRadius
-                          "
-                          [style.--input-border-bottom-color]="
-                            col?.metaData?.styleProperties?.properties?.borderBottomColor
-                          "
-                          [style.--input-border-bottom-width]="
-                            col?.metaData?.styleProperties?.properties?.borderBottomWidth
-                          "
-                          [style.--input-border-left]="col?.metaData?.styleProperties?.properties?.borderLeftStyle"
-                          [style.--input-border-radius-bottom-left]="
-                            col?.metaData?.styleProperties?.properties?.borderBottomLeftRadius
-                          "
-                          [style.--input-border-left-color]="
-                            col?.metaData?.styleProperties?.properties?.borderLeftColor
-                          "
-                          [style.--input-border-left-width]="
-                            col?.metaData?.styleProperties?.properties?.borderLeftWidth
-                          "
-                          [independentBorders]="col?.metaData?.styleProperties?.properties?.independentBorder"
-                          [allowLabelWrapping]="col?.metaData?.styleProperties?.properties?.allowLabelWrapping"
-                          [(ngModel)]="modifyingData[rowIndex][col.columnId]"
-                          (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col.columnId)"
-                          [isSmall]="true"
-                          [showErrorMsg]="col?.metaData?.showErrorMessage"
-                          [minDate]="col?.validators?.minDate"
-                          [maxDate]="col?.validators?.maxDate"
-                          [error]="
-                            rowErrors[rowIndex] && rowErrors[rowIndex][col.columnId]
-                              ? rowErrors[rowIndex][col.columnId]['error']
-                              : false
-                          "
-                          [errorMsg]="
-                            rowErrors[rowIndex] && rowErrors[rowIndex][col.columnId]
-                              ? rowErrors[rowIndex][col.columnId]['errorMsg']
-                              : false
-                          "
-                        ></finlevit-lib-datepicker>
-                      </div>
-                      <div *ngSwitchDefault>
-                        {{ rowData[col.columnId] }}
-                      </div>
+                          *ngIf="customTemplates && customTemplates[col?.columnId]; else generic"
+                          [ngTemplateOutlet]="customTemplates[col?.columnId]"
+                          [ngTemplateOutletContext]="{ row: rowData }"
+                        ></ng-container>
+                        <ng-template #generic>
+                          <ng-container *ngSwitchCase="DatePicker">
+                            {{ rowData[col.columnId] | date }}
+                          </ng-container>
+                          <ng-container *ngSwitchCase="Number">
+                            {{ rowData[col.columnId] | number }}
+                          </ng-container>
+                          <ng-container *ngSwitchDefault>
+                            {{ rowData[col.columnId] }}
+                          </ng-container>
+                        </ng-template>
+                      </ng-container>
+                      <ng-container
+                        *ngIf="
+                          col?.validators?.editable &&
+                          (editRows[rowIndex] ||
+                            newRows[rowIndex] ||
+                            (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.columnId)))
+                        "
+                      >
+                        <div class="p-pl-1" *ngSwitchCase="TextInput">
+                          <finlevit-text
+                            [leftIcon]="col?.metaData?.leftIcon"
+                            [rightIcon]="col?.metaData?.rightIcon"
+                            [tooltip]="col?.metaData?.tooltip"
+                            [placeholder]="col?.metaData?.placeholder"
+                            [isRequired]="col?.validators?.required"
+                            [(ngModel)]="modifyingData[rowIndex][col.columnId]"
+                            (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col.columnId)"
+                            [isSmall]="true"
+                            [style.--input-color]="col?.metaData?.styleProperties?.properties?.textColor"
+                            [style.--input-text-align]="col?.metaData?.styleProperties?.properties?.textHorizontalAlign"
+                            [style.--input-background-color]="
+                              col?.metaData?.styleProperties?.properties?.backgroundColor
+                            "
+                            [style.--input-border-color]="col?.metaData?.styleProperties?.properties?.borderColor"
+                            [style.--input-font-family]="col?.metaData?.styleProperties?.properties?.textFontStyle"
+                            [style.--input-border]="col?.metaData?.styleProperties?.properties?.borderStyle"
+                            [style.--input-border-radius]="col?.metaData?.styleProperties?.properties?.borderRadius"
+                            [style.--input-font-size]="col?.metaData?.styleProperties?.properties?.fontSize"
+                            [style.--input-word-spacing]="col?.metaData?.styleProperties?.properties?.wordSpacing"
+                            [style.--input-letter-spacing]="col?.metaData?.styleProperties?.properties?.letterSpacing"
+                            [style.--input-line-spacing]="col?.metaData?.styleProperties?.properties?.lineSpacing"
+                            [style.--input-font-weight]="col?.metaData?.styleProperties?.properties?.fontWeight"
+                            [style.--input-font-style]="col?.metaData?.styleProperties?.properties?.fontStyle"
+                            [style.--input-text-decoration]="col?.metaData?.styleProperties?.properties?.textDecoration"
+                            [style.--input-label-color]="col?.metaData?.styleProperties?.properties?.labelColor"
+                            [style.--input-label-font-family]="
+                              col?.metaData?.styleProperties?.properties?.labelFontStyle
+                            "
+                            [style.--input-label-align]="col?.metaData?.styleProperties?.properties?.labelAlignment"
+                            [style.--input-label-font-weight]="
+                              col?.metaData?.styleProperties?.properties?.labelFontWeight
+                            "
+                            [style.--input-label-font-style]="col?.metaData?.styleProperties?.properties?.labelStyle"
+                            [style.--input-label-text-decoration]="
+                              col?.metaData?.styleProperties?.properties?.labelTextDecoration
+                            "
+                            [style.--input-adornment-background-color]="col?.metaData?.adornmentBackgroundColor"
+                            [style.--input-border-width]="col?.metaData?.styleProperties?.properties?.borderWidth"
+                            [style.--input-label-font-size]="col?.metaData?.styleProperties?.properties?.labelFontSize"
+                            [style.--input-label-width]="col?.metaData?.styleProperties?.properties?.labelWidth + '%'"
+                            [style.--input-border-top]="col?.metaData?.styleProperties?.properties?.borderTopStyle"
+                            [style.--input-border-radius-top-left]="
+                              col?.metaData?.styleProperties?.properties?.borderTopLeftRadius
+                            "
+                            [style.--input-border-top-color]="
+                              col?.metaData?.styleProperties?.properties?.borderTopColor
+                            "
+                            [style.--input-border-top-width]="
+                              col?.metaData?.styleProperties?.properties?.borderTopWidth
+                            "
+                            [style.--input-border-right]="col?.metaData?.styleProperties?.properties?.borderRightStyle"
+                            [style.--input-border-radius-top-right]="
+                              col?.metaData?.styleProperties?.properties?.borderTopRightRadius
+                            "
+                            [style.--input-border-right-color]="
+                              col?.metaData?.styleProperties?.properties?.borderRightColor
+                            "
+                            [style.--input-border-right-width]="
+                              col?.metaData?.styleProperties?.properties?.borderRightWidth
+                            "
+                            [style.--input-border-bottom]="
+                              col?.metaData?.styleProperties?.properties?.borderBottomStyle
+                            "
+                            [style.--input-border-radius-bottom-right]="
+                              col?.metaData?.styleProperties?.properties?.borderBottomRightRadius
+                            "
+                            [style.--input-border-bottom-color]="
+                              col?.metaData?.styleProperties?.properties?.borderBottomColor
+                            "
+                            [style.--input-border-bottom-width]="
+                              col?.metaData?.styleProperties?.properties?.borderBottomWidth
+                            "
+                            [style.--input-border-left]="col?.metaData?.styleProperties?.properties?.borderLeftStyle"
+                            [style.--input-border-radius-bottom-left]="
+                              col?.metaData?.styleProperties?.properties?.borderBottomLeftRadius
+                            "
+                            [style.--input-border-left-color]="
+                              col?.metaData?.styleProperties?.properties?.borderLeftColor
+                            "
+                            [style.--input-border-left-width]="
+                              col?.metaData?.styleProperties?.properties?.borderLeftWidth
+                            "
+                            [independentBorders]="col?.metaData?.styleProperties?.properties?.independentBorder"
+                            [allowLabelWrapping]="col?.metaData?.allowLabelWrapping"
+                            [showClearButton]="col?.metaData?.showClearButton"
+                            [prefixText]="col?.metaData?.prefixText"
+                            [suffixText]="col?.metaData?.suffixText"
+                            [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
+                            [showErrorMsg]="col?.metaData?.showErrorMessage"
+                            [error]="
+                              rowErrors[rowIndex] && rowErrors[rowIndex][col.columnId]
+                                ? rowErrors[rowIndex][col.columnId]['error']
+                                : false
+                            "
+                            [errorMsg]="
+                              rowErrors[rowIndex] && rowErrors[rowIndex][col.columnId]
+                                ? rowErrors[rowIndex][col.columnId]['errorMsg']
+                                : false
+                            "
+                          ></finlevit-text>
+                        </div>
+                        <div class="p-pl-1" *ngSwitchCase="TextArea">
+                          <finlevit-lib-textarea
+                            [autoResize]="col?.metaData?.autoResize"
+                            [rows]="col?.metaData?.rowsCount"
+                            [tooltip]="col?.metaData?.tooltip"
+                            [placeholder]="col?.metaData?.placeholder"
+                            [isRequired]="col?.validators?.required"
+                            [style.--input-color]="col?.metaData?.styleProperties?.properties?.textColor"
+                            [style.--input-text-align]="col?.metaData?.styleProperties?.properties?.textHorizontalAlign"
+                            [style.--input-background-color]="
+                              col?.metaData?.styleProperties?.properties?.backgroundColor
+                            "
+                            [style.--input-border-color]="col?.metaData?.styleProperties?.properties?.borderColor"
+                            [style.--input-font-family]="col?.metaData?.styleProperties?.properties?.textFontStyle"
+                            [style.--input-border]="col?.metaData?.styleProperties?.properties?.borderStyle"
+                            [style.--input-border-radius]="col?.metaData?.styleProperties?.properties?.borderRadius"
+                            [style.--input-font-size]="col?.metaData?.styleProperties?.properties?.fontSize"
+                            [style.--input-word-spacing]="col?.metaData?.styleProperties?.properties?.wordSpacing"
+                            [style.--input-letter-spacing]="col?.metaData?.styleProperties?.properties?.letterSpacing"
+                            [style.--input-line-spacing]="col?.metaData?.styleProperties?.properties?.lineSpacing"
+                            [style.--input-font-weight]="col?.metaData?.styleProperties?.properties?.fontWeight"
+                            [style.--input-font-style]="col?.metaData?.styleProperties?.properties?.fontStyle"
+                            [style.--input-text-decoration]="col?.metaData?.styleProperties?.properties?.textDecoration"
+                            [style.--input-label-color]="col?.metaData?.styleProperties?.properties?.labelColor"
+                            [style.--input-label-font-family]="
+                              col?.metaData?.styleProperties?.properties?.labelFontStyle
+                            "
+                            [style.--input-label-align]="col?.metaData?.styleProperties?.properties?.labelAlignment"
+                            [style.--input-label-font-weight]="
+                              col?.metaData?.styleProperties?.properties?.labelFontWeight
+                            "
+                            [style.--input-label-font-style]="col?.metaData?.styleProperties?.properties?.labelStyle"
+                            [style.--input-label-text-decoration]="
+                              col?.metaData?.styleProperties?.properties?.labelTextDecoration
+                            "
+                            [style.--input-adornment-background-color]="
+                              col?.metaData?.styleProperties?.properties?.adornmentBackgroundColor
+                            "
+                            [style.--input-border-width]="col?.metaData?.styleProperties?.properties?.borderWidth"
+                            [style.--input-label-font-size]="col?.metaData?.styleProperties?.properties?.labelFontSize"
+                            [style.--input-label-width]="col?.metaData?.styleProperties?.properties?.labelWidth + '%'"
+                            [style.--input-border-top]="col?.metaData?.styleProperties?.properties?.borderTopStyle"
+                            [style.--input-border-radius-top-left]="
+                              col?.metaData?.styleProperties?.properties?.borderTopLeftRadius
+                            "
+                            [style.--input-border-top-color]="
+                              col?.metaData?.styleProperties?.properties?.borderTopColor
+                            "
+                            [style.--input-border-top-width]="
+                              col?.metaData?.styleProperties?.properties?.borderTopWidth
+                            "
+                            [style.--input-border-right]="col?.metaData?.styleProperties?.properties?.borderRightStyle"
+                            [style.--input-border-radius-top-right]="
+                              col?.metaData?.styleProperties?.properties?.borderTopRightRadius
+                            "
+                            [style.--input-border-right-color]="
+                              col?.metaData?.styleProperties?.properties?.borderRightColor
+                            "
+                            [style.--input-border-right-width]="
+                              col?.metaData?.styleProperties?.properties?.borderRightWidth
+                            "
+                            [style.--input-border-bottom]="
+                              col?.metaData?.styleProperties?.properties?.borderBottomStyle
+                            "
+                            [style.--input-border-radius-bottom-right]="
+                              col?.metaData?.styleProperties?.properties?.borderBottomRightRadius
+                            "
+                            [style.--input-border-bottom-color]="
+                              col?.metaData?.styleProperties?.properties?.borderBottomColor
+                            "
+                            [style.--input-border-bottom-width]="
+                              col?.metaData?.styleProperties?.properties?.borderBottomWidth
+                            "
+                            [style.--input-border-left]="col?.metaData?.styleProperties?.properties?.borderLeftStyle"
+                            [style.--input-border-radius-bottom-left]="
+                              col?.metaData?.styleProperties?.properties?.borderBottomLeftRadius
+                            "
+                            [style.--input-border-left-color]="
+                              col?.metaData?.styleProperties?.properties?.borderLeftColor
+                            "
+                            [style.--input-border-left-width]="
+                              col?.metaData?.styleProperties?.properties?.borderLeftWidth
+                            "
+                            [independentBorders]="col?.metaData?.styleProperties?.properties?.independentBorder"
+                            [allowLabelWrapping]="col?.metaData?.styleProperties?.properties?.allowLabelWrapping"
+                            [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
+                            [(ngModel)]="modifyingData[rowIndex][col.columnId]"
+                            (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col.columnId)"
+                            [isSmall]="true"
+                            [showErrorMsg]="col?.metaData?.showErrorMessage"
+                            [error]="
+                              rowErrors[rowIndex] && rowErrors[rowIndex][col.columnId]
+                                ? rowErrors[rowIndex][col.columnId]['error']
+                                : false
+                            "
+                            [errorMsg]="
+                              rowErrors[rowIndex] && rowErrors[rowIndex][col.columnId]
+                                ? rowErrors[rowIndex][col.columnId]['errorMsg']
+                                : false
+                            "
+                          ></finlevit-lib-textarea>
+                        </div>
+                        <div class="p-pl-1" *ngSwitchCase="Number">
+                          <finlevit-number
+                            [placeholder]="col?.metaData?.placeholder"
+                            [tooltip]="col?.metaData?.tooltip"
+                            [mode]="col?.metaData?.mode"
+                            [currency]="col?.metaData?.currency"
+                            [minFractionDigits]="col?.metaData?.minFractionDigits"
+                            [maxFractionDigits]="col?.metaData?.maxFractionDigits"
+                            [isRequired]="col?.validators?.required"
+                            [maxLength]="col?.validators?.maxLength"
+                            [showMaxCharLimit]="col?.validators?.maxLength"
+                            [style.--input-color]="col?.metaData?.styleProperties?.properties?.textColor"
+                            [style.--input-text-align]="col?.metaData?.styleProperties?.properties?.textHorizontalAlign"
+                            [style.--input-background-color]="
+                              col?.metaData?.styleProperties?.properties?.backgroundColor
+                            "
+                            [style.--input-border-color]="col?.metaData?.styleProperties?.properties?.borderColor"
+                            [style.--input-font-family]="col?.metaData?.styleProperties?.properties?.textFontStyle"
+                            [style.--input-border]="col?.metaData?.styleProperties?.properties?.borderStyle"
+                            [style.--input-border-radius]="col?.metaData?.styleProperties?.properties?.borderRadius"
+                            [style.--input-font-size]="col?.metaData?.styleProperties?.properties?.fontSize"
+                            [style.--input-word-spacing]="col?.metaData?.styleProperties?.properties?.wordSpacing"
+                            [style.--input-letter-spacing]="col?.metaData?.styleProperties?.properties?.letterSpacing"
+                            [style.--input-line-spacing]="col?.metaData?.styleProperties?.properties?.lineSpacing"
+                            [style.--input-font-weight]="col?.metaData?.styleProperties?.properties?.fontWeight"
+                            [style.--input-font-style]="col?.metaData?.styleProperties?.properties?.fontStyle"
+                            [style.--input-text-decoration]="col?.metaData?.styleProperties?.properties?.textDecoration"
+                            [style.--input-label-color]="col?.metaData?.styleProperties?.properties?.labelColor"
+                            [style.--input-label-font-family]="
+                              col?.metaData?.styleProperties?.properties?.labelFontStyle
+                            "
+                            [style.--input-label-align]="col?.metaData?.styleProperties?.properties?.labelAlignment"
+                            [style.--input-label-font-weight]="
+                              col?.metaData?.styleProperties?.properties?.labelFontWeight
+                            "
+                            [style.--input-label-font-style]="col?.metaData?.styleProperties?.properties?.labelStyle"
+                            [style.--input-label-text-decoration]="
+                              col?.metaData?.styleProperties?.properties?.labelTextDecoration
+                            "
+                            [style.--input-adornment-background-color]="col?.metaData?.adornmentBackgroundColor"
+                            [style.--input-border-width]="col?.metaData?.styleProperties?.properties?.borderWidth"
+                            [style.--input-label-font-size]="col?.metaData?.styleProperties?.properties?.labelFontSize"
+                            [style.--input-label-width]="col?.metaData?.styleProperties?.properties?.labelWidth + '%'"
+                            [style.--input-border-top]="col?.metaData?.styleProperties?.properties?.borderTopStyle"
+                            [style.--input-border-radius-top-left]="
+                              col?.metaData?.styleProperties?.properties?.borderTopLeftRadius
+                            "
+                            [style.--input-border-top-color]="
+                              col?.metaData?.styleProperties?.properties?.borderTopColor
+                            "
+                            [style.--input-border-top-width]="
+                              col?.metaData?.styleProperties?.properties?.borderTopWidth
+                            "
+                            [style.--input-border-right]="col?.metaData?.styleProperties?.properties?.borderRightStyle"
+                            [style.--input-border-radius-top-right]="
+                              col?.metaData?.styleProperties?.properties?.borderTopRightRadius
+                            "
+                            [style.--input-border-right-color]="
+                              col?.metaData?.styleProperties?.properties?.borderRightColor
+                            "
+                            [style.--input-border-right-width]="
+                              col?.metaData?.styleProperties?.properties?.borderRightWidth
+                            "
+                            [style.--input-border-bottom]="
+                              col?.metaData?.styleProperties?.properties?.borderBottomStyle
+                            "
+                            [style.--input-border-radius-bottom-right]="
+                              col?.metaData?.styleProperties?.properties?.borderBottomRightRadius
+                            "
+                            [style.--input-border-bottom-color]="
+                              col?.metaData?.styleProperties?.properties?.borderBottomColor
+                            "
+                            [style.--input-border-bottom-width]="
+                              col?.metaData?.styleProperties?.properties?.borderBottomWidth
+                            "
+                            [style.--input-border-left]="col?.metaData?.styleProperties?.properties?.borderLeftStyle"
+                            [style.--input-border-radius-bottom-left]="
+                              col?.metaData?.styleProperties?.properties?.borderBottomLeftRadius
+                            "
+                            [style.--input-border-left-color]="
+                              col?.metaData?.styleProperties?.properties?.borderLeftColor
+                            "
+                            [style.--input-border-left-width]="
+                              col?.metaData?.styleProperties?.properties?.borderLeftWidth
+                            "
+                            [independentBorders]="col?.metaData?.styleProperties?.properties?.independentBorder"
+                            [allowLabelWrapping]="col?.metaData?.allowLabelWrapping"
+                            [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
+                            [prefixText]="col?.metaData?.prefixText"
+                            [suffixText]="col?.metaData?.suffixText"
+                            [showClearButton]="col?.metaData?.showClearButton"
+                            [step]="col?.metaData?.step"
+                            [showButtons]="col?.metaData?.showStepperButtons"
+                            [(ngModel)]="modifyingData[rowIndex][col.columnId]"
+                            (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col.columnId)"
+                            [isSmall]="true"
+                            [showErrorMsg]="col?.metaData?.showErrorMessage"
+                            [error]="
+                              rowErrors[rowIndex] && rowErrors[rowIndex][col.columnId]
+                                ? rowErrors[rowIndex][col.columnId]['error']
+                                : false
+                            "
+                            [errorMsg]="
+                              rowErrors[rowIndex] && rowErrors[rowIndex][col.columnId]
+                                ? rowErrors[rowIndex][col.columnId]['errorMsg']
+                                : false
+                            "
+                          ></finlevit-number>
+                        </div>
+                        <div class="p-pl-1" *ngSwitchCase="DatePicker">
+                          <finlevit-lib-datepicker
+                            [isRequired]="col?.validators?.required"
+                            [tooltip]="col?.metaData?.tooltip"
+                            [placeholder]="col?.metaData?.placeholder"
+                            [viewDateFormat]="col?.metaData?.viewDateFormat"
+                            [returnDateFormat]="col?.metaData?.returnDateFormat"
+                            [yearNavigator]="true"
+                            [monthNavigator]="true"
+                            [style.--input-color]="col?.metaData?.styleProperties?.properties?.textColor"
+                            [style.--input-text-align]="col?.metaData?.styleProperties?.properties?.textHorizontalAlign"
+                            [style.--input-background-color]="
+                              col?.metaData?.styleProperties?.properties?.backgroundColor
+                            "
+                            [style.--input-border-color]="col?.metaData?.styleProperties?.properties?.borderColor"
+                            [style.--input-font-family]="col?.metaData?.styleProperties?.properties?.textFontStyle"
+                            [style.--input-border]="col?.metaData?.styleProperties?.properties?.borderStyle"
+                            [style.--input-border-radius]="col?.metaData?.styleProperties?.properties?.borderRadius"
+                            [style.--input-font-size]="col?.metaData?.styleProperties?.properties?.fontSize"
+                            [style.--input-word-spacing]="col?.metaData?.styleProperties?.properties?.wordSpacing"
+                            [style.--input-letter-spacing]="col?.metaData?.styleProperties?.properties?.letterSpacing"
+                            [style.--input-line-spacing]="col?.metaData?.styleProperties?.properties?.lineSpacing"
+                            [style.--input-font-weight]="col?.metaData?.styleProperties?.properties?.fontWeight"
+                            [style.--input-font-style]="col?.metaData?.styleProperties?.properties?.fontStyle"
+                            [style.--input-text-decoration]="col?.metaData?.styleProperties?.properties?.textDecoration"
+                            [style.--input-label-color]="col?.metaData?.styleProperties?.properties?.labelColor"
+                            [style.--input-label-font-family]="
+                              col?.metaData?.styleProperties?.properties?.labelFontStyle
+                            "
+                            [style.--input-label-align]="col?.metaData?.styleProperties?.properties?.labelAlignment"
+                            [style.--input-label-font-weight]="
+                              col?.metaData?.styleProperties?.properties?.labelFontWeight
+                            "
+                            [style.--input-label-font-style]="col?.metaData?.styleProperties?.properties?.labelStyle"
+                            [style.--input-label-text-decoration]="
+                              col?.metaData?.styleProperties?.properties?.labelTextDecoration
+                            "
+                            [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
+                            [showTime]="col?.metaData?.showTime"
+                            [hourFormat]="col?.metaData?.hourFormat"
+                            [stepMinute]="col?.metaData?.stepMinute"
+                            [stepHour]="col?.metaData?.stepHour"
+                            [style.--input-adornment-background-color]="
+                              col?.metaData?.styleProperties?.properties?.adornmentBackgroundColor
+                            "
+                            [style.--input-border-width]="col?.metaData?.styleProperties?.properties?.borderWidth"
+                            [style.--input-label-font-size]="col?.metaData?.styleProperties?.properties?.labelFontSize"
+                            [style.--input-label-width]="col?.metaData?.styleProperties?.properties?.labelWidth + '%'"
+                            [style.--input-border-top]="col?.metaData?.styleProperties?.properties?.borderTopStyle"
+                            [style.--input-border-radius-top-left]="
+                              col?.metaData?.styleProperties?.properties?.borderTopLeftRadius
+                            "
+                            [style.--input-border-top-color]="
+                              col?.metaData?.styleProperties?.properties?.borderTopColor
+                            "
+                            [style.--input-border-top-width]="
+                              col?.metaData?.styleProperties?.properties?.borderTopWidth
+                            "
+                            [style.--input-border-right]="col?.metaData?.styleProperties?.properties?.borderRightStyle"
+                            [style.--input-border-radius-top-right]="
+                              col?.metaData?.styleProperties?.properties?.borderTopRightRadius
+                            "
+                            [style.--input-border-right-color]="
+                              col?.metaData?.styleProperties?.properties?.borderRightColor
+                            "
+                            [style.--input-border-right-width]="
+                              col?.metaData?.styleProperties?.properties?.borderRightWidth
+                            "
+                            [style.--input-border-bottom]="
+                              col?.metaData?.styleProperties?.properties?.borderBottomStyle
+                            "
+                            [style.--input-border-radius-bottom-right]="
+                              col?.metaData?.styleProperties?.properties?.borderBottomRightRadius
+                            "
+                            [style.--input-border-bottom-color]="
+                              col?.metaData?.styleProperties?.properties?.borderBottomColor
+                            "
+                            [style.--input-border-bottom-width]="
+                              col?.metaData?.styleProperties?.properties?.borderBottomWidth
+                            "
+                            [style.--input-border-left]="col?.metaData?.styleProperties?.properties?.borderLeftStyle"
+                            [style.--input-border-radius-bottom-left]="
+                              col?.metaData?.styleProperties?.properties?.borderBottomLeftRadius
+                            "
+                            [style.--input-border-left-color]="
+                              col?.metaData?.styleProperties?.properties?.borderLeftColor
+                            "
+                            [style.--input-border-left-width]="
+                              col?.metaData?.styleProperties?.properties?.borderLeftWidth
+                            "
+                            [independentBorders]="col?.metaData?.styleProperties?.properties?.independentBorder"
+                            [allowLabelWrapping]="col?.metaData?.styleProperties?.properties?.allowLabelWrapping"
+                            [(ngModel)]="modifyingData[rowIndex][col.columnId]"
+                            (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col.columnId)"
+                            [isSmall]="true"
+                            [showErrorMsg]="col?.metaData?.showErrorMessage"
+                            [minDate]="col?.validators?.minDate"
+                            [maxDate]="col?.validators?.maxDate"
+                            [error]="
+                              rowErrors[rowIndex] && rowErrors[rowIndex][col.columnId]
+                                ? rowErrors[rowIndex][col.columnId]['error']
+                                : false
+                            "
+                            [errorMsg]="
+                              rowErrors[rowIndex] && rowErrors[rowIndex][col.columnId]
+                                ? rowErrors[rowIndex][col.columnId]['errorMsg']
+                                : false
+                            "
+                          ></finlevit-lib-datepicker>
+                        </div>
+                      </ng-container>
                     </ng-container>
                   </div>
                 </div>
               </div>
               <div
-                *ngIf="actions.editRow || actions.deleteRow"
+                *ngIf="actions?.editRow || actions?.deleteRow"
                 class="f-td"
                 [ngStyle]="{
                   width: (actions?.width || 100) + 'px',
@@ -625,7 +691,11 @@
                       <div
                         [ngClass]="{ 'row-actions edit-action-mode': true, disabled: Object.keys(editCells).length }"
                       >
-                        <i *ngIf="actions.editRow" class="pi pi-check save-icon" (click)="onRowSave(rowIndex, modifyingData[rowIndex])"></i>
+                        <i
+                          *ngIf="actions?.editRow"
+                          class="pi pi-check save-icon"
+                          (click)="onRowSave(rowIndex, modifyingData[rowIndex])"
+                        ></i>
                         <i
                           class="pi pi-times cancel-icon"
                           (click)="onRowEditCancel(rowIndex, modifyingData[rowIndex])"
@@ -635,25 +705,25 @@
                     <ng-container *ngIf="!editRows[rowIndex] && newRows[rowIndex]">
                       <div [ngClass]="{ 'row-actions new-action-mode': true, disabled: Object.keys(editCells).length }">
                         <i
-                          *ngIf="actions.editRow"
+                          *ngIf="actions?.editRow"
                           class="pi pi-check save-icon"
                           (click)="onRowSave(rowIndex, modifyingData[rowIndex], true)"
                         ></i>
                         <i
                           class="pi pi-trash delete-icon"
-                          (click)="onDelete(rowIndex, modifyingData[rowIndex], true)"
+                          (click)="onDelete($event, rowIndex, modifyingData[rowIndex] || rowData, true)"
                         ></i>
                       </div>
                     </ng-container>
                     <ng-container *ngIf="!editRows[rowIndex] && !newRows[rowIndex]">
                       <div [ngClass]="{ 'row-actions': true, disabled: Object.keys(editCells).length }">
-                        <span class="edit-action" *ngIf="actions?.editRow" (click)="onEdit(rowIndex, rowData)">
+                        <span class="edit-action" *ngIf="actions?.editRow" (click)="onEdit($event, rowIndex, rowData)">
                           <i class="pi pi-pencil"></i>
                         </span>
                         <span
                           class="delete-action"
                           *ngIf="actions?.deleteRow"
-                          (click)="onDelete(rowIndex, modifyingData[rowIndex])"
+                          (click)="onDelete($event, rowIndex, modifyingData[rowIndex] || rowData)"
                         >
                           <i class="pi pi-trash delete-icon"></i>
                         </span>

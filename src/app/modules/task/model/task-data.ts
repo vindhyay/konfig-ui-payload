@@ -1,5 +1,3 @@
-import {IPreviewData} from "../../../../../lib/rng-widgets";
-
 export interface TaskData {
   assignedName: string;
   assignedTo: string;
@@ -114,4 +112,28 @@ export interface ITaskDoc extends IPreviewData {
   createdTime: string;
   dri: string;
   uploaded: any;
+}
+
+
+export interface IPreviewData {
+  docType: DocType;
+  previewURL?: string | null;
+  previewSize?: PreviewSize | null;
+  round?: boolean | false;
+}
+
+export enum DocType {
+  XLSX,
+  DOCX,
+  HTML,
+  XML,
+  ZIP,
+  PDF,
+  IMAGE,
+  VIDEO
+}
+
+export enum PreviewSize {
+  SMALL = 32,
+  WIDGET = 120
 }
