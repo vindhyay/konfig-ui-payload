@@ -117,9 +117,21 @@
               "devServerTarget": "finlevit-payload:serve:production"
             }
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
         }
       }
     }
   },
-  "defaultProject": "finlevit-payload"
+  "defaultProject": "finlevit-payload",
+  "cli": {
+    "defaultCollection": "@angular-eslint/schematics"
+  }
 }
