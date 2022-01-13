@@ -27,6 +27,8 @@
   --button-border-left-width: var(--button-border-width);
   --button-border-left-color: var(--input-border-color);
   --button-border-radius-bottom-left: var(--button-border-radius);
+  --button-min-width: 0;
+  --button-hover-brightness: 100%;
 }
 
 ::ng-deep {
@@ -37,6 +39,25 @@
     text-decoration: var(--button-label-text-decoration);
     font-style: var(--button-label-font-style);
     font-weight: var(--button-label-font-weight);
+    min-width: var(--button-min-width);
+    padding: 6px 14px;
+  }
+
+  .p-button:enabled:hover {
+    filter: brightness(var(--button-hover-brightness));
+  }
+
+  .p-button.p-button-sm {
+    font-size: 11px;
+    padding: 3px 11px;
+  }
+
+  .p-button.p-button-sm .p-button-icon{
+    font-size: 11px;
+  }
+
+  .p-button .p-button-icon{
+    font-size: var(--button-label-font-size);
   }
 }
 

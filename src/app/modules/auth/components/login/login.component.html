@@ -9,34 +9,33 @@
         <div class="row">
           <div class="col-12 pl-4 pr-4 pt-3 pb-2">
             <finlevit-text
-                    type="text"
-                    [label]="LABELS.USER_ID"
-                    formControlName="userName"
-                    [isRequired]="true"
-                    [errorMsg]="LABELS.USER_ID_ERROR_MSG"
+              type="text"
+              [label]="LABELS.USER_ID"
+              formControlName="userName"
+              [isRequired]="true"
+              [errorMsg]="LABELS.USER_ID_ERROR_MSG"
             ></finlevit-text>
           </div>
           <div class="col-12 pl-4 pr-4">
             <finlevit-text
-                    type="password"
-                    [label]="LABELS.PASSWORD"
-                    formControlName="passWord"
-                    [isRequired]="true"
-                    [errorMsg]="LABELS.PASSWORD_ERROR_MSG"
+              type="password"
+              [label]="LABELS.PASSWORD"
+              formControlName="passWord"
+              [isRequired]="true"
+              [errorMsg]="LABELS.PASSWORD_ERROR_MSG"
             ></finlevit-text>
           </div>
           <div class="col-12 pl-4 pr-4">
-              <finlevit-lib-checkbox formControlName="remember" [label]="LABELS.REMEMBER_ME_TEXT"></finlevit-lib-checkbox>
+            <finlevit-lib-checkbox formControlName="remember" [label]="LABELS.REMEMBER_ME_TEXT"></finlevit-lib-checkbox>
           </div>
         </div>
         <div class="error">{{ loginError }}</div>
         <div class="centered-buttons column pb-4 p-pt-5">
-          <app-btn-primary (btnClick)="onSubmit()">
-            <div class="spinner-border text-light" role="status" *ngIf="loading">
-              <span class="sr-only">Loading...</span>
-            </div>
-            {{ LABELS.SUBMIT_BTN_TEXT }}</app-btn-primary
-          >
+          <app-btn-primary
+            (btnClick)="onSubmit()"
+            [label]="LABELS.SUBMIT_BTN_TEXT"
+            [icon]="loading ? 'pi pi-spin pi-spinner' : ''"
+          ></app-btn-primary>
         </div>
       </form>
     </div>
