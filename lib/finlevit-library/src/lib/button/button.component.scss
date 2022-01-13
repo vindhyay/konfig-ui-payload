@@ -48,16 +48,20 @@
   }
 
   .p-button.p-button-sm {
-    font-size: 11px;
-    padding: 3px 11px;
+    font-size: 13px;
+    padding: 3px 10px;
   }
 
   .p-button.p-button-sm .p-button-icon{
-    font-size: 11px;
+    font-size: 13px;
   }
 
   .p-button .p-button-icon{
     font-size: var(--button-label-font-size);
+  }
+
+  .p-button.p-button-lg{
+    padding: 10px 18px;
   }
 }
 
