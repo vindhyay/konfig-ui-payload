@@ -12,6 +12,7 @@ export class BackButtonComponent {
   @Input() historyMode: boolean | null = false;
   @Input() backByUrl: string | null = null;
   @Input() backFn: Function = null;
+  @Input() borderColor: '#F3F6F9'
 
   constructor(private router: Router, private activeRoute: ActivatedRoute) {}
 
@@ -23,7 +24,7 @@ export class BackButtonComponent {
         return this.activeRoute.parent;
       case 3:
         return this.activeRoute.parent.parent;
-      // we could implement some recursion here but also it could require to navigate to "root" (0 for example)
+        // we could implement some recursion here but also it could require to navigate to "root" (0 for example)
       default:
         return this.activeRoute.root.firstChild; // root's firstchild -1 should give us the root itself
     }

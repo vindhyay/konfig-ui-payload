@@ -4,7 +4,8 @@ export enum ButtonVariants {
   raisedButton = "raisedButton",
   roundedButton = "roundedButton",
   raisedTextButton = "raisedTextButton",
-  outlinedButton = "outlinedButton"
+  outlinedButton = "outlinedButton",
+  linkButton = "linkButton"
 }
 
 export enum ButtonTypes {
@@ -22,7 +23,8 @@ const ButtonClass = {
   primary: "p-button-primary",
   info: "p-button-info",
   success: "p-button-success",
-  secondary: "p-button-secondary"
+  secondary: "p-button-secondary",
+  linkButton: "p-button-link"
 };
 
 @Component({
@@ -36,7 +38,7 @@ export class ButtonComponent {
   @Input() isSmall = false;
   @Input() isLarge = false;
   @Input() color = "#fff";
-  @Input() bgColor = "#007bff";
+  @Input() bgColor = "#3F51B4";
   @Input() isDisabled = false;
   @Input() label = "";
   @Input() icon = "";
@@ -68,10 +70,5 @@ export class ButtonComponent {
       this._class = this._class + " single-border";
     }
     return this._class;
-  }
-
-  actionBtnClick($event) {
-    $event.stopPropagation();
-    this.btnClick.emit();
   }
 }

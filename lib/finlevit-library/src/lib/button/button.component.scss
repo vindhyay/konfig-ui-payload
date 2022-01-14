@@ -63,6 +63,10 @@
   .p-button.p-button-lg{
     padding: 10px 18px;
   }
+
+  .p-button:focus{
+    box-shadow: none;
+  }
 }
 
 .independent-borders{
