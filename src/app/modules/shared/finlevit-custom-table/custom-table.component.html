@@ -235,7 +235,7 @@
                             (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.columnId)))
                         "
                       >
-                        <div class="p-pl-1" *ngSwitchCase="TextInput">
+                        <div class="pl-1" *ngSwitchCase="TextInput">
                           <finlevit-text
                             [leftIcon]="col?.metaData?.leftIcon"
                             [rightIcon]="col?.metaData?.rightIcon"
@@ -338,7 +338,7 @@
                             "
                           ></finlevit-text>
                         </div>
-                        <div class="p-pl-1" *ngSwitchCase="TextArea">
+                        <div class="pl-1" *ngSwitchCase="TextArea">
                           <finlevit-lib-textarea
                             [autoResize]="col?.metaData?.autoResize"
                             [rows]="col?.metaData?.rowsCount"
@@ -440,7 +440,7 @@
                             "
                           ></finlevit-lib-textarea>
                         </div>
-                        <div class="p-pl-1" *ngSwitchCase="Number">
+                        <div class="pl-1" *ngSwitchCase="Number">
                           <finlevit-number
                             [placeholder]="col?.metaData?.placeholder"
                             [tooltip]="col?.metaData?.tooltip"
@@ -549,7 +549,7 @@
                             "
                           ></finlevit-number>
                         </div>
-                        <div class="p-pl-1" *ngSwitchCase="DatePicker">
+                        <div class="pl-1" *ngSwitchCase="DatePicker">
                           <finlevit-lib-datepicker
                             [isRequired]="col?.validators?.required"
                             [tooltip]="col?.metaData?.tooltip"
@@ -746,10 +746,10 @@
           <ng-template #zeroRecordsResult> Showing {{ pagination?.totalRecords }} results </ng-template>
         </div>
         <ng-template #cellEditActions>
-          <div class="p-ml-2 p-mr-2">
+          <div class="ml-2 mr-2">
             <finlevit-button [isSmall]="true" (btnClick)="onColSave($event)" label="save"></finlevit-button>
           </div>
-          <div class="p-ml-2 p-mr-2">
+          <div class="ml-2 mr-2">
             <finlevit-button
               [isSmall]="true"
               bgColor="#dc3545"
