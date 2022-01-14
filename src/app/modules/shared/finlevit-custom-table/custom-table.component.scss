@@ -1,4 +1,6 @@
 :host {
+  --header-search-cell-background-color: #ffff;
+
   --header-cell-background-color: #f1f1f1;
   --header-cell-color: #000;
   --header-font-size: 11px;
@@ -63,6 +65,14 @@
     z-index: 3;
     top: 0;
   }
+  .finlevit-table .f-thead .f-tr {
+    &.f-tr-search {
+      border-bottom: 1px solid var(--table-header-bottom-border-color);
+      .f-th {
+        background-color: var(--header-search-cell-background-color);
+      }
+    }
+  }
   .finlevit-table .f-tr {
     flex: 1 0 auto;
     display: inline-flex;
@@ -92,18 +102,7 @@
       }
     }
   }
-  .finlevit-table .f-thead .f-th {
-    padding: var(--header-cell-padding-top) var(--header-cell-padding-right) var(--header-cell-padding-bottom)
-    var(--header-cell-padding-left);
-    position: relative;
-    border-right: 1px solid var(--table-header-right-border-color);
-    &:last-of-type {
-      border-right: none !important;
-    }
-    cursor: pointer;
-    line-height: normal;
-    background-color: var(--header-cell-background-color);
-    color: var(--header-cell-color);
+  .finlevit-table .f-thead .f-tr:not(.f-tr-search) .f-th {
     .f-resizer {
       position: absolute;
       top: 0;
@@ -117,6 +116,19 @@
         opacity: 0.1;
       }
     }
+  }
+  .finlevit-table .f-thead .f-tr .f-th {
+    padding: var(--header-cell-padding-top) var(--header-cell-padding-right) var(--header-cell-padding-bottom)
+    var(--header-cell-padding-left);
+    position: relative;
+    border-right: 1px solid var(--table-header-right-border-color);
+    &:last-of-type {
+      border-right: none !important;
+    }
+    cursor: pointer;
+    line-height: normal;
+    background-color: var(--header-cell-background-color);
+    color: var(--header-cell-color);
     .f-resizable-header-content {
       width: 100%;
       font-size: var(--header-font-size);
@@ -269,6 +281,8 @@
       width: 24px;
       text-align: center;
       margin-right: 4px;
+      border: 1px solid #ced4da;
+      border-radius: 4px;
     }
     .footer-btn {
       border: none;
@@ -290,17 +304,31 @@
       display: flex;
     }
   }
+  .-page-limit {
+    margin-right: 1rem;
+    ::ng-deep {
+      .p-dropdown-label {
+        padding: 0.2rem 0.3rem;
+        color: var(--paginator-color);
+      }
+      .p-dropdown-trigger{
+        width: 1.357rem;
+        color: var(--paginator-color);
+      }
+    }
+  }
   ::ng-deep {
-    .p-field, .p-field-checkbox {
+    .field,
+    .field-checkbox {
       margin-bottom: 0;
     }
-    .p-inputtext:enabled:focus {
+    .inputtext:enabled:focus {
       box-shadow: none;
     }
   }
 }
 .no-data-container {
-  background-image: url("/assets/images/nodata-found.png");
+  background-image: url('/assets/images/nodata-found.png');
   height: 100%;
   background-size: contain;
   background-position: center;

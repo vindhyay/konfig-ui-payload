@@ -18,6 +18,99 @@
           'border-bottom-style': horizontalBorder ? 'solid' : 'none'
         }"
       >
+        <div *ngIf="colSearch" class="f-tr f-tr-search">
+          <div
+            *ngIf="selectable"
+            class="f-th"
+            [ngStyle]="{
+              width: selectableConfig.width + 'px',
+              flex: selectableConfig.width + ' 0 auto',
+              'border-right-style': verticalBorder ? 'solid' : 'none'
+            }"
+            [align]="selectableConfig.alignment"
+          >
+            <div class="f-resizable-header-content">
+              <div
+                [ngClass]="{
+                  'f-column-header-name': true,
+                  left: selectableConfig.alignment === CellAlignTypes.LEFT,
+                  right: selectableConfig.alignment === CellAlignTypes.RIGHT,
+                  center: selectableConfig.alignment === CellAlignTypes.CENTER
+                }"
+              ></div>
+            </div>
+          </div>
+          <div
+            class="f-th"
+            [ngStyle]="{
+              width: (col?.width || 100) + 'px',
+              flex: (col?.width || 100) + ' 0 auto',
+              'border-right-style': verticalBorder ? 'solid' : 'none'
+            }"
+            *ngFor="let col of columns"
+            [align]="col.alignment"
+          >
+            <div class="f-resizable-header-content">
+              <div
+                [ngClass]="{
+                  'f-column-header-name': true,
+                  left: col.alignment === CellAlignTypes.LEFT,
+                  right: col.alignment === CellAlignTypes.RIGHT,
+                  center: col.alignment === CellAlignTypes.CENTER
+                }"
+              >
+                <ng-container [ngSwitch]="col.colType">
+                  <ng-container *ngSwitchCase="TextInput">
+                    <finlevit-text
+                      [name]="'search' + col.columnId"
+                      [(ngModel)]="searchObject[col.columnId]"
+                      [placeholder]="col?.label"
+                      (keydown)="onKeyDown($event, col)"
+                    ></finlevit-text>
+                  </ng-container>
+                  <ng-container *ngSwitchCase="DatePicker">
+                    <finlevit-lib-datepicker
+                      [name]="'search' + col.columnId"
+                      [(ngModel)]="searchObject[col.columnId]"
+                      (ngModelChange)="emitColSearch(col)"
+                      [placeholder]="col?.label"
+                    ></finlevit-lib-datepicker>
+                  </ng-container>
+                  <ng-container *ngSwitchDefault>
+                    <finlevit-text
+                      [name]="'search' + col.columnId"
+                      [(ngModel)]="searchObject[col.columnId]"
+                      [placeholder]="col?.label"
+                      (keydown)="onKeyDown($event, col)"
+                    ></finlevit-text>
+                  </ng-container>
+                </ng-container>
+              </div>
+            </div>
+            <div class="f-resizer" (resizable)="onResize($event, col)"></div>
+          </div>
+          <div
+            *ngIf="actions?.editRow || actions?.deleteRow"
+            class="f-th"
+            [ngStyle]="{
+              width: (actions?.width || 100) + 'px',
+              flex: (actions?.width || 100) + ' 0 auto'
+            }"
+          >
+            <div class="f-resizable-header-content">
+              <div
+                [ngClass]="{
+                  'f-column-header-name': true,
+                  left: actions.alignment === CellAlignTypes.LEFT,
+                  right: actions.alignment === CellAlignTypes.RIGHT,
+                  center: actions.alignment === CellAlignTypes.CENTER
+                }"
+              >
+                {{ actions.label }}
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="f-tr">
           <div
             *ngIf="selectable"
@@ -55,7 +148,10 @@
             }"
             *ngFor="let col of columns"
             [sortEligible]="
-              sort && !Object.keys(newRows).length && !Object.keys(editRows).length && !Object.keys(editCells).length
+              (sort || col?.sortable) &&
+              !Object.keys(newRows).length &&
+              !Object.keys(editRows).length &&
+              !Object.keys(editCells).length
             "
             [ref]="col.columnId"
             [align]="col.alignment"
@@ -213,7 +309,7 @@
                         <ng-container
                           *ngIf="customTemplates && customTemplates[col?.columnId]; else generic"
                           [ngTemplateOutlet]="customTemplates[col?.columnId]"
-                          [ngTemplateOutletContext]="{ row: rowData }"
+                          [ngTemplateOutletContext]="{ row: rowData, column: col }"
                         ></ng-container>
                         <ng-template #generic>
                           <ng-container *ngSwitchCase="DatePicker">
@@ -761,6 +857,19 @@
         </ng-template>
       </div>
       <div [ngClass]="{ '-center': true, 'show-pagination': isPaginationEnabled }">
+        <div class="-page-limit">
+          <finlevit-lib-select
+            *ngIf="showPageOptions"
+            class="items-per-page"
+            optionLabel="name"
+            [isSmall]="true"
+            name="pagelimit"
+            [(ngModel)]="fixedRecordsPerPage"
+            (ngModelChange)="onPageLimitChange($event)"
+            [options]="pageOptions"
+            [style.--input-font-size]="'12px'"
+          ></finlevit-lib-select>
+        </div>
         <div class="-previous">
           <button class="footer-btn" [disabled]="pagination.isFirst" (click)="pagination.prev()">
             <i class="pi pi-angle-left"></i>

@@ -35,6 +35,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
   @Input()
   set columns(columns) {
     this._columns = columns.map(column => {
+      this.searchObject[column.columnId] = null;
       if (column?.metaData?.widgetType === WidgetTypes.DatePicker) {
         if (column?.validators?.minDate) {
           column.validators.minDate = new Date(column.validators.minDate);
@@ -84,18 +85,20 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
   RadioGroup: WidgetTypes = WidgetTypes.RadioGroup;
   Upload: WidgetTypes = WidgetTypes.Upload;
   selectableConfig = {
-    width: 30,
+    width: 50,
     alignment: CELL_ALIGNMENTS_TYPES.CENTER,
     label: "#"
   };
   _columns: Column[] = [];
   selection = new SelectionModel<any>(true, []);
+  searchObject = {};
   @Input() customTemplates = {};
   @Input() verticalBorder = true;
   @Input() horizontalBorder = true;
   @Input() tableBorder = true;
   isPaginationEnabled = true;
 
+  @Input() showPageOptions = true;
   @Input() sort = false;
   @Input() filter = false;
   @Input() addRows = false;
@@ -104,6 +107,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() isServerSidePagination = false;
   @Input() isServerSideSorting = false;
   @Input() totalRecords = 0;
+  @Input() pageOptions = [10, 15, 20, 30, 40, 50];
   @Input() fixedRecordsPerPage = 10;
   _tableData = [];
   filteredTableData = [];
@@ -112,6 +116,8 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() hideFooter = false;
   @Input() actions: TableActions = null;
   @Input() selectable = false;
+  @Input() colSearch = false;
+  @Output() onColSearch = new EventEmitter();
   @Output() selectionHandler = new EventEmitter();
   @Output() selectedRows = new EventEmitter();
 
@@ -122,6 +128,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
   @Output() onRowEditClick = new EventEmitter();
   @Output() onRowDeleteClick = new EventEmitter();
   @Output() handleRowSave = new EventEmitter();
+  @Output() handleColsSave = new EventEmitter();
   @Output() handleRowDelete = new EventEmitter();
 
   tableId: any = null;
@@ -163,6 +170,10 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
   ngOnInit(): void {
     this.tableId = getUniqueId("table");
     this.selectionHandler.emit(this.selection);
+    // Initiating search object
+    this.columns.forEach(column => {
+      this.searchObject[column.columnId] = null;
+    });
   }
 
   updateRowsLimit() {
@@ -200,6 +211,9 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
     });
     if (this.actions?.editRow || this.actions?.deleteRow) {
       sum = sum + Number(this.actions?.width || 100);
+    }
+    if (this.selectable) {
+      sum = sum + Number(this.selectableConfig.width);
     }
     return sum + "px";
   }
@@ -275,6 +289,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
         delete this.modifyingData[index];
       }
     });
+    this.handleColsSave.emit();
   }
   onColSaveCancel($event) {
     this.editCells = {};
@@ -472,5 +487,17 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
     } else {
       this.filteredTableData = [...this.tableData];
     }
+  }
+  emitColSearch(column) {
+    this.onColSearch.emit({ search: this.searchObject, column });
+  }
+  onKeyDown($event, column) {
+    if ($event.keyCode === 13) {
+      this.emitColSearch(column);
+    }
+  }
+  onPageLimitChange($event) {
+    this.currentPage = 1;
+    this.onPageChange.emit({ limit: $event, page: this.currentPage });
   }
 }
