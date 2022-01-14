@@ -1,10 +1,14 @@
-<button
-  mat-raised-button
-  class="badged-button"
-  [ngClass]="class"
-  [disabled]="disabled"
-  (click)="btnClick.emit()"
-  color="primary"
->
-  <ng-content></ng-content>
-</button>
+<finlevit-button
+  [bgColor]="'#3F51B4'"
+  [borderColor]="'#3F51B4'"
+  (btnClick)="btnClick.emit()"
+  [isDisabled]="disabled"
+  [label]="label"
+  [isSmall]="isSmall"
+  [isLarge]="isLarge"
+  [icon]="icon"
+  [variant]="'roundedButton'"
+  [style.--button-label-font-family]="'Muli,Raleway,Open sans'"
+  [style.--button-min-width]="'70px'"
+  [style.--button-hover-brightness]="'90%'"
+></finlevit-button>
