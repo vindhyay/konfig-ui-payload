@@ -106,16 +106,19 @@ export enum TABLE_PAGINATION_POSITIONS {
   BOTTOM = "bottom"
 }
 
-
 export class TableActions {
   editRow: boolean;
+  emitOnEdit: boolean;
   deleteRow: boolean;
+  emitOnDelete: boolean;
   width: any;
   label: string;
   alignment: CELL_ALIGNMENTS_TYPES;
   constructor(data) {
     const {
       editRow = true,
+      emitOnEdit = false,
+      emitOnDelete = false,
       deleteRow = true,
       width = 100,
       label = "Actions",
@@ -123,6 +126,8 @@ export class TableActions {
     } = data;
     this.editRow = editRow;
     this.deleteRow = deleteRow;
+    this.emitOnEdit = emitOnEdit;
+    this.emitOnDelete = emitOnDelete;
     this.width = width;
     this.label = label;
     this.alignment = align;
@@ -253,7 +258,7 @@ export class MetaData {
       defaultMinItemRows,
       hideRows,
       conditions,
-      errorMessage = "",
+      errorMessage = ""
     } = data;
     this.widgetId = widgetId || getUniqueId("widget");
     this.widgetType = widgetType;
@@ -367,7 +372,7 @@ export class TableMetaData<T> extends MetaData {
       paginatorBgColor = "#ededed",
       paginatorColor = "#6a6a6a",
       options = [],
-      hideFooter = false,
+      hideFooter = false
     } = data;
     this.columns = columns;
     this.heading = heading;
@@ -521,7 +526,7 @@ export class TextInputMetaData extends MetaData {
   formula = [];
   errorMessage: string;
   showErrorMessage: boolean;
-  styleProperties: { id: "", properties: any };
+  styleProperties: { id: ""; properties: any };
   adornmentBackgroundColor: string;
   allowLabelWrapping: boolean;
   showClearButton: boolean;
@@ -585,7 +590,7 @@ export class PasswordInputMetaData extends MetaData {
   };
   errorMessage: string;
   showErrorMessage: boolean;
-  styleProperties: { id: "", properties: any };
+  styleProperties: { id: ""; properties: any };
   adornmentBackgroundColor: string;
   allowLabelWrapping: boolean;
   showClearButton: boolean;
@@ -807,7 +812,7 @@ export class EmailMetaData extends MetaData {
   showClearButton: boolean;
   prefixText: string;
   suffixText: string;
-  styleProperties: { id: "", properties: any };
+  styleProperties: { id: ""; properties: any };
   constructor(data) {
     super(data);
     const {
@@ -858,7 +863,7 @@ export class PhonenumberInputMetaData extends MetaData {
   formula = [];
   errorMessage: string;
   showErrorMessage: boolean;
-  styleProperties: { id: "", properties: any };
+  styleProperties: { id: ""; properties: any };
   adornmentBackgroundColor: string;
   allowLabelWrapping: boolean;
   showClearButton: boolean;
@@ -952,15 +957,24 @@ export class DatePickerMetaData extends MetaData {
   stepMinute: number;
   constructor(data) {
     super(data);
-    const { viewDateFormat = "mm/dd/yy", returnDateFormat = "isoTimestamp", tooltip = "", placeholder = "",showTime=false,hourFormat=24,stepHour=1,stepMinute=1  } = data;
+    const {
+      viewDateFormat = "mm/dd/yy",
+      returnDateFormat = "isoTimestamp",
+      tooltip = "",
+      placeholder = "",
+      showTime = false,
+      hourFormat = 24,
+      stepHour = 1,
+      stepMinute = 1
+    } = data;
     this.viewDateFormat = viewDateFormat;
     this.returnDateFormat = returnDateFormat;
     this.tooltip = tooltip;
     this.placeholder = placeholder;
-    this.showTime=showTime;
-    this.hourFormat=hourFormat;
-    this.stepHour=stepHour;
-    this.stepMinute=stepMinute;
+    this.showTime = showTime;
+    this.hourFormat = hourFormat;
+    this.stepHour = stepHour;
+    this.stepMinute = stepMinute;
   }
 }
 
@@ -1062,7 +1076,7 @@ export enum ContainerActions {
   none = "none",
   previous = "previous",
   next = "next",
-  externalLink = "externalLink",
+  externalLink = "externalLink"
 }
 
 export class ContainerMetaData extends MetaData {
@@ -1071,7 +1085,7 @@ export class ContainerMetaData extends MetaData {
   header: ContainerHeader;
   onClickConfigs: Array<OnChangeTriggerConfig>;
   externalLink: string;
-  styleProperties: { id: "", properties: any };
+  styleProperties: { id: ""; properties: any };
   constructor(data) {
     super(data);
     const { title = "", icon = "", styleProperties = {}, onClickConfig = {}, externalLink = "", header = {} } = data;
@@ -1217,14 +1231,14 @@ export class ImageMetaData extends MetaData {
   remoteKey: string;
   position: string; // 'Cover' or 'Contain'
   horizontalAlign: string;
-  shorterEdge: string
-  styleProperties: { id: "", properties: any };
+  shorterEdge: string;
+  styleProperties: { id: ""; properties: any };
   constructor(data) {
     super(data);
-    const { 
+    const {
       url = "",
       altText = "",
-      source = 'Local',
+      source = "Local",
       remoteKey = "",
       position = "Contain",
       horizontalAlign = "Center",
@@ -1331,8 +1345,8 @@ export class ModalMetaData extends MetaData {
   iconPos: string;
   type: ButtonTypes;
   variant: ButtonVariants;
-  textStyle:string;
-  fontStyle:string;
+  textStyle: string;
+  fontStyle: string;
   textDecortation: string;
   fontWeight: number;
   footerContent: any;
@@ -1355,13 +1369,13 @@ export class ModalMetaData extends MetaData {
       type = ButtonTypes.primary,
       variant = ButtonVariants.raisedButton,
       textStyle = TextStyles.BODY1,
-      fontStyle = '',
-      textDecortation = '',
+      fontStyle = "",
+      textDecortation = "",
       fontWeight = 400,
-      footerbgColor= "#ffffff",
+      footerbgColor = "#ffffff",
       footerContent = [],
-      footerHeight= 50,
-      modalHeader=[],
+      footerHeight = 50,
+      modalHeader = [],
       buttonContainer = {},
       modalType = "SinglePage",
       styleProperties = {}
@@ -1373,20 +1387,20 @@ export class ModalMetaData extends MetaData {
     this.color = color;
     this.bgColor = bgColor;
     this.button = new ContainerHeader(button);
-    this.iconPos=iconPos;
-    this.type=type;
-    this.variant=variant;
+    this.iconPos = iconPos;
+    this.type = type;
+    this.variant = variant;
     this.fontStyle = fontStyle;
     this.textStyle = textStyle;
-    this.textDecortation= textDecortation;
+    this.textDecortation = textDecortation;
     this.fontWeight = fontWeight;
-    this.footerbgColor=footerbgColor;
-    this.footerContent=footerContent;
-    this.footerHeight= footerHeight;
+    this.footerbgColor = footerbgColor;
+    this.footerContent = footerContent;
+    this.footerHeight = footerHeight;
     this.modalHeader = modalHeader;
     this.modalType = modalType;
     this.buttonContainer = buttonContainer;
-    this.styleProperties= styleProperties;
+    this.styleProperties = styleProperties;
   }
 }
 
@@ -1403,15 +1417,15 @@ export class DividerMetaData extends MetaData {
   constructor(data) {
     super(data);
     const {
-      align = 'center',
-      layout = 'horizontal',
-      type = 'dotted',
-      text = '',
-      textColor = 'black',
-      borderColor = '#d1d1d1',
-      borderStyle = 'solid',
-      fontFamily = 'Helvetica',
-      fontSize = '1em'
+      align = "center",
+      layout = "horizontal",
+      type = "dotted",
+      text = "",
+      textColor = "black",
+      borderColor = "#d1d1d1",
+      borderStyle = "solid",
+      fontFamily = "Helvetica",
+      fontSize = "1em"
     } = data;
     this.align = align;
     this.layout = layout;
@@ -1511,7 +1525,7 @@ export class BaseWidget {
   status: boolean;
   error?: boolean;
   errorMsg?: string;
-  errorMessage?:string;
+  errorMessage?: string;
   children: BaseWidget[];
   validators: Validators;
   value: Value;
@@ -1541,8 +1555,8 @@ export class BaseWidget {
       minItemRows,
       maxItemCols,
       maxItemRows,
-      width = 100,
-  } = data;
+      width = 100
+    } = data;
     if (!metaData) {
       switch (widgetType) {
         case WidgetTypes.Text:

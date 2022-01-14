@@ -2,11 +2,17 @@
   --header-cell-background-color: #f1f1f1;
   --header-cell-color: #000;
   --header-font-size: 11px;
+  --header-cell-padding-top: 10px;
+  --header-cell-padding-bottom: 10px;
+  --header-cell-padding-left: 10px;
+  --header-cell-padding-right: 10px;
 
   --body-cell-background-color: #fff;
   --body-cell-color: #312929;
   --body-font-size: 12px;
   --body-cell-padding: 11px;
+  --body-cell-hover-background-color: #fafafa;
+  --body-cell-hover-color: #312929;
 
   --paginator-background-color: #ededed;
   --paginator-color: #6a6a6a;
@@ -75,9 +81,20 @@
     flex-direction: column;
     align-items: stretch;
     flex: 1 0 auto;
+    &:hover {
+      cursor: pointer;
+      background: var(--body-cell-hover-background-color);
+      color: var(--body-cell-hover-color);
+    }
+    &:last-of-type {
+      .cell-container {
+        border-bottom: none !important;
+      }
+    }
   }
   .finlevit-table .f-thead .f-th {
-    padding: 10px 10px;
+    padding: var(--header-cell-padding-top) var(--header-cell-padding-right) var(--header-cell-padding-bottom)
+    var(--header-cell-padding-left);
     position: relative;
     border-right: 1px solid var(--table-header-right-border-color);
     &:last-of-type {
@@ -153,7 +170,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    .row-actions{
+    .row-actions {
       width: 100%;
     }
     .edit-action {
@@ -236,7 +253,7 @@
       align-items: center;
       justify-content: space-around;
       display: none;
-      &.show-pagination{
+      &.show-pagination {
         display: flex;
       }
     }
@@ -269,16 +286,23 @@
         }
       }
     }
-    &.table-footer{
+    &.table-footer {
       display: flex;
     }
   }
   ::ng-deep {
-    .p-field {
+    .p-field, .p-field-checkbox {
       margin-bottom: 0;
     }
     .p-inputtext:enabled:focus {
       box-shadow: none;
     }
   }
+}
+.no-data-container {
+  background-image: url("/assets/images/nodata-found.png");
+  height: 100%;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
 }
