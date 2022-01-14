@@ -1,10 +1,10 @@
 <div
-        [ngClass]="{
-    'p-field': true
+  [ngClass]="{
+    field: true
   }"
 >
   <div
-          [ngClass]="{
+    [ngClass]="{
       'label-top': labelPos === labelPosTypes.Top,
       'label-left': labelPos === labelPosTypes.Left,
       'label-down': labelPos === labelPosTypes.Down,
@@ -12,37 +12,50 @@
     }"
   >
     <div *ngIf="label" class="d-flex flex-row lib-label-container">
-      <div [ngClass]="{ 'input-label': true, 'input-label-sm': isSmall, 'input-label-lg': isLarge, 'label' : true,
-      'overflow-hide': !allowLabelWrapping}">
+      <div
+        [ngClass]="{
+          'input-label': true,
+          'input-label-sm': isSmall,
+          'input-label-lg': isLarge,
+          label: true,
+          'overflow-hide': !allowLabelWrapping
+        }"
+      >
         {{ label }}<span class="required" *ngIf="isRequired"> *</span>
         <em class="label-tooltip pi pi-info-circle p-pl-2" [pTooltip]="tooltip" *ngIf="tooltip"></em>
       </div>
     </div>
-    <div [ngClass]="{'border-error': checkError(), 'extended-input-1': !independentBorders, 'extended-input-2' : independentBorders}">
-      <div [ngClass]="{'lib-input-container': true, 'no-label-input-container': !label}">
+    <div
+      [ngClass]="{
+        'border-error': checkError(),
+        'extended-input-1': !independentBorders,
+        'extended-input-2': independentBorders
+      }"
+    >
+      <div [ngClass]="{ 'lib-input-container': true, 'no-label-input-container': !label }">
         <p-calendar
-                appendTo="body"
-                [placeholder]="placeholder"
-                (ngModelChange)="onLocalChange({ value: $event })"
-                (onFocus)="onLocalFocus($event)"
-                (onBlur)="onLocalTouched($event)"
-                [(ngModel)]="_value"
-                [inputStyleClass]="isSmall ? 'p-inputtext-sm' : isLarge ? 'p-inputtext-lg' : ''"
-                [ngClass]="{ 'error-border': showErrorBorder && checkError() }"
-                [readonlyInput]="isDisabled"
-                [showIcon]="showIcon"
-                [dateFormat]="viewDateFormat"
-                [minDate]="minDate"
-                [maxDate]="maxDate"
-                [yearNavigator]="yearNavigator"
-                [monthNavigator]="monthNavigator"
-                yearRange="1920:2120"
-                [showTime]= "showTime"
-                [hourFormat]= "hourFormat"
-                [stepHour]= "stepHour"
-                [stepMinute]= "stepMinute"
-                [showSeconds]= "showTime"
-                [disabled]="isDisabled"
+          appendTo="body"
+          [placeholder]="placeholder"
+          (ngModelChange)="onLocalChange({ value: $event })"
+          (onFocus)="onLocalFocus($event)"
+          (onBlur)="onLocalTouched($event)"
+          [(ngModel)]="_value"
+          [inputStyleClass]="isSmall ? 'p-inputtext-sm' : isLarge ? 'p-inputtext-lg' : ''"
+          [ngClass]="{ 'error-border': showErrorBorder && checkError() }"
+          [readonlyInput]="isDisabled"
+          [showIcon]="showIcon"
+          [dateFormat]="viewDateFormat"
+          [minDate]="minDate"
+          [maxDate]="maxDate"
+          [yearNavigator]="yearNavigator"
+          [monthNavigator]="monthNavigator"
+          yearRange="1920:2120"
+          [showTime]="showTime"
+          [hourFormat]="hourFormat"
+          [stepHour]="stepHour"
+          [stepMinute]="stepMinute"
+          [showSeconds]="showTime"
+          [disabled]="isDisabled"
         ></p-calendar>
       </div>
     </div>

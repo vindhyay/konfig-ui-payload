@@ -17,7 +17,7 @@
 }
 
 :host ::ng-deep{
-  .p-field-checkbox > label{
+  .field-checkbox > label{
     color: var(--input-color);
     font-family: var(--input-font-family);
     font-size: var(--input-font-size);
@@ -29,7 +29,7 @@
     margin-right: 0.5rem;
   }
 
-  .p-field-checkbox{
+  .field-checkbox{
     flex-direction: var(--input-flex-direction);
   }
 

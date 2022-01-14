@@ -1209,7 +1209,7 @@
         <ng-container *ngFor="let child of item.children; let i = index">
           <p-tabPanel *ngIf="!child?.metaData?.isHidden" [header]="child.label">
             <ng-template pTemplate="header">
-              <i [class]="child?.metaData?.icon" class="p-pr-1"></i>
+              <i [class]="child?.metaData?.icon" class="pr-1"></i>
               <span>{{ child.label }}</span>
             </ng-template>
             <div

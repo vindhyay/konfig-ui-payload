@@ -1,38 +1,65 @@
-<div [ngClass]="{'p-field': true}">
-  <div [ngClass]="{
+<div [ngClass]="{ field: true }">
+  <div
+    [ngClass]="{
       'label-top': labelPos === labelPosTypes.Top,
       'label-left': labelPos === labelPosTypes.Left,
       'label-down': labelPos === labelPosTypes.Down,
-      'label-right': labelPos === labelPosTypes.Right}"
+      'label-right': labelPos === labelPosTypes.Right
+    }"
   >
-    <div *ngIf="label" [ngClass]="{'lib-label-container' : true,
-        'p-mb-3': labelPos === labelPosTypes.Left || labelPos === labelPosTypes.Right}">
-      <div [ngClass]="{ 'input-label': true, 'input-label-sm': isSmall, 'input-label-lg': isLarge, 'label' : true, 'overflow-hide': !allowLabelWrapping,
-        'checkbox-group-label': true,
-        'p-mb-3': labelPos === labelPosTypes.Top,
-        'p-mr-3': labelPos === labelPosTypes.Left,
-        'p-mt-2': labelPos === labelPosTypes.Down,
-        'p-ml-3': labelPos === labelPosTypes.Right}">
+    <div
+      *ngIf="label"
+      [ngClass]="{
+        'lib-label-container': true,
+        'p-mb-3': labelPos === labelPosTypes.Left || labelPos === labelPosTypes.Right
+      }"
+    >
+      <div
+        [ngClass]="{
+          'input-label': true,
+          'input-label-sm': isSmall,
+          'input-label-lg': isLarge,
+          label: true,
+          'overflow-hide': !allowLabelWrapping,
+          'checkbox-group-label': true,
+          'p-mb-3': labelPos === labelPosTypes.Top,
+          'p-mr-3': labelPos === labelPosTypes.Left,
+          'p-mt-2': labelPos === labelPosTypes.Down,
+          'p-ml-3': labelPos === labelPosTypes.Right
+        }"
+      >
         {{ label }}<span class="required" *ngIf="isRequired"> *</span>
         <em class="label-tooltip pi pi-info-circle p-pl-2" [pTooltip]="tooltip" *ngIf="tooltip"></em>
       </div>
     </div>
-    <div [ngClass]="{
+    <div
+      [ngClass]="{
         'checkbox-options-wrapper': true,
-        'horizontal': alignOptions === 'Horizontal',
-        'vertical': alignOptions === 'Vertical'}">
-      <div *ngFor="let item of items; let i = index" [ngStyle]="{width : alignOptions === 'Vertical' ? 100/columns + '%' : ''}"
-           [ngClass]="{'p-field-checkbox': true, 'lib-input-container': true, 'no-label-input-container': !label}">
+        horizontal: alignOptions === 'Horizontal',
+        vertical: alignOptions === 'Vertical'
+      }"
+    >
+      <div
+        *ngFor="let item of items; let i = index"
+        [ngStyle]="{ width: alignOptions === 'Vertical' ? 100 / columns + '%' : '' }"
+        [ngClass]="{ 'p-field-checkbox': true, 'lib-input-container': true, 'no-label-input-container': !label }"
+      >
         <p-checkbox
-                [inputId]="_id + i"
-                [value]="optionValue ? item[optionValue] : item.hasOwnProperty('name') ? item?.name : item"
-                [(ngModel)]="_selectedValues"
-                (ngModelChange)="onLocalChange()"
-                [ngClass]="{ 'p-inputtext-sm': isSmall, 'p-inputtext-lg': isLarge, 'error-border': checkError() }"
-                [disabled]="isDisabled"
+          [inputId]="_id + i"
+          [value]="optionValue ? item[optionValue] : item.hasOwnProperty('name') ? item?.name : item"
+          [(ngModel)]="_selectedValues"
+          (ngModelChange)="onLocalChange()"
+          [ngClass]="{ 'p-inputtext-sm': isSmall, 'p-inputtext-lg': isLarge, 'error-border': checkError() }"
+          [disabled]="isDisabled"
         ></p-checkbox>
-        <label [for]="_id + i">{{ optionLabel ? item[optionLabel] : item.hasOwnProperty('name') ? item?.name : item }}</label>
-        <em class="label-tooltip pi pi-question-circle" [pTooltip]="item[optionTooltip]" *ngIf="item[optionTooltip]"></em>
+        <label [for]="_id + i">{{
+          optionLabel ? item[optionLabel] : item.hasOwnProperty("name") ? item?.name : item
+        }}</label>
+        <em
+          class="label-tooltip pi pi-question-circle"
+          [pTooltip]="item[optionTooltip]"
+          *ngIf="item[optionTooltip]"
+        ></em>
       </div>
     </div>
   </div>

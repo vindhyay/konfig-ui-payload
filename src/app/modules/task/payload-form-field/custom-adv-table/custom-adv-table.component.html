@@ -135,7 +135,7 @@
                     }"
                   >
                     <ng-container [ngSwitch]="col?.metaData?.widgetType">
-                      <div class="p-pl-1" *ngSwitchCase="TextInput">
+                      <div class="pl-1" *ngSwitchCase="TextInput">
                         <ng-container
                           *ngIf="
                             !(
@@ -246,7 +246,7 @@
                           "
                         ></finlevit-text>
                       </div>
-                      <div class="p-pl-1" *ngSwitchCase="Dropdown">
+                      <div class="pl-1" *ngSwitchCase="Dropdown">
                         <ng-container
                           *ngIf="
                             !(
@@ -363,7 +363,7 @@
                           [tooltip]="col?.metaData?.tooltip"
                         ></finlevit-lib-select>
                       </div>
-                      <div class="p-pl-1" *ngSwitchCase="Email">
+                      <div class="pl-1" *ngSwitchCase="Email">
                         <ng-container
                           *ngIf="
                             !(
@@ -477,7 +477,7 @@
                           [showErrorMsg]="col?.metaData?.showErrorMessage"
                         ></finlevit-text>
                       </div>
-                      <div class="p-pl-1 adv-checkbox" *ngSwitchCase="Checkbox">
+                      <div class="pl-1 adv-checkbox" *ngSwitchCase="Checkbox">
                         <ng-container
                           *ngIf="
                             !(
@@ -537,7 +537,7 @@
                           [showErrorMsg]="col?.metaData?.showErrorMessage"
                         ></finlevit-lib-checkbox>
                       </div>
-                      <div class="p-pl-1" *ngSwitchCase="Image">
+                      <div class="pl-1" *ngSwitchCase="Image">
                         <ng-container
                           *ngIf="
                             !(
@@ -573,7 +573,7 @@
                           "
                         ></finlevit-lib-textarea>
                       </div>
-                      <div class="p-pl-1" *ngSwitchCase="Number">
+                      <div class="pl-1" *ngSwitchCase="Number">
                         <ng-container
                           *ngIf="
                             !(
@@ -689,7 +689,7 @@
                           "
                         ></finlevit-number>
                       </div>
-                      <div class="p-pl-1" *ngSwitchCase="TextArea">
+                      <div class="pl-1" *ngSwitchCase="TextArea">
                         <ng-container
                           *ngIf="
                             !(
@@ -799,7 +799,7 @@
                           "
                         ></finlevit-lib-textarea>
                       </div>
-                      <div class="p-pl-1" *ngSwitchCase="RadioGroup">
+                      <div class="pl-1" *ngSwitchCase="RadioGroup">
                         <ng-container
                           *ngIf="
                             !(
@@ -883,7 +883,7 @@
                           "
                         ></finlevit-radio-group>
                       </div>
-                      <div class="p-pl-1" *ngSwitchCase="DatePicker">
+                      <div class="pl-1" *ngSwitchCase="DatePicker">
                         <ng-container
                           *ngIf="
                             !(
@@ -1000,7 +1000,7 @@
                           "
                         ></finlevit-lib-datepicker>
                       </div>
-                      <div class="p-pl-1" *ngSwitchCase="Modal">
+                      <div class="pl-1" *ngSwitchCase="Modal">
                         <app-modal [modalId]="col?.metaData?.widgetId+ rowIndex" [showEdit]="showEdit"
                                    [editMode]="editMode"
                                    [isDisabled]="isDisabled"
@@ -1093,10 +1093,10 @@
           <ng-template #zeroRecordsResult> Showing {{ pagination?.totalRecords }} results </ng-template>
         </div>
         <ng-template #cellEditActions>
-          <div class="p-ml-2 p-mr-2">
+          <div class="ml-2 mr-2">
             <finlevit-button [isSmall]="true" (btnClick)="onColSave($event)" label="save"></finlevit-button>
           </div>
-          <div class="p-ml-2 p-mr-2">
+          <div class="ml-2 mr-2">
             <finlevit-button
               [isSmall]="true"
               bgColor="#dc3545"

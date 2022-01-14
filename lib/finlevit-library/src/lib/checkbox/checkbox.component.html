@@ -1,4 +1,4 @@
-<div class="p-field-checkbox">
+<div class="field-checkbox">
     <p-checkbox [disabled]="isDisabled" [styleClass]="checkError() ? 'error-input' : ''" [(ngModel)]="_value" (ngModelChange)="onLocalChange({ value: $event })"  [binary]="true" [inputId]="_id"></p-checkbox>
     <label [for]="_id" [ngClass]="{ 'checkbox-label': true, 'checkbox-label-sm': isSmall, 'checkbox-label-lg': isLarge }">
         {{ label}}
