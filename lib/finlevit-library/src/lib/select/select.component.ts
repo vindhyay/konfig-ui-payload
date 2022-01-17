@@ -1,18 +1,18 @@
-import { Component, Input, OnInit, Optional, Self } from '@angular/core';
-import { ControlValueAccessor, NgControl, ValidatorFn, Validators } from '@angular/forms';
-import { hasRequiredField } from '../utils';
+import { Component, Input, OnInit, Optional, Self } from "@angular/core";
+import { ControlValueAccessor, NgControl, ValidatorFn, Validators } from "@angular/forms";
+import { hasRequiredField } from "../utils";
 
 enum LabelPos {
   Left = "Left",
   Top = "Top",
   Down = "Down",
-  Right = "Right"
+  Right = "Right",
 }
 
 @Component({
-  selector: 'finlevit-lib-select',
-  templateUrl: './select.component.html',
-  styleUrls: ['./select.component.scss']
+  selector: "finlevit-lib-select",
+  templateUrl: "./select.component.html",
+  styleUrls: ["./select.component.scss"],
 })
 export class SelectComponent implements ControlValueAccessor, OnInit {
   constructor(@Optional() @Self() public controlDir: NgControl) {
@@ -25,14 +25,15 @@ export class SelectComponent implements ControlValueAccessor, OnInit {
   @Input() showClear: boolean = false;
   @Input() independentBorders: boolean = false;
   @Input() allowLabelWrapping: boolean = false;
+  @Input() optionDisabled: string = "";
   @Input()
   set options(data) {
     this._options = data;
     if (data && Array.isArray(data) && data.length && typeof data[0] !== "object") {
-      this._options = this._options.map(option => {
+      this._options = this._options.map((option) => {
         return {
           name: option,
-          value: option
+          value: option,
         };
       });
       if (!this.optionValue) {
@@ -48,15 +49,16 @@ export class SelectComponent implements ControlValueAccessor, OnInit {
   @Input() optionValue: string = "";
   @Input() isRequired = false;
   @Input() validators: any = [];
-  @Input() placeholder: string = '';
+  @Input() placeholder: string = "";
   @Input() isSmall = false;
+  @Input() isMedium = false;
   @Input() isLarge = false;
-  @Input() tooltip = '';
-  @Input() label = '';
+  @Input() tooltip = "";
+  @Input() label = "";
   @Input() error = false;
   @Input() showErrorBorder = true;
   @Input() isDisabled = false;
-  @Input() errorMsg = '';
+  @Input() errorMsg = "";
   @Input() labelPos: LabelPos;
   @Input() showErrorMsg: boolean = true;
 
@@ -117,12 +119,12 @@ export class SelectComponent implements ControlValueAccessor, OnInit {
   getErrorMessages() {
     const errors = this.controlDir.control?.errors;
     const errorMessages: string[] = [];
-    Object.keys(errors || {}).forEach(error => {
+    Object.keys(errors || {}).forEach((error) => {
       switch (error) {
-        case 'required':
+        case "required":
           errorMessages.push(`${this.label} is required`);
           break;
-        case 'custom':
+        case "custom":
           if (errors) {
             errorMessages.push(errors[error]);
           }

@@ -1,25 +1,25 @@
-import {Component, EventEmitter, Input, OnInit, Optional, Output, Self} from '@angular/core';
-import {ControlValueAccessor, NgControl, ValidatorFn, Validators} from "@angular/forms";
-import {hasRequiredField} from "../utils";
+import { Component, EventEmitter, Input, OnInit, Optional, Output, Self } from "@angular/core";
+import { ControlValueAccessor, NgControl, ValidatorFn, Validators } from "@angular/forms";
+import { hasRequiredField } from "../utils";
 
 enum LabelPos {
   Left = "Left",
   Top = "Top",
   Down = "Down",
-  Right = "Right"
+  Right = "Right",
 }
 
 @Component({
-  selector: 'finlevit-lib-textarea',
-  templateUrl: './textarea.component.html',
-  styleUrls: ['./textarea.component.scss']
+  selector: "finlevit-lib-textarea",
+  templateUrl: "./textarea.component.html",
+  styleUrls: ["./textarea.component.scss"],
 })
 export class TextareaComponent implements ControlValueAccessor, OnInit {
-
   constructor(@Optional() @Self() public controlDir: NgControl) {
     if (this.controlDir) {
       this.controlDir.valueAccessor = this;
-    }}
+    }
+  }
   @Input() autoResize = false;
   @Input() showErrorBorder = true;
   @Input() isSmall = false;
@@ -28,14 +28,14 @@ export class TextareaComponent implements ControlValueAccessor, OnInit {
 
   @Input() isDisabled = false;
   @Input() isRequired = false;
-  @Input() tooltip = '';
-  @Input() label = '';
-  @Input() placeholder = '';
+  @Input() tooltip = "";
+  @Input() label = "";
+  @Input() placeholder = "";
   @Input() labelPos: LabelPos;
   @Input() independentBorders: boolean = false;
   @Input() allowLabelWrapping: boolean = false;
 
-  @Input() errorMsg = '';
+  @Input() errorMsg = "";
   @Input() error = false;
   @Input() showErrorMsg: boolean = true;
   @Input() showCharCount: boolean = false;
@@ -96,7 +96,6 @@ export class TextareaComponent implements ControlValueAccessor, OnInit {
     this.onChange(value);
   }
 
-
   checkError() {
     return (this.controlDir && !this.controlDir.control?.valid && this.controlDir.control?.touched) || this.error;
   }
@@ -104,12 +103,12 @@ export class TextareaComponent implements ControlValueAccessor, OnInit {
   getErrorMessages() {
     const errors = this.controlDir.control?.errors;
     const errorMessages: string[] = [];
-    Object.keys(errors || {}).forEach(error => {
+    Object.keys(errors || {}).forEach((error) => {
       switch (error) {
-        case 'required':
+        case "required":
           errorMessages.push(`${this.label} is required`);
           break;
-        case 'custom':
+        case "custom":
           if (errors) {
             errorMessages.push(errors[error]);
           }
@@ -119,5 +118,3 @@ export class TextareaComponent implements ControlValueAccessor, OnInit {
     return errorMessages;
   }
 }
-
-

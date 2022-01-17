@@ -1,8 +1,8 @@
-.class{
+.class {
   padding-left: 5px;
   margin-top: 15px;
 }
-.no-table-data-container{
+.no-table-data-container {
   height: calc(80% - 3rem);
   background: #ffffff;
   display: flex;
@@ -11,33 +11,35 @@
   border: 1px solid #dee2e6;
   border-top: none;
 }
-::ng-deep{
-  table{
+::ng-deep {
+  table {
     height: 100%;
     width: 100%;
     display: flex;
     flex-direction: column;
   }
-  thead, tbody{
+  thead,
+  tbody {
     tr {
       display: flex;
-      th, td{
+      th,
+      td {
         width: 100%;
       }
     }
   }
-  tbody{
+  tbody {
     height: 100%;
     overflow: scroll;
     display: flex;
     flex-direction: column;
   }
-  .p-datatable-tfoot{
+  .p-datatable-tfoot {
     border-top: 1px solid #dee2e5;
     display: flex;
     justify-content: flex-end;
   }
-  .p-field{
+  .p-field {
     margin-bottom: 0.5rem;
   }
   .p-datatable .p-datatable-tbody > tr > td {
@@ -45,51 +47,52 @@
     border-bottom: 1px solid #dee2e6;
     border-right: 1px solid #dee2e6;
   }
-  .p-paginator{
+  .p-paginator {
     padding: 0.5rem;
   }
-  .p-paginator .p-paginator-current{
+  .p-paginator .p-paginator-current {
     border: none;
   }
   .p-paginator .p-paginator-first,
   .p-paginator .p-paginator-prev,
   .p-paginator .p-paginator-next,
-  .p-paginator .p-paginator-last{
-    border: none
+  .p-paginator .p-paginator-last {
+    border: none;
   }
-  .p-paginator .p-paginator-pages .p-paginator-page{
-    border: none
+  .p-paginator .p-paginator-pages .p-paginator-page {
+    border: none;
   }
-  .p-datatable .p-datatable-tbody > tr{
+  .p-datatable .p-datatable-tbody > tr {
     &:hover {
       background: #fafafa;
       cursor: pointer;
     }
   }
 }
-.table-actions{
+.table-actions {
   display: flex;
   align-items: center;
   justify-content: center;
-  .edit-action{
+  .edit-action {
     margin: 0 0.5rem;
   }
-  .edit-action-mode, .new-action-mode{
-    .save-icon{
+  .edit-action-mode,
+  .new-action-mode {
+    .save-icon {
       color: #0dd60d;
       margin: 0 0.5rem;
     }
-    .cancel-icon{
+    .cancel-icon {
       color: #d41111;
       margin: 0 0.5rem;
     }
-    .delete-icon{
+    .delete-icon {
       color: #d41111;
     }
   }
-  .delete-action{
+  .delete-action {
     margin: 0 0.5rem;
-    .delete-icon{
+    .delete-icon {
       color: #d41111;
     }
   }

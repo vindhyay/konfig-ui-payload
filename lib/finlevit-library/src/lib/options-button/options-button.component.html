@@ -1,15 +1,15 @@
 <finlevit-button
-        class="wrapper-button"
-        [ngClass]="{ selected: t.menuOpen }"
-        [color]="color"
-        [matMenuTriggerFor]="menu"
-        #t="matMenuTrigger"
-        (btnClick)="onPrimaryClick()"
-        [label]="primaryTitle"
-        [icon]="t.menuOpen ? 'pi pi-chevron-up' : 'pi pi-chevron-down'"
-        iconPos="right"
-        [bgColor]="'#3F51B5'"
-        [borderColor]="'#3F51B5'"
+  class="wrapper-button"
+  [ngClass]="{ selected: t.menuOpen }"
+  [color]="color"
+  [matMenuTriggerFor]="menu"
+  #t="matMenuTrigger"
+  (btnClick)="onPrimaryClick()"
+  [label]="primaryTitle"
+  [icon]="t.menuOpen ? 'pi pi-chevron-up' : 'pi pi-chevron-down'"
+  iconPos="right"
+  [bgColor]="bgColor"
+  [borderColor]="borderColor"
 >
 </finlevit-button>
 <mat-menu #menu="matMenu" class="rng-iconed-menu-list">

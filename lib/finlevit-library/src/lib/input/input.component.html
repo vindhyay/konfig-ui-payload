@@ -1,6 +1,9 @@
 <div
   [ngClass]="{
-    field: true
+    field: true,
+    'input-small': isSmall,
+    'input-medium': isMedium,
+    'input-large': isLarge
   }"
 >
   <div
@@ -22,7 +25,7 @@
         }"
       >
         {{ label }}<span class="required" *ngIf="isRequired"> *</span>
-        <em class="label-tooltip pi pi-info-circle p-pl-2" [pTooltip]="tooltip" *ngIf="tooltip"></em>
+        <em class="label-tooltip pi pi-info-circle pl-2" [pTooltip]="tooltip" *ngIf="tooltip"></em>
       </div>
     </div>
     <div
@@ -82,8 +85,8 @@
       </div>
     </div>
   </div>
-  <div *ngIf="showMaxCharLimit && maxCharLimit && _value" class="p-d-flex p-justify-end">
-    <small class="p-text-secondary p-pt-1">
+  <div *ngIf="showMaxCharLimit && maxCharLimit && _value" class="d-flex justify-end">
+    <small class="p-text-secondary pt-1">
       Characters left {{ this._value ? this.maxCharLimit - STRING(this._value).length : null }}
     </small>
   </div>

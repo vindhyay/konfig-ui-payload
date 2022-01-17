@@ -8,10 +8,11 @@
   --input-label-font-weight: normal;
   --input-label-text-decoration: none;
   --input-label-align: flex-start;
-  --input-label-font-family: 'Muli';
-  --input-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  --input-label-font-family: "Muli";
+  --input-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   --input-label-font-size: 14px;
-  --input-label-color: #373F51;
+  --input-label-color: #373f51;
   --input-color: #495057;
   --input-text-align: left;
   --input-font-size: 14px;
@@ -108,21 +109,21 @@
       }
     }
   }
-  .overflow-hide{
+  .overflow-hide {
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap
+    white-space: nowrap;
   }
 }
 
-.checkbox-options-wrapper{
-  &.vertical{
+.checkbox-options-wrapper {
+  &.vertical {
     display: flex;
     flex-wrap: wrap;
   }
-  &.horizontal{
+  &.horizontal {
     display: flex;
-    .p-field-checkbox{
+    .p-field-checkbox {
       margin: 0 1rem 1rem 0;
     }
   }
@@ -133,13 +134,13 @@
   }
 }
 
-:host ::ng-deep{
-  .p-checkbox .p-checkbox-box .p-checkbox-icon{
+:host ::ng-deep {
+  .p-checkbox .p-checkbox-box .p-checkbox-icon {
     color: var(--input-check-icon-color);
     font-size: calc(var(--input-checkbox-size) - 6px);
   }
 
-  .p-field-checkbox > label{
+  .p-field-checkbox > label {
     color: var(--input-color);
     font-family: var(--input-font-family);
     font-size: var(--input-font-size);
@@ -151,16 +152,16 @@
     margin-right: 0.5rem;
   }
 
-  .p-field-checkbox{
+  .p-field-checkbox {
     flex-direction: var(--input-flex-direction);
   }
 
-  .p-checkbox .p-checkbox-box{
+  .p-checkbox .p-checkbox-box {
     border: 2px solid var(--input-unchecked-border-color);
     background: var(--input-unchecked-background-color);
     width: var(--input-checkbox-size);
     height: var(--input-checkbox-size);
-    :before{
+    :before {
       border: 2px solid var(--input-unchecked-border-color);
       background: var(--input-unchecked-background-color);
       width: var(--input-checkbox-size);
@@ -168,36 +169,36 @@
     }
   }
 
-  .p-checkbox .p-checkbox-box.p-highlight{
+  .p-checkbox .p-checkbox-box.p-highlight {
     border: 2px solid var(--input-checked-border-color);
     background: var(--input-checked-background-color);
-    :before{
+    :before {
       background: var(--input-checked-background-color);
       border: none;
     }
   }
 
-  .p-checkbox{
+  .p-checkbox {
     width: var(--input-checkbox-size);
     height: var(--input-checkbox-size);
   }
 
-  .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-focus{
+  .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-focus {
     box-shadow: none;
   }
 
-  .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-highlight:hover{
+  .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-highlight:hover {
     border: 2px solid var(--input-checked-border-color);
     background: var(--input-checked-background-color);
   }
 
-  .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box:hover{
+  .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box:hover {
     border: 2px solid var(--input-unchecked-border-color);
     background: var(--input-unchecked-background-color);
   }
 }
 
-.label{
+.label {
   color: var(--input-label-color);
   font-family: var(--input-label-font-family);
   font-size: var(--input-label-font-size);

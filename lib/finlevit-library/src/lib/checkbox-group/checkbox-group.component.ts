@@ -1,18 +1,18 @@
-import { Component, ElementRef, Input, OnInit, Optional, Self, ViewChild } from '@angular/core';
-import { ControlValueAccessor, NgControl, ValidatorFn, Validators } from '@angular/forms';
-import { getUniqueId, hasRequiredField } from '../utils';
+import { Component, ElementRef, Input, OnInit, Optional, Self, ViewChild } from "@angular/core";
+import { ControlValueAccessor, NgControl, ValidatorFn, Validators } from "@angular/forms";
+import { getUniqueId, hasRequiredField } from "../utils";
 
 enum LabelPos {
   Left = "Left",
   Top = "Top",
   Down = "Down",
-  Right = "Right"
+  Right = "Right",
 }
 
 @Component({
-  selector: 'finlevit-lib-checkbox-group',
-  templateUrl: './checkbox-group.component.html',
-  styleUrls: ['./checkbox-group.component.scss']
+  selector: "finlevit-lib-checkbox-group",
+  templateUrl: "./checkbox-group.component.html",
+  styleUrls: ["./checkbox-group.component.scss"],
 })
 export class CheckboxGroupComponent implements OnInit, ControlValueAccessor {
   _id: string;
@@ -20,31 +20,31 @@ export class CheckboxGroupComponent implements OnInit, ControlValueAccessor {
     if (this.controlDir) {
       this.controlDir.valueAccessor = this;
     }
-    this._id = getUniqueId('checkbox');
+    this._id = getUniqueId("checkbox");
   }
   @Input() alignOptions: "Horizontal" | "Vertical" = "Horizontal";
 
-  @ViewChild('input', { static: true }) input: ElementRef | undefined;
+  @ViewChild("input", { static: true }) input: ElementRef | undefined;
   @Input() showErrorBorder = true;
   @Input() isSmall = false;
   @Input() isLarge = false;
   @Input() items: any[] = [];
-  @Input() optionValue: string = '';
-  @Input() optionLabel: any = '';
+  @Input() optionValue: string = "";
+  @Input() optionLabel: any = "";
   @Input() isDisabled = false;
   @Input() isRequired = false;
-  @Input() tooltip = '';
-  @Input() label = '';
+  @Input() tooltip = "";
+  @Input() label = "";
   @Input() labelPos: LabelPos;
-  @Input() placeholder = '';
-  @Input() errorMsg = '';
+  @Input() placeholder = "";
+  @Input() errorMsg = "";
   @Input() showErrorMsg: boolean = true;
   @Input() error = false;
   @Input() validators: any = [];
   @Input() columns: number = 1;
   @Input() allowLabelWrapping: boolean = false;
-  optionTooltip: any = 'tooltip'
-  _selectedValues: any[] = ['Salary'];
+  optionTooltip: any = "tooltip";
+  _selectedValues: any[] = ["Salary"];
   labelPosTypes = LabelPos;
 
   ngOnInit(): void {
@@ -88,12 +88,12 @@ export class CheckboxGroupComponent implements OnInit, ControlValueAccessor {
   getErrorMessages() {
     const errors = this.controlDir.control?.errors;
     const errorMessages: string[] = [];
-    Object.keys(errors || {}).forEach(error => {
+    Object.keys(errors || {}).forEach((error) => {
       switch (error) {
-        case 'required':
+        case "required":
           errorMessages.push(`${this.label} is required`);
           break;
-        case 'custom':
+        case "custom":
           if (errors) {
             errorMessages.push(errors[error]);
           }

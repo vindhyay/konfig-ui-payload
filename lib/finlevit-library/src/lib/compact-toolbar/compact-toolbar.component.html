@@ -1,0 +1,26 @@
+<p-toolbar>
+  <div *ngIf="!searchToggle">
+    <div [ngClass]="{'toolbar-row-with-search': withSearch, 'toolbar-row-without-search': !withSearch}">
+      <span class="title">{{ title }}</span>
+      <button
+        pButton
+        *ngIf="withSearch"
+        (click)="toggleSearch(true)"
+        icon="pi pi-search"
+        class="button-toggle p-button-rounded p-button-text"
+      ></button>
+    </div>
+  </div>
+  <div *ngIf="searchToggle">
+    <div class="toolbar-row-with-search">
+      <finlevit-text #searchfield [formControl]="search" [isSmall]="true"></finlevit-text>
+      <button
+        pButton
+        *ngIf="withSearch"
+        class="button-toggle p-button-rounded p-button-text"
+        (click)="toggleSearch(false)"
+        icon="pi pi-search"
+      ></button>
+    </div>
+  </div>
+</p-toolbar>

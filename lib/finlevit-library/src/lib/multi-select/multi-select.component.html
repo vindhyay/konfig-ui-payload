@@ -1,8 +1,8 @@
-<div [ngClass]="{ 'field': true, 'small-input': isSmall, 'large-input': isLarge }">
+<div [ngClass]="{ field: true, 'small-input': isSmall, 'large-input': isLarge }">
   <div *ngIf="label" class="d-flex flex-row">
     <div [ngClass]="{ 'input-label': true, 'input-label-sm': isSmall, 'input-label-lg': isLarge }">
       {{ label }}<span class="required" *ngIf="isRequired"> *</span>
-      <em class="label-tooltip pi pi-info-circle p-pl-2" [pTooltip]="tooltip" *ngIf="tooltip"></em>
+      <em class="label-tooltip pi pi-info-circle pl-2" [pTooltip]="tooltip" *ngIf="tooltip"></em>
     </div>
   </div>
   <p-multiSelect
