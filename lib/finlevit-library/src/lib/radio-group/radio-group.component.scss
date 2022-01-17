@@ -6,13 +6,14 @@
   --input-label-font-style: normal;
   --input-label-font-weight: normal;
   --input-label-text-decoration: none;
-  --input-label-font-family: 'Muli';
+  --input-label-font-family: "Muli";
   --input-label-font-size: 14px;
-  --input-label-color: #373F51;
+  --input-label-color: #373f51;
   --input-letter-spacing: 0;
   --input-word-spacing: 0;
   --input-flex-direction: row;
-  --input-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  --input-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   --input-color: #495057;
   --input-text-align: left;
   --input-font-size: 14px;
@@ -24,14 +25,14 @@
   --input-radiobutton-size: 20px;
 }
 
-.radio-options-wrapper{
-  &.vertical{
+.radio-options-wrapper {
+  &.vertical {
     display: flex;
     flex-wrap: wrap;
   }
-  &.horizontal{
+  &.horizontal {
     display: flex;
-    .p-field-radiobutton{
+    .p-field-radiobutton {
       margin: 0 1rem 1rem 0;
     }
   }
@@ -124,15 +125,15 @@
       }
     }
   }
-  .overflow-hide{
+  .overflow-hide {
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap
+    white-space: nowrap;
   }
 }
 
-::ng-deep{
-  .p-field-radiobutton > label{
+::ng-deep {
+  .p-field-radiobutton > label {
     color: var(--input-color);
     font-family: var(--input-font-family);
     font-size: var(--input-font-size);
@@ -144,45 +145,44 @@
     margin-right: 0.5rem;
   }
 
-  .p-field-radiobutton{
+  .p-field-radiobutton {
     flex-direction: var(--input-flex-direction);
   }
 
-  .p-radiobutton .p-radiobutton-box.p-highlight{
+  .p-radiobutton .p-radiobutton-box.p-highlight {
     border: 2px solid var(--input-selected-border-color);
     background: #ffffff;
   }
 
-  .p-radiobutton .p-radiobutton-box{
+  .p-radiobutton .p-radiobutton-box {
     border: 2px solid var(--input-unselected-border-color);
     background: var(--input-unselected-background-color);
     width: var(--input-radiobutton-size);
     height: var(--input-radiobutton-size);
   }
 
-  .p-radiobutton .p-radiobutton-box .p-radiobutton-icon{
+  .p-radiobutton .p-radiobutton-box .p-radiobutton-icon {
     background: var(--input-selected-background-color);
     width: calc(var(--input-radiobutton-size) - 10px);
     height: calc(var(--input-radiobutton-size) - 10px);
   }
 
-  .p-radiobutton .p-radiobutton-box.p-highlight:not(.p-disabled):hover{
+  .p-radiobutton .p-radiobutton-box.p-highlight:not(.p-disabled):hover {
     border: 2px solid var(--input-selected-border-color);
     background: #ffffff;
   }
 
-  .p-radiobutton .p-radiobutton-box:not(.p-disabled).p-focus{
+  .p-radiobutton .p-radiobutton-box:not(.p-disabled).p-focus {
     box-shadow: none;
   }
 
-  .p-radiobutton{
+  .p-radiobutton {
     width: var(--input-radiobutton-size);
     height: var(--input-radiobutton-size);
   }
-
 }
 
-.label{
+.label {
   color: var(--input-label-color);
   font-family: var(--input-label-font-family);
   font-size: var(--input-label-font-size);

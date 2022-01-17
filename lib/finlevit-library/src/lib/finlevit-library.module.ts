@@ -41,6 +41,15 @@ import { MenuButtonComponent } from "./menu-button/menu-button.component";
 import { OptionsButtonComponent } from "./options-button/options-button.component";
 import { MatMenuModule } from "@angular/material/menu";
 import { DividerModule } from "primeng/divider";
+import { CascadeSelectComponent } from "./cascade-select/cascade-select.component";
+import { CascadeSelectModule } from "primeng/cascadeselect";
+import { CompactToolbarComponent } from "./compact-toolbar/compact-toolbar.component";
+import { FinlevitToggleComponent } from "./finlevit-toggle/finlevit-toggle.component";
+import { IconedMenuComponent } from "./iconed-menu/iconed-menu.component";
+import { ImageComponent } from "./image/image.component";
+import { IconedNameComponent } from "./iconed-name/iconed-name.component";
+import { PreviewComponent } from "./preview/preview.component";
+import { ToolbarModule } from "primeng/toolbar";
 
 @NgModule({
   declarations: [
@@ -58,11 +67,18 @@ import { DividerModule } from "primeng/divider";
     DatepickerComponent,
     ButtonComponent,
     TableComponent,
+    CascadeSelectComponent,
+    CompactToolbarComponent,
+    FinlevitToggleComponent,
     FinlevitFileUploadComponent,
+    IconedMenuComponent,
+    IconedNameComponent,
+    ImageComponent,
     LoaderComponent,
     BackButtonComponent,
     MenuButtonComponent,
-    OptionsButtonComponent
+    OptionsButtonComponent,
+    PreviewComponent,
   ],
   imports: [
     CalendarModule,
@@ -87,7 +103,9 @@ import { DividerModule } from "primeng/divider";
     NgxMaskModule.forRoot({}),
     NgxLoadingModule,
     MatMenuModule,
-    DividerModule
+    DividerModule,
+    ToolbarModule,
+    CascadeSelectModule
   ],
   exports: [
     FinlevitLibraryComponent,
@@ -103,13 +121,21 @@ import { DividerModule } from "primeng/divider";
     RadioGroupComponent,
     DatepickerComponent,
     ButtonComponent,
+    CompactToolbarComponent,
+    CascadeSelectModule,
+    CascadeSelectComponent,
     TableComponent,
     TableModule,
+    FinlevitToggleComponent,
     FinlevitFileUploadComponent,
+    IconedMenuComponent,
+    IconedNameComponent,
+    ImageComponent,
     LoaderComponent,
     BackButtonComponent,
     OptionsButtonComponent,
-    MenuButtonComponent
-  ]
+    MenuButtonComponent,
+    PreviewComponent,
+  ],
 })
 export class FinlevitLibraryModule {}

@@ -1,11 +1,11 @@
-import { Component, Input, OnInit, Optional, Self } from '@angular/core';
-import { ControlValueAccessor, NgControl, ValidatorFn, Validators } from '@angular/forms';
-import {getUniqueId, hasRequiredField} from '../utils';
+import { Component, Input, OnInit, Optional, Self } from "@angular/core";
+import { ControlValueAccessor, NgControl, ValidatorFn, Validators } from "@angular/forms";
+import { getUniqueId, hasRequiredField } from "../utils";
 
 @Component({
-  selector: 'finlevit-lib-checkbox',
-  templateUrl: './checkbox.component.html',
-  styleUrls: ['./checkbox.component.scss']
+  selector: "finlevit-lib-checkbox",
+  templateUrl: "./checkbox.component.html",
+  styleUrls: ["./checkbox.component.scss"]
 })
 export class CheckboxComponent implements ControlValueAccessor, OnInit {
   _id: string;
@@ -13,19 +13,19 @@ export class CheckboxComponent implements ControlValueAccessor, OnInit {
     if (this.controlDir) {
       this.controlDir.valueAccessor = this;
     }
-    this._id = getUniqueId('checkbox');
+    this._id = getUniqueId("checkbox");
   }
   _value: boolean = false;
   @Input() isDisabled: boolean = false;
   @Input() showErrorBorder: boolean = true;
   @Input() isRequired: boolean = false;
-  @Input() label: string = '';
-  @Input() errorMsg: string = '';
+  @Input() label: string = "";
+  @Input() errorMsg: string = "";
   @Input() isSmall: boolean = false;
   @Input() isLarge: boolean = false;
   @Input() error: boolean = false;
   @Input() showErrorMsg: boolean = true;
-  @Input() tooltip: string = '';
+  @Input() tooltip: string = "";
   ngOnInit(): void {
     const control = this.controlDir && this.controlDir.control;
     if (control) {
@@ -59,4 +59,3 @@ export class CheckboxComponent implements ControlValueAccessor, OnInit {
     return (this.controlDir && !this.controlDir?.control?.valid && this.controlDir?.control?.touched) || this.error;
   }
 }
-

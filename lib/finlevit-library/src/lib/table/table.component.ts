@@ -1,20 +1,20 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
-import { Column, ColumnTypes, WidgetTypes } from "../../../../../src/app/modules/task/model/create-form.models";
-import {getUniqueId} from '../utils';
-import {scrollToBottom,getValidators} from '../../../../../src/app/utils';
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { getUniqueId } from "../utils";
+import { scrollToBottom } from "../../../../../src/app/utils";
+import { FormControl, Validators } from "@angular/forms";
+import { Column, WidgetTypes } from "../../../../../src/app/modules/task/model/create-form.models";
 
 @Component({
-  selector: 'finlevit-table',
-  templateUrl: './table.component.html',
-  styleUrls: ['./table.component.scss']
+  selector: "finlevit-table",
+  templateUrl: "./table.component.html",
+  styleUrls: ["./table.component.scss"],
 })
 export class TableComponent implements OnInit {
   get styleClass(): string {
     if (this.isSmall) {
-      this._styleClass = this._styleClass + ' p-datatable-sm';
+      this._styleClass = this._styleClass + " p-datatable-sm";
     } else if (this.isLarge) {
-      this._styleClass = this._styleClass + ' p-datatable-lg';
+      this._styleClass = this._styleClass + " p-datatable-lg";
     }
     return this._styleClass;
   }
@@ -23,7 +23,7 @@ export class TableComponent implements OnInit {
   _columns: Column[] = [];
   @Input()
   set columns(columns) {
-    this._columns = columns.map(column => {
+    this._columns = columns.map((column) => {
       if (column.colType === WidgetTypes.DatePicker) {
         if (column?.validators?.minDate) {
           column.validators.minDate = new Date(column.validators.minDate);
@@ -41,10 +41,10 @@ export class TableComponent implements OnInit {
   @Input() tableData: any[] = [];
   @Input() totalRecords = 0;
   @Input() loading = false;
-  @Input() noDataMessage = 'No Data';
+  @Input() noDataMessage = "No Data";
   @Input() isSmall = false;
   @Input() isLarge = false;
-  @Input() pagination = false;
+  @Input() pagination = true;
   @Input() sort = false;
   @Input() filter = false;
   @Input() addRows = false;
@@ -53,10 +53,10 @@ export class TableComponent implements OnInit {
   @Input() editRow = false;
   @Input() deleteRow = false;
   @Input() actionWidth = 10;
-  @Input() actionLabel = 'Actions';
-  @Input() tableHeading = '';
-  @Input() headerColor = '#000000';
-  @Input() headerBgColor = '#ffffff';
+  @Input() actionLabel = "Actions";
+  @Input() tableHeading = "";
+  @Input() headerColor = "#000000";
+  @Input() headerBgColor = "#ffffff";
   @Input() lazyLoad = false;
 
   @Output() onColDataChange = new EventEmitter();
@@ -72,29 +72,36 @@ export class TableComponent implements OnInit {
   newRows = {};
   rowErrors = {};
 
-  private _styleClass = 'p-datatable-gridlines p-datatable-sm';
+  private _styleClass = "p-datatable-gridlines p-datatable-sm";
 
-  Text = ColumnTypes.Text;
-  TextInput = ColumnTypes.TextInput;
-  TextArea = ColumnTypes.TextArea;
-  Number = ColumnTypes.Number;
-  DatePicker = ColumnTypes.DatePicker;
+  Text: WidgetTypes = WidgetTypes.Text;
+  Button: WidgetTypes = WidgetTypes.Button;
+  Modal: WidgetTypes = WidgetTypes.Modal;
+  TextInput: WidgetTypes = WidgetTypes.TextInput;
+  TextArea: WidgetTypes = WidgetTypes.TextArea;
+  Number: WidgetTypes = WidgetTypes.Number;
+  Checkbox: WidgetTypes = WidgetTypes.Checkbox;
+  Image: WidgetTypes = WidgetTypes.Image;
+  Dropdown: WidgetTypes = WidgetTypes.Dropdown;
+  DatePicker: WidgetTypes = WidgetTypes.DatePicker;
+  CheckboxGroup: WidgetTypes = WidgetTypes.CheckboxGroup;
+  RadioGroup: WidgetTypes = WidgetTypes.RadioGroup;
+  Upload: WidgetTypes = WidgetTypes.Upload;
 
   ngOnInit(): void {
-    this.tableId = getUniqueId('table');
+    this.tableId = getUniqueId("table");
   }
 
-  getColType(type) {
+  getColType(type: WidgetTypes) {
     switch (type) {
-      case ColumnTypes.TextInput:
-      case ColumnTypes.Data:
-        return 'text';
-      case ColumnTypes.DatePicker:
-        return 'date';
-      case ColumnTypes.Number:
-        return 'numeric';
+      case WidgetTypes.TextInput:
+        return "text";
+      case WidgetTypes.DatePicker:
+        return "date";
+      case WidgetTypes.Number:
+        return "numeric";
       default:
-        return 'text';
+        return "text";
     }
   }
   onPage($event) {
@@ -120,20 +127,20 @@ export class TableComponent implements OnInit {
       delete this.rowErrors[index];
     }
   }
-  validateRow(index, rowData, columnId = '') {
+  validateRow(index, rowData, columnId = "") {
     let valid = true;
-    Object.keys(rowData).forEach(column => {
+    Object.keys(rowData).forEach((column) => {
       if (columnId && columnId !== column) {
         return;
       }
       const columnValue = rowData[column];
-      const columnConfig = this.columns.find(col => col.columnId === column);
-      const tempFormControl = new FormControl(columnValue, getValidators(columnConfig.validators) || []);
+      const columnConfig = this.columns.find((col) => col.columnId === column);
+      const tempFormControl = new FormControl(columnValue, this.getValidators(columnConfig.validators) || []);
       if (tempFormControl.valid) {
         if (!this.rowErrors[index]) {
           this.rowErrors[index] = {};
         }
-        this.rowErrors[index][column] = { error: false, errorMsg: '' };
+        this.rowErrors[index][column] = { error: false, errorMsg: "" };
       } else {
         valid = false;
         if (!this.rowErrors[index]) {
@@ -141,7 +148,7 @@ export class TableComponent implements OnInit {
         }
         this.rowErrors[index][column] = {
           error: true,
-          errorMsg: this.getErrorMessages(tempFormControl.errors, columnConfig.label)[0]
+          errorMsg: this.getErrorMessages(tempFormControl.errors, columnConfig.label)[0],
         };
       }
     });
@@ -149,27 +156,50 @@ export class TableComponent implements OnInit {
   }
   getErrorMessages = (errors: any, label: any) => {
     const errorMessages: string[] = [];
-    Object.keys(errors).forEach(error => {
+    Object.keys(errors).forEach((error) => {
       switch (error) {
-        case 'required':
+        case "required":
           errorMessages.push(`${label} is required`);
           break;
-        case 'minlength':
-        case 'maxlength':
+        case "minlength":
+        case "maxlength":
           errorMessages.push(
-              `Expected atleast length ${errors[error].requiredLength} but got ${errors[error].actualLength}`
+            `Expected atleast length ${errors[error].requiredLength} but got ${errors[error].actualLength}`
           );
           break;
-        case 'min':
+        case "min":
           errorMessages.push(`Expected atleast value ${errors[error].min} but got ${errors[error].actual}`);
           break;
-        case 'max':
+        case "max":
           errorMessages.push(`Expected atleast value ${errors[error].max} but got ${errors[error].actual}`);
           break;
       }
     });
     return errorMessages;
-  }
+  };
+  getValidators = (validators: any) => {
+    const _validators: any = [];
+    Object.keys(validators).forEach((validator) => {
+      switch (validator) {
+        case "minValue":
+          validators[validator] && _validators.push(Validators.min(validators[validator]));
+          break;
+        case "minLength":
+          validators[validator] && _validators.push(Validators.minLength(validators[validator]));
+          break;
+        case "maxValue":
+          validators[validator] && _validators.push(Validators.max(validators[validator]));
+          break;
+        case "maxLength":
+          validators[validator] && _validators.push(Validators.maxLength(validators[validator]));
+          break;
+        case "required":
+          validators[validator] && _validators.push(Validators.required);
+          break;
+      }
+    });
+    return _validators;
+  };
   onRowEditCancel(index, rowData) {
     this.tableData[index] = this.editRows[index];
     delete this.editRows[index];
@@ -177,9 +207,9 @@ export class TableComponent implements OnInit {
   }
   getColumnDefaultValue(column) {
     switch (column.type) {
-      case 'string':
-        return '';
-      case 'number':
+      case "string":
+        return "";
+      case "number":
         return null;
       default:
         return null;
@@ -187,7 +217,7 @@ export class TableComponent implements OnInit {
   }
   addRow() {
     const newRow: any = {};
-    this.columns.forEach(eachColumn => {
+    this.columns.forEach((eachColumn) => {
       Object.assign(newRow, { [eachColumn.columnId]: this.getColumnDefaultValue(eachColumn) });
     });
     this.tableData.push(newRow);
@@ -196,5 +226,12 @@ export class TableComponent implements OnInit {
     setTimeout(() => {
       scrollToBottom(tableBodyElement);
     });
+  }
+  onResize($event, column = null) {
+    if (!column) {
+      this.actionWidth = parseInt($event, 10);
+    } else {
+      column.width = parseInt($event, 10);
+    }
   }
 }

@@ -9,6 +9,9 @@
   --input-label-font-size: 14px;
   --input-label-align: flex-start;
   --input-label-width: 35%;
+  --input-label-min-width: 35%;
+  --input-min-width: 35%;
+  --input-width: 100%;
   --input-text-decoration: none;
   --input-label-text-decoration: none;
   --input-text-align: left;
@@ -43,6 +46,18 @@
 }
 
 .field{
+  &.input-small{
+    --input-font-size: 0.75rem;
+    --input-label-font-size: 0.7rem;
+  }
+  &.input-medium{
+    --input-font-size: 0.8rem;
+    --input-label-font-size: 0.7rem;
+  }
+  &.input-large{
+    --input-font-size: 1.20rem;
+    --input-label-font-size: 1.1rem;
+  }
   .label-top{
     .lib-label-container{
       display: flex;
@@ -65,6 +80,7 @@
     .lib-label-container{
       width: var(--input-label-width);
       max-width: var(--input-label-width);
+      min-width: var(--input-label-min-width);
       overflow-wrap: break-word;
     }
     .lib-input-container{
@@ -114,7 +130,8 @@
     border: var(--input-border) var(--input-border-width) var(--input-border-color);
     border-radius: var(--input-border-radius);
     background-color: var(--input-background-color);
-    width: 100%;
+    width: var(--input-width);
+    min-width: var(--input-min-width);
   }
   .extended-input-2{
     border-top: var(--input-border-top) var(--input-border-top-width) var(--input-border-top-color);
@@ -149,6 +166,14 @@
     font-style: var(--input-font-style);
     font-weight: var(--input-font-weight);
     text-decoration: var(--input-text-decoration);
+  }
+  .p-dropdown-label{
+    font-size: var(--input-font-size);
+    padding: 0.5rem 0.75rem;
+    line-height: normal;
+  }
+  .p-dropdown-trigger-icon{
+    font-size: var(--input-font-size);
   }
 }
 

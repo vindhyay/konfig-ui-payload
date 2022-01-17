@@ -6,13 +6,13 @@ enum LabelPos {
   Left = "Left",
   Top = "Top",
   Down = "Down",
-  Right = "Right"
+  Right = "Right",
 }
 
 @Component({
   selector: "finlevit-lib-datepicker",
   templateUrl: "./datepicker.component.html",
-  styleUrls: ["./datepicker.component.scss"]
+  styleUrls: ["./datepicker.component.scss"],
 })
 export class DatepickerComponent implements ControlValueAccessor, OnInit {
   constructor(@Optional() @Self() public controlDir: NgControl) {
@@ -125,7 +125,7 @@ export class DatepickerComponent implements ControlValueAccessor, OnInit {
   getErrorMessages() {
     const errors = this.controlDir.control?.errors;
     const errorMessages: string[] = [];
-    Object.keys(errors || {}).forEach(error => {
+    Object.keys(errors || {}).forEach((error) => {
       switch (error) {
         case "required":
           errorMessages.push(`${this.label} is required`);

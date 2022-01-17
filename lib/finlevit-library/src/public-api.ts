@@ -25,3 +25,5 @@ export * from "./lib/back-button/back-button.component";
 export * from "./lib/menu-button/menu-button.component";
 export * from "./lib/options-button/options-button.component";
 export * from './lib/model/common-types';
+export * from "./lib/cascade-select/cascade-select.component";
+export * from "./lib/finlevit-toggle/finlevit-toggle.component";

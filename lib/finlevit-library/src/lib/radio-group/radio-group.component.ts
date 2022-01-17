@@ -1,24 +1,23 @@
-import {Component, Input, OnInit, Optional, Self} from "@angular/core";
-import {ControlValueAccessor, NgControl, ValidatorFn, Validators} from "@angular/forms";
-import {getUniqueId, hasRequiredField} from "../utils";
+import { Component, Input, OnInit, Optional, Self } from "@angular/core";
+import { ControlValueAccessor, NgControl, ValidatorFn, Validators } from "@angular/forms";
+import { getUniqueId, hasRequiredField } from "../utils";
 
 enum RadioType {
   Outline = "Outline",
-  Filled = "Filled"
+  Filled = "Filled",
 }
 
 enum LabelPos {
   Left = "Left",
   Top = "Top",
   Down = "Down",
-  Right = "Right"
+  Right = "Right",
 }
-
 
 @Component({
   selector: "finlevit-radio-group",
   templateUrl: "./radio-group.component.html",
-  styleUrls: ["./radio-group.component.scss"]
+  styleUrls: ["./radio-group.component.scss"],
 })
 export class RadioGroupComponent implements OnInit, ControlValueAccessor {
   _id: string;
@@ -51,10 +50,8 @@ export class RadioGroupComponent implements OnInit, ControlValueAccessor {
   @Input() allowLabelWrapping: boolean = false;
 
   _value: any = null;
-  optionTooltip: any = 'tooltip'
+  optionTooltip: any = "tooltip";
   labelPosTypes = LabelPos;
-
-
 
   ngOnInit(): void {
     const control = this.controlDir && this.controlDir.control;
@@ -98,7 +95,7 @@ export class RadioGroupComponent implements OnInit, ControlValueAccessor {
   getErrorMessages() {
     const errors = this.controlDir.control?.errors;
     const errorMessages: string[] = [];
-    Object.keys(errors || {}).forEach(error => {
+    Object.keys(errors || {}).forEach((error) => {
       switch (error) {
         case "required":
           errorMessages.push(`${this.label} is required`);

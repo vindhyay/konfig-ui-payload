@@ -72,8 +72,8 @@ export class ButtonComponent {
     return this._class;
   }
 
-  actionBtnClick($event) {
+  btnActionClick($event) {
     $event.stopPropagation();
-    this.btnClick.emit();
+    this.btnClick.emit($event);
   }
 }

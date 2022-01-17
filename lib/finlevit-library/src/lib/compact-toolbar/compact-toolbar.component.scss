@@ -1,0 +1,27 @@
+::ng-deep{
+  .p-toolbar{
+    border: none;
+    background: #F3F6F9;
+    padding: 0;
+  }
+}
+.title{
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: 0.15px;
+}
+.toolbar-row-with-search{
+  display: flex;
+  box-sizing: border-box;
+  padding: 4px 16px;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  white-space: nowrap;
+}
+.toolbar-row-without-search{
+  box-sizing: border-box;
+  padding: 10px 16px;
+  width: 100%;
+  align-items: center;
+}

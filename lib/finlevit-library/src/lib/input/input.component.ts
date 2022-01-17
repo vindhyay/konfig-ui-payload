@@ -6,13 +6,13 @@ enum LabelPos {
   Left = "Left",
   Top = "Top",
   Down = "Down",
-  Right = "Right"
+  Right = "Right",
 }
 
 @Component({
   selector: "finlevit-text",
   templateUrl: "./input.component.html",
-  styleUrls: ["./input.component.scss"]
+  styleUrls: ["./input.component.scss"],
 })
 export class InputComponent implements ControlValueAccessor, OnInit {
   constructor(@Optional() @Self() public controlDir: NgControl) {
@@ -22,9 +22,9 @@ export class InputComponent implements ControlValueAccessor, OnInit {
   }
 
   get _placeholder(): string {
-    if(this.placeholder && !this.label && this.isRequired){
-      return this.placeholder + "*"
-    }else {
+    if (this.placeholder && !this.label && this.isRequired) {
+      return this.placeholder + "*";
+    } else {
       return this.placeholder;
     }
   }
@@ -49,6 +49,7 @@ export class InputComponent implements ControlValueAccessor, OnInit {
   @Input() maxCharLimit = 2000;
   @Input() showMaxCharLimit = false;
   @Input() isSmall = false;
+  @Input() isMedium = false;
   @Input() isLarge = false;
   @Input() rightIcon = "";
   @Input() leftIcon = "";
@@ -152,7 +153,7 @@ export class InputComponent implements ControlValueAccessor, OnInit {
   getErrorMessages() {
     const errors = this.controlDir.control?.errors;
     const errorMessages: string[] = [];
-    Object.keys(errors || {}).forEach(error => {
+    Object.keys(errors || {}).forEach((error) => {
       switch (error) {
         case "required":
           errorMessages.push(`${this.label} is required`);
@@ -164,7 +165,7 @@ export class InputComponent implements ControlValueAccessor, OnInit {
         case "maxlength":
           if (errors) {
             errorMessages.push(
-                `Expected atleast length ${errors[error].requiredLength} but got ${errors[error].actualLength}`
+              `Expected atleast length ${errors[error].requiredLength} but got ${errors[error].actualLength}`
             );
           }
           break;
@@ -177,8 +178,8 @@ export class InputComponent implements ControlValueAccessor, OnInit {
     });
     return errorMessages;
   }
-  clearValue(){
+  clearValue() {
     this.setInputValue(null);
-    this.onChange(null)
+    this.onChange(null);
   }
 }

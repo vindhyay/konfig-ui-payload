@@ -1,10 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { MenuItem } from 'primeng/api';
+import { Component, Input, OnInit } from "@angular/core";
+import { MenuItem } from "primeng/api";
 
 @Component({
-  selector: 'finlevit-tabs',
-  templateUrl: './tabs.component.html',
-  styleUrls: ['./tabs.component.scss']
+  selector: "finlevit-tabs",
+  templateUrl: "./tabs.component.html",
+  styleUrls: ["./tabs.component.scss"],
 })
 export class TabsComponent implements OnInit {
   constructor() {}

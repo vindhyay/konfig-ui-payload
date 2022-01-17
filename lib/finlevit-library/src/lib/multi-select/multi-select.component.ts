@@ -1,37 +1,37 @@
-import {Component, Input, OnInit, Optional, Self} from '@angular/core';
-import {ControlValueAccessor, NgControl, ValidatorFn, Validators} from "@angular/forms";
-import {hasRequiredField} from "../utils";
+import { Component, Input, OnInit, Optional, Self } from "@angular/core";
+import { ControlValueAccessor, NgControl, ValidatorFn, Validators } from "@angular/forms";
+import { hasRequiredField } from "../utils";
 
 @Component({
-  selector: 'finlevit-lib-multi-select',
-  templateUrl: './multi-select.component.html',
-  styleUrls: ['./multi-select.component.scss']
+  selector: "finlevit-lib-multi-select",
+  templateUrl: "./multi-select.component.html",
+  styleUrls: ["./multi-select.component.scss"],
 })
 export class MultiSelectComponent implements OnInit, ControlValueAccessor {
-
   constructor(@Optional() @Self() public controlDir: NgControl) {
     if (this.controlDir) {
       this.controlDir.valueAccessor = this;
-    }}
-  @Input() filter : boolean  = false;
-  @Input() showClear : boolean  = false;
-  @Input() showHeader : boolean  = true;
+    }
+  }
+  @Input() filter: boolean = false;
+  @Input() showClear: boolean = false;
+  @Input() showHeader: boolean = true;
   @Input() options: any[] = [];
-  @Input() optionLabel : string = '';
-  @Input() optionValue : string = '';
+  @Input() optionLabel: string = "";
+  @Input() optionValue: string = "";
   @Input() isRequired = false;
   @Input() validators: any = [];
-  @Input() placeholder: string = '';
+  @Input() placeholder: string = "";
   @Input() isSmall = false;
   @Input() isLarge = false;
-  @Input() tooltip = '';
-  @Input() label = '';
+  @Input() tooltip = "";
+  @Input() label = "";
   @Input() error = false;
   @Input() showErrorBorder = true;
   @Input() isDisabled = false;
-  @Input() maxSelectedLabels : number = 100;
-  @Input() chip : boolean = false;
-  @Input() errorMsg = '';
+  @Input() maxSelectedLabels: number = 100;
+  @Input() chip: boolean = false;
+  @Input() errorMsg = "";
 
   _value: any = null;
 
@@ -88,12 +88,12 @@ export class MultiSelectComponent implements OnInit, ControlValueAccessor {
   getErrorMessages() {
     const errors = this.controlDir.control?.errors;
     const errorMessages: string[] = [];
-    Object.keys(errors || {}).forEach(error => {
+    Object.keys(errors || {}).forEach((error) => {
       switch (error) {
-        case 'required':
+        case "required":
           errorMessages.push(`${this.label} is required`);
           break;
-        case 'custom':
+        case "custom":
           if (errors) {
             errorMessages.push(errors[error]);
           }

@@ -1,0 +1,49 @@
+<div
+  [ngClass]="{
+    'p-field': true
+  }"
+>
+  <div
+    [ngClass]="{
+      'label-top': labelPos === labelPosTypes.Top,
+      'label-left': labelPos === labelPosTypes.Left,
+      'label-down': labelPos === labelPosTypes.Down,
+      'label-right': labelPos === labelPosTypes.Right
+    }"
+  >
+    <div *ngIf="label" class="d-flex flex-row lib-label-container">
+      <div
+        [ngClass]="{
+          'input-label': true,
+          'input-label-sm': isSmall,
+          'input-label-lg': isLarge,
+          label: true,
+          'overflow-hide': !allowLabelWrapping
+        }"
+      >
+        {{ label }}<span class="required" *ngIf="isRequired"> *</span>
+        <em class="label-tooltip pi pi-info-circle p-pl-2" [pTooltip]="tooltip" *ngIf="tooltip"></em>
+      </div>
+    </div>
+    <div [ngClass]="{ 'lib-input-container': true, 'no-label-input-container': !label }">
+      <p-cascadeSelect
+        [required]="true"
+        appendTo="body"
+        [(ngModel)]="_value"
+        (onChange)="onLocalChange($event)"
+        [disabled]="isDisabled"
+        [options]="options"
+        [optionLabel]="optionLabel"
+        [optionValue]="optionValue"
+        [optionGroupLabel]="optionGroupLabel"
+        [optionGroupChildren]="[childKey, childKey, childKey, childKey, childKey, childKey, childKey]"
+        [placeholder]="placeholder"
+        [styleClass]="showErrorBorder && checkError() ? 'error-border' : ''"
+      >
+      </p-cascadeSelect>
+    </div>
+  </div>
+  <div *ngIf="checkError() && showErrorMsg">
+    <small class="validation-message">{{ errorMsg || getErrorMessages()[0] }}</small>
+  </div>
+</div>

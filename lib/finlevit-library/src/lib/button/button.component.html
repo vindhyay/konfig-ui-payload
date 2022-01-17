@@ -1,21 +1,23 @@
-<button
-  [ngStyle]="{
-    boxShadow: variant === 'raisedTextButton' ? 'none' : '',
-    backgroundColor: variant === 'outlinedButton' || variant === 'raisedTextButton' ? 'transparent' : bgColor,
-    color: color,
-    borderTopColor: independentBorders ? borderTopColor : borderColor,
-    borderRightColor: independentBorders ? borderRightColor : borderColor,
-    borderBottomColor: independentBorders ? borderBottomColor : borderColor,
-    borderLeftColor: independentBorders ? borderLeftColor : borderColor
-  }"
-  pButton
-  pRipple
-  type="button"
-  [label]="label"
-  [disabled]="isDisabled"
-  [icon]="icon"
-  [iconPos]="iconPos"
-  [ngClass]="class"
-  (click)="actionBtnClick($event)"
-  class="hover-btn"
-></button>
+<div>
+  <button
+    [ngStyle]="{
+      boxShadow: variant === 'raisedTextButton' ? 'none' : '',
+      backgroundColor: variant === 'outlinedButton' || variant === 'raisedTextButton' ? 'transparent' : bgColor,
+      color: color,
+      borderTopColor: independentBorders ? borderTopColor : borderColor,
+      borderRightColor: independentBorders ? borderRightColor : borderColor,
+      borderBottomColor: independentBorders ? borderBottomColor : borderColor,
+      borderLeftColor: independentBorders ? borderLeftColor : borderColor
+    }"
+    pButton
+    pRipple
+    type="button"
+    [label]="label ? label : ' '"
+    [disabled]="isDisabled"
+    [icon]="icon"
+    [iconPos]="iconPos"
+    [ngClass]="class"
+    (click)="btnActionClick($event)"
+    class="hover-btn"
+  ></button>
+</div>
