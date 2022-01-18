@@ -23,6 +23,7 @@ export class MultiSelectComponent implements OnInit, ControlValueAccessor {
   @Input() validators: any = [];
   @Input() placeholder: string = "";
   @Input() isSmall = false;
+  @Input() isMedium = false;
   @Input() isLarge = false;
   @Input() tooltip = "";
   @Input() label = "";
@@ -32,6 +33,7 @@ export class MultiSelectComponent implements OnInit, ControlValueAccessor {
   @Input() maxSelectedLabels: number = 100;
   @Input() chip: boolean = false;
   @Input() errorMsg = "";
+  @Input() independentBorders: boolean = false;
 
   _value: any = null;
 

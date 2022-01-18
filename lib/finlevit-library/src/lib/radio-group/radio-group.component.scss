@@ -26,14 +26,22 @@
 }
 
 .radio-options-wrapper {
+  margin-top: 0.2rem;
   &.vertical {
     display: flex;
     flex-wrap: wrap;
+    .p-field-radiobutton {
+      display: flex;
+      align-items: center;
+      margin: 0.2rem 0;
+    }
   }
   &.horizontal {
     display: flex;
     .p-field-radiobutton {
-      margin: 0 1rem 1rem 0;
+      display: flex;
+      align-items: center;
+      margin: 0 0.2rem;
     }
   }
   .p-field-radiobutton {
