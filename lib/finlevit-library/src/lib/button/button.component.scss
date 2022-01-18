@@ -1,7 +1,8 @@
 :host {
   --button-background-color: #007bff;
   --button-border-color: var(--button-background-color);
-  --button-label-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  --button-label-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   --button-label-align: center;
   --button-label-color: #ffffff;
   --button-label-font-size: 16px;
@@ -52,32 +53,33 @@
     padding: 3px 10px;
   }
 
-  .p-button.p-button-sm .p-button-icon{
+  .p-button.p-button-sm .p-button-icon {
     font-size: 13px;
   }
 
-  .p-button .p-button-icon{
+  .p-button .p-button-icon {
     font-size: var(--button-label-font-size);
   }
 
-  .p-button.p-button-lg{
+  .p-button.p-button-lg {
     padding: 10px 18px;
   }
 
-  .p-button:focus{
+  .p-button:focus {
     box-shadow: none;
   }
 }
 
-.independent-borders{
+.independent-borders {
   border-top: var(--button-border-top) var(--button-border-top-width);
   border-right: var(--button-border-right) var(--button-border-right-width);
   border-bottom: var(--button-border-bottom) var(--button-border-bottom-width);
   border-left: var(--button-border-left) var(--button-border-left-width);
-  border-radius: var(--button-border-radius-top-left) var(--button-border-radius-top-right) var(--button-border-radius-bottom-right) var(--button-border-radius-bottom-left);
+  border-radius: var(--button-border-radius-top-left) var(--button-border-radius-top-right)
+    var(--button-border-radius-bottom-right) var(--button-border-radius-bottom-left);
 }
 
-.single-border{
+.single-border {
   border: var(--button-border) var(--button-border-width);
   border-radius: var(--button-border-radius);
 }

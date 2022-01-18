@@ -5,14 +5,14 @@ export enum ButtonVariants {
   roundedButton = "roundedButton",
   raisedTextButton = "raisedTextButton",
   outlinedButton = "outlinedButton",
-  linkButton = "linkButton"
+  linkButton = "linkButton",
 }
 
 export enum ButtonTypes {
   primary = "primary",
   info = "info",
   success = "success",
-  secondary = "secondary"
+  secondary = "secondary",
 }
 
 const ButtonClass = {
@@ -24,13 +24,13 @@ const ButtonClass = {
   info: "p-button-info",
   success: "p-button-success",
   secondary: "p-button-secondary",
-  linkButton: "p-button-link"
+  linkButton: "p-button-link",
 };
 
 @Component({
   selector: "finlevit-button",
   templateUrl: "./button.component.html",
-  styleUrls: ["./button.component.scss"]
+  styleUrls: ["./button.component.scss"],
 })
 export class ButtonComponent {
   @Input() variant: ButtonVariants = ButtonVariants.raisedButton;
@@ -46,11 +46,11 @@ export class ButtonComponent {
   @Input() info = false;
   @Input() secondary = false;
   @Input() success = false;
-  @Input() borderColor = '#007bff';
-  @Input() borderTopColor = '#007bff';
-  @Input() borderRightColor = '#007bff';
-  @Input() borderBottomColor = '#007bff';
-  @Input() borderLeftColor = '#007bff';
+  @Input() borderColor = "#007bff";
+  @Input() borderTopColor = "#007bff";
+  @Input() borderRightColor = "#007bff";
+  @Input() borderBottomColor = "#007bff";
+  @Input() borderLeftColor = "#007bff";
 
   @Input() independentBorders: boolean = false;
   @Output() btnClick = new EventEmitter();
@@ -63,17 +63,16 @@ export class ButtonComponent {
     if (this.isLarge) {
       this._class = this._class + " p-button-lg";
     }
-    if(this.independentBorders){
+    if (this.independentBorders) {
       this._class = this._class + " independent-borders";
     }
-    if(!this.independentBorders){
+    if (!this.independentBorders) {
       this._class = this._class + " single-border";
     }
     return this._class;
   }
 
   btnActionClick($event) {
-    $event.stopPropagation();
     this.btnClick.emit($event);
   }
 }
