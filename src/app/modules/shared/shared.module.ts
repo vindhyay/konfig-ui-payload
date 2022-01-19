@@ -4,7 +4,7 @@ import { BaseComponent } from "./base/base.component";
 import { MaterialModule } from "../material/material.module";
 import { RouterModule } from "@angular/router";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { FinlevitLibraryModule } from 'lib/finlevit-library/src/public-api';
+import { FinlevitLibraryModule } from "lib/finlevit-library/src/public-api";
 import { BtnPrimaryComponent } from "./btn-primary/btn-primary.component";
 import { NgxLoadingModule } from "ngx-loading";
 import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
@@ -14,7 +14,7 @@ import { DialogModule } from "primeng/dialog";
 import { ButtonModule } from "primeng/button";
 import { AccordionModule } from "primeng/accordion";
 import { CustomDropdownComponent } from "./custom-dropdown.component";
-import { PortalModule } from '@angular/cdk/portal';
+import { PortalModule } from "@angular/cdk/portal";
 import { CustomTableComponent } from "./finlevit-custom-table/custom-table.component";
 import { ResizableDirective } from "./finlevit-custom-table/table-utils/resizable.directive";
 import { PaginationFilterPipe } from "./finlevit-custom-table/table-utils/pagination-filter.pipe";
@@ -22,6 +22,8 @@ import { PaginationDirective } from "./finlevit-custom-table/table-utils/paginat
 import { SorterDirective } from "./finlevit-custom-table/table-utils/sorter.directive";
 import { SortHeaderComponent } from "./finlevit-custom-table/table-utils/sort-header/sort-header.component";
 import { CustomTableFiltersComponent } from "./finlevit-custom-table/table-utils/custom-table-filters/custom-table-filters.component";
+import { BtnIconComponent } from "./btn-icon/btn-icon.component";
+import { BtnDangerComponent } from "./btn-danger/btn-danger.component";
 
 @NgModule({
   declarations: [
@@ -35,7 +37,9 @@ import { CustomTableFiltersComponent } from "./finlevit-custom-table/table-utils
     PaginationDirective,
     SorterDirective,
     SortHeaderComponent,
-    CustomTableFiltersComponent
+    CustomTableFiltersComponent,
+    BtnIconComponent,
+    BtnDangerComponent
   ],
   imports: [
     CommonModule,
@@ -75,7 +79,9 @@ import { CustomTableFiltersComponent } from "./finlevit-custom-table/table-utils
     PaginationFilterPipe,
     PaginationDirective,
     CustomTableComponent,
-    CustomTableFiltersComponent
+    CustomTableFiltersComponent,
+    BtnIconComponent,
+    BtnDangerComponent
   ]
 })
 export class SharedModule {}
