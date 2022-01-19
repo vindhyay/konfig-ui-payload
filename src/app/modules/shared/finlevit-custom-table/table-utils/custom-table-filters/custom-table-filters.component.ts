@@ -6,7 +6,7 @@ import { Column, WidgetTypes } from "../../../../task/model/create-form.models";
 @Component({
   selector: "app-custom-table-filters",
   templateUrl: "./custom-table-filters.component.html",
-  styleUrls: ["./custom-table-filters.component.scss"]
+  styleUrls: ["./custom-table-filters.component.scss"],
 })
 export class CustomTableFiltersComponent implements OnInit {
   constructor(private fb: FormBuilder) {}
@@ -39,7 +39,7 @@ export class CustomTableFiltersComponent implements OnInit {
     this.addSearchField();
     this.operators = [
       { name: "AND", id: "AND" },
-      { name: "OR", id: "OR" }
+      { name: "OR", id: "OR" },
     ];
     this.conditions = {
       STRING: [
@@ -48,7 +48,7 @@ export class CustomTableFiltersComponent implements OnInit {
         // { name: 'Contains', id: 'contains' },
         { name: "Equals", id: "equals" },
         // { name: 'Equals Ignore Case', id: 'equalsIgnoreCase' },
-        { name: "Not equals", id: "notEquals" }
+        { name: "Not equals", id: "notEquals" },
         // { name: 'Length equals', id: 'lengthEquals' },
         // { name: 'Length greater', id: 'lengthGreater' },
         // { name: 'Length less', id: 'lengthLess' },
@@ -57,7 +57,7 @@ export class CustomTableFiltersComponent implements OnInit {
       ],
       BOOLEAN: [
         { name: "Equals", id: "equals" },
-        { name: "Not equals", id: "notEquals" }
+        { name: "Not equals", id: "notEquals" },
       ],
       DATE: [
         // { name: 'Greater than', id: 'greaterThan' },
@@ -65,7 +65,7 @@ export class CustomTableFiltersComponent implements OnInit {
         // { name: 'Less than', id: 'lessthan' },
         // { name: 'Less than equals', id: 'lessthanEquals' },
         { name: "Equals", id: "equals" },
-        { name: "Not equals", id: "notEquals" }
+        { name: "Not equals", id: "notEquals" },
       ],
       TIMESTAMP: [
         // { name: 'Greater than', id: 'greaterThan' },
@@ -73,7 +73,7 @@ export class CustomTableFiltersComponent implements OnInit {
         // { name: 'Less than', id: 'lessthan' },
         // { name: 'Less than equals', id: 'lessthanEquals' },
         { name: "Equals", id: "equals" },
-        { name: "Not equals", id: "notEquals" }
+        { name: "Not equals", id: "notEquals" },
       ],
       NUMBER: [
         // { name: 'Greater than', id: 'greaterThan' },
@@ -81,12 +81,12 @@ export class CustomTableFiltersComponent implements OnInit {
         // { name: 'Less than', id: 'lessthan' },
         // { name: 'Less than equals', id: 'lessthanEquals' },
         { name: "Equals", id: "equals" },
-        { name: "Not equals", id: "notEquals" }
+        { name: "Not equals", id: "notEquals" },
       ],
       DEFAULT: [
         { name: "Equals", id: "equals" },
-        { name: "Not Equals", id: "notEquals" }
-      ]
+        { name: "Not Equals", id: "notEquals" },
+      ],
     };
   }
 
@@ -101,7 +101,7 @@ export class CustomTableFiltersComponent implements OnInit {
       condition: ["", Validators.required],
       field: ["", Validators.required],
       operator: ["AND", Validators.required],
-      value: ["", Validators.required]
+      value: ["", Validators.required],
     });
   }
   public showDropdown() {

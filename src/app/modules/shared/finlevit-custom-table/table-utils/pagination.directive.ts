@@ -9,12 +9,12 @@ import {
   ElementRef,
   Renderer2,
   HostBinding,
-  HostListener
+  HostListener,
 } from "@angular/core";
 
 @Directive({
   selector: "[pagination]",
-  exportAs: "pagination"
+  exportAs: "pagination",
 })
 export class PaginationDirective implements OnChanges, OnInit {
   @Input() pageNo = 1;

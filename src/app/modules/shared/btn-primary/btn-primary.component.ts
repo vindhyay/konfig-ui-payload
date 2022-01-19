@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, Output } from "@angular/core";
 @Component({
   selector: "app-btn-primary",
   templateUrl: "./btn-primary.component.html",
-  styleUrls: []
+  styleUrls: [],
 })
 export class BtnPrimaryComponent {
   @Input() disabled: boolean | null = false;

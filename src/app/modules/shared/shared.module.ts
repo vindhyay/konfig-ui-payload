@@ -39,7 +39,7 @@ import { BtnDangerComponent } from "./btn-danger/btn-danger.component";
     SortHeaderComponent,
     CustomTableFiltersComponent,
     BtnIconComponent,
-    BtnDangerComponent
+    BtnDangerComponent,
   ],
   imports: [
     CommonModule,
@@ -50,13 +50,13 @@ import { BtnDangerComponent } from "./btn-danger/btn-danger.component";
       timeOut: 3000,
       positionClass: "toast-top-center",
       preventDuplicates: true,
-      closeButton: true
+      closeButton: true,
     }),
     PortalModule,
     ReactiveFormsModule,
     FinlevitLibraryModule,
     AccordionModule,
-    NgxLoadingModule.forRoot({})
+    NgxLoadingModule.forRoot({}),
   ],
   exports: [
     MaterialModule,
@@ -81,7 +81,7 @@ import { BtnDangerComponent } from "./btn-danger/btn-danger.component";
     CustomTableComponent,
     CustomTableFiltersComponent,
     BtnIconComponent,
-    BtnDangerComponent
-  ]
+    BtnDangerComponent,
+  ],
 })
 export class SharedModule {}

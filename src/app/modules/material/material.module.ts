@@ -8,6 +8,14 @@ import { MatTabsModule } from "@angular/material/tabs";
 import { MatDividerModule } from "@angular/material/divider";
 
 @NgModule({
-  exports: [MatCheckboxModule, MatButtonModule, MatTooltipModule, MatStepperModule, CdkStepperModule, MatTabsModule, MatDividerModule]
+  exports: [
+    MatCheckboxModule,
+    MatButtonModule,
+    MatTooltipModule,
+    MatStepperModule,
+    CdkStepperModule,
+    MatTabsModule,
+    MatDividerModule,
+  ],
 })
 export class MaterialModule {}

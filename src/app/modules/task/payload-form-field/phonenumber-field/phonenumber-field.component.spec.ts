@@ -1,19 +1,18 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { By } from "@angular/platform-browser";
+import { DebugElement } from "@angular/core";
 
-import { PhonenumberFieldComponent } from './phonenumber-field.component';
+import { PhonenumberFieldComponent } from "./phonenumber-field.component";
 
-describe('PhonenumberFieldComponent', () => {
+describe("PhonenumberFieldComponent", () => {
   let component: PhonenumberFieldComponent;
   let fixture: ComponentFixture<PhonenumberFieldComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PhonenumberFieldComponent ]
-    })
-    .compileComponents();
+      declarations: [PhonenumberFieldComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -22,7 +21,7 @@ describe('PhonenumberFieldComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

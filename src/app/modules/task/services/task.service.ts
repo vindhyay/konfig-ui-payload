@@ -41,7 +41,7 @@ export class TaskService extends BaseService {
   };
   getWorkflowTaskData = (transactionId: string, taskId?: string) => {
     const url = `${this.config.getApiUrls().workflowTaskDetailsURL}/${transactionId}/${taskId}`;
-    return this.getData(url).subscribe(data => this.setTaskDetails(data));
+    return this.getData(url).subscribe((data) => this.setTaskDetails(data));
   };
   editWorkflowTaskData = (transactionId: string, taskId: string, payload: any, params: any): Observable<any> => {
     const url = `${this.config.getApiUrls().saveWorkflowTaskURL}/${transactionId}/${taskId}`;
@@ -69,7 +69,7 @@ export class TaskService extends BaseService {
   };
   getImageUrl = (): string => {
     return this.config.getApiUrls().getImageURL;
-  }
+  };
   checkCondition(conditions) {
     let result = null;
     const allFields = this.transactionDetailsSubject.value?.uiPayload || [];
@@ -80,12 +80,12 @@ export class TaskService extends BaseService {
         const field = getFieldFromFields(allFields, rule?.field?.value);
         const fieldValue = field?.value?.value;
         let result = false;
-        if(rule.operator === "includes"){
+        if (rule.operator === "includes") {
           if ((fieldValue || []).includes(rule.value)) {
             result = true;
           }
-        } else if(rule.operator === "excludes"){
-          if (!(fieldValue || []).includes(rule.value)){
+        } else if (rule.operator === "excludes") {
+          if (!(fieldValue || []).includes(rule.value)) {
             result = true;
           }
         } else if (rule.operator === "notEquals") {
@@ -107,7 +107,7 @@ export class TaskService extends BaseService {
     if (result) {
       const showFields = result?.showFields || [];
       const hideFields = result?.hideFields || [];
-      showFields.forEach(showField => {
+      showFields.forEach((showField) => {
         const showFieldRef = getFieldFromFields(allFields, showField?.value);
         if (showFieldRef) {
           showFieldRef.rows = showFieldRef.metaData?.defaultRows;
@@ -117,16 +117,16 @@ export class TaskService extends BaseService {
           this.editorService.widgetChange.next(showFieldRef);
         }
       });
-        hideFields.forEach(hideField => {
-          const hideFieldRef = getFieldFromFields(allFields, hideField?.value);
-          if (hideFieldRef) {
-            hideFieldRef.rows = hideFieldRef?.metaData?.hideRows || 0;
-            hideFieldRef.minItemRows = hideFieldRef?.metaData?.hideRows || 0;
-            hideFieldRef.metaData.movement = "UP";
-            this.editorService.widgetChange.next(hideFieldRef);
-          }
-        });
-        this.editorService.setContainerHeight(allFields);
+      hideFields.forEach((hideField) => {
+        const hideFieldRef = getFieldFromFields(allFields, hideField?.value);
+        if (hideFieldRef) {
+          hideFieldRef.rows = hideFieldRef?.metaData?.hideRows || 0;
+          hideFieldRef.minItemRows = hideFieldRef?.metaData?.hideRows || 0;
+          hideFieldRef.metaData.movement = "UP";
+          this.editorService.widgetChange.next(hideFieldRef);
+        }
+      });
+      this.editorService.setContainerHeight(allFields);
     }
     return result;
   }

@@ -1,19 +1,18 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { By } from "@angular/platform-browser";
+import { DebugElement } from "@angular/core";
 
-import { ssnInputFieldComponent } from './ssninput-field.component';
+import { ssnInputFieldComponent } from "./ssninput-field.component";
 
-describe('ssnInputFieldComponent', () => {
+describe("ssnInputFieldComponent", () => {
   let component: ssnInputFieldComponent;
   let fixture: ComponentFixture<ssnInputFieldComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ssnInputFieldComponent ]
-    })
-    .compileComponents();
+      declarations: [ssnInputFieldComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -22,7 +21,7 @@ describe('ssnInputFieldComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

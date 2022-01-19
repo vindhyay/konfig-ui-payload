@@ -1,9 +1,9 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 
-import { PageNotFoundComponent } from './page-not-found.component';
-import { SharedModule } from '../../shared.module';
+import { PageNotFoundComponent } from "./page-not-found.component";
+import { SharedModule } from "../../shared.module";
 
-describe('PageNotFoundComponent', () => {
+describe("PageNotFoundComponent", () => {
   let component: PageNotFoundComponent;
   let fixture: ComponentFixture<PageNotFoundComponent>;
 
@@ -11,7 +11,7 @@ describe('PageNotFoundComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [SharedModule],
-        declarations: []
+        declarations: [],
       }).compileComponents();
     })
   );
@@ -22,7 +22,7 @@ describe('PageNotFoundComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

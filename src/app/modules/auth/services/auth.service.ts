@@ -10,7 +10,7 @@ import { UserService } from "../../user/services/user.service";
 import { parseApiResponse } from "../../../utils";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class AuthService extends BaseService implements OnDestroy {
   private subscription = new Subscription();
@@ -47,10 +47,10 @@ export class AuthService extends BaseService implements OnDestroy {
     if (api) {
       const url = this.config.getApiUrls().logoutURL;
       this.getData(url).subscribe(
-        result => {
+        (result) => {
           console.log("result", result);
         },
-        error => {
+        (error) => {
           console.log(error);
         }
       );
@@ -58,12 +58,12 @@ export class AuthService extends BaseService implements OnDestroy {
     this.userService.selection.next(null);
     this.authSubject.next(null);
     this.storage.clear();
-    this.activatedRoute.firstChild.queryParams.subscribe(params => {
+    this.activatedRoute.firstChild.queryParams.subscribe((params) => {
       const queryParams = params;
       const pathParams = this.activatedRoute.snapshot.firstChild.params;
       this.router.navigate([pathParams?.applicationId + "/auth"], {
         queryParams: queryParams,
-        relativeTo: this.activatedRoute
+        relativeTo: this.activatedRoute,
       });
     });
   }
@@ -79,20 +79,18 @@ export class AuthService extends BaseService implements OnDestroy {
     return this.getData(url);
   }
 
-  public updateUserDetails(appId){
-    this.getUserDetails(appId).subscribe(
-      response => {
-        const { data, error } = parseApiResponse(response);
-        if (data && !error) {
-          const { userDetails = {} } = data;
-          try {
-            this.storage.user = userDetails;
-          }catch (error){
-            console.log('failed to decode details', error)
-          }
+  public updateUserDetails(appId) {
+    this.getUserDetails(appId).subscribe((response) => {
+      const { data, error } = parseApiResponse(response);
+      if (data && !error) {
+        const { userDetails = {} } = data;
+        try {
+          this.storage.user = userDetails;
+        } catch (error) {
+          console.log("failed to decode details", error);
         }
       }
-    );
+    });
   }
 
   public checkCurrentState() {
@@ -121,7 +119,7 @@ export class AuthService extends BaseService implements OnDestroy {
   getAppAuthToken() {
     const authData = {
       userName: "AccountOpening",
-      passWord: "acctOpening"
+      passWord: "acctOpening",
     };
     const url = this.config.getApiUrls().authenticateUrl;
     return this.postData(url, authData, {});
@@ -129,7 +127,7 @@ export class AuthService extends BaseService implements OnDestroy {
 
   getAgentRole() {
     const roles = this.getCurrentUser()?.roles || [];
-    return roles.find(role => role.originalName === UserRole.Agent);
+    return roles.find((role) => role.originalName === UserRole.Agent);
   }
 
   isAgent(workflowId: any) {
