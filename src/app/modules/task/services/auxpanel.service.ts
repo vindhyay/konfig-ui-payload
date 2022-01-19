@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
-import { Router } from '@angular/router';
+import { Injectable } from "@angular/core";
+import { Subject } from "rxjs";
+import { Router } from "@angular/router";
 
-export type AuxPanel = 'comments' | 'attachments' | null;
+export type AuxPanel = "comments" | "attachments" | null;
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class AuxpanelService {
   private auxPanelSubject = new Subject<AuxPanel>();

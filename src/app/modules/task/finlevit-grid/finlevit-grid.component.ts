@@ -5,7 +5,7 @@ import {
   GridsterConfig,
   GridsterItem,
   GridsterItemComponentInterface,
-  GridType
+  GridType,
 } from "../../../../../lib/angular-gridster2/src/public_api";
 import { BaseWidget, ContainerActions, MIN_COLUMNS, MIN_ROWS, WidgetTypes } from "../model/create-form.models";
 import { ActivatedRoute } from "@angular/router";
@@ -19,7 +19,7 @@ import { AuthService } from "../../auth/services/auth.service";
 @Component({
   selector: "finlevit-grid",
   templateUrl: "./finlevit-grid.component.html",
-  styleUrls: ["./finlevit-grid.component.scss"]
+  styleUrls: ["./finlevit-grid.component.scss"],
 })
 export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDestroy {
   options: GridsterConfig | undefined;
@@ -71,7 +71,7 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
       pushResizeItems: false,
       disableAutoPositionOnConflict: true,
       draggable: {
-        enabled: false
+        enabled: false,
       },
       pushItems: true,
       resizable: {
@@ -84,8 +84,8 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
           sw: true,
           se: true,
           ne: true,
-          nw: true
-        }
+          nw: true,
+        },
       },
       enableOccupiedCellDrop: true,
       enableEmptyCellDrop: true,
@@ -104,16 +104,16 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
       maxItemCols: 200,
       maxItemRows: 200,
       maxItemArea: 40000,
-      ...this.modifyOptions
+      ...this.modifyOptions,
     };
     if (this.activatedRoute?.parent?.parent?.params) {
-      this.subscribe(this.activatedRoute?.parent?.parent?.params, params => {
+      this.subscribe(this.activatedRoute?.parent?.parent?.params, (params) => {
         const { transactionId, taskId } = params;
         this.transactionId = transactionId;
         this.taskId = taskId;
       });
     }
-    this.editorService.widgetChange$.subscribe(widget => {
+    this.editorService.widgetChange$.subscribe((widget) => {
       this.allEligibleFields = [];
       this.checkItemSize(widget);
     });
@@ -122,34 +122,34 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
   getEligibleItems(items, baseGridItem) {
     const baseOriginalHeight = baseGridItem?.item?.metaData?.originalHeight;
     const movement = baseGridItem?.item?.metaData?.movement;
-    const eligibleItems = items.filter(eachItem => {
+    const eligibleItems = items.filter((eachItem) => {
       const item = eachItem.item;
       const baseItem = baseGridItem.$item;
       const checkSameItem = (item, baseItem) => {
-        const isSame = item.metaData.widgetId !== baseGridItem.item.metaData.widgetId
+        const isSame = item.metaData.widgetId !== baseGridItem.item.metaData.widgetId;
         return isSame;
-      }
+      };
       const checkIsBottom = (item, baseItem) => {
-       if(item?.metaData?.originalHeight >= baseOriginalHeight){
-          return true
+        if (item?.metaData?.originalHeight >= baseOriginalHeight) {
+          return true;
         }
         return false;
-      }
+      };
 
       const checkIsSide = (item, baseItem) => {
-        if(((item.x + item.cols) > baseItem.x) && (item.x + item.cols) < (baseItem.x + baseItem.cols)){
-          return true
-        }
-        if((item.x + item.cols) === (baseItem.cols + baseItem.x)){
+        if (item.x + item.cols > baseItem.x && item.x + item.cols < baseItem.x + baseItem.cols) {
           return true;
         }
-        if((item.x > baseItem.x) && (item.x < (baseItem.x + baseItem.cols))){
+        if (item.x + item.cols === baseItem.cols + baseItem.x) {
           return true;
         }
-        if((item.x <= baseItem.x) && ((item.x + item.cols) > (baseItem.x + baseItem.cols))){
-          return true
+        if (item.x > baseItem.x && item.x < baseItem.x + baseItem.cols) {
+          return true;
         }
-      }
+        if (item.x <= baseItem.x && item.x + item.cols > baseItem.x + baseItem.cols) {
+          return true;
+        }
+      };
       return (
         // Dont get same item
         checkSameItem(item, baseItem) &&
@@ -158,25 +158,29 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
         // Get only under items
         checkIsSide(item, baseItem) &&
         // Dont get if item found in prev round
-        !this.allEligibleFields.find(prevItem => prevItem.item.metaData.widgetId === item.metaData.widgetId)
+        !this.allEligibleFields.find((prevItem) => prevItem.item.metaData.widgetId === item.metaData.widgetId)
       );
     });
     this.allEligibleFields = this.allEligibleFields.concat(eligibleItems);
-    const itemEligibleItems = eligibleItems.flatMap(elgItem => this.getEligibleItems(items, elgItem));
+    const itemEligibleItems = eligibleItems.flatMap((elgItem) => this.getEligibleItems(items, elgItem));
     return [...eligibleItems, ...itemEligibleItems];
   }
 
   checkItemSize(widget) {
     const gridItems = (this.gridsterRef?.grid || []).sort((a, b) => a?.item?.y - b?.item?.y);
     if (widget) {
-      const widgetGridItem = gridItems.find(item => item?.item?.metaData?.widgetId === widget?.metaData?.widgetId);
+      const widgetGridItem = gridItems.find((item) => item?.item?.metaData?.widgetId === widget?.metaData?.widgetId);
       if (!widgetGridItem) {
         return;
       }
       const eligibleItems = this.getEligibleItems(gridItems, widgetGridItem).filter(
-        (thing, index, self) => index === self.findIndex(t => t?.item?.metaData?.widgetId === thing?.item?.metaData?.widgetId)
-      )
-      if(widget?.metaData?.movement === 'DOWN' && !eligibleItems.find(elgItem => (elgItem?.item?.y) < (widget.y + widget.rows))){
+        (thing, index, self) =>
+          index === self.findIndex((t) => t?.item?.metaData?.widgetId === thing?.item?.metaData?.widgetId)
+      );
+      if (
+        widget?.metaData?.movement === "DOWN" &&
+        !eligibleItems.find((elgItem) => elgItem?.item?.y < widget.y + widget.rows)
+      ) {
         widgetGridItem.updateOptions();
         widgetGridItem.setSize();
         return;
@@ -187,11 +191,13 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
       if (eligibleItems.length) {
         widgetGridItem.updateOptions();
         widgetGridItem.setSize();
-        eligibleItems.sort((item1, item2) => { return parseFloat(item1.item.y) - parseFloat(item2.item.y)});
+        eligibleItems.sort((item1, item2) => {
+          return parseFloat(item1.item.y) - parseFloat(item2.item.y);
+        });
         eligibleItems.forEach((gridItem, index) => {
           const eachGridItem = gridItem.item;
           if (changeGridItemData?.metaData?.movement === "UP") {
-            if (!collisionItems.length || collisionItems.find(colItem => colItem.y >= eachGridItem.y)) {
+            if (!collisionItems.length || collisionItems.find((colItem) => colItem.y >= eachGridItem.y)) {
               eachGridItem.y = eachGridItem.y - changeGridItemData?.metaData?.defaultRows + hideRows;
               const collisionItem = this.checkCollision(eachGridItem, gridItems);
               if (collisionItem) {
@@ -218,7 +224,7 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
 
   onEdit(item: BaseWidget) {
     const {
-      value: { value, id }
+      value: { value, id },
     } = item;
     const payload = { newValue: value };
     const params = { dataId: id, transactionTaskId: this.taskId };
@@ -261,10 +267,13 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
   getGlobalStyles(item) {
     if (!item?.metaData || item?.metaData?.widgetType !== this.Container) return {};
     let style = {};
-    if (item.rows && item.metaData
-      && item.metaData?.styleProperties
-      && Object.keys(item.metaData.styleProperties).length
-      && item.metaData?.styleProperties?.properties) {
+    if (
+      item.rows &&
+      item.metaData &&
+      item.metaData?.styleProperties &&
+      Object.keys(item.metaData.styleProperties).length &&
+      item.metaData?.styleProperties?.properties
+    ) {
       const styleProperties = item.metaData?.styleProperties?.properties;
       const {
         independentBorder,
@@ -287,7 +296,7 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
         borderStyle,
         borderRadius,
         borderColor,
-        borderWidth
+        borderWidth,
       } = styleProperties;
       style = {
         "border-top-style": independentBorder ? borderTopStyle : borderStyle,
@@ -308,16 +317,18 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
         "border-top-width": independentBorder ? borderTopWidth : borderWidth,
         "border-left-width": independentBorder ? borderLeftWidth : borderWidth,
         "border-bottom-width": independentBorder ? borderBottomWidth : borderWidth,
-        "border-right-width": independentBorder ? borderRightWidth : borderWidth
+        "border-right-width": independentBorder ? borderRightWidth : borderWidth,
       };
     }
 
-    if (item.metaData && item.metaData?.onClickConfig &&
-      (item.metaData?.onClickConfig?.action === ContainerActions.next
-        || item.metaData?.onClickConfig?.action === ContainerActions.previous
-        || item.metaData?.onClickConfig?.action === ContainerActions.externalLink)
+    if (
+      item.metaData &&
+      item.metaData?.onClickConfig &&
+      (item.metaData?.onClickConfig?.action === ContainerActions.next ||
+        item.metaData?.onClickConfig?.action === ContainerActions.previous ||
+        item.metaData?.onClickConfig?.action === ContainerActions.externalLink)
     ) {
-      style['cursor'] = 'pointer';
+      style["cursor"] = "pointer";
     }
     return style;
   }

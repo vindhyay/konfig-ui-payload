@@ -6,7 +6,7 @@ import { TaskService } from "../../services/task.service";
 @Component({
   selector: "app-collapse-container",
   templateUrl: "./collapse-container.component.html",
-  styleUrls: ["./collapse-container.component.scss"]
+  styleUrls: ["./collapse-container.component.scss"],
 })
 export class CollapseContainerComponent implements OnInit, AfterViewInit {
   collapseContainerStatus = true;

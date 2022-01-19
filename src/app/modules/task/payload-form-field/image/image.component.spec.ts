@@ -1,14 +1,13 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { ImageComponent } from "lib/rng-widgets/public-api";
 
-
 describe("ImageComponent", () => {
   let component: ImageComponent;
   let fixture: ComponentFixture<ImageComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ImageComponent]
+      declarations: [ImageComponent],
     }).compileComponents();
   });
 

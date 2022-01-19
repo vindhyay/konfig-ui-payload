@@ -9,7 +9,7 @@ describe("EditorStepperComponent", () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [VerticalStepperComponent]
+        declarations: [VerticalStepperComponent],
       }).compileComponents();
     })
   );

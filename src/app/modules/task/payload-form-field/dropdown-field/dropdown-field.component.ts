@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import {AlignTypes, BaseWidget, DropdownMetaData} from "../../model/create-form.models";
+import { AlignTypes, BaseWidget, DropdownMetaData } from "../../model/create-form.models";
 
 @Component({
   selector: "app-dropdown-field",
   templateUrl: "./dropdown-field.component.html",
-  styleUrls: ["./dropdown-field.component.scss"]
+  styleUrls: ["./dropdown-field.component.scss"],
 })
 export class DropdownFieldComponent implements OnInit {
   @Input() item: BaseWidget = {} as BaseWidget;
@@ -22,7 +22,7 @@ export class DropdownFieldComponent implements OnInit {
   @Input() labelPos: any;
   @Input() labelHorizontalAlign: AlignTypes;
   @Input() validationMessageColor: string;
-  @Input() showErrorMessage: boolean
+  @Input() showErrorMessage: boolean;
   @Input() textHorizontalAlign: string;
   @Input() borderRadius: string;
   @Input() fontSize: string;

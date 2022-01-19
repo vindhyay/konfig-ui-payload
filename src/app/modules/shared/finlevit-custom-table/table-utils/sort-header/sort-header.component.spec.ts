@@ -1,16 +1,15 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { SortHeaderComponent } from './sort-header.component';
+import { SortHeaderComponent } from "./sort-header.component";
 
-describe('SortHeaderComponent', () => {
+describe("SortHeaderComponent", () => {
   let component: SortHeaderComponent;
   let fixture: ComponentFixture<SortHeaderComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SortHeaderComponent ]
-    })
-    .compileComponents();
+      declarations: [SortHeaderComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('SortHeaderComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });
