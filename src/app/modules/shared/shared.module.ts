@@ -22,6 +22,8 @@ import { PaginationDirective } from "./finlevit-custom-table/table-utils/paginat
 import { SorterDirective } from "./finlevit-custom-table/table-utils/sorter.directive";
 import { SortHeaderComponent } from "./finlevit-custom-table/table-utils/sort-header/sort-header.component";
 import { CustomTableFiltersComponent } from "./finlevit-custom-table/table-utils/custom-table-filters/custom-table-filters.component";
+import { BtnIconComponent } from "./btn-icon/btn-icon.component";
+import { BtnDangerComponent } from "./btn-danger/btn-danger.component";
 
 @NgModule({
   declarations: [
@@ -36,6 +38,8 @@ import { CustomTableFiltersComponent } from "./finlevit-custom-table/table-utils
     SorterDirective,
     SortHeaderComponent,
     CustomTableFiltersComponent,
+    BtnIconComponent,
+    BtnDangerComponent,
   ],
   imports: [
     CommonModule,
@@ -76,6 +80,8 @@ import { CustomTableFiltersComponent } from "./finlevit-custom-table/table-utils
     PaginationDirective,
     CustomTableComponent,
     CustomTableFiltersComponent,
+    BtnIconComponent,
+    BtnDangerComponent,
   ],
 })
 export class SharedModule {}

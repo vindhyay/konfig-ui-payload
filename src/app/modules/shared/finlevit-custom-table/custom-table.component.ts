@@ -499,6 +499,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
   }
   onPageLimitChange($event) {
     this.currentPage = 1;
+    this.updateRowsLimit();
     this.onPageChange.emit({ limit: $event, page: this.currentPage });
   }
 }
