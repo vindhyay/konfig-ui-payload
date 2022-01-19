@@ -6,57 +6,76 @@
     'input-large': isLarge
   }"
 >
-  <div *ngIf="label" class="d-flex flex-row">
-    <div [ngClass]="{ 'input-label': true, 'input-label-sm': isSmall, 'input-label-lg': isLarge, label: true }">
-      {{ label }}<span class="required" *ngIf="isRequired"> *</span>
-      <em class="label-tooltip pi pi-info-circle pl-2" [pTooltip]="tooltip" *ngIf="tooltip"></em>
-    </div>
-  </div>
   <div
     [ngClass]="{
-      'border-error': checkError(),
-      'extended-input-1': !independentBorders,
-      'extended-input-2': independentBorders
+      'label-top': labelPos === labelPosTypes.Top,
+      'label-left': labelPos === labelPosTypes.Left,
+      'label-down': labelPos === labelPosTypes.Down,
+      'label-right': labelPos === labelPosTypes.Right
     }"
   >
-    <p-multiSelect
-      *ngIf="!chip"
-      appendTo="body"
-      [options]="options"
-      [showHeader]="showHeader"
-      [(ngModel)]="_value"
-      [optionValue]="optionValue"
-      [optionLabel]="optionLabel"
-      [placeholder]="placeholder"
-      (onChange)="onLocalChange($event)"
-      (onFocus)="onLocalFocus($event)"
-      (onBlur)="onLocalTouched($event)"
-      [disabled]="isDisabled"
-      [ngClass]="{ 'error-border': showErrorBorder && checkError() }"
-      [styleClass]="isSmall ? 'p-inputtext-sm' : isLarge ? 'p-inputtext-lg' : ''"
-      [maxSelectedLabels]="maxSelectedLabels"
+    <div *ngIf="label" class="d-flex flex-row lib-label-container">
+      <div
+        [ngClass]="{
+          'input-label': true,
+          'input-label-sm': isSmall,
+          'input-label-lg': isLarge,
+          label: true,
+          'overflow-hide': !allowLabelWrapping
+        }"
+      >
+        {{ label }}<span class="required" *ngIf="isRequired"> *</span>
+        <em class="label-tooltip pi pi-info-circle pl-2" [pTooltip]="tooltip" *ngIf="tooltip"></em>
+      </div>
+    </div>
+    <div
+      [ngClass]="{
+        'border-error': checkError(),
+        'extended-input-1': !independentBorders,
+        'extended-input-2': independentBorders
+      }"
     >
-    </p-multiSelect>
-    <p-multiSelect
-      *ngIf="chip"
-      appendTo="body"
-      [options]="options"
-      [(ngModel)]="_value"
-      [optionValue]="optionValue"
-      [optionLabel]="optionLabel"
-      [placeholder]="placeholder"
-      (onChange)="onLocalChange($event)"
-      (onFocus)="onLocalFocus($event)"
-      (onBlur)="onLocalTouched($event)"
-      [disabled]="isDisabled"
-      [ngClass]="{ 'error-border': showErrorBorder && checkError() }"
-      [styleClass]="isSmall ? 'p-inputtext-sm' : isLarge ? 'p-inputtext-lg' : ''"
-      [maxSelectedLabels]="maxSelectedLabels"
-      display="chip"
-    >
-    </p-multiSelect>
+      <div [ngClass]="{ 'lib-input-container': true, 'no-label-input-container': !label }">
+        <p-multiSelect
+          *ngIf="!chip"
+          appendTo="body"
+          [options]="options"
+          [showHeader]="showHeader"
+          [(ngModel)]="_value"
+          [optionValue]="optionValue"
+          [optionLabel]="optionLabel"
+          [placeholder]="placeholder"
+          (onChange)="onLocalChange($event)"
+          (onFocus)="onLocalFocus($event)"
+          (onBlur)="onLocalTouched($event)"
+          [disabled]="isDisabled"
+          [ngClass]="{ 'error-border': showErrorBorder && checkError() }"
+          [styleClass]="isSmall ? 'p-inputtext-sm' : isLarge ? 'p-inputtext-lg' : ''"
+          [maxSelectedLabels]="maxSelectedLabels"
+        >
+        </p-multiSelect>
+        <p-multiSelect
+          *ngIf="chip"
+          appendTo="body"
+          [options]="options"
+          [(ngModel)]="_value"
+          [optionValue]="optionValue"
+          [optionLabel]="optionLabel"
+          [placeholder]="placeholder"
+          (onChange)="onLocalChange($event)"
+          (onFocus)="onLocalFocus($event)"
+          (onBlur)="onLocalTouched($event)"
+          [disabled]="isDisabled"
+          [ngClass]="{ 'error-border': showErrorBorder && checkError() }"
+          [styleClass]="isSmall ? 'p-inputtext-sm' : isLarge ? 'p-inputtext-lg' : ''"
+          [maxSelectedLabels]="maxSelectedLabels"
+          display="chip"
+        >
+        </p-multiSelect>
+      </div>
+    </div>
   </div>
-  <div *ngIf="checkError()">
-    <small class="p-error">{{ errorMsg || getErrorMessages()[0] }}</small>
+  <div *ngIf="checkError() && showErrorMsg">
+    <small class="validation-message">{{ errorMsg || getErrorMessages()[0] }}</small>
   </div>
 </div>

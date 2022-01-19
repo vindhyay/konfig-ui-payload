@@ -61,6 +61,74 @@
     --input-font-size: 1.2rem;
     --input-label-font-size: 1.1rem;
   }
+  .label-top {
+    .lib-label-container {
+      display: flex;
+      justify-content: var(--input-label-align);
+      overflow-wrap: break-word;
+    }
+    .lib-input-container {
+      width: 100%;
+      max-width: 100%;
+      &.no-label-input-container {
+        max-width: 100%;
+      }
+    }
+  }
+  .label-left {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+    .lib-label-container {
+      width: var(--input-label-width);
+      max-width: var(--input-label-width);
+      min-width: var(--input-label-min-width);
+      overflow-wrap: break-word;
+    }
+    .lib-input-container {
+      width: 100%;
+      max-width: 100%;
+      &.no-label-input-container {
+        max-width: 100%;
+      }
+    }
+  }
+  .label-down {
+    display: flex;
+    flex-direction: column-reverse;
+    .lib-label-container {
+      display: flex;
+      justify-content: var(--input-label-align);
+      overflow-wrap: break-word;
+    }
+    .lib-input-container {
+      width: 100%;
+      max-width: 100%;
+      &.no-label-input-container {
+        max-width: 100%;
+      }
+    }
+  }
+  .label-right {
+    display: flex;
+    align-items: center;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    .lib-label-container {
+      width: var(--input-label-width);
+      max-width: var(--input-label-width);
+      justify-content: flex-end;
+      overflow-wrap: break-word;
+    }
+    .lib-input-container {
+      width: 100%;
+      max-width: 100%;
+      &.no-label-input-container {
+        max-width: 100%;
+      }
+    }
+  }
   .extended-input-1 {
     border: var(--input-border) var(--input-border-width) var(--input-border-color);
     border-radius: var(--input-border-radius);

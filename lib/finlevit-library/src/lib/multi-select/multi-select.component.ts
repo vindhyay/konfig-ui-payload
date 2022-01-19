@@ -2,6 +2,13 @@ import { Component, Input, OnInit, Optional, Self } from "@angular/core";
 import { ControlValueAccessor, NgControl, ValidatorFn, Validators } from "@angular/forms";
 import { hasRequiredField } from "../utils";
 
+enum LabelPos {
+  Left = "Left",
+  Top = "Top",
+  Down = "Down",
+  Right = "Right",
+}
+
 @Component({
   selector: "finlevit-lib-multi-select",
   templateUrl: "./multi-select.component.html",
@@ -34,8 +41,12 @@ export class MultiSelectComponent implements OnInit, ControlValueAccessor {
   @Input() chip: boolean = false;
   @Input() errorMsg = "";
   @Input() independentBorders: boolean = false;
+  @Input() labelPos: LabelPos;
+  @Input() allowLabelWrapping: boolean = false;
+  @Input() showErrorMsg: boolean = true;
 
   _value: any = null;
+  labelPosTypes = LabelPos;
 
   ngOnInit() {
     const control = this.controlDir && this.controlDir.control;
