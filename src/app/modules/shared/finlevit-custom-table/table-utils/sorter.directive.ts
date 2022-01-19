@@ -1,7 +1,7 @@
 import { Directive, EventEmitter, Output } from "@angular/core";
 
 @Directive({
-  selector: "[sorter]"
+  selector: "[sorter]",
 })
 export class SorterDirective {
   active = null;
@@ -31,7 +31,7 @@ export class SorterDirective {
     // Emit the current active column and the direction
     this.sortChange.emit({
       column,
-      direction
+      direction,
     });
     this.direction = direction;
   }

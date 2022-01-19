@@ -5,7 +5,7 @@ import { CELL_ALIGNMENTS_TYPES } from "../../../../task/model/create-form.models
 @Component({
   selector: "[sortHeader]",
   templateUrl: "./sort-header.component.html",
-  styleUrls: ["./sort-header.component.scss"]
+  styleUrls: ["./sort-header.component.scss"],
 })
 export class SortHeaderComponent implements OnInit {
   @Input() sortEligible = true;

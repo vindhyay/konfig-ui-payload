@@ -1,14 +1,11 @@
-import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
-import { TemplatePortalDirective } from '@angular/cdk/portal';
-import { Component, HostListener, Input, ViewChild } from '@angular/core';
+import { Overlay, OverlayConfig, OverlayRef } from "@angular/cdk/overlay";
+import { TemplatePortalDirective } from "@angular/cdk/portal";
+import { Component, HostListener, Input, ViewChild } from "@angular/core";
 
 @Component({
   selector: 'custom-dropdown',
-  template: `
-    <ng-template cdk-portal>
-      <ng-content></ng-content>
-    </ng-template>
-  `
+  // eslint-disable-next-line prettier/prettier
+  template: `<ng-template cdk-portal><ng-content></ng-content></ng-template>`
 })
 export class CustomDropdownComponent {
   @Input()
@@ -49,7 +46,7 @@ export class CustomDropdownComponent {
     this.showing = false;
   }
 
-  @HostListener('window:resize')
+  @HostListener("window:resize")
   public onWinResize() {
     this.syncWidth();
   }
@@ -61,17 +58,17 @@ export class CustomDropdownComponent {
       .withPush(false)
       .withPositions([
         {
-          originX: 'start',
-          originY: 'bottom',
-          overlayX: 'start',
-          overlayY: 'top'
+          originX: "start",
+          originY: "bottom",
+          overlayX: "start",
+          overlayY: "top",
         },
         {
-          originX: 'start',
-          originY: 'top',
-          overlayX: 'start',
-          overlayY: 'bottom'
-        }
+          originX: "start",
+          originY: "top",
+          overlayX: "start",
+          overlayY: "bottom",
+        },
       ])
       .withDefaultOffsetX(this.offsetX);
 
@@ -82,7 +79,7 @@ export class CustomDropdownComponent {
       scrollStrategy: scrollStrategy,
       hasBackdrop: true,
       ...(this.minWidth && { minWidth: this.minWidth }),
-      backdropClass: 'cdk-overlay-transparent-backdrop'
+      backdropClass: "cdk-overlay-transparent-backdrop",
     });
   }
 

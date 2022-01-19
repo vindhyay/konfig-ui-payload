@@ -3,35 +3,33 @@
     <div class="auth-form-wrap">
       <form [formGroup]="authForm">
         <h6 class="logo-text">
-          <img class="logo-icon" src="/assets/images/noun_Letter F_2848082.svg" alt="F-Text" />
+          <img class="logo-icon" src="/assets/images/noun_Letter%20F_2848082.svg" alt="F-text" />
           FinLevit
         </h6>
-        <div class="row">
-          <div class="col-12 pl-4 pr-4 pt-3 pb-2">
-            <finlevit-text
-              type="text"
-              [label]="LABELS.USER_ID"
-              formControlName="userName"
-              [isRequired]="true"
-              [errorMsg]="LABELS.USER_ID_ERROR_MSG"
-            ></finlevit-text>
-          </div>
-          <div class="col-12 pl-4 pr-4">
-            <finlevit-text
-              type="password"
-              [label]="LABELS.PASSWORD"
-              formControlName="passWord"
-              [isRequired]="true"
-              [errorMsg]="LABELS.PASSWORD_ERROR_MSG"
-            ></finlevit-text>
-          </div>
-          <div class="col-12 pl-4 pr-4">
-            <finlevit-lib-checkbox formControlName="remember" [label]="LABELS.REMEMBER_ME_TEXT"></finlevit-lib-checkbox>
-          </div>
+        <div class="pt-4 pl-4 pr-4 pb-0">
+          <finlevit-text
+            type="text"
+            [label]="LABELS.USER_ID"
+            formControlName="userName"
+            [isRequired]="true"
+            [errorMsg]="LABELS.USER_ID_ERROR_MSG"
+          ></finlevit-text>
+        </div>
+        <div class="pt-4 pl-4 pr-4 pb-0">
+          <finlevit-text
+            type="password"
+            [label]="LABELS.PASSWORD"
+            formControlName="passWord"
+            [isRequired]="true"
+            [errorMsg]="LABELS.PASSWORD_ERROR_MSG"
+          ></finlevit-text>
+        </div>
+        <div class="pt-4 pl-4 pr-4 pb-0">
+          <finlevit-lib-checkbox [label]="LABELS.REMEMBER_ME_TEXT"></finlevit-lib-checkbox>
         </div>
         <div class="error">{{ loginError }}</div>
-        <div class="centered-buttons column pb-4 pt-5">
-          <app-btn-primary
+        <div class="centered-buttons column m-4 pt-3">
+          <app-icon-btn
             (btnClick)="onSubmit()"
             [label]="LABELS.SUBMIT_BTN_TEXT"
             [icon]="loading ? 'pi pi-spin pi-spinner' : ''"

@@ -4,10 +4,10 @@ import { BaseWidget, ContainerActions, ContainerMetaData } from "../../model/cre
 @Component({
   selector: "app-container",
   templateUrl: "container.component.html",
-  styleUrls: ["./container.component.scss"]
+  styleUrls: ["./container.component.scss"],
 })
 export class ContainerComponent implements OnInit {
-  constructor() { }
+  constructor() {}
 
   @Input() item: BaseWidget = {} as BaseWidget;
   @Input() viewMode = false;
@@ -23,14 +23,17 @@ export class ContainerComponent implements OnInit {
   actionBtnClick($event, data) {
     $event.stopPropagation();
     if (!this.metaData || !this.metaData.onClickConfigs || !this.metaData.onClickConfigs[0].action) return;
-    if (this.metaData.onClickConfigs[0].action === ContainerActions.next || this.metaData.onClickConfigs[0].action === ContainerActions.previous) {
+    if (
+      this.metaData.onClickConfigs[0].action === ContainerActions.next ||
+      this.metaData.onClickConfigs[0].action === ContainerActions.previous
+    ) {
       this.onBtnClick.emit({ event: $event, data });
     } else if (this.metaData.onClickConfigs[0].action === ContainerActions.externalLink) {
       window.open(this.metaData.externalLink, "_blank");
     }
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   get metaData(): ContainerMetaData {
     return this.item.metaData as ContainerMetaData;
@@ -73,7 +76,7 @@ export class ContainerComponent implements OnInit {
   getGlobalTitleStyle() {
     if (this.metaData && this.metaData?.styleProperties && !Object.keys(this.metaData.styleProperties).length) {
       return {
-        height: this.metaData.header.height + "px"
+        height: this.metaData.header.height + "px",
       };
     }
     const styleProperties = this.metaData?.styleProperties?.properties;
@@ -94,7 +97,7 @@ export class ContainerComponent implements OnInit {
       independentBorder,
       borderTopLeftRadius,
       borderTopRightRadius,
-      borderRadius
+      borderRadius,
     } = styleProperties;
     return {
       height: this.metaData.header.height + "px",
@@ -109,7 +112,7 @@ export class ContainerComponent implements OnInit {
       "word-spacing": wordSpacing,
       "letter-spacing": letterSpacing,
       "border-top-left-radius": independentBorder ? borderTopLeftRadius : borderRadius,
-      "border-top-right-radius": independentBorder ? borderTopRightRadius : borderRadius
+      "border-top-right-radius": independentBorder ? borderTopRightRadius : borderRadius,
     };
   }
 }

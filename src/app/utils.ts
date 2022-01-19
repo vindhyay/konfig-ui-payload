@@ -3,8 +3,7 @@ import { result } from "./state/model/api-response";
 import { FormControl, Validators } from "@angular/forms";
 import { ButtonActions, WidgetTypes } from "./modules/task/model/create-form.models";
 
-export const Action_Config_UI= [ButtonActions.logout,ButtonActions.nextStep,ButtonActions.previousStep];
-
+export const Action_Config_UI = [ButtonActions.logout, ButtonActions.nextStep, ButtonActions.previousStep];
 
 const uid = new ShortUniqueId();
 export const getValueFromObjectByPath = (obj: any, path: any) =>
@@ -15,7 +14,7 @@ export const getUniqueId = (suffix: any) => {
 
 export const getErrorMessages = (errors: any, label: any) => {
   const errorMessages: string[] = [];
-  Object.keys(errors).forEach(error => {
+  Object.keys(errors).forEach((error) => {
     switch (error) {
       case "required":
         errorMessages.push(`${label} is required`);
@@ -73,7 +72,7 @@ export const validateFields = (fields: any[]) => {
 };
 export const getValidators = (validators: any) => {
   const _validators: any = [];
-  Object.keys(validators).forEach(validator => {
+  Object.keys(validators).forEach((validator) => {
     switch (validator) {
       case "minValue":
         validators[validator] && _validators.push(Validators.min(validators[validator]));
@@ -99,7 +98,7 @@ export const getValidators = (validators: any) => {
 };
 export const getFieldFromFields = (fields, fieldId) => {
   let paramField = null;
-  fields.forEach(field => {
+  fields.forEach((field) => {
     if (field?.id === fieldId) {
       paramField = field;
     }
@@ -111,27 +110,38 @@ export const getFieldFromFields = (fields, fieldId) => {
   return paramField;
 };
 
-export const eligibileReviewField= [WidgetTypes.TextArea,WidgetTypes.TextInput,WidgetTypes.PasswordInput,WidgetTypes.SSNInput,WidgetTypes.Email,WidgetTypes.PhonenumberInput,WidgetTypes.Dropdown,WidgetTypes.Number,WidgetTypes.DatePicker,WidgetTypes.Checkbox]
-export const getAllFromFields = (fields,eligibileField) => {
+export const eligibileReviewField = [
+  WidgetTypes.TextArea,
+  WidgetTypes.TextInput,
+  WidgetTypes.PasswordInput,
+  WidgetTypes.SSNInput,
+  WidgetTypes.Email,
+  WidgetTypes.PhonenumberInput,
+  WidgetTypes.Dropdown,
+  WidgetTypes.Number,
+  WidgetTypes.DatePicker,
+  WidgetTypes.Checkbox,
+];
+export const getAllFromFields = (fields, eligibileField) => {
   let paramField = [];
-  fields.forEach(field => {
+  fields.forEach((field) => {
     if (field.children && field.children.length) {
-      const nestedParamField = getAllFromFields(field.children,eligibileField);
-      paramField = [...paramField,...nestedParamField];
-    } else if(eligibileField.indexOf(field.metaData.widgetType)>=0) {
-      paramField.push({label:field.label,value:field.value.value});
+      const nestedParamField = getAllFromFields(field.children, eligibileField);
+      paramField = [...paramField, ...nestedParamField];
+    } else if (eligibileField.indexOf(field.metaData.widgetType) >= 0) {
+      paramField.push({ label: field.label, value: field.value.value });
     }
   });
   return paramField;
 };
-export const scrollToBottom = element => {
+export const scrollToBottom = (element) => {
   if (!element) {
     return;
   }
   element.scroll({ top: element.scrollHeight, behavior: "smooth" });
 };
 export const addOriginalPosition = (fields) => {
-  fields.forEach(field => {
+  fields.forEach((field) => {
     field.metaData.originalHeight = field.rows + field.y;
     if (field.children && field.children.length) {
       addOriginalPosition(field.children);
@@ -140,48 +150,43 @@ export const addOriginalPosition = (fields) => {
 };
 
 export const passwordPattern: any = {
-  oneLowerCase: '(?=.*[a-z])',
-  oneUpperCase: '(?=.*[A-Z])',
-  oneNumber: '(?=.*[0-9])',
-  oneSpecialchar: '(?=.*[$@$!%*?&])',
-  minLength : '.{x,}',
-}
+  oneLowerCase: "(?=.*[a-z])",
+  oneUpperCase: "(?=.*[A-Z])",
+  oneNumber: "(?=.*[0-9])",
+  oneSpecialchar: "(?=.*[$@$!%*?&])",
+  minLength: ".{x,}",
+};
 export const superClone = (object): any => {
   const cloning = {};
-  if(!object){
+  if (!object) {
     return null;
   }
-  Object.keys(object).map(prop => {
+  Object.keys(object).map((prop) => {
     if (Array.isArray(object[prop])) {
       cloning[prop] = [].concat(object[prop]);
-    } else if (typeof  object[prop] === "object") {
+    } else if (typeof object[prop] === "object") {
       cloning[prop] = superClone(object[prop]);
-    } else { cloning[prop] = object[prop]; }
+    } else {
+      cloning[prop] = object[prop];
+    }
   });
 
   return cloning;
 };
 export class DeepCopy {
-
   static copy(data: any) {
     let node;
     if (Array.isArray(data)) {
       node = data.length > 0 ? data.slice(0) : [];
       node.forEach((e, i) => {
-        if (
-          (typeof e === 'object' && e !== {}) ||
-          (Array.isArray(e) && e.length > 0)
-        ) {
+        if ((typeof e === "object" && e !== {}) || (Array.isArray(e) && e.length > 0)) {
           node[i] = DeepCopy.copy(e);
         }
       });
-    } else if (data && typeof data === 'object') {
+    } else if (data && typeof data === "object") {
       node = data instanceof Date ? data : Object.assign({}, data);
       Object.keys(node).forEach((key) => {
-        if (
-          (typeof node[key] === 'object' && node[key] !== {}) ||
-          (Array.isArray(node[key]) && node[key].length > 0)
-        ) {
+        if ((typeof node[key] === "object" && node[key] !== {}) || (Array.isArray(node[key]) && node[key].length > 0)) {
           node[key] = DeepCopy.copy(node[key]);
         }
       });

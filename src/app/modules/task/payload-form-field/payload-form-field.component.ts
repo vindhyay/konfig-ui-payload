@@ -12,9 +12,9 @@ import * as moment from "moment";
 @Component({
   selector: "app-payload-form-field",
   templateUrl: "./payload-form-field.component.html",
-  styleUrls: ["./payload-form-field.component.scss"]
+  styleUrls: ["./payload-form-field.component.scss"],
 })
-export class PayloadFormFieldComponent implements OnInit,OnDestroy {
+export class PayloadFormFieldComponent implements OnInit, OnDestroy {
   tabActiveIndex = 0;
 
   _item: BaseWidget = {} as BaseWidget;
@@ -53,8 +53,8 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
   activeTabIndexes = {};
   activeStepperIndexes = {};
   modalStatus = {};
-  verticalStepIndex:number =1 ;
-  modalStepIndex:number = 1;
+  verticalStepIndex: number = 1;
+  modalStepIndex: number = 1;
   completedSteps = {};
   selectedStep = 0;
   transactionStatus = null;
@@ -76,10 +76,13 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
     }
     if (data?.metaData?.widgetType === WidgetTypes.Table) {
       const metaData = data.metaData as TableMetaData<Column>;
-      data.value = { id: data?.value?.id, value: data?.value?.value?.length ? data.value.value : metaData?.options?.length ? metaData.options : [] };
+      data.value = {
+        id: data?.value?.id,
+        value: data?.value?.value?.length ? data.value.value : metaData?.options?.length ? metaData.options : [],
+      };
     }
-    if(data?.metaData?.widgetType === WidgetTypes.Checkbox) {
-      data.value = {id: data?.value?.id, value: data?.value?.value || false}
+    if (data?.metaData?.widgetType === WidgetTypes.Checkbox) {
+      data.value = { id: data?.value?.id, value: data?.value?.value || false };
     }
     if (data?.validators?.minDate) {
       data.validators.minDate = new Date(data?.validators?.minDate);
@@ -109,20 +112,19 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
   }
   transactionDetailsSubscription = null;
   ngOnDestroy() {
-    if(this.transactionDetailsSubscription){
+    if (this.transactionDetailsSubscription) {
       this.transactionDetailsSubscription.unsubscribe();
     }
   }
 
-  isTextInput(widgetType:any):boolean{
-
-    return (widgetType==='TextInput' || widgetType==='Email' );
+  isTextInput(widgetType: any): boolean {
+    return widgetType === "TextInput" || widgetType === "Email";
   }
-  isError(item){
-    return (item?.errorMessage?.length>0 || item.error===true);
+  isError(item) {
+    return item?.errorMessage?.length > 0 || item.error === true;
   }
   ngOnInit() {
-    this.transactionDetailsSubscription = this.taskService.transactionDetailsSubject.subscribe(value => {
+    this.transactionDetailsSubscription = this.taskService.transactionDetailsSubject.subscribe((value) => {
       if (value) {
         this._payloadFields = value.uiPayload;
         this.transactionStatus = value?.transactionStatus || null;
@@ -134,14 +136,14 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
           this.disable = this.item?.permissions[id].disable
             ? this.item?.permissions[id].disable.indexOf(this.transactionStatus) > -1
             : false;
-          if(this.hide){
+          if (this.hide) {
             if (this.item.rows) {
               setTimeout(() => {
                 this.onCollapse(false, this.item);
               });
             }
-          }else{
-            if(!this.item?.metaData?.isHidden && !this.item.rows){
+          } else {
+            if (!this.item?.metaData?.isHidden && !this.item.rows) {
               setTimeout(() => {
                 this.onCollapse(true, this.item);
               });
@@ -149,7 +151,7 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
           }
         }
       }
-    })
+    });
     this.transactionDetailsSubscription.unsubscribe();
     this.tabActiveIndex = this.editorService.activeTabIndexes[this.item.metaData.widgetId];
     this.selectedStep = this.editorService.activeStepperIndexes[this.item.metaData.widgetId];
@@ -171,7 +173,7 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
   onEdit($event: any, item: any) {
     const {
       value: { value = "" },
-      metaData: {}
+      metaData: {},
     } = item;
     this.originalValue = JSON.parse(JSON.stringify(value));
     this.editMode = true;
@@ -187,7 +189,7 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
   onSave(item: BaseWidget) {
     const {
       value: { value = "" },
-      metaData: {}
+      metaData: {},
     } = item;
     const tempFormControl = new FormControl(value, getValidators(item.validators));
     if (tempFormControl.valid) {
@@ -253,55 +255,55 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
       stepperRef.next();
     }
   }
-  onPrevClick($event,type=''){
-    const {stepIndex=0,item={}}=$event;
-    let index=1;
-    if(type=='stepper'){
-      index=this.verticalStepIndex;
-    }else{
-      index=this.modalStepIndex;
+  onPrevClick($event, type = "") {
+    const { stepIndex = 0, item = {} } = $event;
+    let index = 1;
+    if (type == "stepper") {
+      index = this.verticalStepIndex;
+    } else {
+      index = this.modalStepIndex;
     }
-    if(stepIndex>1){
-      index -=1;
+    if (stepIndex > 1) {
+      index -= 1;
     }
-    if(type=='stepper'){
-      this.verticalStepIndex = index
-    }else{
+    if (type == "stepper") {
+      this.verticalStepIndex = index;
+    } else {
       this.modalStepIndex = index;
     }
   }
-  onSelectionClick($event,metaData){
-    if(metaData.isFreeflow || (this.verticalStepIndex>$event)){
+  onSelectionClick($event, metaData) {
+    if (metaData.isFreeflow || this.verticalStepIndex > $event) {
       this.verticalStepIndex = $event;
-    }else{
-      const child=this.item.children[this.verticalStepIndex]
+    } else {
+      const child = this.item.children[this.verticalStepIndex];
       const validate = validateFields(child.children);
       if (validate) {
         this.verticalStepIndex = $event;
       }
     }
   }
-  onNextClick($event,type='') {
-    const {stepIndex=0,item={}}=$event;
-    let index=1;
-    if(type=='stepper'){
-      index=this.verticalStepIndex;
-    }else{
-      index=this.modalStepIndex;
+  onNextClick($event, type = "") {
+    const { stepIndex = 0, item = {} } = $event;
+    let index = 1;
+    if (type == "stepper") {
+      index = this.verticalStepIndex;
+    } else {
+      index = this.modalStepIndex;
     }
-    const child=this.item.children[index]
+    const child = this.item.children[index];
     const validate = validateFields(child.children);
     if (validate) {
       this.completedSteps[child?.metaData?.widgetId] = true;
-      index +=1;
-      this.onBtnClick.emit(item)
+      index += 1;
+      this.onBtnClick.emit(item);
     }
-    if(index>this.item.children.length-1){
-      index=this.item.children.length-1;
+    if (index > this.item.children.length - 1) {
+      index = this.item.children.length - 1;
     }
-    if(type=='stepper'){
-      this.verticalStepIndex = index
-    }else{
+    if (type == "stepper") {
+      this.verticalStepIndex = index;
+    } else {
       this.modalStepIndex = index;
     }
   }
@@ -323,129 +325,129 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
     const ifConditions = this.item.metaData?.conditions?.ifConditions || [];
     // this.taskService.checkCondition(ifConditions);
   }
-  calculateFormulaValue(itemMetaData, id) : any{
-    let formulaValue = '';
+  calculateFormulaValue(itemMetaData, id): any {
+    let formulaValue = "";
     let formula = [];
-    if(itemMetaData?.formula?.length > 0){
-      itemMetaData?.formula.forEach(field => {
+    if (itemMetaData?.formula?.length > 0) {
+      itemMetaData?.formula.forEach((field) => {
         if (field?.resourceType === resourceType.PAYLOAD_FIELD) {
           formula.push(getFieldFromFields(this.payloadFields, field?.id));
-        }else {
-          formula.push(field)
+        } else {
+          formula.push(field);
         }
-      })
+      });
     }
-    let firstField = formula.find(field => field?.resourceType === resourceType.PAYLOAD_FIELD);
-    switch (firstField?.dataType){
-      case 'number':
-        let expression = '';
-        let values = formula.filter(field => {
-          if(field?.resourceType === resourceType.PAYLOAD_FIELD){
+    let firstField = formula.find((field) => field?.resourceType === resourceType.PAYLOAD_FIELD);
+    switch (firstField?.dataType) {
+      case "number":
+        let expression = "";
+        let values = formula.filter((field) => {
+          if (field?.resourceType === resourceType.PAYLOAD_FIELD) {
             return field?.value?.value;
           }
-        })
-        if(values.length > 0){
-          formula.forEach(field => {
+        });
+        if (values.length > 0) {
+          formula.forEach((field) => {
             if (field?.resourceType === resourceType.PAYLOAD_FIELD) {
-              expression = expression + ' ' + field?.value?.value;
+              expression = expression + " " + field?.value?.value;
             }
             if (field?.resourceType === resourceType.BRACKET) {
-              expression = expression + ' ' + field?.displayName;
+              expression = expression + " " + field?.displayName;
             }
             if (field?.resourceType === resourceType.FUNCTION) {
-              expression = expression + ' ' + field?.expression;
+              expression = expression + " " + field?.expression;
             }
-          })
-          if(eval(expression) === Infinity){
-            formulaValue = '∞'
-          }else {
+          });
+          if (eval(expression) === Infinity) {
+            formulaValue = "∞";
+          } else {
             formulaValue = eval(expression);
           }
-        }else {
-          formulaValue = values[0]?.value?.value || '';
+        } else {
+          formulaValue = values[0]?.value?.value || "";
         }
         return formulaValue;
-      case 'string':
-        formula.forEach(field => {
+      case "string":
+        formula.forEach((field) => {
           if (field?.resourceType === resourceType.PAYLOAD_FIELD) {
-            if(field?.value?.value){
+            if (field?.value?.value) {
               formulaValue = formulaValue + field.value.value;
             }
           }
           if (field?.resourceType === resourceType.FUNCTION) {
-            if(field?.separateBy){
+            if (field?.separateBy) {
               formulaValue = formulaValue + field.separateBy;
             }
           }
-        })
+        });
         return formulaValue;
-      case 'date':
-        const dateFunc = formula.filter(field => {
-          return field?.resourceType === resourceType.FUNCTION
-        })
+      case "date":
+        const dateFunc = formula.filter((field) => {
+          return field?.resourceType === resourceType.FUNCTION;
+        });
         let date1;
         let date2;
         const dateIndex = formula.indexOf(dateFunc[0]);
-        if(formula[dateIndex - 1].displayName === "Current Date"){
+        if (formula[dateIndex - 1].displayName === "Current Date") {
           date1 = new Date();
-        }else {
-          if(formula[dateIndex - 1]?.value?.value){
+        } else {
+          if (formula[dateIndex - 1]?.value?.value) {
             date1 = moment.utc(formula[dateIndex - 1]?.value?.value).toDate();
           }
         }
-        if(formula[dateIndex + 1]?.displayName === "Current Date"){
+        if (formula[dateIndex + 1]?.displayName === "Current Date") {
           date2 = new Date();
-        }else {
-          if(formula[dateIndex + 1]?.value?.value){
+        } else {
+          if (formula[dateIndex + 1]?.value?.value) {
             date2 = moment.utc(formula[dateIndex + 1]?.value?.value).toDate();
           }
         }
         let d = moment(date2);
-        let years = d.diff(date1, 'years');
-        d.add(-years, 'years');
-        let months = d.diff(date1, 'months');
-        d.add(-months, 'months');
-        let days = d.diff(date1, 'days');
+        let years = d.diff(date1, "years");
+        d.add(-years, "years");
+        let months = d.diff(date1, "months");
+        d.add(-months, "months");
+        let days = d.diff(date1, "days");
         formulaValue = years + " years  " + months + " months  " + days + " days";
         return formulaValue;
-      case 'array':
-        if(firstField?.metaData?.widgetType === WidgetTypes.CheckboxGroup){
-          if(firstField?.value?.value){
+      case "array":
+        if (firstField?.metaData?.widgetType === WidgetTypes.CheckboxGroup) {
+          if (firstField?.value?.value) {
             formulaValue = firstField?.value?.value.join(" ");
           }
         }
-        if(firstField?.metaData?.widgetType !== WidgetTypes.CheckboxGroup){
+        if (firstField?.metaData?.widgetType !== WidgetTypes.CheckboxGroup) {
           const values = [];
-          if(formula[1]?.column?.type === 'Text' || formula[1]?.column?.type === 'string'){
-            if(formula[0]?.value?.value){
-              formula[0]?.value?.value.forEach(value => {
-                values.push(value[formula[1]?.column?.columnId])
-              })
+          if (formula[1]?.column?.type === "Text" || formula[1]?.column?.type === "string") {
+            if (formula[0]?.value?.value) {
+              formula[0]?.value?.value.forEach((value) => {
+                values.push(value[formula[1]?.column?.columnId]);
+              });
               formulaValue = values.join("");
             }
           }
-          if(formula[1]?.column?.type === 'Number' || formula[1]?.column?.type === 'number'){
-            if(formula[0]?.value?.value){
-              formula[0]?.value?.value.forEach(value => {
-                if(value[formula[1]?.column?.columnId] !== '' && value[formula[1]?.column?.columnId] !== null){
-                  values.push(value[formula[1]?.column?.columnId])
+          if (formula[1]?.column?.type === "Number" || formula[1]?.column?.type === "number") {
+            if (formula[0]?.value?.value) {
+              formula[0]?.value?.value.forEach((value) => {
+                if (value[formula[1]?.column?.columnId] !== "" && value[formula[1]?.column?.columnId] !== null) {
+                  values.push(value[formula[1]?.column?.columnId]);
                 }
-              })
-              if(values.length > 1){
-                formulaValue = eval(values.join(" + "))
-              }else {
-                formulaValue = values[0] || ''
+              });
+              if (values.length > 1) {
+                formulaValue = eval(values.join(" + "));
+              } else {
+                formulaValue = values[0] || "";
               }
             }
           }
         }
-        return formulaValue
+        return formulaValue;
     }
     const currField = getFieldFromFields(this.payloadFields, id);
     currField.value.value = formulaValue;
     return formulaValue;
   }
-  OnStepChange($event){
+  OnStepChange($event) {
     const { selectedIndex = 1 } = $event;
     this.editorService.activeStepperIndexes[this.item.metaData.widgetId] = selectedIndex;
     this.selectedStep = selectedIndex;
@@ -459,7 +461,7 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
 }
 
 export enum resourceType {
-  PAYLOAD_FIELD = 'payload-field',
-  FUNCTION = 'function',
-  BRACKET = 'bracket'
+  PAYLOAD_FIELD = "payload-field",
+  FUNCTION = "function",
+  BRACKET = "bracket",
 }

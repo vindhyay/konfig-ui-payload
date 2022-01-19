@@ -1,16 +1,15 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { CustomTableComponent } from './custom-table.component';
+import { CustomTableComponent } from "./custom-table.component";
 
-describe('CustomTableComponent', () => {
+describe("CustomTableComponent", () => {
   let component: CustomTableComponent;
   let fixture: ComponentFixture<CustomTableComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CustomTableComponent ]
-    })
-    .compileComponents();
+      declarations: [CustomTableComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('CustomTableComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

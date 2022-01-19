@@ -8,7 +8,7 @@ import {
   OnInit,
   Output,
   SimpleChanges,
-  ViewChild
+  ViewChild,
 } from "@angular/core";
 import { FormControl, Validators } from "@angular/forms";
 import {
@@ -17,7 +17,7 @@ import {
   TABLE_OVERFLOW,
   TABLE_PAGINATION_POSITIONS,
   TableActions,
-  WidgetTypes
+  WidgetTypes,
 } from "../../task/model/create-form.models";
 import { getUniqueId, scrollToBottom, superClone } from "../../../utils";
 import { CustomTableFiltersComponent } from "./table-utils/custom-table-filters/custom-table-filters.component";
@@ -29,12 +29,12 @@ const MIN_ROW_HEIGHT = 50;
 @Component({
   selector: "finlevit-custom-table",
   templateUrl: "./custom-table.component.html",
-  styleUrls: ["./custom-table.component.scss"]
+  styleUrls: ["./custom-table.component.scss"],
 })
 export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
   @Input()
   set columns(columns) {
-    this._columns = columns.map(column => {
+    this._columns = columns.map((column) => {
       this.searchObject[column.columnId] = null;
       if (column?.metaData?.widgetType === WidgetTypes.DatePicker) {
         if (column?.validators?.minDate) {
@@ -87,7 +87,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
   selectableConfig = {
     width: 50,
     alignment: CELL_ALIGNMENTS_TYPES.CENTER,
-    label: "#"
+    label: "#",
   };
   _columns: Column[] = [];
   selection = new SelectionModel<any>(true, []);
@@ -155,7 +155,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
   masterToggle() {
     this.isAllSelected()
       ? this.selection.clear()
-      : (this.tableFilters?.filtersEnabled ? this.filteredTableData : this.tableData).forEach(row =>
+      : (this.tableFilters?.filtersEnabled ? this.filteredTableData : this.tableData).forEach((row) =>
           this.selection.select(row)
         );
     this.selectedRows.emit(this.selection.selected);
@@ -171,7 +171,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
     this.tableId = getUniqueId("table");
     this.selectionHandler.emit(this.selection);
     // Initiating search object
-    this.columns.forEach(column => {
+    this.columns.forEach((column) => {
       this.searchObject[column.columnId] = null;
     });
   }
@@ -206,7 +206,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
   }
   getMinWidth() {
     let sum = 0;
-    this.columns.forEach(col => {
+    this.columns.forEach((col) => {
       sum = sum + Number(col.width || 100);
     });
     if (this.actions?.editRow || this.actions?.deleteRow) {
@@ -277,7 +277,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
     this.modifyingData[rowIndex] = superClone(rowData);
   }
   onColSave($event) {
-    Object.keys(this.modifyingData).map(index => {
+    Object.keys(this.modifyingData).map((index) => {
       if (this.validateRow(index, this.modifyingData[index])) {
         this.tableData[index] = { ...this.tableData[index], ...this.modifyingData[index] };
         this.tableData = [...this.tableData];
@@ -293,7 +293,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
   }
   onColSaveCancel($event) {
     this.editCells = {};
-    Object.keys(this.modifyingData).forEach(rowIndex => {
+    Object.keys(this.modifyingData).forEach((rowIndex) => {
       if (this.newRows[rowIndex]) {
         this.onDelete(null, rowIndex, this.modifyingData[rowIndex], true);
       }
@@ -303,12 +303,12 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
   }
   validateRow(index, rowData, columnId = "") {
     let valid = true;
-    Object.keys(rowData).forEach(column => {
+    Object.keys(rowData).forEach((column) => {
       if (columnId && columnId !== column) {
         return;
       }
       const columnValue = rowData[column];
-      const columnConfig = this.columns.find(col => col.columnId === column);
+      const columnConfig = this.columns.find((col) => col.columnId === column);
       const tempFormControl = new FormControl(columnValue, this.getValidators(columnConfig.validators) || []);
       if (tempFormControl.valid) {
         if (!this.rowErrors[index]) {
@@ -323,7 +323,8 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
         this.rowErrors[index][column] = {
           error: true,
           errorMsg:
-            columnConfig?.metaData?.errorMessage || this.getErrorMessages(tempFormControl.errors, columnConfig.label)[0]
+            columnConfig?.metaData?.errorMessage ||
+            this.getErrorMessages(tempFormControl.errors, columnConfig.label)[0],
         };
       }
     });
@@ -331,7 +332,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
   }
   getErrorMessages = (errors: any, label: any) => {
     const errorMessages: string[] = [];
-    Object.keys(errors).forEach(error => {
+    Object.keys(errors).forEach((error) => {
       switch (error) {
         case "required":
           errorMessages.push(`${label} is required`);
@@ -354,7 +355,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
   };
   getValidators = (validators: any) => {
     const _validators: any = [];
-    Object.keys(validators).forEach(validator => {
+    Object.keys(validators).forEach((validator) => {
       switch (validator) {
         case "minValue":
           validators[validator] && _validators.push(Validators.min(validators[validator]));
@@ -377,7 +378,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
   };
   addRow() {
     const newRow: any = {};
-    this.columns.forEach(eachColumn => {
+    this.columns.forEach((eachColumn) => {
       Object.assign(newRow, { [eachColumn.columnId]: eachColumn?.value?.value || null });
     });
     this.tableData.push(newRow);
@@ -397,7 +398,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
       if (!this.editCells[rowIndex]) {
         this.editCells[rowIndex] = {};
       }
-      Object.keys(newRow).forEach(col => {
+      Object.keys(newRow).forEach((col) => {
         this.editCells[rowIndex][col] = newRow[col];
       });
     }
@@ -451,13 +452,13 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   getRulesFromFilterColumns(columns) {
-    return (columns || []).map(column => {
+    return (columns || []).map((column) => {
       return {
         fieldId: column?.field?.columnId,
         condition: column.condition,
         dataType: column?.field?.type,
         operator: column.operator,
-        value: column?.value
+        value: column?.value,
       };
     });
   }
@@ -465,7 +466,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
   handleSearch(searchColumns) {
     const rules = this.getRulesFromFilterColumns(searchColumns);
     if (rules && rules.length) {
-      this.filteredTableData = this.tableData.filter(rowData => {
+      this.filteredTableData = this.tableData.filter((rowData) => {
         let condMatched = true;
         for (let i = 0; i < rules.length; i++) {
           const rule = rules[i];
@@ -498,6 +499,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
   }
   onPageLimitChange($event) {
     this.currentPage = 1;
+    this.updateRowsLimit();
     this.onPageChange.emit({ limit: $event, page: this.currentPage });
   }
 }

@@ -90,10 +90,10 @@ interface Option {
 }
 
 export enum ViewTypes {
-  'INPUT' = 'INPUT',
-  'TIMESTAMP' = 'TIMESTAMP',
-  'DROPDOWN' = 'DROPDOWN',
-  'ICON_DROPDOWN' = 'ICON_DROPDOWN'
+  "INPUT" = "INPUT",
+  "TIMESTAMP" = "TIMESTAMP",
+  "DROPDOWN" = "DROPDOWN",
+  "ICON_DROPDOWN" = "ICON_DROPDOWN",
 }
 
 export interface SearchData {

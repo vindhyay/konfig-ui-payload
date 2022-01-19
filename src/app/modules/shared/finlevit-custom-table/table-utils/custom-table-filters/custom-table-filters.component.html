@@ -62,32 +62,21 @@
           ></finlevit-text>
         </ng-container>
         <div (click)="removeSearchField(i)" *ngIf="i">
-          <span class="material-icons clear-icon">
-            clear
-          </span>
+          <span class="material-icons clear-icon"> clear </span>
         </div>
         <div (click)="addSearchField()">
-          <span class="material-icons add-icon">
-            add
-          </span>
+          <span class="material-icons add-icon"> add </span>
         </div>
       </div>
     </ng-container>
     <div class="d-flex justify-content-center m-2 filter-actions">
       <div class="m-2">
-        <finlevit-button label="Search" [style.--button-label-font-size]="12" (btnClick)="onSearch()" [isSmall]="true">
-        </finlevit-button>
+        <app-btn-primary label="Search" [style.--button-label-font-size]="12" (btnClick)="onSearch()" [isSmall]="true">
+        </app-btn-primary>
       </div>
       <div class="m-2">
-        <finlevit-button
-          [style.--button-label-font-size]="12"
-          bgColor="#dc3545"
-          borderColor="#dc3545"
-          [isSmall]="true"
-          (btnClick)="clearSearch()"
-          label="Clear"
-        >
-        </finlevit-button>
+        <app-btn-danger [style.--button-label-font-size]="12" [isSmall]="true" (btnClick)="clearSearch()" label="Clear">
+        </app-btn-danger>
       </div>
     </div>
   </div>

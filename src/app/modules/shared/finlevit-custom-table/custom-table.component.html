@@ -40,55 +40,58 @@
               ></div>
             </div>
           </div>
-          <div
-            class="f-th"
-            [ngStyle]="{
-              width: (col?.width || 100) + 'px',
-              flex: (col?.width || 100) + ' 0 auto',
-              'border-right-style': verticalBorder ? 'solid' : 'none'
-            }"
-            *ngFor="let col of columns"
-            [align]="col.alignment"
-          >
-            <div class="f-resizable-header-content">
-              <div
-                [ngClass]="{
-                  'f-column-header-name': true,
-                  left: col.alignment === CellAlignTypes.LEFT,
-                  right: col.alignment === CellAlignTypes.RIGHT,
-                  center: col.alignment === CellAlignTypes.CENTER
-                }"
-              >
-                <ng-container [ngSwitch]="col.colType">
-                  <ng-container *ngSwitchCase="TextInput">
-                    <finlevit-text
-                      [name]="'search' + col.columnId"
-                      [(ngModel)]="searchObject[col.columnId]"
-                      [placeholder]="col?.label"
-                      (keydown)="onKeyDown($event, col)"
-                    ></finlevit-text>
+          <ng-container *ngFor="let col of columns">
+            <div
+              class="f-th"
+              [ngStyle]="{
+                width: (col?.width || 100) + 'px',
+                flex: (col?.width || 100) + ' 0 auto',
+                'border-right-style': verticalBorder ? 'solid' : 'none'
+              }"
+              [align]="col.alignment"
+            >
+              <div class="f-resizable-header-content">
+                <div
+                  [ngClass]="{
+                    'f-column-header-name': true,
+                    left: col.alignment === CellAlignTypes.LEFT,
+                    right: col.alignment === CellAlignTypes.RIGHT,
+                    center: col.alignment === CellAlignTypes.CENTER
+                  }"
+                >
+                  <ng-container *ngIf="col?.searchable">
+                    <ng-container [ngSwitch]="col.colType">
+                      <ng-container *ngSwitchCase="TextInput">
+                        <finlevit-text
+                          [name]="'search' + col.columnId"
+                          [(ngModel)]="searchObject[col.columnId]"
+                          [placeholder]="col?.label"
+                          (keydown)="onKeyDown($event, col)"
+                        ></finlevit-text>
+                      </ng-container>
+                      <ng-container *ngSwitchCase="DatePicker">
+                        <finlevit-lib-datepicker
+                          [name]="'search' + col.columnId"
+                          [(ngModel)]="searchObject[col.columnId]"
+                          (ngModelChange)="emitColSearch(col)"
+                          [placeholder]="col?.label"
+                        ></finlevit-lib-datepicker>
+                      </ng-container>
+                      <ng-container *ngSwitchDefault>
+                        <finlevit-text
+                          [name]="'search' + col.columnId"
+                          [(ngModel)]="searchObject[col.columnId]"
+                          [placeholder]="col?.label"
+                          (keydown)="onKeyDown($event, col)"
+                        ></finlevit-text>
+                      </ng-container>
+                    </ng-container>
                   </ng-container>
-                  <ng-container *ngSwitchCase="DatePicker">
-                    <finlevit-lib-datepicker
-                      [name]="'search' + col.columnId"
-                      [(ngModel)]="searchObject[col.columnId]"
-                      (ngModelChange)="emitColSearch(col)"
-                      [placeholder]="col?.label"
-                    ></finlevit-lib-datepicker>
-                  </ng-container>
-                  <ng-container *ngSwitchDefault>
-                    <finlevit-text
-                      [name]="'search' + col.columnId"
-                      [(ngModel)]="searchObject[col.columnId]"
-                      [placeholder]="col?.label"
-                      (keydown)="onKeyDown($event, col)"
-                    ></finlevit-text>
-                  </ng-container>
-                </ng-container>
+                </div>
               </div>
+              <div class="f-resizer" (resizable)="onResize($event, col)"></div>
             </div>
-            <div class="f-resizer" (resizable)="onResize($event, col)"></div>
-          </div>
+          </ng-container>
           <div
             *ngIf="actions?.editRow || actions?.deleteRow"
             class="f-th"
@@ -166,7 +169,7 @@
                   center: col.alignment === CellAlignTypes.CENTER
                 }"
               >
-                {{ col?.name || col?.label }}
+                {{ col?.label || col?.name }}
               </div>
             </div>
             <div class="f-resizer" (resizable)="onResize($event, col)"></div>
@@ -188,7 +191,7 @@
                   center: actions.alignment === CellAlignTypes.CENTER
                 }"
               >
-                {{ actions.label }}
+                {{ actions?.label }}
               </div>
             </div>
             <div class="f-resizer" (resizable)="onResize($event, actions)"></div>

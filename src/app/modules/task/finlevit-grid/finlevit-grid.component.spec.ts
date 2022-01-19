@@ -1,14 +1,14 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { FinlevitGridComponent } from './finlevit-grid.component';
+import { FinlevitGridComponent } from "./finlevit-grid.component";
 
-describe('FinlevitGridComponent', () => {
+describe("FinlevitGridComponent", () => {
   let component: FinlevitGridComponent;
   let fixture: ComponentFixture<FinlevitGridComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FinlevitGridComponent]
+      declarations: [FinlevitGridComponent],
     }).compileComponents();
   });
 
@@ -18,7 +18,7 @@ describe('FinlevitGridComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

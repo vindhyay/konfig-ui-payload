@@ -13,10 +13,10 @@ export interface TaskData {
 }
 
 export const enum TaskStatus {
-  InProgress = 'In Progress',
-  Suspended = 'Suspended',
-  Rejected = 'Rejected',
-  Completed = 'Completed'
+  InProgress = "In Progress",
+  Suspended = "Suspended",
+  Rejected = "Rejected",
+  Completed = "Completed",
 }
 
 export interface TaskDetailsData {
@@ -100,8 +100,8 @@ export interface TaskUserPayload {
 }
 
 export enum TaskDocType {
-  INCOMING = 'Incoming',
-  OUTGOING = 'Outgoing'
+  INCOMING = "Incoming",
+  OUTGOING = "Outgoing",
 }
 
 export interface ITaskDoc extends IPreviewData {
@@ -113,7 +113,6 @@ export interface ITaskDoc extends IPreviewData {
   dri: string;
   uploaded: any;
 }
-
 
 export interface IPreviewData {
   docType: DocType;
@@ -130,10 +129,10 @@ export enum DocType {
   ZIP,
   PDF,
   IMAGE,
-  VIDEO
+  VIDEO,
 }
 
 export enum PreviewSize {
   SMALL = 32,
-  WIDGET = 120
+  WIDGET = 120,
 }

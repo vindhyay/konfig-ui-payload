@@ -1,23 +1,31 @@
 <div class="stepper-container">
-  <div  class="progressbar">
-    <div class="stepper-header" *ngIf="metaData.showHeader"  [ngStyle]="{
-      height: metaData.headerHeight+'px'
-    }">
+  <div class="progressbar">
+    <div
+      class="stepper-header"
+      *ngIf="metaData.showHeader"
+      [ngStyle]="{
+        height: metaData.headerHeight + 'px'
+      }"
+    >
       <finlevit-grid
         [viewMode]="viewMode"
         [parent]="headerContent[0]"
         [items]="headerContent[0]?.children"
       ></finlevit-grid>
     </div>
-    <ul class="stepper-body" [ngStyle]="{
-      height: metaData.stepperHeight+'px'
-    }" #stepperBody>
+    <ul
+      class="stepper-body"
+      [ngStyle]="{
+        height: metaData.stepperHeight + 'px'
+      }"
+      #stepperBody
+    >
       <li
         *ngFor="let child of children; let i = index"
         [ngClass]="{
           completed: _selectedIndex > i || completedSteps[child.metaData.widgetId],
           selected: _selectedIndex === i,
-          hidden: i===0
+          hidden: i === 0
         }"
         (click)="onSelectIndexChange(i)"
       >
@@ -31,7 +39,11 @@
         </div>
         <div class="step-label">
           <p
-            [ngClass]="{'completedStep':_selectedIndex > i, 'currentStep':_selectedIndex === i, 'defaultColor': i > _selectedIndex }"
+            [ngClass]="{
+              completedStep: _selectedIndex > i,
+              currentStep: _selectedIndex === i,
+              defaultColor: i > _selectedIndex
+            }"
           >
             {{ child.label }}
           </p>
@@ -40,7 +52,8 @@
         <span
           [ngClass]="{
             completedBar: _selectedIndex > i,
-            currentBar: _selectedIndex <= i }" 
+            currentBar: _selectedIndex <= i
+          }"
         ></span>
       </li>
     </ul>
@@ -48,10 +61,7 @@
   <div class="wrapper">
     <div class="inner-wrapper">
       <div class="scrollView">
-        <div
-          [ngClass]="'content'+' content'+metaData['widgetId']"
-          #contentConatiner
-        >
+        <div [ngClass]="'content' + ' content' + metaData['widgetId']" #contentConatiner>
           <finlevit-grid
             [viewMode]="viewMode"
             [parent]="children[_selectedIndex]"
@@ -81,17 +91,17 @@
         </div>
       </div>
       <div
-        [ngClass] = "{
+        [ngClass]="{
           'stepper-btn-container': true
-        }"        
+        }"
       >
-      <finlevit-grid
+        <finlevit-grid
           [viewMode]="viewMode"
           [showEdit]="showEdit"
           [parent]="children[0]"
           [items]="children[0]?.children"
           (onBtnClick)="setSelection($event)"
-          [style]="{width:'100%'}"
+          [style]="{ width: '100%' }"
         ></finlevit-grid>
       </div>
     </div>

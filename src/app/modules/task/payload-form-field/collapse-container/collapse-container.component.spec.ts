@@ -1,16 +1,15 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { CollapseContainerComponent } from './collapse-container.component';
+import { CollapseContainerComponent } from "./collapse-container.component";
 
-describe('CollapseContainerComponent', () => {
+describe("CollapseContainerComponent", () => {
   let component: CollapseContainerComponent;
   let fixture: ComponentFixture<CollapseContainerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CollapseContainerComponent ]
-    })
-    .compileComponents();
+      declarations: [CollapseContainerComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('CollapseContainerComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

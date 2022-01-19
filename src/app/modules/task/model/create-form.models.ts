@@ -11,19 +11,19 @@ export enum ButtonTypes {
   primary = "primary",
   info = "info",
   success = "success",
-  secondary = "secondary"
+  secondary = "secondary",
 }
 
 export enum ButtonVariants {
   raisedButton = "raisedButton",
   roundedButton = "roundedButton",
   raisedTextButton = "raisedTextButton",
-  outlinedButton = "outlinedButton"
+  outlinedButton = "outlinedButton",
 }
 
 export enum PopulateConfigOptionTypes {
   onload = "onload",
-  ontrigger = "ontrigger"
+  ontrigger = "ontrigger",
 }
 
 export enum ColumnTypes {
@@ -32,7 +32,7 @@ export enum ColumnTypes {
   TextArea = "TextArea",
   Number = "Number",
   DatePicker = "DatePicker",
-  Data = "Data"
+  Data = "Data",
 }
 
 export enum ButtonActions {
@@ -45,12 +45,12 @@ export enum ButtonActions {
   next = "next",
   previous = "previous",
   nextStep = "nextStep",
-  previousStep = "previousStep"
+  previousStep = "previousStep",
 }
 
 export enum PayloadType {
   NEW_PAYLOAD = "NEW_PAYLOAD",
-  OLD_PAYLOAD = "OLD_PAYLOAD"
+  OLD_PAYLOAD = "OLD_PAYLOAD",
 }
 
 export enum AlignTypes {
@@ -59,7 +59,7 @@ export enum AlignTypes {
   CENTER = "center",
   LEFT = "flex-start",
   MIDDLE = "center",
-  RIGHT = "flex-end"
+  RIGHT = "flex-end",
 }
 
 export enum TextStyles {
@@ -72,16 +72,16 @@ export enum TextStyles {
   SUBTITLE1 = "subtitle1",
   SUBTITLE2 = "subtitle2",
   BODY1 = "body1",
-  BODY2 = "body2"
+  BODY2 = "body2",
 }
 
 export enum ResourceType {
-  PAYLOAD_FIELD = "payload-field"
+  PAYLOAD_FIELD = "payload-field",
 }
 
 export const PayloadTypes = {
   NEW_PAYLOAD: PayloadType.NEW_PAYLOAD,
-  OLD_PAYLOAD: PayloadType.OLD_PAYLOAD
+  OLD_PAYLOAD: PayloadType.OLD_PAYLOAD,
 };
 
 export enum DATA_TYPES {
@@ -89,21 +89,21 @@ export enum DATA_TYPES {
   NUMBER = "number",
   BOOLEAN = "boolean",
   OBJECT = "object",
-  ARRAY = "array"
+  ARRAY = "array",
 }
 
 export enum CELL_ALIGNMENTS_TYPES {
   LEFT = "left",
   RIGHT = "right",
-  CENTER = "center"
+  CENTER = "center",
 }
 export enum TABLE_OVERFLOW {
   PAGINATION = "pagination",
-  SCROLL = "scroll"
+  SCROLL = "scroll",
 }
 export enum TABLE_PAGINATION_POSITIONS {
   TOP = "top",
-  BOTTOM = "bottom"
+  BOTTOM = "bottom",
 }
 
 export class TableActions {
@@ -122,7 +122,7 @@ export class TableActions {
       deleteRow = true,
       width = 100,
       label = "Actions",
-      align = CELL_ALIGNMENTS_TYPES.LEFT
+      align = CELL_ALIGNMENTS_TYPES.LEFT,
     } = data;
     this.editRow = editRow;
     this.deleteRow = deleteRow;
@@ -175,7 +175,7 @@ export enum WidgetTypes {
   Divider = "Divider",
   Spacer = "Spacer",
   Icon = "Icon",
-  Avatar = "Avatar"
+  Avatar = "Avatar",
 }
 class Validators {
   required: boolean;
@@ -197,7 +197,7 @@ class Validators {
       maxValue = null,
       minDate = null,
       maxDate = null,
-      pattern = null
+      pattern = null,
     } = validators;
     this.required = required;
     this.editable = editable;
@@ -258,7 +258,7 @@ export class MetaData {
       defaultMinItemRows,
       hideRows,
       conditions,
-      errorMessage = ""
+      errorMessage = "",
     } = data;
     this.widgetId = widgetId || getUniqueId("widget");
     this.widgetType = widgetType;
@@ -308,7 +308,7 @@ export class TablePopulateConfig {
       populateResponsePath = null,
       datalistId = null,
       dataResourceId = null,
-      resourceId = null
+      resourceId = null,
     } = data;
     this.populateConfigType = populateConfigType;
     this.columns = columns;
@@ -372,7 +372,7 @@ export class TableMetaData<T> extends MetaData {
       paginatorBgColor = "#ededed",
       paginatorColor = "#6a6a6a",
       options = [],
-      hideFooter = false
+      hideFooter = false,
     } = data;
     this.columns = columns;
     this.heading = heading;
@@ -431,7 +431,7 @@ export class OptionConfig {
       populateTriggerId = null,
       optionLabel = "",
       optionValue = "",
-      showDisplayField = false
+      showDisplayField = false,
     } = data;
     this.dataResourceId = dataResourceId;
     this.datalistId = datalistId;
@@ -496,7 +496,7 @@ export class DropdownMetaData extends MetaData {
       showErrorMessage = true,
       styleProperties = {},
       allowLabelWrapping = false,
-      showFieldDependencyConfig = false
+      showFieldDependencyConfig = false,
     } = data;
     this.placeholder = placeholder || "Select";
     this.optionType = optionType;
@@ -550,7 +550,7 @@ export class TextInputMetaData extends MetaData {
       allowLabelWrapping = false,
       showClearButton = false,
       prefixText = "",
-      suffixText = ""
+      suffixText = "",
     } = data;
     this.mask = mask;
     this.icon = icon;
@@ -614,7 +614,7 @@ export class PasswordInputMetaData extends MetaData {
         oneUpperCase: true,
         oneNumber: true,
         oneSpecialchar: true,
-        minLength: 8
+        minLength: 8,
       },
       errorMessage = "",
       showErrorMessage = true,
@@ -623,7 +623,7 @@ export class PasswordInputMetaData extends MetaData {
       allowLabelWrapping = false,
       showClearButton = false,
       prefixText = "",
-      suffixText = ""
+      suffixText = "",
     } = data;
     this.mask = mask;
     this.icon = icon;
@@ -693,7 +693,7 @@ export class StepperContainerMetaData extends MetaData {
       conentBgColor = "#fff",
       showHeader = false,
       headerContent = [],
-      headerHeight = 0
+      headerHeight = 0,
     } = data;
     this.sublabel = sublabel;
     this.stepperType = stepperType;
@@ -758,9 +758,8 @@ export class SSNInputMetaData extends MetaData {
       formula,
       selectedInput = "SSN",
       patterns = {
-        SSN:
-          "^(?!\\b(\\d)\\1+-(\\d)\\1+-(\\d)\\1+\\b)(?!123-45-6789|219-09-9999|078-05-1120)(?!666|000|9\\d{2})\\d{3}-(?!00)\\d{2}-(?!0{4})\\d{4}$",
-        ITIN: "^(9\\d{2})-([7]\\d|8[0-8])-(\\d{4})$"
+        SSN: "^(?!\\b(\\d)\\1+-(\\d)\\1+-(\\d)\\1+\\b)(?!123-45-6789|219-09-9999|078-05-1120)(?!666|000|9\\d{2})\\d{3}-(?!00)\\d{2}-(?!0{4})\\d{4}$",
+        ITIN: "^(9\\d{2})-([7]\\d|8[0-8])-(\\d{4})$",
       },
       errorMessage = "",
       showErrorMessage = true,
@@ -769,7 +768,7 @@ export class SSNInputMetaData extends MetaData {
       allowLabelWrapping = false,
       showClearButton = false,
       prefixText = "",
-      suffixText = ""
+      suffixText = "",
     } = data;
     this.mask = mask;
     this.icon = icon;
@@ -831,7 +830,7 @@ export class EmailMetaData extends MetaData {
       allowLabelWrapping = false,
       showClearButton = false,
       prefixText = "",
-      suffixText = ""
+      suffixText = "",
     } = data;
     this.mask = mask;
     this.icon = icon;
@@ -887,7 +886,7 @@ export class PhonenumberInputMetaData extends MetaData {
       allowLabelWrapping = false,
       showClearButton = false,
       prefixText = "",
-      suffixText = ""
+      suffixText = "",
     } = data;
     this.mask = mask;
     this.icon = icon;
@@ -921,7 +920,7 @@ export class ButtonMetaData extends MetaData {
       iconPos = "left",
       type = ButtonTypes.primary,
       variant = ButtonVariants.raisedButton,
-      clickAction = ButtonActions.none
+      clickAction = ButtonActions.none,
     } = data;
     this.icon = icon;
     this.iconPos = iconPos;
@@ -965,7 +964,7 @@ export class DatePickerMetaData extends MetaData {
       showTime = false,
       hourFormat = 24,
       stepHour = 1,
-      stepMinute = 1
+      stepMinute = 1,
     } = data;
     this.viewDateFormat = viewDateFormat;
     this.returnDateFormat = returnDateFormat;
@@ -1021,7 +1020,7 @@ export class NumberMetaData extends MetaData {
       showClearButton = false,
       adornmentBackgroundColor = "#ffffff",
       prefixText = "",
-      suffixText = ""
+      suffixText = "",
     } = data;
     this.prefix = prefix;
     this.suffix = suffix;
@@ -1061,7 +1060,7 @@ export class TextMetaData extends MetaData {
       horizontalAlign = AlignTypes.MIDDLE,
       verticalAlign = AlignTypes.CENTER,
       color = "#000000",
-      fontWeight = 400
+      fontWeight = 400,
     } = data;
     this.color = color;
     this.fontWeight = fontWeight;
@@ -1076,7 +1075,7 @@ export enum ContainerActions {
   none = "none",
   previous = "previous",
   next = "next",
-  externalLink = "externalLink"
+  externalLink = "externalLink",
 }
 
 export class ContainerMetaData extends MetaData {
@@ -1163,7 +1162,7 @@ export class CheckboxGroupMetaData extends CheckboxMetaData {
       alignOptions = "Horizontal",
       columns = 1,
       allowLabelWrapping = false,
-      showFieldDependencyConfig = false
+      showFieldDependencyConfig = false,
     } = data;
     this.optionType = optionType;
     this.tooltip = tooltip;
@@ -1207,7 +1206,7 @@ export class RadioGroupMetaData extends CheckboxMetaData {
       allowLabelWrapping = false,
       showErrorMessage = true,
       errorMessage = "",
-      showFieldDependencyConfig = false
+      showFieldDependencyConfig = false,
     } = data;
     this.optionType = optionType;
     this.tooltip = tooltip;
@@ -1243,7 +1242,7 @@ export class ImageMetaData extends MetaData {
       position = "Contain",
       horizontalAlign = "Center",
       shorterEdge = "height",
-      styleProperties = {}
+      styleProperties = {},
     } = data;
     this.url = url;
     this.altText = altText;
@@ -1275,7 +1274,7 @@ export class AvatarMetaData extends MetaData {
       tooltip = "",
       imageUrl = "",
       fallbackText = "Admin",
-      configureLoginData = false
+      configureLoginData = false,
     } = data;
     this.caption = caption;
     this.styleProperties = styleProperties;
@@ -1378,7 +1377,7 @@ export class ModalMetaData extends MetaData {
       modalHeader = [],
       buttonContainer = {},
       modalType = "SinglePage",
-      styleProperties = {}
+      styleProperties = {},
     } = data;
     this.title = title;
     this.icon = icon;
@@ -1425,7 +1424,7 @@ export class DividerMetaData extends MetaData {
       borderColor = "#d1d1d1",
       borderStyle = "solid",
       fontFamily = "Helvetica",
-      fontSize = "1em"
+      fontSize = "1em",
     } = data;
     this.align = align;
     this.layout = layout;
@@ -1458,7 +1457,7 @@ export class IconMetaData extends MetaData {
       color = "black",
       fontSize = "20px",
       horizontalPosition = "center",
-      verticalPosition = "center"
+      verticalPosition = "center",
     } = data;
     this.iconType = iconType;
     this.color = color;
@@ -1555,7 +1554,7 @@ export class BaseWidget {
       minItemRows,
       maxItemCols,
       maxItemRows,
-      width = 100
+      width = 100,
     } = data;
     if (!metaData) {
       switch (widgetType) {
@@ -1686,7 +1685,7 @@ export class Column extends BaseWidget {
       populateResponsePath = "",
       columnId = "",
       children = [],
-      alignment = CELL_ALIGNMENTS_TYPES.LEFT
+      alignment = CELL_ALIGNMENTS_TYPES.LEFT,
     } = data;
     this.alignment = alignment;
     this.children = children || [];

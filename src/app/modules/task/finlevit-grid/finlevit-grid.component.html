@@ -1,17 +1,33 @@
 <gridster
   #gridsterComponent
   [options]="options"
-  [ngClass]="{ 'display-grid': false, 'gridster-overflow': parent?.metaData?.widgetType === Container || parent?.metaData?.widgetType === CollapseContainer }"
+  [ngClass]="{
+    'display-grid': false,
+    'gridster-overflow':
+      parent?.metaData?.widgetType === Container || parent?.metaData?.widgetType === CollapseContainer
+  }"
   [ngStyle]="{
     'background-color': parent?.metaData?.bgColor || parent?.metaData?.backgroundColor,
     color: parent?.metaData?.color,
     backgroundImage: parent?.metaData?.bgImageUrl ? 'url(' + parent?.metaData?.bgImageUrl + ')' : 'none',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    'border-bottom-left-radius': globalStyle?.independentBorder ? globalStyle?.borderBottomLeftRadius : globalStyle?.borderRadius,
-    'border-bottom-right-radius': globalStyle?.independentBorder ? globalStyle?.borderBottomRightRadius : globalStyle?.borderRadius,
-    'border-top-left-radius': parent?.metaData?.title ? '' : (globalStyle?.independentBorder ? globalStyle?.borderTopLeftRadius : globalStyle?.borderRadius),
-    'border-top-right-radius': parent?.metaData?.title ? '' : (globalStyle?.independentBorder ? globalStyle?.borderTopRightRadius : globalStyle?.borderRadius)
+    'border-bottom-left-radius': globalStyle?.independentBorder
+      ? globalStyle?.borderBottomLeftRadius
+      : globalStyle?.borderRadius,
+    'border-bottom-right-radius': globalStyle?.independentBorder
+      ? globalStyle?.borderBottomRightRadius
+      : globalStyle?.borderRadius,
+    'border-top-left-radius': parent?.metaData?.title
+      ? ''
+      : globalStyle?.independentBorder
+      ? globalStyle?.borderTopLeftRadius
+      : globalStyle?.borderRadius,
+    'border-top-right-radius': parent?.metaData?.title
+      ? ''
+      : globalStyle?.independentBorder
+      ? globalStyle?.borderTopRightRadius
+      : globalStyle?.borderRadius
   }"
 >
   <ng-container *ngFor="let item of items">
