@@ -13,5 +13,6 @@ export class BtnPrimaryComponent {
   @Input() isSmall = false;
   @Input() isLarge = false;
   @Input() icon: string;
+  @Input() type = "button";
   @Output() btnClick = new EventEmitter();
 }

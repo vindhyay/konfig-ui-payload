@@ -51,6 +51,7 @@ export class ButtonComponent {
   @Input() borderRightColor = "#007bff";
   @Input() borderBottomColor = "#007bff";
   @Input() borderLeftColor = "#007bff";
+  @Input() inputType = "button";
 
   @Input() independentBorders: boolean = false;
   @Output() btnClick = new EventEmitter();
