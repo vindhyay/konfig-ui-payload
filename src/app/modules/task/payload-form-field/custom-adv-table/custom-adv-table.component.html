@@ -1095,16 +1095,10 @@
         </div>
         <ng-template #cellEditActions>
           <div class="ml-2 mr-2">
-            <finlevit-button [isSmall]="true" (btnClick)="onColSave($event)" label="save"></finlevit-button>
+            <app-btn-primary [isSmall]="true" (btnClick)="onColSave($event)" label="save"></app-btn-primary>
           </div>
           <div class="ml-2 mr-2">
-            <finlevit-button
-              [isSmall]="true"
-              bgColor="#dc3545"
-              borderColor="#dc3545"
-              (btnClick)="onColSaveCancel($event)"
-              label="cancel"
-            ></finlevit-button>
+            <app-btn-danger [isSmall]="true" (btnClick)="onColSaveCancel($event)" label="cancel"></app-btn-danger>
           </div>
         </ng-template>
       </div>
