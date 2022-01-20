@@ -275,12 +275,12 @@
                           [optionLabel]="
                             col?.metaData?.isLabelAndValue || col?.metaData?.optionType === 'dataresource'
                               ? col?.metaData?.optionLabel
-                              : ''
+                              : 'name'
                           "
                           [optionValue]="
                             col?.metaData?.isLabelAndValue || col?.metaData?.optionType === 'dataresource'
                               ? col?.metaData?.optionValue
-                              : ''
+                              : 'value'
                           "
                           [style.--input-color]="col?.metaData?.styleProperties?.properties?.textColor"
                           [style.--input-text-align]="col?.metaData?.styleProperties?.properties?.textHorizontalAlign"
