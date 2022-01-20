@@ -58,4 +58,22 @@ export class CheckboxComponent implements ControlValueAccessor, OnInit {
   checkError() {
     return (this.controlDir && !this.controlDir?.control?.valid && this.controlDir?.control?.touched) || this.error;
   }
+
+  getErrorMessages() {
+    const errors = this.controlDir.control?.errors;
+    const errorMessages: string[] = [];
+    Object.keys(errors || {}).forEach(error => {
+      switch (error) {
+        case "required":
+          errorMessages.push(`${this.label} is required`);
+          break;
+        case "custom":
+          if (errors) {
+            errorMessages.push(errors[error]);
+          }
+          break;
+      }
+    });
+    return errorMessages;
+  }
 }
