@@ -20,6 +20,7 @@
   --input-label-margin-bottom: 0;
   --input-label-width: auto;
   --input-checkbox-width: auto;
+  --validation-message-color: #dc3545;
 }
 
 :host ::ng-deep {
@@ -90,4 +91,8 @@
     border: 2px solid var(--input-unchecked-border-color);
     background: var(--input-unchecked-background-color);
   }
+}
+
+.validation-message {
+  color: var(--validation-message-color);
 }

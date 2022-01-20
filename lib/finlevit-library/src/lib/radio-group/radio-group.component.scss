@@ -23,6 +23,7 @@
   --input-label-word-spacing: 0;
   --input-label-width: 35%;
   --input-radiobutton-size: 20px;
+  --validation-message-color: #dc3545;
 }
 
 .radio-options-wrapper {
@@ -197,4 +198,8 @@
   font-style: var(--input-label-font-style);
   font-weight: var(--input-label-font-weight);
   text-decoration: var(--input-label-text-decoration);
+}
+
+.validation-message {
+  color: var(--validation-message-color);
 }

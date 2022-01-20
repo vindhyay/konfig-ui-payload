@@ -171,3 +171,7 @@
   font-weight: var(--input-label-font-weight);
   text-decoration: var(--input-label-text-decoration);
 }
+
+.validation-message {
+  color: var(--validation-message-color);
+}

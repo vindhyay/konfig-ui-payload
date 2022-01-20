@@ -18,5 +18,5 @@
   </label>
 </div>
 <div *ngIf="checkError() && showErrorMsg">
-  <small class="p-error">{{ errorMsg }}</small>
+  <small class="validation-message">{{ errorMsg || getErrorMessages()[0] }}</small>
 </div>
