@@ -35,7 +35,7 @@ export class BackButtonComponent {
     } else if (this.historyMode) {
       history.go(-this.backSteps);
     } else if (this.backByUrl) {
-      this.router.navigateByUrl(this.backByUrl);
+      this.router.navigate([`../../../${this.backByUrl}`], { relativeTo: this.activeRoute });
     } else {
       this.router.navigate(['../'], { relativeTo: this.backRelative });
     }
