@@ -4,7 +4,7 @@ import { IAvatarData, IAvatarEnabled } from '../model/common-types';
 @Component({
   selector: 'rng-iconed-menu',
   templateUrl: './iconed-menu.component.html',
-  styleUrls: []
+  styleUrls: ['./iconed-menu.component.scss']
 })
 export class IconedMenuComponent {
   @Output() changeItem = new EventEmitter();

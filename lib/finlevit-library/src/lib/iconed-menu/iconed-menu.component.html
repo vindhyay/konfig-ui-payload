@@ -7,8 +7,9 @@
     class="p-button-sm"
     [ngStyle]="{ backgroundColor: bgColor, color: color, borderColor: borderColor}"
   >
-    <div *ngIf="showName; else avatarOnly" class="current-item-wrapper">
+    <div *ngIf="showName; else avatarOnly" class="current-item-wrapper d-flex flex-row">
       <rng-iconed-name class="rng-iconed-name" [data]="itemAvatar(currentItem)"></rng-iconed-name>
+      <em class="pi pi-chevron-down ml-1" [ngStyle]="{'font-size': '10px', 'margin-top': '12px'}"></em>
     </div>
     <ng-template #avatarOnly>
       <rng-image class="rng-image" [data]="itemAvatar(currentItem)"></rng-image>

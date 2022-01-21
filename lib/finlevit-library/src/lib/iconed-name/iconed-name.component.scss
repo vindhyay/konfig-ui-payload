@@ -1,0 +1,21 @@
+.rng-iconed-name {
+  display: flex;
+  flex-flow: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-content: center;
+  align-items: center;
+  max-width: 200px;
+  font-weight: normal;
+
+  .rng-image {
+    margin-right: 8px;
+  }
+
+  .avatar-name {
+    display: block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+}

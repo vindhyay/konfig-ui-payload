@@ -4,7 +4,7 @@ import { MenuItem } from "primeng/api";
 @Component({
   selector: "finlevit-tabs",
   templateUrl: "./tabs.component.html",
-  styleUrls: ["./tabs.component.scss"],
+  styleUrls: ["./tabs.component.scss"]
 })
 export class TabsComponent implements OnInit {
   constructor() {}

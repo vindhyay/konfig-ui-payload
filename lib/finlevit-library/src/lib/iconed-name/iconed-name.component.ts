@@ -4,7 +4,7 @@ import {IAvatarData, IAvatarEnabled} from "../model/common-types";
 @Component({
   selector: 'rng-iconed-name',
   templateUrl: './iconed-name.component.html',
-  styleUrls: []
+  styleUrls: ['./iconed-name.component.scss']
 })
 export class IconedNameComponent {
   @Input() data: IAvatarData | IAvatarEnabled;

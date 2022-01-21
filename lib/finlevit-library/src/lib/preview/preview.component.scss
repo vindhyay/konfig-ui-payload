@@ -1,0 +1,60 @@
+.rng-preview-container {
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+
+  &.portrait {
+    background-size: 100% auto !important;
+  }
+
+  &.landscape {
+    background-size: auto 100% !important;
+  }
+
+  &.round {
+    overflow: hidden;
+    border-radius: 500rem;
+  }
+
+  &.small {
+    width: 32px;
+    height: 32px;
+    background-size: 32px auto;
+
+    .rng-icon {
+      line-height: 32px;
+      font-size: 24px;
+    }
+  }
+
+  &.widget {
+    width: 134px;
+    height: 120px;
+    background-size: 134px auto;
+
+    .rng-icon {
+      line-height: 120px;
+      font-size: 56px;
+      display: block;
+      text-align: center;
+    }
+  }
+
+  .rng-icon {
+    &.adobe-red {
+      color: #f44336;
+    }
+
+    &.ms-green {
+      color: #4caf50;
+    }
+
+    &.ms-blue {
+      color: #2196f3;
+    }
+
+    &.gray {
+      color: #9b9b9b;
+    }
+  }
+}

@@ -1,10 +1,10 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
-import {IAvatarData} from "../model/common-types";
+import { IAvatarData } from '../model/common-types';
 
 @Component({
   selector: 'rng-image',
   templateUrl: './image.component.html',
-  styleUrls: []
+  styleUrls: ['./image.component.scss'],
 })
 export class ImageComponent implements OnInit, OnChanges {
   localData: IAvatarData | null;
@@ -54,7 +54,7 @@ export class ImageComponent implements OnInit, OnChanges {
 
     if (this.localImageURL) {
       const image = new Image();
-      image.addEventListener('load', e => this.handleImageLoad(e));
+      image.addEventListener('load', (e) => this.handleImageLoad(e));
       image.src = this.localImageURL;
     }
 
@@ -94,7 +94,7 @@ export class ImageComponent implements OnInit, OnChanges {
         'purple',
         'brown',
         'dark',
-        'gray'
+        'gray',
       ];
       this.initial = this.getInitial(userName);
       this.initialColor = colors[this.hashCode(this.initial) % colors.length];

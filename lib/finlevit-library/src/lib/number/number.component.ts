@@ -1,18 +1,18 @@
-import { Component, EventEmitter, Input, OnInit, Optional, Output, Self } from '@angular/core';
-import { ControlValueAccessor, NgControl, ValidatorFn, Validators } from '@angular/forms';
-import { hasRequiredField } from '../utils';
+import { Component, EventEmitter, Input, OnInit, Optional, Output, Self } from "@angular/core";
+import { ControlValueAccessor, NgControl, ValidatorFn, Validators } from "@angular/forms";
+import { hasRequiredField } from "../utils";
 
 enum LabelPos {
   Left = "Left",
   Top = "Top",
   Down = "Down",
-  Right = "Right"
+  Right = "Right",
 }
 
 @Component({
-  selector: 'finlevit-number',
-  templateUrl: './number.component.html',
-  styleUrls: ['./number.component.scss']
+  selector: "finlevit-number",
+  templateUrl: "./number.component.html",
+  styleUrls: ["./number.component.scss"],
 })
 export class NumberComponent implements ControlValueAccessor, OnInit {
   constructor(@Optional() @Self() public controlDir: NgControl) {
@@ -22,9 +22,9 @@ export class NumberComponent implements ControlValueAccessor, OnInit {
   }
 
   get _placeholder(): string {
-    if(this.placeholder && !this.label && this.isRequired){
-      return this.placeholder + "*"
-    }else {
+    if (this.placeholder && !this.label && this.isRequired) {
+      return this.placeholder + "*";
+    } else {
       return this.placeholder;
     }
   }
@@ -35,15 +35,15 @@ export class NumberComponent implements ControlValueAccessor, OnInit {
   @Input() minValue: number = Number.NEGATIVE_INFINITY;
   @Input() maxValue: number = Number.POSITIVE_INFINITY;
 
-  @Input() prefix = '';
+  @Input() prefix = "";
   @Input() format = true;
-  @Input() suffix = '';
+  @Input() suffix = "";
   @Input() isDisabled = false;
   @Input() isRequired = false;
-  @Input() tooltip = '';
-  @Input() label = '';
-  @Input() placeholder = '';
-  @Input() maxLength: number = 200;
+  @Input() tooltip = "";
+  @Input() label = "";
+  @Input() placeholder = "";
+  @Input() maxLength: number;
   @Input() showMaxCharLimit: boolean = false;
   @Input() labelPos: LabelPos;
   @Input() mode;
@@ -58,7 +58,7 @@ export class NumberComponent implements ControlValueAccessor, OnInit {
   @Input() independentBorders: boolean = false;
   @Input() allowLabelWrapping: boolean = false;
 
-  @Input() errorMsg = '';
+  @Input() errorMsg = "";
   @Input() error = false;
   @Input() showErrorMsg: boolean = true;
 
@@ -113,7 +113,7 @@ export class NumberComponent implements ControlValueAccessor, OnInit {
   onChange(event: any) {}
 
   onLocalChange($event: any) {
-    const value = $event.value == '' ? null : $event.value;
+    const value = $event.value == "" ? null : $event.value;
     this.setInputValue(value);
     this.onChange(value);
   }
@@ -125,22 +125,25 @@ export class NumberComponent implements ControlValueAccessor, OnInit {
   getErrorMessages() {
     const errors = this.controlDir.control?.errors;
     const errorMessages: string[] = [];
-    Object.keys(errors || {}).forEach(error => {
+    Object.keys(errors || {}).forEach((error) => {
       switch (error) {
-        case 'required':
+        case "required":
           errorMessages.push(`${this.label} is required`);
           break;
-        case 'custom':
+        case "custom":
           if (errors) {
             errorMessages.push(errors[error]);
           }
+          break;
+        case "maxLength":
+          errorMessages.push(`Maximum length is ${this.maxLength}`);
           break;
       }
     });
     return errorMessages;
   }
-  clearValue(){
+  clearValue() {
     this.setInputValue(null);
-    this.onChange(null)
+    this.onChange(null);
   }
 }

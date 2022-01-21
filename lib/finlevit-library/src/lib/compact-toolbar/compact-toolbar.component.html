@@ -1,21 +1,22 @@
-<p-toolbar>
+<p-toolbar class="toolbar">
   <div *ngIf="!searchToggle">
     <div [ngClass]="{ 'toolbar-row-with-search': withSearch, 'toolbar-row-without-search': !withSearch }">
       <span class="title">{{ title }}</span>
     </div>
   </div>
-  <div *ngIf="searchToggle">
+  <ng-container *ngIf="searchToggle">
     <div class="toolbar-row-with-search">
-      <finlevit-text #searchfield [formControl]="search" [isSmall]="true"></finlevit-text>
+      <finlevit-text placeholder="Enter File Name" class="search-input" #searchfield [formControl]="search" [isSmall]="true"></finlevit-text>
     </div>
-  </div>
+  </ng-container>
   <div>
     <button
       pButton
+      noRipple
       *ngIf="withSearch"
       (click)="toggleSearch(!searchToggle)"
       icon="pi pi-search"
-      class="button-toggle p-button-rounded p-button-text p-button-secondary"
+      class="button-toggle p-button-rounded p-button-text p-button-secondary pl-3 pr-3"
     ></button>
     <ng-content *ngIf="!searchToggle"></ng-content>
   </div>

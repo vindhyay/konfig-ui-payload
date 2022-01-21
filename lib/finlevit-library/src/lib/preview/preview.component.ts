@@ -4,7 +4,7 @@ import {DocType, IPreviewData, PreviewSize, PreviewType} from "../model/common-t
 @Component({
   selector: 'rng-preview',
   templateUrl: './preview.component.html',
-  styleUrls: []
+  styleUrls: ['./preview.component.scss']
 })
 export class PreviewComponent {
   type: DocType | -1;
@@ -64,18 +64,16 @@ export class PreviewComponent {
   }
   docTypeIconClass(docType): string[] {
     switch (docType) {
-      case DocType.DOCX:
-        return ['rng-icon-word_24px_outlined', 'ms-blue'];
       case DocType.XLSX:
-        return ['rng-icon-excel_24px', 'ms-green'];
+        return ['pi pi-file-excel', 'ms-green'];
       case DocType.PDF:
-        return ['rng-icon-pdf_24px', 'adobe-red'];
+        return ['pi pi-file-pdf', 'adobe-red'];
       case DocType.IMAGE:
-        return ['rng-icon-image', 'gray'];
+        return ['pi pi-image', 'ms-blue'];
       case DocType.VIDEO:
-        return ['rng-icon-video', 'gray'];
+        return ['pi pi-video', 'ms-blue'];
       default:
-        return ['rng-icon-generic_doc', 'gray'];
+        return ['pi pi-file', 'ms-blue'];
     }
   }
 }
