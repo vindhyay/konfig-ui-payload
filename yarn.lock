@@ -219,7 +219,7 @@
     "symbol-observable" "4.0.0"
     "uuid" "8.3.2"
 
-"@angular/common@^13.0.0", "@angular/common@^13.0.0 || ^14.0.0-0", "@angular/common@^13.1.1", "@angular/common@^8.0.0", "@angular/common@>=10.0.0", "@angular/common@>=10.0.0-0", "@angular/common@~13.1.1", "@angular/common@13.1.1":
+"@angular/common@^13.0.0", "@angular/common@^13.0.0 || ^14.0.0-0", "@angular/common@^13.1.0", "@angular/common@^8.0.0", "@angular/common@>=10.0.0", "@angular/common@>=10.0.0-0", "@angular/common@~13.1.1", "@angular/common@13.1.1":
   "integrity" "sha512-FQwRZ1XgTH2PbPjBmq2jAZzETVNX9yWQt21MuNGtokC7V4eS0NYlFIDbhy3UPWCzRgd3+P7P4+HdX15VxCjf9g=="
   "resolved" "https://registry.npmjs.org/@angular/common/-/common-13.1.1.tgz"
   "version" "13.1.1"
@@ -250,7 +250,7 @@
   dependencies:
     "tslib" "^2.3.0"
 
-"@angular/core@^13.0.0", "@angular/core@^13.0.0 || ^14.0.0-0", "@angular/core@^13.1.1", "@angular/core@^8.0.0", "@angular/core@>=10.0.0", "@angular/core@>=10.0.0-0", "@angular/core@~13.1.1", "@angular/core@13.1.1":
+"@angular/core@^13.0.0", "@angular/core@^13.0.0 || ^14.0.0-0", "@angular/core@^13.1.0", "@angular/core@^8.0.0", "@angular/core@>=10.0.0", "@angular/core@>=10.0.0-0", "@angular/core@~13.1.1", "@angular/core@13.1.1":
   "integrity" "sha512-oLGKgzUbHqte/q7EokOJWUiXAtBjwuZM6c9Or2a7WDJNeImQilxk5qy91RPSbP8FhOBysebqAayrfiCYexlShg=="
   "resolved" "https://registry.npmjs.org/@angular/core/-/core-13.1.1.tgz"
   "version" "13.1.1"
@@ -3606,12 +3606,12 @@
     "locate-path" "^5.0.0"
     "path-exists" "^4.0.0"
 
-"finlevit-library@file:lib/finlevit-library/finlevit-library-0.0.1.tgz":
-  "integrity" "sha512-nRhyo7aAouLOiB77p1lCjYo0hYeSr9Rz5yr2RG0KdX2ERe6wMnKoXQdvgKfokFbMmuGcTQfukg019gBWXD521Q=="
-  "resolved" "file:lib/finlevit-library/finlevit-library-0.0.1.tgz"
+"finlevit-library@file:lib/finlevit-lib-0.0.1.tgz":
+  "integrity" "sha512-YRpsSDoDGRtg3tr8oVFJW6JNYQU3pv0+Rfo6BiQ7lvROq/vZq59HI6cPgKMvdpHjI7fHBUBOcsXjhepArPgflA=="
+  "resolved" "file:lib/finlevit-lib-0.0.1.tgz"
   "version" "0.0.1"
   dependencies:
-    "tslib" "^2.0.0"
+    "tslib" "^2.3.0"
 
 "flat-cache@^3.0.4":
   "integrity" "sha512-dm9s5Pw7Jc0GvMYbshN6zchCA9RgQlzzEZX3vylR9IqFfS8XciblUXOKfW6SiuJ0e13eDYZoZV5wdrev7P3Nwg=="
@@ -6766,10 +6766,10 @@
   "resolved" "https://registry.npmjs.org/shebang-regex/-/shebang-regex-3.0.0.tgz"
   "version" "3.0.0"
 
-"short-unique-id@^3.0.0":
-  "integrity" "sha512-DaUTmZe2PP34AQ2DmBOjo0W41Br/74EbKmEosfipbMJdJf2MCdzgJBOXn+PRe/ERFnr9uRKnUa6Kb5X+VC3bCQ=="
-  "resolved" "https://registry.npmjs.org/short-unique-id/-/short-unique-id-3.2.3.tgz"
-  "version" "3.2.3"
+"short-unique-id@4.4.4":
+  "integrity" "sha512-oLF1NCmtbiTWl2SqdXZQbo5KM1b7axdp0RgQLq8qCBBLoq+o3A5wmLrNM6bZIh54/a8BJ3l69kTXuxwZ+XCYuw=="
+  "resolved" "https://registry.npmjs.org/short-unique-id/-/short-unique-id-4.4.4.tgz"
+  "version" "4.4.4"
 
 "signal-exit@^3.0.0", "signal-exit@^3.0.2", "signal-exit@^3.0.3":
   "integrity" "sha512-sDl4qMFpijcGw22U5w63KmD3cZJfBuFlVNbVMKje2keoKML7X2UzWbc4XrmEbDwg0NXJc3yv4/ox7b+JWb57kQ=="

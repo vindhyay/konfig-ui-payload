@@ -4,7 +4,7 @@ import { BaseComponent } from "./base/base.component";
 import { MaterialModule } from "../material/material.module";
 import { RouterModule } from "@angular/router";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { FinlevitLibraryModule } from "lib/finlevit-library/src/public-api";
+import { FinlevitLibraryModule } from "finlevit-library";
 import { BtnPrimaryComponent } from "./btn-primary/btn-primary.component";
 import { NgxLoadingModule } from "ngx-loading";
 import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
@@ -24,6 +24,7 @@ import { SortHeaderComponent } from "./finlevit-custom-table/table-utils/sort-he
 import { CustomTableFiltersComponent } from "./finlevit-custom-table/table-utils/custom-table-filters/custom-table-filters.component";
 import { BtnIconComponent } from "./btn-icon/btn-icon.component";
 import { BtnDangerComponent } from "./btn-danger/btn-danger.component";
+import { LoaderComponent } from "./loader/loader.component";
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { BtnDangerComponent } from "./btn-danger/btn-danger.component";
     CustomTableFiltersComponent,
     BtnIconComponent,
     BtnDangerComponent,
+    LoaderComponent,
   ],
   imports: [
     CommonModule,
@@ -82,6 +84,7 @@ import { BtnDangerComponent } from "./btn-danger/btn-danger.component";
     CustomTableFiltersComponent,
     BtnIconComponent,
     BtnDangerComponent,
+    LoaderComponent,
   ],
 })
 export class SharedModule {}
