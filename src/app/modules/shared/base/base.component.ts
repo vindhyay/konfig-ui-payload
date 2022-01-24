@@ -1,5 +1,5 @@
-import { Component, OnDestroy } from '@angular/core';
-import { Observable, Subscription, TeardownLogic } from 'rxjs';
+import { Component, OnDestroy } from "@angular/core";
+import { Observable, Subscription, TeardownLogic } from "rxjs";
 
 @Component({
   selector: 'app-base',
@@ -10,7 +10,7 @@ export class BaseComponent implements OnDestroy {
   private subscription = new Subscription();
   public loading = false;
   public error = false;
-  public menuItems: string[] = ['Edit', 'Delete'];
+  public menuItems: string[] = ["Edit", "Delete"];
   constructor() {}
 
   ngOnDestroy() {

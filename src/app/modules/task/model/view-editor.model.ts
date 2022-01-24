@@ -126,12 +126,12 @@ export interface FieldData {
 }
 
 export enum PayloadType {
-  NEW_PAYLOAD = 'NEW_PAYLOAD',
-  OLD_PAYLOAD = 'OLD_PAYLOAD'
+  NEW_PAYLOAD = "NEW_PAYLOAD",
+  OLD_PAYLOAD = "OLD_PAYLOAD",
 }
 
 // data models
 export const PayloadTypes = {
   NEW_PAYLOAD: PayloadType.NEW_PAYLOAD,
-  OLD_PAYLOAD: PayloadType.OLD_PAYLOAD
+  OLD_PAYLOAD: PayloadType.OLD_PAYLOAD,
 };

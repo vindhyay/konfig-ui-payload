@@ -68,7 +68,9 @@
         [style.--input-border-right-color]="item?.metaData?.styleProperties?.properties?.borderRightColor"
         [style.--input-border-right-width]="item?.metaData?.styleProperties?.properties?.borderRightWidth"
         [style.--input-border-bottom]="item?.metaData?.styleProperties?.properties?.borderBottomStyle"
-        [style.--input-border-radius-bottom-right]="item?.metaData?.styleProperties?.properties?.borderBottomRightRadius"
+        [style.--input-border-radius-bottom-right]="
+          item?.metaData?.styleProperties?.properties?.borderBottomRightRadius
+        "
         [style.--input-border-bottom-color]="item?.metaData?.styleProperties?.properties?.borderBottomColor"
         [style.--input-border-bottom-width]="item?.metaData?.styleProperties?.properties?.borderBottomWidth"
         [style.--input-border-left]="item?.metaData?.styleProperties?.properties?.borderLeftStyle"
@@ -82,7 +84,7 @@
         [suffixText]="item?.metaData?.suffixText"
         (onBlur)="optionChange($event, item)"
         [pattern]="item?.validators?.pattern || null"
-        [mask] = "item?.metaData?.mask || null"
+        [mask]="item?.metaData?.mask || null"
         [showMaxCharLimit]="item?.validators?.maxLength"
         [maxCharLimit]="item?.validators?.maxLength"
         [style.--input-color]="item?.metaData?.styleProperties?.properties?.textColor"
@@ -110,71 +112,73 @@
         [showErrorMsg]="item?.errorMessage || item?.metaData?.showErrorMessage"
       ></finlevit-text>
       <finlevit-text
-              *ngIf="item?.metaData?.isFormulaField"
-              [isDisabled]="(viewMode && (!item?.validators?.editable || !editMode)) || disable || item?.metaData?.readOnly"
-              [leftIcon]="item?.metaData?.leftIcon"
-              [rightIcon]="item?.metaData?.rightIcon"
-              [error]="isError(item)"
-              [tooltip]="item?.metaData?.tooltip"
-              [placeholder]="item?.metaData?.placeholder"
-              [ngModel]="calculateFormulaValue(item?.metaData, item?.id)"
-              (ngModelChange)="validateField($event, item)"
-              [isRequired]="item?.validators?.required"
-              [label]="item?.label"
-              [style.--input-adornment-background-color]="item?.metaData?.adornmentBackgroundColor"
-              [style.--input-border-width]="item?.metaData?.styleProperties?.properties?.borderWidth"
-              [style.--input-label-font-size]="item?.metaData?.styleProperties?.properties?.labelFontSize"
-              [style.--input-label-width]="item?.metaData?.styleProperties?.properties?.labelWidth + '%'"
-              [style.--input-border-top]="item?.metaData?.styleProperties?.properties?.borderTopStyle"
-              [style.--input-border-radius-top-left]="item?.metaData?.styleProperties?.properties?.borderTopLeftRadius"
-              [style.--input-border-top-color]="item?.metaData?.styleProperties?.properties?.borderTopColor"
-              [style.--input-border-top-width]="item?.metaData?.styleProperties?.properties?.borderTopWidth"
-              [style.--input-border-right]="item?.metaData?.styleProperties?.properties?.borderRightStyle"
-              [style.--input-border-radius-top-right]="item?.metaData?.styleProperties?.properties?.borderTopRightRadius"
-              [style.--input-border-right-color]="item?.metaData?.styleProperties?.properties?.borderRightColor"
-              [style.--input-border-right-width]="item?.metaData?.styleProperties?.properties?.borderRightWidth"
-              [style.--input-border-bottom]="item?.metaData?.styleProperties?.properties?.borderBottomStyle"
-              [style.--input-border-radius-bottom-right]="item?.metaData?.styleProperties?.properties?.borderBottomRightRadius"
-              [style.--input-border-bottom-color]="item?.metaData?.styleProperties?.properties?.borderBottomColor"
-              [style.--input-border-bottom-width]="item?.metaData?.styleProperties?.properties?.borderBottomWidth"
-              [style.--input-border-left]="item?.metaData?.styleProperties?.properties?.borderLeftStyle"
-              [style.--input-border-radius-bottom-left]="item?.metaData?.styleProperties?.properties?.borderBottomLeftRadius"
-              [style.--input-border-left-color]="item?.metaData?.styleProperties?.properties?.borderLeftColor"
-              [style.--input-border-left-width]="item?.metaData?.styleProperties?.properties?.borderLeftWidth"
-              [independentBorders]="item?.metaData?.styleProperties?.properties?.independentBorder"
-              [allowLabelWrapping]="item?.metaData?.allowLabelWrapping"
-              [showClearButton]="item?.metaData?.showClearButton"
-              [prefixText]="item?.metaData?.prefixText"
-              [suffixText]="item?.metaData?.suffixText"
-              [errorMsg]="item?.errorMessage || item?.metaData?.errorMessage"
-              (onBlur)="optionChange($event, item)"
-              [pattern]="item?.validators?.pattern || null"
-              [mask] = "item?.metaData?.mask || null"
-              [(ngModel)]="item.value.value"
-              [showMaxCharLimit]="item?.validators?.maxLength"
-              [maxCharLimit]="item?.validators?.maxLength"
-              [style.--input-color]="item?.metaData?.styleProperties?.properties?.textColor"
-              [style.--input-text-align]="item?.metaData?.styleProperties?.properties?.textHorizontalAlign"
-              [style.--input-background-color]="item?.metaData?.styleProperties?.properties?.backgroundColor"
-              [style.--input-border-color]="item?.metaData?.styleProperties?.properties?.borderColor"
-              [style.--input-font-family]="item?.metaData?.styleProperties?.properties?.textFontStyle"
-              [style.--input-border]="item?.metaData?.styleProperties?.properties?.borderStyle"
-              [style.--input-border-radius]="item?.metaData?.styleProperties?.properties?.borderRadius"
-              [style.--input-font-size]="item?.metaData?.styleProperties?.properties?.fontSize"
-              [style.--input-word-spacing]="item?.metaData?.styleProperties?.properties?.wordSpacing"
-              [style.--input-letter-spacing]="item?.metaData?.styleProperties?.properties?.letterSpacing"
-              [style.--input-line-spacing]="item?.metaData?.styleProperties?.properties?.lineSpacing"
-              [style.--input-font-weight]="item?.metaData?.styleProperties?.properties?.fontWeight"
-              [style.--input-font-style]="item?.metaData?.styleProperties?.properties?.fontStyle"
-              [style.--input-text-decoration]="item?.metaData?.styleProperties?.properties?.textDecoration"
-              [style.--input-label-color]="item?.metaData?.styleProperties?.properties?.labelColor"
-              [style.--input-label-font-family]="item?.metaData?.styleProperties?.properties?.labelFontStyle"
-              [style.--input-label-align]="item?.metaData?.styleProperties?.properties?.labelAlignment"
-              [style.--input-label-font-weight]="item?.metaData?.styleProperties?.properties?.labelFontWeight"
-              [style.--input-label-font-style]="item?.metaData?.styleProperties?.properties?.labelStyle"
-              [style.--input-label-text-decoration]="item?.metaData?.styleProperties?.properties?.labelTextDecoration"
-              [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
-              [showErrorMsg]="item?.errorMessage || item?.metaData?.showErrorMessage"
+        *ngIf="item?.metaData?.isFormulaField"
+        [isDisabled]="(viewMode && (!item?.validators?.editable || !editMode)) || disable || item?.metaData?.readOnly"
+        [leftIcon]="item?.metaData?.leftIcon"
+        [rightIcon]="item?.metaData?.rightIcon"
+        [error]="isError(item)"
+        [tooltip]="item?.metaData?.tooltip"
+        [placeholder]="item?.metaData?.placeholder"
+        [ngModel]="calculateFormulaValue(item?.metaData, item?.id)"
+        (ngModelChange)="validateField($event, item)"
+        [isRequired]="item?.validators?.required"
+        [label]="item?.label"
+        [style.--input-adornment-background-color]="item?.metaData?.adornmentBackgroundColor"
+        [style.--input-border-width]="item?.metaData?.styleProperties?.properties?.borderWidth"
+        [style.--input-label-font-size]="item?.metaData?.styleProperties?.properties?.labelFontSize"
+        [style.--input-label-width]="item?.metaData?.styleProperties?.properties?.labelWidth + '%'"
+        [style.--input-border-top]="item?.metaData?.styleProperties?.properties?.borderTopStyle"
+        [style.--input-border-radius-top-left]="item?.metaData?.styleProperties?.properties?.borderTopLeftRadius"
+        [style.--input-border-top-color]="item?.metaData?.styleProperties?.properties?.borderTopColor"
+        [style.--input-border-top-width]="item?.metaData?.styleProperties?.properties?.borderTopWidth"
+        [style.--input-border-right]="item?.metaData?.styleProperties?.properties?.borderRightStyle"
+        [style.--input-border-radius-top-right]="item?.metaData?.styleProperties?.properties?.borderTopRightRadius"
+        [style.--input-border-right-color]="item?.metaData?.styleProperties?.properties?.borderRightColor"
+        [style.--input-border-right-width]="item?.metaData?.styleProperties?.properties?.borderRightWidth"
+        [style.--input-border-bottom]="item?.metaData?.styleProperties?.properties?.borderBottomStyle"
+        [style.--input-border-radius-bottom-right]="
+          item?.metaData?.styleProperties?.properties?.borderBottomRightRadius
+        "
+        [style.--input-border-bottom-color]="item?.metaData?.styleProperties?.properties?.borderBottomColor"
+        [style.--input-border-bottom-width]="item?.metaData?.styleProperties?.properties?.borderBottomWidth"
+        [style.--input-border-left]="item?.metaData?.styleProperties?.properties?.borderLeftStyle"
+        [style.--input-border-radius-bottom-left]="item?.metaData?.styleProperties?.properties?.borderBottomLeftRadius"
+        [style.--input-border-left-color]="item?.metaData?.styleProperties?.properties?.borderLeftColor"
+        [style.--input-border-left-width]="item?.metaData?.styleProperties?.properties?.borderLeftWidth"
+        [independentBorders]="item?.metaData?.styleProperties?.properties?.independentBorder"
+        [allowLabelWrapping]="item?.metaData?.allowLabelWrapping"
+        [showClearButton]="item?.metaData?.showClearButton"
+        [prefixText]="item?.metaData?.prefixText"
+        [suffixText]="item?.metaData?.suffixText"
+        [errorMsg]="item?.errorMessage || item?.metaData?.errorMessage"
+        (onBlur)="optionChange($event, item)"
+        [pattern]="item?.validators?.pattern || null"
+        [mask]="item?.metaData?.mask || null"
+        [(ngModel)]="item.value.value"
+        [showMaxCharLimit]="item?.validators?.maxLength"
+        [maxCharLimit]="item?.validators?.maxLength"
+        [style.--input-color]="item?.metaData?.styleProperties?.properties?.textColor"
+        [style.--input-text-align]="item?.metaData?.styleProperties?.properties?.textHorizontalAlign"
+        [style.--input-background-color]="item?.metaData?.styleProperties?.properties?.backgroundColor"
+        [style.--input-border-color]="item?.metaData?.styleProperties?.properties?.borderColor"
+        [style.--input-font-family]="item?.metaData?.styleProperties?.properties?.textFontStyle"
+        [style.--input-border]="item?.metaData?.styleProperties?.properties?.borderStyle"
+        [style.--input-border-radius]="item?.metaData?.styleProperties?.properties?.borderRadius"
+        [style.--input-font-size]="item?.metaData?.styleProperties?.properties?.fontSize"
+        [style.--input-word-spacing]="item?.metaData?.styleProperties?.properties?.wordSpacing"
+        [style.--input-letter-spacing]="item?.metaData?.styleProperties?.properties?.letterSpacing"
+        [style.--input-line-spacing]="item?.metaData?.styleProperties?.properties?.lineSpacing"
+        [style.--input-font-weight]="item?.metaData?.styleProperties?.properties?.fontWeight"
+        [style.--input-font-style]="item?.metaData?.styleProperties?.properties?.fontStyle"
+        [style.--input-text-decoration]="item?.metaData?.styleProperties?.properties?.textDecoration"
+        [style.--input-label-color]="item?.metaData?.styleProperties?.properties?.labelColor"
+        [style.--input-label-font-family]="item?.metaData?.styleProperties?.properties?.labelFontStyle"
+        [style.--input-label-align]="item?.metaData?.styleProperties?.properties?.labelAlignment"
+        [style.--input-label-font-weight]="item?.metaData?.styleProperties?.properties?.labelFontWeight"
+        [style.--input-label-font-style]="item?.metaData?.styleProperties?.properties?.labelStyle"
+        [style.--input-label-text-decoration]="item?.metaData?.styleProperties?.properties?.labelTextDecoration"
+        [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
+        [showErrorMsg]="item?.errorMessage || item?.metaData?.showErrorMessage"
       ></finlevit-text>
     </div>
   </ng-container>
@@ -205,7 +209,9 @@
         [style.--input-border-right-color]="item?.metaData?.styleProperties?.properties?.borderRightColor"
         [style.--input-border-right-width]="item?.metaData?.styleProperties?.properties?.borderRightWidth"
         [style.--input-border-bottom]="item?.metaData?.styleProperties?.properties?.borderBottomStyle"
-        [style.--input-border-radius-bottom-right]="item?.metaData?.styleProperties?.properties?.borderBottomRightRadius"
+        [style.--input-border-radius-bottom-right]="
+          item?.metaData?.styleProperties?.properties?.borderBottomRightRadius
+        "
         [style.--input-border-bottom-color]="item?.metaData?.styleProperties?.properties?.borderBottomColor"
         [style.--input-border-bottom-width]="item?.metaData?.styleProperties?.properties?.borderBottomWidth"
         [style.--input-border-left]="item?.metaData?.styleProperties?.properties?.borderLeftStyle"
@@ -219,7 +225,7 @@
         [suffixText]="item?.metaData?.suffixText"
         (onBlur)="optionChange($event, item)"
         [pattern]="item?.validators?.pattern || null"
-        [mask] = "item?.metaData?.mask || null"
+        [mask]="item?.metaData?.mask || null"
         [showMaxCharLimit]="item?.validators?.maxLength"
         [maxCharLimit]="item?.validators?.maxLength"
         [style.--input-color]="item?.metaData?.styleProperties?.properties?.textColor"
@@ -247,71 +253,73 @@
         [showErrorMsg]="item?.errorMessage || item?.metaData?.showErrorMessage"
       ></finlevit-text>
       <finlevit-text
-              *ngIf="item?.metaData?.isFormulaField"
-              [isDisabled]="(viewMode && (!item?.validators?.editable || !editMode)) || disable || item?.metaData?.readOnly"
-              [leftIcon]="item?.metaData?.leftIcon"
-              [rightIcon]="item?.metaData?.rightIcon"
-              [error]="isError(item)"
-              [tooltip]="item?.metaData?.tooltip"
-              [placeholder]="item?.metaData?.placeholder"
-              [ngModel]="calculateFormulaValue(item?.metaData, item?.id)"
-              (ngModelChange)="validateField($event, item)"
-              [isRequired]="item?.validators?.required"
-              [label]="item?.label"
-              [style.--input-adornment-background-color]="item?.metaData?.adornmentBackgroundColor"
-              [style.--input-border-width]="item?.metaData?.styleProperties?.properties?.borderWidth"
-              [style.--input-label-font-size]="item?.metaData?.styleProperties?.properties?.labelFontSize"
-              [style.--input-label-width]="item?.metaData?.styleProperties?.properties?.labelWidth + '%'"
-              [style.--input-border-top]="item?.metaData?.styleProperties?.properties?.borderTopStyle"
-              [style.--input-border-radius-top-left]="item?.metaData?.styleProperties?.properties?.borderTopLeftRadius"
-              [style.--input-border-top-color]="item?.metaData?.styleProperties?.properties?.borderTopColor"
-              [style.--input-border-top-width]="item?.metaData?.styleProperties?.properties?.borderTopWidth"
-              [style.--input-border-right]="item?.metaData?.styleProperties?.properties?.borderRightStyle"
-              [style.--input-border-radius-top-right]="item?.metaData?.styleProperties?.properties?.borderTopRightRadius"
-              [style.--input-border-right-color]="item?.metaData?.styleProperties?.properties?.borderRightColor"
-              [style.--input-border-right-width]="item?.metaData?.styleProperties?.properties?.borderRightWidth"
-              [style.--input-border-bottom]="item?.metaData?.styleProperties?.properties?.borderBottomStyle"
-              [style.--input-border-radius-bottom-right]="item?.metaData?.styleProperties?.properties?.borderBottomRightRadius"
-              [style.--input-border-bottom-color]="item?.metaData?.styleProperties?.properties?.borderBottomColor"
-              [style.--input-border-bottom-width]="item?.metaData?.styleProperties?.properties?.borderBottomWidth"
-              [style.--input-border-left]="item?.metaData?.styleProperties?.properties?.borderLeftStyle"
-              [style.--input-border-radius-bottom-left]="item?.metaData?.styleProperties?.properties?.borderBottomLeftRadius"
-              [style.--input-border-left-color]="item?.metaData?.styleProperties?.properties?.borderLeftColor"
-              [style.--input-border-left-width]="item?.metaData?.styleProperties?.properties?.borderLeftWidth"
-              [independentBorders]="item?.metaData?.styleProperties?.properties?.independentBorder"
-              [allowLabelWrapping]="item?.metaData?.allowLabelWrapping"
-              [showClearButton]="item?.metaData?.showClearButton"
-              [prefixText]="item?.metaData?.prefixText"
-              [suffixText]="item?.metaData?.suffixText"
-              [errorMsg]="item?.errorMessage || item?.metaData?.errorMessage"
-              (onBlur)="optionChange($event, item)"
-              [pattern]="item?.validators?.pattern || null"
-              [mask] = "item?.metaData?.mask || null"
-              [(ngModel)]="item.value.value"
-              [showMaxCharLimit]="item?.validators?.maxLength"
-              [maxCharLimit]="item?.validators?.maxLength"
-              [style.--input-color]="item?.metaData?.styleProperties?.properties?.textColor"
-              [style.--input-text-align]="item?.metaData?.styleProperties?.properties?.textHorizontalAlign"
-              [style.--input-background-color]="item?.metaData?.styleProperties?.properties?.backgroundColor"
-              [style.--input-border-color]="item?.metaData?.styleProperties?.properties?.borderColor"
-              [style.--input-font-family]="item?.metaData?.styleProperties?.properties?.textFontStyle"
-              [style.--input-border]="item?.metaData?.styleProperties?.properties?.borderStyle"
-              [style.--input-border-radius]="item?.metaData?.styleProperties?.properties?.borderRadius"
-              [style.--input-font-size]="item?.metaData?.styleProperties?.properties?.fontSize"
-              [style.--input-word-spacing]="item?.metaData?.styleProperties?.properties?.wordSpacing"
-              [style.--input-letter-spacing]="item?.metaData?.styleProperties?.properties?.letterSpacing"
-              [style.--input-line-spacing]="item?.metaData?.styleProperties?.properties?.lineSpacing"
-              [style.--input-font-weight]="item?.metaData?.styleProperties?.properties?.fontWeight"
-              [style.--input-font-style]="item?.metaData?.styleProperties?.properties?.fontStyle"
-              [style.--input-text-decoration]="item?.metaData?.styleProperties?.properties?.textDecoration"
-              [style.--input-label-color]="item?.metaData?.styleProperties?.properties?.labelColor"
-              [style.--input-label-font-family]="item?.metaData?.styleProperties?.properties?.labelFontStyle"
-              [style.--input-label-align]="item?.metaData?.styleProperties?.properties?.labelAlignment"
-              [style.--input-label-font-weight]="item?.metaData?.styleProperties?.properties?.labelFontWeight"
-              [style.--input-label-font-style]="item?.metaData?.styleProperties?.properties?.labelStyle"
-              [style.--input-label-text-decoration]="item?.metaData?.styleProperties?.properties?.labelTextDecoration"
-              [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
-              [showErrorMsg]="item?.errorMessage || item?.metaData?.showErrorMessage"
+        *ngIf="item?.metaData?.isFormulaField"
+        [isDisabled]="(viewMode && (!item?.validators?.editable || !editMode)) || disable || item?.metaData?.readOnly"
+        [leftIcon]="item?.metaData?.leftIcon"
+        [rightIcon]="item?.metaData?.rightIcon"
+        [error]="isError(item)"
+        [tooltip]="item?.metaData?.tooltip"
+        [placeholder]="item?.metaData?.placeholder"
+        [ngModel]="calculateFormulaValue(item?.metaData, item?.id)"
+        (ngModelChange)="validateField($event, item)"
+        [isRequired]="item?.validators?.required"
+        [label]="item?.label"
+        [style.--input-adornment-background-color]="item?.metaData?.adornmentBackgroundColor"
+        [style.--input-border-width]="item?.metaData?.styleProperties?.properties?.borderWidth"
+        [style.--input-label-font-size]="item?.metaData?.styleProperties?.properties?.labelFontSize"
+        [style.--input-label-width]="item?.metaData?.styleProperties?.properties?.labelWidth + '%'"
+        [style.--input-border-top]="item?.metaData?.styleProperties?.properties?.borderTopStyle"
+        [style.--input-border-radius-top-left]="item?.metaData?.styleProperties?.properties?.borderTopLeftRadius"
+        [style.--input-border-top-color]="item?.metaData?.styleProperties?.properties?.borderTopColor"
+        [style.--input-border-top-width]="item?.metaData?.styleProperties?.properties?.borderTopWidth"
+        [style.--input-border-right]="item?.metaData?.styleProperties?.properties?.borderRightStyle"
+        [style.--input-border-radius-top-right]="item?.metaData?.styleProperties?.properties?.borderTopRightRadius"
+        [style.--input-border-right-color]="item?.metaData?.styleProperties?.properties?.borderRightColor"
+        [style.--input-border-right-width]="item?.metaData?.styleProperties?.properties?.borderRightWidth"
+        [style.--input-border-bottom]="item?.metaData?.styleProperties?.properties?.borderBottomStyle"
+        [style.--input-border-radius-bottom-right]="
+          item?.metaData?.styleProperties?.properties?.borderBottomRightRadius
+        "
+        [style.--input-border-bottom-color]="item?.metaData?.styleProperties?.properties?.borderBottomColor"
+        [style.--input-border-bottom-width]="item?.metaData?.styleProperties?.properties?.borderBottomWidth"
+        [style.--input-border-left]="item?.metaData?.styleProperties?.properties?.borderLeftStyle"
+        [style.--input-border-radius-bottom-left]="item?.metaData?.styleProperties?.properties?.borderBottomLeftRadius"
+        [style.--input-border-left-color]="item?.metaData?.styleProperties?.properties?.borderLeftColor"
+        [style.--input-border-left-width]="item?.metaData?.styleProperties?.properties?.borderLeftWidth"
+        [independentBorders]="item?.metaData?.styleProperties?.properties?.independentBorder"
+        [allowLabelWrapping]="item?.metaData?.allowLabelWrapping"
+        [showClearButton]="item?.metaData?.showClearButton"
+        [prefixText]="item?.metaData?.prefixText"
+        [suffixText]="item?.metaData?.suffixText"
+        [errorMsg]="item?.errorMessage || item?.metaData?.errorMessage"
+        (onBlur)="optionChange($event, item)"
+        [pattern]="item?.validators?.pattern || null"
+        [mask]="item?.metaData?.mask || null"
+        [(ngModel)]="item.value.value"
+        [showMaxCharLimit]="item?.validators?.maxLength"
+        [maxCharLimit]="item?.validators?.maxLength"
+        [style.--input-color]="item?.metaData?.styleProperties?.properties?.textColor"
+        [style.--input-text-align]="item?.metaData?.styleProperties?.properties?.textHorizontalAlign"
+        [style.--input-background-color]="item?.metaData?.styleProperties?.properties?.backgroundColor"
+        [style.--input-border-color]="item?.metaData?.styleProperties?.properties?.borderColor"
+        [style.--input-font-family]="item?.metaData?.styleProperties?.properties?.textFontStyle"
+        [style.--input-border]="item?.metaData?.styleProperties?.properties?.borderStyle"
+        [style.--input-border-radius]="item?.metaData?.styleProperties?.properties?.borderRadius"
+        [style.--input-font-size]="item?.metaData?.styleProperties?.properties?.fontSize"
+        [style.--input-word-spacing]="item?.metaData?.styleProperties?.properties?.wordSpacing"
+        [style.--input-letter-spacing]="item?.metaData?.styleProperties?.properties?.letterSpacing"
+        [style.--input-line-spacing]="item?.metaData?.styleProperties?.properties?.lineSpacing"
+        [style.--input-font-weight]="item?.metaData?.styleProperties?.properties?.fontWeight"
+        [style.--input-font-style]="item?.metaData?.styleProperties?.properties?.fontStyle"
+        [style.--input-text-decoration]="item?.metaData?.styleProperties?.properties?.textDecoration"
+        [style.--input-label-color]="item?.metaData?.styleProperties?.properties?.labelColor"
+        [style.--input-label-font-family]="item?.metaData?.styleProperties?.properties?.labelFontStyle"
+        [style.--input-label-align]="item?.metaData?.styleProperties?.properties?.labelAlignment"
+        [style.--input-label-font-weight]="item?.metaData?.styleProperties?.properties?.labelFontWeight"
+        [style.--input-label-font-style]="item?.metaData?.styleProperties?.properties?.labelStyle"
+        [style.--input-label-text-decoration]="item?.metaData?.styleProperties?.properties?.labelTextDecoration"
+        [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
+        [showErrorMsg]="item?.errorMessage || item?.metaData?.showErrorMessage"
       ></finlevit-text>
     </div>
   </ng-container>
@@ -501,7 +509,9 @@
         (ngModelChange)="validateField($event, item)"
         [isRequired]="item?.validators?.required"
         [label]="item?.label"
-        [style.--input-adornment-background-color]="item?.metaData?.styleProperties?.properties?.adornmentBackgroundColor"
+        [style.--input-adornment-background-color]="
+          item?.metaData?.styleProperties?.properties?.adornmentBackgroundColor
+        "
         [style.--input-border-width]="item?.metaData?.styleProperties?.properties?.borderWidth"
         [style.--input-label-font-size]="item?.metaData?.styleProperties?.properties?.labelFontSize"
         [style.--input-label-width]="item?.metaData?.styleProperties?.properties?.labelWidth + '%'"
@@ -514,7 +524,9 @@
         [style.--input-border-right-color]="item?.metaData?.styleProperties?.properties?.borderRightColor"
         [style.--input-border-right-width]="item?.metaData?.styleProperties?.properties?.borderRightWidth"
         [style.--input-border-bottom]="item?.metaData?.styleProperties?.properties?.borderBottomStyle"
-        [style.--input-border-radius-bottom-right]="item?.metaData?.styleProperties?.properties?.borderBottomRightRadius"
+        [style.--input-border-radius-bottom-right]="
+          item?.metaData?.styleProperties?.properties?.borderBottomRightRadius
+        "
         [style.--input-border-bottom-color]="item?.metaData?.styleProperties?.properties?.borderBottomColor"
         [style.--input-border-bottom-width]="item?.metaData?.styleProperties?.properties?.borderBottomWidth"
         [style.--input-border-left]="item?.metaData?.styleProperties?.properties?.borderLeftStyle"
@@ -553,7 +565,8 @@
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Number">
     <div class="input-container">
-      <finlevit-number *ngIf="!item?.metaData?.isFormulaField"
+      <finlevit-number
+        *ngIf="!item?.metaData?.isFormulaField"
         [isDisabled]="(viewMode && (!item?.validators?.editable || !editMode)) || disable || item?.metaData?.readOnly"
         [placeholder]="item?.metaData?.placeholder"
         [tooltip]="item?.metaData?.tooltip"
@@ -563,128 +576,133 @@
         [label]="item?.label"
         [isRequired]="item?.validators?.required"
         (onBlur)="optionChange($event, item)"
-                       [style.--input-adornment-background-color]="item?.metaData?.adornmentBackgroundColor"
-                       [style.--input-border-width]="item?.metaData?.styleProperties?.properties?.borderWidth"
-                       [style.--input-label-font-size]="item?.metaData?.styleProperties?.properties?.labelFontSize"
-                       [style.--input-label-width]="item?.metaData?.styleProperties?.properties?.labelWidth + '%'"
-                       [style.--input-border-top]="item?.metaData?.styleProperties?.properties?.borderTopStyle"
-                       [style.--input-border-radius-top-left]="item?.metaData?.styleProperties?.properties?.borderTopLeftRadius"
-                       [style.--input-border-top-color]="item?.metaData?.styleProperties?.properties?.borderTopColor"
-                       [style.--input-border-top-width]="item?.metaData?.styleProperties?.properties?.borderTopWidth"
-                       [style.--input-border-right]="item?.metaData?.styleProperties?.properties?.borderRightStyle"
-                       [style.--input-border-radius-top-right]="item?.metaData?.styleProperties?.properties?.borderTopRightRadius"
-                       [style.--input-border-right-color]="item?.metaData?.styleProperties?.properties?.borderRightColor"
-                       [style.--input-border-right-width]="item?.metaData?.styleProperties?.properties?.borderRightWidth"
-                       [style.--input-border-bottom]="item?.metaData?.styleProperties?.properties?.borderBottomStyle"
-                       [style.--input-border-radius-bottom-right]="item?.metaData?.styleProperties?.properties?.borderBottomRightRadius"
-                       [style.--input-border-bottom-color]="item?.metaData?.styleProperties?.properties?.borderBottomColor"
-                       [style.--input-border-bottom-width]="item?.metaData?.styleProperties?.properties?.borderBottomWidth"
-                       [style.--input-border-left]="item?.metaData?.styleProperties?.properties?.borderLeftStyle"
-                       [style.--input-border-radius-bottom-left]="item?.metaData?.styleProperties?.properties?.borderBottomLeftRadius"
-                       [style.--input-border-left-color]="item?.metaData?.styleProperties?.properties?.borderLeftColor"
-                       [style.--input-border-left-width]="item?.metaData?.styleProperties?.properties?.borderLeftWidth"
-                       [independentBorders]="item?.metaData?.styleProperties?.properties?.independentBorder"
-                       [allowLabelWrapping]="item?.metaData?.allowLabelWrapping"
-                       [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
-                       [errorMsg]="item?.errorMessage || item?.metaData?.errorMessage"
-                       [showErrorMsg]="item?.errorMessage || item?.metaData?.showErrorMessage"
-                       [prefixText]="item?.metaData?.prefixText"
-                       [suffixText]="item?.metaData?.suffixText"
-                       [showClearButton]="item?.metaData?.showClearButton"
-                       [step]="item?.metaData?.step"
-                       [showButtons]="item?.metaData?.showStepperButtons"
-                       [mode]="item?.metaData?.mode"
-                       [currency]="item?.metaData?.currency"
-                       [minFractionDigits]="item?.metaData?.minFractionDigits"
-                       [maxFractionDigits]="item?.metaData?.maxFractionDigits"
-                       [maxLength]="item?.validators?.maxLength"
-                       [showMaxCharLimit]="item?.validators?.maxLength"
-                       [style.--input-color]="item?.metaData?.styleProperties?.properties?.textColor"
-                       [style.--input-text-align]="item?.metaData?.styleProperties?.properties?.textHorizontalAlign"
-                       [style.--input-background-color]="item?.metaData?.styleProperties?.properties?.backgroundColor"
-                       [style.--input-border-color]="item?.metaData?.styleProperties?.properties?.borderColor"
-                       [style.--input-font-family]="item?.metaData?.styleProperties?.properties?.textFontStyle"
-                       [style.--input-border]="item?.metaData?.styleProperties?.properties?.borderStyle"
-                       [style.--input-border-radius]="item?.metaData?.styleProperties?.properties?.borderRadius"
-                       [style.--input-font-size]="item?.metaData?.styleProperties?.properties?.fontSize"
-                       [style.--input-word-spacing]="item?.metaData?.styleProperties?.properties?.wordSpacing"
-                       [style.--input-letter-spacing]="item?.metaData?.styleProperties?.properties?.letterSpacing"
-                       [style.--input-line-spacing]="item?.metaData?.styleProperties?.properties?.lineSpacing"
-                       [style.--input-font-weight]="item?.metaData?.styleProperties?.properties?.fontWeight"
-                       [style.--input-font-style]="item?.metaData?.styleProperties?.properties?.fontStyle"
-                       [style.--input-text-decoration]="item?.metaData?.styleProperties?.properties?.textDecoration"
-                       [style.--input-label-color]="item?.metaData?.styleProperties?.properties?.labelColor"
-                       [style.--input-label-font-family]="item?.metaData?.styleProperties?.properties?.labelFontStyle"
-                       [style.--input-label-align]="item?.metaData?.styleProperties?.properties?.labelAlignment"
-                       [style.--input-label-font-weight]="item?.metaData?.styleProperties?.properties?.labelFontWeight"
-                       [style.--input-label-font-style]="item?.metaData?.styleProperties?.properties?.labelStyle"
-                       [style.--input-label-text-decoration]="item?.metaData?.styleProperties?.properties?.labelTextDecoration"
+        [style.--input-adornment-background-color]="item?.metaData?.adornmentBackgroundColor"
+        [style.--input-border-width]="item?.metaData?.styleProperties?.properties?.borderWidth"
+        [style.--input-label-font-size]="item?.metaData?.styleProperties?.properties?.labelFontSize"
+        [style.--input-label-width]="item?.metaData?.styleProperties?.properties?.labelWidth + '%'"
+        [style.--input-border-top]="item?.metaData?.styleProperties?.properties?.borderTopStyle"
+        [style.--input-border-radius-top-left]="item?.metaData?.styleProperties?.properties?.borderTopLeftRadius"
+        [style.--input-border-top-color]="item?.metaData?.styleProperties?.properties?.borderTopColor"
+        [style.--input-border-top-width]="item?.metaData?.styleProperties?.properties?.borderTopWidth"
+        [style.--input-border-right]="item?.metaData?.styleProperties?.properties?.borderRightStyle"
+        [style.--input-border-radius-top-right]="item?.metaData?.styleProperties?.properties?.borderTopRightRadius"
+        [style.--input-border-right-color]="item?.metaData?.styleProperties?.properties?.borderRightColor"
+        [style.--input-border-right-width]="item?.metaData?.styleProperties?.properties?.borderRightWidth"
+        [style.--input-border-bottom]="item?.metaData?.styleProperties?.properties?.borderBottomStyle"
+        [style.--input-border-radius-bottom-right]="
+          item?.metaData?.styleProperties?.properties?.borderBottomRightRadius
+        "
+        [style.--input-border-bottom-color]="item?.metaData?.styleProperties?.properties?.borderBottomColor"
+        [style.--input-border-bottom-width]="item?.metaData?.styleProperties?.properties?.borderBottomWidth"
+        [style.--input-border-left]="item?.metaData?.styleProperties?.properties?.borderLeftStyle"
+        [style.--input-border-radius-bottom-left]="item?.metaData?.styleProperties?.properties?.borderBottomLeftRadius"
+        [style.--input-border-left-color]="item?.metaData?.styleProperties?.properties?.borderLeftColor"
+        [style.--input-border-left-width]="item?.metaData?.styleProperties?.properties?.borderLeftWidth"
+        [independentBorders]="item?.metaData?.styleProperties?.properties?.independentBorder"
+        [allowLabelWrapping]="item?.metaData?.allowLabelWrapping"
+        [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
+        [errorMsg]="item?.errorMessage || item?.metaData?.errorMessage"
+        [showErrorMsg]="item?.errorMessage || item?.metaData?.showErrorMessage"
+        [prefixText]="item?.metaData?.prefixText"
+        [suffixText]="item?.metaData?.suffixText"
+        [showClearButton]="item?.metaData?.showClearButton"
+        [step]="item?.metaData?.step"
+        [showButtons]="item?.metaData?.showStepperButtons"
+        [mode]="item?.metaData?.mode"
+        [currency]="item?.metaData?.currency"
+        [minFractionDigits]="item?.metaData?.minFractionDigits"
+        [maxFractionDigits]="item?.metaData?.maxFractionDigits"
+        [maxLength]="item?.validators?.maxLength"
+        [showMaxCharLimit]="item?.validators?.maxLength"
+        [style.--input-color]="item?.metaData?.styleProperties?.properties?.textColor"
+        [style.--input-text-align]="item?.metaData?.styleProperties?.properties?.textHorizontalAlign"
+        [style.--input-background-color]="item?.metaData?.styleProperties?.properties?.backgroundColor"
+        [style.--input-border-color]="item?.metaData?.styleProperties?.properties?.borderColor"
+        [style.--input-font-family]="item?.metaData?.styleProperties?.properties?.textFontStyle"
+        [style.--input-border]="item?.metaData?.styleProperties?.properties?.borderStyle"
+        [style.--input-border-radius]="item?.metaData?.styleProperties?.properties?.borderRadius"
+        [style.--input-font-size]="item?.metaData?.styleProperties?.properties?.fontSize"
+        [style.--input-word-spacing]="item?.metaData?.styleProperties?.properties?.wordSpacing"
+        [style.--input-letter-spacing]="item?.metaData?.styleProperties?.properties?.letterSpacing"
+        [style.--input-line-spacing]="item?.metaData?.styleProperties?.properties?.lineSpacing"
+        [style.--input-font-weight]="item?.metaData?.styleProperties?.properties?.fontWeight"
+        [style.--input-font-style]="item?.metaData?.styleProperties?.properties?.fontStyle"
+        [style.--input-text-decoration]="item?.metaData?.styleProperties?.properties?.textDecoration"
+        [style.--input-label-color]="item?.metaData?.styleProperties?.properties?.labelColor"
+        [style.--input-label-font-family]="item?.metaData?.styleProperties?.properties?.labelFontStyle"
+        [style.--input-label-align]="item?.metaData?.styleProperties?.properties?.labelAlignment"
+        [style.--input-label-font-weight]="item?.metaData?.styleProperties?.properties?.labelFontWeight"
+        [style.--input-label-font-style]="item?.metaData?.styleProperties?.properties?.labelStyle"
+        [style.--input-label-text-decoration]="item?.metaData?.styleProperties?.properties?.labelTextDecoration"
       ></finlevit-number>
-      <finlevit-number *ngIf="item?.metaData?.isFormulaField"
-                       [isDisabled]="(viewMode && (!item?.validators?.editable || !editMode)) || disable || item?.metaData?.readOnly"
-                       [placeholder]="item?.metaData?.placeholder"
-                       [tooltip]="item?.metaData?.tooltip"
-                       [error]="isError(item)"
-                       [ngModel]="calculateFormulaValue(item?.metaData, item?.id)"
-                       (ngModelChange)="validateField($event, item)"
-                       [label]="item?.label"
-                       [isRequired]="item?.validators?.required"
-                       (onBlur)="optionChange($event, item)"
-                       [currency]="item?.metaData?.currency"
-                       [style.--input-adornment-background-color]="item?.metaData?.adornmentBackgroundColor"
-                       [style.--input-border-width]="item?.metaData?.styleProperties?.properties?.borderWidth"
-                       [style.--input-label-font-size]="item?.metaData?.styleProperties?.properties?.labelFontSize"
-                       [style.--input-label-width]="item?.metaData?.styleProperties?.properties?.labelWidth + '%'"
-                       [style.--input-border-top]="item?.metaData?.styleProperties?.properties?.borderTopStyle"
-                       [style.--input-border-radius-top-left]="item?.metaData?.styleProperties?.properties?.borderTopLeftRadius"
-                       [style.--input-border-top-color]="item?.metaData?.styleProperties?.properties?.borderTopColor"
-                       [style.--input-border-top-width]="item?.metaData?.styleProperties?.properties?.borderTopWidth"
-                       [style.--input-border-right]="item?.metaData?.styleProperties?.properties?.borderRightStyle"
-                       [style.--input-border-radius-top-right]="item?.metaData?.styleProperties?.properties?.borderTopRightRadius"
-                       [style.--input-border-right-color]="item?.metaData?.styleProperties?.properties?.borderRightColor"
-                       [style.--input-border-right-width]="item?.metaData?.styleProperties?.properties?.borderRightWidth"
-                       [style.--input-border-bottom]="item?.metaData?.styleProperties?.properties?.borderBottomStyle"
-                       [style.--input-border-radius-bottom-right]="item?.metaData?.styleProperties?.properties?.borderBottomRightRadius"
-                       [style.--input-border-bottom-color]="item?.metaData?.styleProperties?.properties?.borderBottomColor"
-                       [style.--input-border-bottom-width]="item?.metaData?.styleProperties?.properties?.borderBottomWidth"
-                       [style.--input-border-left]="item?.metaData?.styleProperties?.properties?.borderLeftStyle"
-                       [style.--input-border-radius-bottom-left]="item?.metaData?.styleProperties?.properties?.borderBottomLeftRadius"
-                       [style.--input-border-left-color]="item?.metaData?.styleProperties?.properties?.borderLeftColor"
-                       [style.--input-border-left-width]="item?.metaData?.styleProperties?.properties?.borderLeftWidth"
-                       [independentBorders]="item?.metaData?.styleProperties?.properties?.independentBorder"
-                       [allowLabelWrapping]="item?.metaData?.allowLabelWrapping"
-                       [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
-                       [errorMsg]="item?.errorMessage || item?.metaData?.errorMessage"
-                       [showErrorMsg]="item?.errorMessage || item?.metaData?.showErrorMessage"
-                       [prefixText]="item?.metaData?.prefixText"
-                       [suffixText]="item?.metaData?.suffixText"
-                       [showClearButton]="item?.metaData?.showClearButton"
-                       [step]="item?.metaData?.step"
-                       [showButtons]="item?.metaData?.showStepperButtons"
-                       [minFractionDigits]="item?.metaData?.minFractionDigits"
-                       [maxFractionDigits]="item?.metaData?.maxFractionDigits"
-                       [maxLength]="item?.validators?.maxLength"
-                       [showMaxCharLimit]="item?.validators?.maxLength"
-                       [style.--input-color]="item?.metaData?.styleProperties?.properties?.textColor"
-                       [style.--input-text-align]="item?.metaData?.styleProperties?.properties?.textHorizontalAlign"
-                       [style.--input-background-color]="item?.metaData?.styleProperties?.properties?.backgroundColor"
-                       [style.--input-border-color]="item?.metaData?.styleProperties?.properties?.borderColor"
-                       [style.--input-font-family]="item?.metaData?.styleProperties?.properties?.textFontStyle"
-                       [style.--input-border]="item?.metaData?.styleProperties?.properties?.borderStyle"
-                       [style.--input-border-radius]="item?.metaData?.styleProperties?.properties?.borderRadius"
-                       [style.--input-font-size]="item?.metaData?.styleProperties?.properties?.fontSize"
-                       [style.--input-word-spacing]="item?.metaData?.styleProperties?.properties?.wordSpacing"
-                       [style.--input-letter-spacing]="item?.metaData?.styleProperties?.properties?.letterSpacing"
-                       [style.--input-line-spacing]="item?.metaData?.styleProperties?.properties?.lineSpacing"
-                       [style.--input-font-weight]="item?.metaData?.styleProperties?.properties?.fontWeight"
-                       [style.--input-font-style]="item?.metaData?.styleProperties?.properties?.fontStyle"
-                       [style.--input-text-decoration]="item?.metaData?.styleProperties?.properties?.textDecoration"
-                       [style.--input-label-color]="item?.metaData?.styleProperties?.properties?.labelColor"
-                       [style.--input-label-font-family]="item?.metaData?.styleProperties?.properties?.labelFontStyle"
-                       [style.--input-label-align]="item?.metaData?.styleProperties?.properties?.labelAlignment"
-                       [style.--input-label-font-weight]="item?.metaData?.styleProperties?.properties?.labelFontWeight"
-                       [style.--input-label-font-style]="item?.metaData?.styleProperties?.properties?.labelStyle"
-                       [style.--input-label-text-decoration]="item?.metaData?.styleProperties?.properties?.labelTextDecoration"
+      <finlevit-number
+        *ngIf="item?.metaData?.isFormulaField"
+        [isDisabled]="(viewMode && (!item?.validators?.editable || !editMode)) || disable || item?.metaData?.readOnly"
+        [placeholder]="item?.metaData?.placeholder"
+        [tooltip]="item?.metaData?.tooltip"
+        [error]="isError(item)"
+        [ngModel]="calculateFormulaValue(item?.metaData, item?.id)"
+        (ngModelChange)="validateField($event, item)"
+        [label]="item?.label"
+        [isRequired]="item?.validators?.required"
+        (onBlur)="optionChange($event, item)"
+        [currency]="item?.metaData?.currency"
+        [style.--input-adornment-background-color]="item?.metaData?.adornmentBackgroundColor"
+        [style.--input-border-width]="item?.metaData?.styleProperties?.properties?.borderWidth"
+        [style.--input-label-font-size]="item?.metaData?.styleProperties?.properties?.labelFontSize"
+        [style.--input-label-width]="item?.metaData?.styleProperties?.properties?.labelWidth + '%'"
+        [style.--input-border-top]="item?.metaData?.styleProperties?.properties?.borderTopStyle"
+        [style.--input-border-radius-top-left]="item?.metaData?.styleProperties?.properties?.borderTopLeftRadius"
+        [style.--input-border-top-color]="item?.metaData?.styleProperties?.properties?.borderTopColor"
+        [style.--input-border-top-width]="item?.metaData?.styleProperties?.properties?.borderTopWidth"
+        [style.--input-border-right]="item?.metaData?.styleProperties?.properties?.borderRightStyle"
+        [style.--input-border-radius-top-right]="item?.metaData?.styleProperties?.properties?.borderTopRightRadius"
+        [style.--input-border-right-color]="item?.metaData?.styleProperties?.properties?.borderRightColor"
+        [style.--input-border-right-width]="item?.metaData?.styleProperties?.properties?.borderRightWidth"
+        [style.--input-border-bottom]="item?.metaData?.styleProperties?.properties?.borderBottomStyle"
+        [style.--input-border-radius-bottom-right]="
+          item?.metaData?.styleProperties?.properties?.borderBottomRightRadius
+        "
+        [style.--input-border-bottom-color]="item?.metaData?.styleProperties?.properties?.borderBottomColor"
+        [style.--input-border-bottom-width]="item?.metaData?.styleProperties?.properties?.borderBottomWidth"
+        [style.--input-border-left]="item?.metaData?.styleProperties?.properties?.borderLeftStyle"
+        [style.--input-border-radius-bottom-left]="item?.metaData?.styleProperties?.properties?.borderBottomLeftRadius"
+        [style.--input-border-left-color]="item?.metaData?.styleProperties?.properties?.borderLeftColor"
+        [style.--input-border-left-width]="item?.metaData?.styleProperties?.properties?.borderLeftWidth"
+        [independentBorders]="item?.metaData?.styleProperties?.properties?.independentBorder"
+        [allowLabelWrapping]="item?.metaData?.allowLabelWrapping"
+        [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
+        [errorMsg]="item?.errorMessage || item?.metaData?.errorMessage"
+        [showErrorMsg]="item?.errorMessage || item?.metaData?.showErrorMessage"
+        [prefixText]="item?.metaData?.prefixText"
+        [suffixText]="item?.metaData?.suffixText"
+        [showClearButton]="item?.metaData?.showClearButton"
+        [step]="item?.metaData?.step"
+        [showButtons]="item?.metaData?.showStepperButtons"
+        [minFractionDigits]="item?.metaData?.minFractionDigits"
+        [maxFractionDigits]="item?.metaData?.maxFractionDigits"
+        [maxLength]="item?.validators?.maxLength"
+        [showMaxCharLimit]="item?.validators?.maxLength"
+        [style.--input-color]="item?.metaData?.styleProperties?.properties?.textColor"
+        [style.--input-text-align]="item?.metaData?.styleProperties?.properties?.textHorizontalAlign"
+        [style.--input-background-color]="item?.metaData?.styleProperties?.properties?.backgroundColor"
+        [style.--input-border-color]="item?.metaData?.styleProperties?.properties?.borderColor"
+        [style.--input-font-family]="item?.metaData?.styleProperties?.properties?.textFontStyle"
+        [style.--input-border]="item?.metaData?.styleProperties?.properties?.borderStyle"
+        [style.--input-border-radius]="item?.metaData?.styleProperties?.properties?.borderRadius"
+        [style.--input-font-size]="item?.metaData?.styleProperties?.properties?.fontSize"
+        [style.--input-word-spacing]="item?.metaData?.styleProperties?.properties?.wordSpacing"
+        [style.--input-letter-spacing]="item?.metaData?.styleProperties?.properties?.letterSpacing"
+        [style.--input-line-spacing]="item?.metaData?.styleProperties?.properties?.lineSpacing"
+        [style.--input-font-weight]="item?.metaData?.styleProperties?.properties?.fontWeight"
+        [style.--input-font-style]="item?.metaData?.styleProperties?.properties?.fontStyle"
+        [style.--input-text-decoration]="item?.metaData?.styleProperties?.properties?.textDecoration"
+        [style.--input-label-color]="item?.metaData?.styleProperties?.properties?.labelColor"
+        [style.--input-label-font-family]="item?.metaData?.styleProperties?.properties?.labelFontStyle"
+        [style.--input-label-align]="item?.metaData?.styleProperties?.properties?.labelAlignment"
+        [style.--input-label-font-weight]="item?.metaData?.styleProperties?.properties?.labelFontWeight"
+        [style.--input-label-font-style]="item?.metaData?.styleProperties?.properties?.labelStyle"
+        [style.--input-label-text-decoration]="item?.metaData?.styleProperties?.properties?.labelTextDecoration"
       ></finlevit-number>
     </div>
   </ng-container>
@@ -734,7 +752,9 @@
         [borderRightColor]="item?.metaData?.styleProperties?.properties?.borderRightColor"
         [style.--button-border-right-width]="item?.metaData?.styleProperties?.properties?.borderRightWidth"
         [style.--button-border-bottom]="item?.metaData?.styleProperties?.properties?.borderBottomStyle"
-        [style.--button-border-radius-bottom-right]="item?.metaData?.styleProperties?.properties?.borderBottomRightRadius"
+        [style.--button-border-radius-bottom-right]="
+          item?.metaData?.styleProperties?.properties?.borderBottomRightRadius
+        "
         [borderBottomColor]="item?.metaData?.styleProperties?.properties?.borderBottomColor"
         [style.--button-border-bottom-width]="item?.metaData?.styleProperties?.properties?.borderBottomWidth"
         [style.--button-border-left]="item?.metaData?.styleProperties?.properties?.borderLeftStyle"
@@ -780,9 +800,11 @@
             ? item?.metaData?.options
             : item?.value?.value || []
         "
+        [showPageOptions]="false"
         [addRows]="item?.metaData?.addRows"
         [filter]="item?.metaData?.filter"
         [sort]="item?.metaData?.sort"
+        [fixedRecordsPerPage]="0"
         [overflowType]="item?.metaData?.overflow"
         [paginatorPosition]="item?.metaData?.paginatorPosition"
         [hideHeader]="item?.metaData?.hideHeader"
@@ -858,7 +880,9 @@
         [style.--input-label-font-size]="item?.metaData?.styleProperties?.properties?.labelFontSize"
         [style.--input-word-spacing]="item?.metaData?.styleProperties?.properties?.wordSpacing"
         [style.--input-letter-spacing]="item?.metaData?.styleProperties?.properties?.letterSpacing"
-        [style.--input-unchecked-background-color]="item?.metaData?.styleProperties?.properties?.uncheckedBackgroundColor"
+        [style.--input-unchecked-background-color]="
+          item?.metaData?.styleProperties?.properties?.uncheckedBackgroundColor
+        "
         [style.--input-unchecked-border-color]="item?.metaData?.styleProperties?.properties?.uncheckedBorderColor"
         [style.--input-checked-background-color]="item?.metaData?.styleProperties?.properties?.checkedBackgroundColor"
         [style.--input-checked-border-color]="item?.metaData?.styleProperties?.properties?.checkedBorderColor"
@@ -962,7 +986,7 @@
         [independentBorder]="item?.metaData?.styleProperties?.properties?.independentBorder"
         [allowLabelWrapping]="item?.metaData?.allowLabelWrapping"
         [errorMessage]="item?.errorMessage || item?.metaData?.errorMessage"
-        [showErrorMessage]="item?.errorMessage ||  item?.metaData?.showErrorMessage"
+        [showErrorMessage]="item?.errorMessage || item?.metaData?.showErrorMessage"
       ></app-dropdown-field>
     </div>
   </ng-container>
@@ -977,10 +1001,10 @@
         (onBtnClick)="onBtnClick.emit($event)"
         (onTableDataChange)="onTableDataChange.emit($event)"
         (onOptionChange)="optionChange($event, $event.data)"
-        (selectionChange)="OnStepChange($event)" 
+        (selectionChange)="OnStepChange($event)"
         [selectedIndex]="modalStepIndex || 1"
-        (onNext)="onNextClick($event,'modal')" 
-        (onPrev)="onPrevClick($event,'modal')"
+        (onNext)="onNextClick($event, 'modal')"
+        (onPrev)="onPrevClick($event, 'modal')"
         [styles]="item?.metaData?.styleProperties"
       ></app-modal>
     </div>
@@ -1008,7 +1032,9 @@
         [style.--input-label-font-size]="item?.metaData?.styleProperties?.properties?.labelFontSize"
         [style.--input-word-spacing]="item?.metaData?.styleProperties?.properties?.wordSpacing"
         [style.--input-letter-spacing]="item?.metaData?.styleProperties?.properties?.letterSpacing"
-        [style.--input-unselected-background-color]="item?.metaData?.styleProperties?.properties?.unselectedBackgroundColor"
+        [style.--input-unselected-background-color]="
+          item?.metaData?.styleProperties?.properties?.unselectedBackgroundColor
+        "
         [style.--input-unselected-border-color]="item?.metaData?.styleProperties?.properties?.unselectedBorderColor"
         [style.--input-selected-background-color]="item?.metaData?.styleProperties?.properties?.selectedBackgroundColor"
         [style.--input-selected-border-color]="item?.metaData?.styleProperties?.properties?.selectedBorderColor"
@@ -1079,7 +1105,9 @@
         [hourFormat]="item?.metaData?.hourFormat"
         [stepMinute]="item?.metaData?.stepMinute"
         [stepHour]="item?.metaData?.stepHour"
-        [style.--input-adornment-background-color]="item?.metaData?.styleProperties?.properties?.adornmentBackgroundColor"
+        [style.--input-adornment-background-color]="
+          item?.metaData?.styleProperties?.properties?.adornmentBackgroundColor
+        "
         [style.--input-border-width]="item?.metaData?.styleProperties?.properties?.borderWidth"
         [style.--input-label-font-size]="item?.metaData?.styleProperties?.properties?.labelFontSize"
         [style.--input-label-width]="item?.metaData?.styleProperties?.properties?.labelWidth + '%'"
@@ -1092,7 +1120,9 @@
         [style.--input-border-right-color]="item?.metaData?.styleProperties?.properties?.borderRightColor"
         [style.--input-border-right-width]="item?.metaData?.styleProperties?.properties?.borderRightWidth"
         [style.--input-border-bottom]="item?.metaData?.styleProperties?.properties?.borderBottomStyle"
-        [style.--input-border-radius-bottom-right]="item?.metaData?.styleProperties?.properties?.borderBottomRightRadius"
+        [style.--input-border-radius-bottom-right]="
+          item?.metaData?.styleProperties?.properties?.borderBottomRightRadius
+        "
         [style.--input-border-bottom-color]="item?.metaData?.styleProperties?.properties?.borderBottomColor"
         [style.--input-border-bottom-width]="item?.metaData?.styleProperties?.properties?.borderBottomWidth"
         [style.--input-border-left]="item?.metaData?.styleProperties?.properties?.borderLeftStyle"
@@ -1105,18 +1135,19 @@
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === StepperContainer">
-    <app-vertical-stepper *ngIf="item?.metaData?.stepperType==='Vertical'" 
-      [completedSteps]="completedSteps" 
-      [selectedIndex]="verticalStepIndex || 1" 
-      [children]="item?.children" 
+    <app-vertical-stepper
+      *ngIf="item?.metaData?.stepperType === 'Vertical'"
+      [completedSteps]="completedSteps"
+      [selectedIndex]="verticalStepIndex || 1"
+      [children]="item?.children"
       [metaData]="item?.metaData"
-      [viewMode]="viewMode" 
-      (onNext)="onNextClick($event,'stepper')" 
-      (onSelect)="onSelectionClick($event,item.metaData)" 
-      (onPrev)="onPrevClick($event,'stepper')"
+      [viewMode]="viewMode"
+      (onNext)="onNextClick($event, 'stepper')"
+      (onSelect)="onSelectionClick($event, item.metaData)"
+      (onPrev)="onPrevClick($event, 'stepper')"
       (onBtnClick)="onBtnClick.emit($event)"
       [showEdit]="showEdit"
-      [headerContent]= "item?.metaData?.headerContent" 
+      [headerContent]="item?.metaData?.headerContent"
       (onTableDataChange)="onTableDataChange.emit($event)"
       (onOptionChange)="optionChange($event, $event.data)"
       [style.--input-color]="item?.metaData?.styleProperties?.properties?.textColor"
@@ -1153,53 +1184,53 @@
       [style.--input-border-radius-bottom-left]="item?.metaData?.styleProperties?.properties?.borderBottomLeftRadius"
       [style.--input-border-left-color]="item?.metaData?.styleProperties?.properties?.borderLeftColor"
       [style.--input-border-left-width]="item?.metaData?.styleProperties?.properties?.borderLeftWidth"
-    
-      >
+    >
     </app-vertical-stepper>
     <mat-horizontal-stepper
-      *ngIf="item?.metaData?.stepperType!=='Vertical'" 
+      *ngIf="item?.metaData?.stepperType !== 'Vertical'"
       [selectedIndex]="selectedStep"
       [ngClass]="{ 'stepper-container': true, 'no-stepper-child-container': item.children.length === 0 }"
       labelPosition="bottom"
       (selectionChange)="OnStepChange($event)"
       #stepper
     >
-    <ng-container *ngFor="let child of item.children; let i = index">
-      <mat-step *ngIf="i>0">
-        <ng-template matStepLabel
-          ><i [class]="child.metaData.icon"></i> <span class="mat-step-label-text">{{ child.label }}</span></ng-template
-        >
-        <div
-          [ngClass]="{
-            'nested-grid-container': true,
-            'empty-child': !child.children.length
-          }"
-        >
-          <div *ngIf="!child.children.length" class="container-help-text">
-            <span>No Data Found</span>
+      <ng-container *ngFor="let child of item.children; let i = index">
+        <mat-step *ngIf="i > 0">
+          <ng-template matStepLabel
+            ><i [class]="child.metaData.icon"></i>
+            <span class="mat-step-label-text">{{ child.label }}</span></ng-template
+          >
+          <div
+            [ngClass]="{
+              'nested-grid-container': true,
+              'empty-child': !child.children.length
+            }"
+          >
+            <div *ngIf="!child.children.length" class="container-help-text">
+              <span>No Data Found</span>
+            </div>
+            <finlevit-grid
+              [viewMode]="viewMode"
+              [showEdit]="showEdit"
+              [parent]="child"
+              [items]="child.children"
+              (onBtnClick)="onBtnClick.emit($event)"
+              (onTableDataChange)="onTableDataChange.emit($event)"
+              (onOptionChange)="optionChange($event, $event.data)"
+            ></finlevit-grid>
           </div>
-          <finlevit-grid
-            [viewMode]="viewMode"
-            [showEdit]="showEdit"
-            [parent]="child"
-            [items]="child.children"
-            (onBtnClick)="onBtnClick.emit($event)"
-            (onTableDataChange)="onTableDataChange.emit($event)"
-            (onOptionChange)="optionChange($event, $event.data)"
-          ></finlevit-grid>
-        </div>
-        <div class="stepper-btn-container">
-          <div>
-            <button *ngIf="i > 0" matStepperPrevious class="step-btn">Previous</button>
+          <div class="stepper-btn-container">
+            <div>
+              <button *ngIf="i > 0" matStepperPrevious class="step-btn">Previous</button>
+            </div>
+            <div>
+              <button *ngIf="i != item.children.length - 1" class="step-btn" (click)="onNext($event, child, stepper)">
+                Next
+              </button>
+            </div>
           </div>
-          <div>
-            <button *ngIf="i != item.children.length - 1" class="step-btn" (click)="onNext($event, child, stepper)">
-              Next
-            </button>
-          </div>
-        </div>
-      </mat-step>
-    </ng-container>
+        </mat-step>
+      </ng-container>
     </mat-horizontal-stepper>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === TabContainer">
@@ -1208,14 +1239,14 @@
         <ng-container *ngFor="let child of item.children; let i = index">
           <p-tabPanel *ngIf="!child?.metaData?.isHidden" [header]="child.label">
             <ng-template pTemplate="header">
-              <i [class]="child?.metaData?.icon" class="p-pr-1"></i>
+              <i [class]="child?.metaData?.icon" class="pr-1"></i>
               <span>{{ child.label }}</span>
             </ng-template>
             <div
               [ngClass]="{
-              'nested-grid-container': true,
-              'empty-child': !child.children.length
-            }"
+                'nested-grid-container': true,
+                'empty-child': !child.children.length
+              }"
             >
               <!-- <div *ngIf="!child.children.length" class="container-help-text">
                 <i class="pi pi-plus"></i>
@@ -1255,34 +1286,33 @@
   <ng-container *ngIf="item?.metaData?.widgetType === Avatar">
     <div class="input-container">
       <app-avatar
-              [item]="item"
-              [style.--avatar-size]="item?.metaData?.styleProperties?.properties?.avatarSize"
-              [style.--avatar-label-font-size]="item?.metaData?.styleProperties?.properties?.avatarLabelFontSize"
-              [style.--avatar-label-font-color]="item?.metaData?.styleProperties?.properties?.avatarLabelFontColor"
-              [style.--avatar-label-font-family]="item?.metaData?.styleProperties?.properties?.avatarLabelFontStyle"
-              [style.--avatar-caption-font-size]="item?.metaData?.styleProperties?.properties?.avatarCaptionFontSize"
-              [style.--avatar-caption-font-color]="item?.metaData?.styleProperties?.properties?.avatarCaptionFontColor"
-              [style.--avatar-caption-font-family]="item?.metaData?.styleProperties?.properties?.avatarCaptionFontStyle"
-              [style.--avatar-background-color]="item?.metaData?.styleProperties?.properties?.avatarBackgroundColor"
-              [style.--avatar-text-font-color]="item?.metaData?.styleProperties?.properties?.avatarTextFontColor"
-              [style.--avatar-text-font-family]="item?.metaData?.styleProperties?.properties?.avatarTextFontStyle"
+        [item]="item"
+        [style.--avatar-size]="item?.metaData?.styleProperties?.properties?.avatarSize"
+        [style.--avatar-label-font-size]="item?.metaData?.styleProperties?.properties?.avatarLabelFontSize"
+        [style.--avatar-label-font-color]="item?.metaData?.styleProperties?.properties?.avatarLabelFontColor"
+        [style.--avatar-label-font-family]="item?.metaData?.styleProperties?.properties?.avatarLabelFontStyle"
+        [style.--avatar-caption-font-size]="item?.metaData?.styleProperties?.properties?.avatarCaptionFontSize"
+        [style.--avatar-caption-font-color]="item?.metaData?.styleProperties?.properties?.avatarCaptionFontColor"
+        [style.--avatar-caption-font-family]="item?.metaData?.styleProperties?.properties?.avatarCaptionFontStyle"
+        [style.--avatar-background-color]="item?.metaData?.styleProperties?.properties?.avatarBackgroundColor"
+        [style.--avatar-text-font-color]="item?.metaData?.styleProperties?.properties?.avatarTextFontColor"
+        [style.--avatar-text-font-family]="item?.metaData?.styleProperties?.properties?.avatarTextFontStyle"
       ></app-avatar>
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Container">
     <div class="input-container">
-      <app-container [item]="item" [viewMode]="viewMode" [showEdit]="showEdit"
-      (onBtnClick)="onBtnClick.emit($event)"
-      (onTableDataChange)="onTableDataChange.emit($event)"
-      (onOptionChange)="optionChange($event, $event.data)"></app-container>
+      <app-container
+        [item]="item"
+        [viewMode]="viewMode"
+        [showEdit]="showEdit"
+        (onBtnClick)="onBtnClick.emit($event)"
+        (onTableDataChange)="onTableDataChange.emit($event)"
+        (onOptionChange)="optionChange($event, $event.data)"
+      ></app-container>
     </div>
   </ng-container>
-  <ng-container
-    *ngIf="
-      item?.metaData?.widgetType === Header ||
-      item?.metaData?.widgetType === Footer
-    "
-  >
+  <ng-container *ngIf="item?.metaData?.widgetType === Header || item?.metaData?.widgetType === Footer">
     <div
       [ngClass]="{
         'nested-grid-container': true,
@@ -1294,21 +1324,21 @@
         *ngIf="item?.metaData?.title"
         class="container-title"
         [ngStyle]="{
-        'background-color': item?.metaData?.header?.bgColor,
-        color: item?.metaData?.header?.color,
-        'font-size': item?.metaData?.header?.fontSize + 'px',
-        height: item?.metaData?.header?.height + 'px'
-      }"
+          'background-color': item?.metaData?.header?.bgColor,
+          color: item?.metaData?.header?.color,
+          'font-size': item?.metaData?.header?.fontSize + 'px',
+          height: item?.metaData?.header?.height + 'px'
+        }"
       >
         <i
           *ngIf="item?.metaData?.header?.icon"
           [class]="item?.metaData?.header?.icon"
           [ngStyle]="{
-          color: item?.metaData?.header?.color,
-          'font-size': item?.metaData?.header?.fontSize + 'px',
-          'font-weight': 'inherit',
-          marginRight: '0.5rem'
-        }"
+            color: item?.metaData?.header?.color,
+            'font-size': item?.metaData?.header?.fontSize + 'px',
+            'font-weight': 'inherit',
+            marginRight: '0.5rem'
+          }"
         ></i
         >{{ item?.metaData?.title }}
       </div>

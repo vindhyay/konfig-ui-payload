@@ -1,5 +1,5 @@
-import { PayloadType } from './view-editor.model';
-import { getUniqueId, toCapitalize } from '../../../utils';
+import { PayloadType } from "./view-editor.model";
+import { getUniqueId, toCapitalize } from "../../../utils";
 
 class Appearance {
   appearanceType: string;
@@ -12,14 +12,14 @@ class Appearance {
   icon?: string;
   size?: number;
   constructor(
-    appearanceType = 'input',
-    layoutType = 'inline-block',
+    appearanceType = "input",
+    layoutType = "inline-block",
     keyValuePairs = false,
-    values = appearanceType === 'input' ? [] : ['True', 'False'],
-    bgColor = '#fff',
-    color = '#000',
+    values = appearanceType === "input" ? [] : ["True", "False"],
+    bgColor = "#fff",
+    color = "#000",
     fontSize = 20,
-    icon = '',
+    icon = "",
     size = 0
   ) {
     this.appearanceType = appearanceType;
@@ -37,9 +37,9 @@ class Display {
   displayName: string;
   label: string;
   placeholder: string;
-  constructor(displayName = '', label = '', placeholder = '') {
+  constructor(displayName = "", label = "", placeholder = "") {
     this.displayName = displayName;
-    this.label = label || toCapitalize(displayName.replace('_', ' '));
+    this.label = label || toCapitalize(displayName.replace("_", " "));
     this.placeholder = placeholder;
   }
 }
@@ -74,37 +74,37 @@ class Validators {
 }
 const getDefaultSize = (appearanceType: string) => {
   switch (appearanceType.toLowerCase()) {
-    case 'card':
-    case 'panel':
-    case 'fieldset':
-    case 'well':
+    case "card":
+    case "panel":
+    case "fieldset":
+    case "well":
       return 12;
     default:
       return 3;
   }
 };
 export enum DataTypes {
-  string = 'string',
-  number = 'number',
-  boolean = 'boolean',
-  date = 'date',
-  object = 'object',
-  array = 'array',
-  file = 'file'
+  string = "string",
+  number = "number",
+  boolean = "boolean",
+  date = "date",
+  object = "object",
+  array = "array",
+  file = "file",
 }
 const getDefaultAppearanceType = (type: string) => {
   switch (type.toLowerCase()) {
     case DataTypes.string:
     case DataTypes.number:
-      return 'input';
+      return "input";
     case DataTypes.boolean:
-      return 'radio';
+      return "radio";
     case DataTypes.date:
-      return 'date';
+      return "date";
     case DataTypes.object:
-      return 'PANEL';
+      return "PANEL";
     case DataTypes.array:
-      return 'CARD';
+      return "CARD";
     default:
       return type;
   }
@@ -127,9 +127,9 @@ export class MetaData {
       appearance,
       validators,
       display,
-      id = '',
-      displayName = '',
-      appearanceType = ''
+      id = "",
+      displayName = "",
+      appearanceType = "",
     } = props;
     this.payloadType = payloadType;
     this.level = level;
@@ -138,7 +138,7 @@ export class MetaData {
     this.validators = validators || new Validators();
     this.appearance = appearance || new Appearance(appearanceType);
     this.display = display || new Display(displayName);
-    this.id = id || getUniqueId('');
+    this.id = id || getUniqueId("");
   }
 }
 export class PayloadField {
@@ -156,9 +156,9 @@ export class PayloadField {
   constructor(data: any) {
     const {
       id = null,
-      displayName = '',
-      appearanceType = '',
-      path = '',
+      displayName = "",
+      appearanceType = "",
+      path = "",
       type,
       resourceType,
       payloadType,
@@ -167,10 +167,10 @@ export class PayloadField {
       status = true,
       children,
       metaData,
-      value = ''
+      value = "",
     } = data;
     this.id = id;
-    this.value = '';
+    this.value = "";
     this.displayName = displayName;
     this.path = path;
     this.type = type;
@@ -185,7 +185,7 @@ export class PayloadField {
         type,
         viewType,
         displayName,
-        appearanceType: appearanceType || getDefaultAppearanceType(type)
+        appearanceType: appearanceType || getDefaultAppearanceType(type),
       });
     this.validators = this.metaData.validators;
   }

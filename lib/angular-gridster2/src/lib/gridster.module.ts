@@ -6,11 +6,10 @@ import { GridsterItemComponent } from './gridsterItem.component';
 import { GridsterPreviewComponent } from './gridsterPreview.component';
 
 @NgModule({
-  declarations: [GridsterComponent, GridsterItemComponent, GridsterPreviewComponent],
-  imports: [CommonModule],
-  exports: [GridsterComponent, GridsterItemComponent],
-  providers: [],
-  bootstrap: [],
-  entryComponents: [GridsterComponent, GridsterItemComponent]
+    declarations: [GridsterComponent, GridsterItemComponent, GridsterPreviewComponent],
+    imports: [CommonModule],
+    exports: [GridsterComponent, GridsterItemComponent],
+    providers: [],
+    bootstrap: []
 })
 export class GridsterModule {}

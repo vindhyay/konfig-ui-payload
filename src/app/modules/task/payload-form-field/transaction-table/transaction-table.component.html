@@ -1,32 +1,35 @@
 <div
-        [ngClass]="{
-        'input-container': true
-        }">
-    <finlevit-custom-table
-      [columns]="item?.metaData?.columns"
-      [actions]="item?.metaData?.actions"
-      [rows]="item?.rows"
-      [tableData]="tableData"
-      [isServerSidePagination]="true"
-      [totalRecords]="totalRecords"
-      [addRows]="item?.metaData?.addRows"
-      [filter]="item?.metaData?.filter"
-      [sort]="item?.metaData?.sort"
-      [overflowType]="item?.metaData?.overflow"
-      [paginatorPosition]="item?.metaData?.paginatorPosition"
-      [hideHeader]="item?.metaData?.hideHeader"
-      [style.--header-cell-background-color]="item?.metaData?.bgColor"
-      [style.--header-cell-color]="item?.metaData?.color"
-      [style.--body-cell-background-color]="item?.metaData?.bodyCellBgColor"
-      [style.--body-cell-color]="item?.metaData?.bodyCellColor"
-      [style.--paginator-color]="item?.metaData?.paginatorColor"
-      [style.--paginator-background-color]="item?.metaData?.paginatorBgColor"
-      [style.--table-border-color]="item?.metaData?.borderColor"
-      [tableBorder]="item?.metaData?.tableBorder"
-      [horizontalBorder]="item?.metaData?.horizontalBorder"
-      [verticalBorder]="item?.metaData?.verticalBorder"
-      (onRowClick)="onRowClick($event)"
-      (onPageChange)="onPageChange($event)"
-    ></finlevit-custom-table>
+  [ngClass]="{
+    'input-container': true
+  }"
+>
+  <finlevit-custom-table
+    [columns]="item?.metaData?.columns"
+    [actions]="item?.metaData?.actions"
+    [rows]="item?.rows"
+    [tableData]="tableData"
+    [isServerSidePagination]="true"
+    [showPageOptions]="false"
+    [totalRecords]="totalRecords"
+    [addRows]="item?.metaData?.addRows"
+    [filter]="item?.metaData?.filter"
+    [sort]="item?.metaData?.sort"
+    [fixedRecordsPerPage]="0"
+    [overflowType]="item?.metaData?.overflow"
+    [paginatorPosition]="item?.metaData?.paginatorPosition"
+    [hideHeader]="item?.metaData?.hideHeader"
+    [style.--header-cell-background-color]="item?.metaData?.bgColor"
+    [style.--header-cell-color]="item?.metaData?.color"
+    [style.--body-cell-background-color]="item?.metaData?.bodyCellBgColor"
+    [style.--body-cell-color]="item?.metaData?.bodyCellColor"
+    [style.--paginator-color]="item?.metaData?.paginatorColor"
+    [style.--paginator-background-color]="item?.metaData?.paginatorBgColor"
+    [style.--table-border-color]="item?.metaData?.borderColor"
+    [tableBorder]="item?.metaData?.tableBorder"
+    [horizontalBorder]="item?.metaData?.horizontalBorder"
+    [verticalBorder]="item?.metaData?.verticalBorder"
+    (onRowClick)="onRowClick($event)"
+    (onPageChange)="onPageChange($event)"
+  ></finlevit-custom-table>
 </div>
 <app-loader [loading]="loading"></app-loader>

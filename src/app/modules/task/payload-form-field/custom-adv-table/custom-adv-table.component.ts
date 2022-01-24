@@ -8,7 +8,7 @@ import {
   OnInit,
   Output,
   SimpleChanges,
-  ViewChild
+  ViewChild,
 } from "@angular/core";
 import {
   BaseWidget,
@@ -16,19 +16,19 @@ import {
   TABLE_OVERFLOW,
   TABLE_PAGINATION_POSITIONS,
   TableActions,
-  WidgetTypes
+  WidgetTypes,
 } from "../../model/create-form.models";
 import { DeepCopy, getUniqueId, scrollToBottom, superClone } from "../../../../utils";
 import { FormControl, Validators } from "@angular/forms";
-import { PaginationDirective } from "../../../shared/finlevit-custom-inputs/finlevit-custom-table/table-utils/pagination.directive";
-import { CustomTableFiltersComponent } from "../../../shared/finlevit-custom-inputs/finlevit-custom-table/table-utils/custom-table-filters/custom-table-filters.component";
+import { PaginationDirective } from "../../../shared/finlevit-custom-table/table-utils/pagination.directive";
+import { CustomTableFiltersComponent } from "../../../shared/finlevit-custom-table/table-utils/custom-table-filters/custom-table-filters.component";
 
 const MIN_ROW_HEIGHT = 50;
 
 @Component({
   selector: "finlevit-custom-adv-table",
   templateUrl: "./custom-adv-table.component.html",
-  styleUrls: ["./custom-adv-table.component.scss"]
+  styleUrls: ["./custom-adv-table.component.scss"],
 })
 export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit {
   Object = Object;
@@ -55,7 +55,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
   @Input() tableBorder = true;
   @Input()
   set columns(columns) {
-    this._columns = columns.map(column => {
+    this._columns = columns.map((column) => {
       if (column?.metaData?.widgetType === WidgetTypes.DatePicker) {
         if (column?.validators?.minDate) {
           column.validators.minDate = new Date(column.validators.minDate);
@@ -156,7 +156,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
   }
   getMinWidth() {
     let sum = 0;
-    this.columns.forEach(col => {
+    this.columns.forEach((col) => {
       sum = sum + Number(col.width || 100);
     });
     if (this.actions?.editRow || this.actions?.deleteRow) {
@@ -175,7 +175,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
   onEdit(rowIndex, rowData: Array<any>) {
     this.editRows[rowIndex] = rowData;
     const currentRow: any = {};
-    (rowData || []).forEach(eachColumn => {
+    (rowData || []).forEach((eachColumn) => {
       currentRow[eachColumn?.metaData?.widgetId] = eachColumn?.value?.value;
     });
     this.modifyingData[rowIndex] = currentRow;
@@ -205,7 +205,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
       delete this.modifyingData[index];
       delete this.editCells[index];
       const oldRowData = this.tableData[index];
-      (oldRowData || []).forEach(eachColumn => {
+      (oldRowData || []).forEach((eachColumn) => {
         if (!eachColumn?.value) {
           eachColumn.value = {};
         }
@@ -216,7 +216,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
   }
   onColEdit($event, column: BaseWidget, rowIndex, rowData) {
     const colRowData = {};
-    (this.tableData[rowIndex] || []).forEach(eachCol => {
+    (this.tableData[rowIndex] || []).forEach((eachCol) => {
       colRowData[eachCol?.metaData?.widgetId] = eachCol?.value?.value || null;
     });
     if (!this.editCells[rowIndex]) {
@@ -226,11 +226,11 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
     this.modifyingData[rowIndex] = superClone(colRowData);
   }
   onColSave($event) {
-    Object.keys(this.modifyingData).map(index => {
+    Object.keys(this.modifyingData).map((index) => {
       const rowData = this.modifyingData[index];
       if (this.validateRow(index, rowData)) {
         const oldRowData = this.tableData[index];
-        (oldRowData || []).forEach(eachColumn => {
+        (oldRowData || []).forEach((eachColumn) => {
           if (!eachColumn?.value) {
             eachColumn.value = {};
           }
@@ -248,7 +248,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
   }
   onColSaveCancel($event) {
     this.editCells = {};
-    Object.keys(this.modifyingData).forEach(rowIndex => {
+    Object.keys(this.modifyingData).forEach((rowIndex) => {
       if (this.newRows[rowIndex]) {
         this.onDelete(rowIndex, this.modifyingData[rowIndex], true);
       }
@@ -258,7 +258,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
   }
   validateRow(index, rowData, columnData: BaseWidget = null) {
     let valid = true;
-    this.columns.forEach(eachCol => {
+    this.columns.forEach((eachCol) => {
       if (
         columnData &&
         columnData?.metaData?.widgetId &&
@@ -280,7 +280,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
         }
         this.rowErrors[index][eachCol.metaData.widgetId] = {
           error: true,
-          errorMsg: eachCol?.metaData?.errorMessage || this.getErrorMessages(tempFormControl.errors, eachCol.label)[0]
+          errorMsg: eachCol?.metaData?.errorMessage || this.getErrorMessages(tempFormControl.errors, eachCol.label)[0],
         };
       }
     });
@@ -288,7 +288,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
   }
   getErrorMessages = (errors: any, label: any) => {
     const errorMessages: string[] = [];
-    Object.keys(errors).forEach(error => {
+    Object.keys(errors).forEach((error) => {
       switch (error) {
         case "required":
           errorMessages.push(`${label} is required`);
@@ -311,7 +311,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
   };
   getValidators = (validators: any) => {
     const _validators: any = [];
-    Object.keys(validators).forEach(validator => {
+    Object.keys(validators).forEach((validator) => {
       switch (validator) {
         case "minValue":
           validators[validator] && _validators.push(Validators.min(validators[validator]));
@@ -345,11 +345,11 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
   addRow() {
     const newRow: any = [];
     const newRowData = {};
-    this.columns.forEach(eachColumn => {
-        const column =  DeepCopy.copy(eachColumn);
-        column.value.value = column?.value?.value || null;
-        newRow.push(column);
-        newRowData[eachColumn?.metaData?.widgetId] = column?.value?.value;
+    this.columns.forEach((eachColumn) => {
+      const column = DeepCopy.copy(eachColumn);
+      column.value.value = column?.value?.value || null;
+      newRow.push(column);
+      newRowData[eachColumn?.metaData?.widgetId] = column?.value?.value;
     });
     this.tableData.push(newRow);
     if (this.isPaginationEnabled) {
@@ -368,7 +368,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
       if (!this.editCells[rowIndex]) {
         this.editCells[rowIndex] = {};
       }
-      Object.keys(newRow).forEach(col => {
+      Object.keys(newRow).forEach((col) => {
         this.editCells[rowIndex][col] = newRow[col];
       });
     }
@@ -398,8 +398,8 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
   onSortChange($event) {
     const order = $event.direction === "asc" ? 1 : $event.direction === "desc" ? -1 : 0;
     this.tableData.sort((data1, data2) => {
-      const value1Data = data1.find(cellData => cellData.metaData.widgetId === $event.column);
-      const value2Data = data2.find(cellData => cellData.metaData.widgetId === $event.column);
+      const value1Data = data1.find((cellData) => cellData.metaData.widgetId === $event.column);
+      const value2Data = data2.find((cellData) => cellData.metaData.widgetId === $event.column);
       const value1 = value1Data?.value?.value;
       const value2 = value2Data?.value?.value;
       let result = null;
@@ -420,13 +420,13 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
   }
 
   getRulesFromFilterColumns(columns) {
-    return (columns || []).map(column => {
+    return (columns || []).map((column) => {
       return {
         fieldId: column?.field?.widgetName,
         condition: column.condition,
         dataType: column?.field?.type,
         operator: column.operator,
-        value: column?.value
+        value: column?.value,
       };
     });
   }
