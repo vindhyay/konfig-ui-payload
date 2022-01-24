@@ -48,6 +48,7 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
   Divider: WidgetTypes = WidgetTypes.Divider;
   Spacer: WidgetTypes = WidgetTypes.Spacer;
   Icon: WidgetTypes = WidgetTypes.Icon;
+  Avatar: WidgetTypes = WidgetTypes.Avatar;
   NESTED_MIN_COLUMNS: number = NESTED_MIN_COLUMNS;
   activeTabIndexes = {};
   activeStepperIndexes = {};

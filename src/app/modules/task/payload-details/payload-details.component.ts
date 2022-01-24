@@ -60,7 +60,19 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
           }else{
             this.formFields.forEach((element,index) => {
               for (const prop in element) {
-                this.formFields[index][prop]=value.uiPayload[index][prop];
+                if(prop==='children'){
+                  this.formFields[index][prop].forEach((subelement,subindex)=>{
+                    for (const subprop in subelement) {
+                      this.formFields[index][prop][subindex][subprop]= value.uiPayload[index][prop][subindex][subprop];
+                    }
+                  })
+                }else if(prop==='value') {
+                  if (!element[prop]|| typeof element[prop]!= "object" || !element[prop]?.value) {
+                    this.formFields[index][prop] = { ...value.uiPayload[index][prop], value: value.uiPayload[index][prop].value ? value.uiPayload[index][prop].value : null };
+                  }
+                }else if(this.formFields[index][prop]!==value.uiPayload[index][prop]){
+                  this.formFields[index][prop]=value.uiPayload[index][prop];
+                }
               }
             });
           }
@@ -245,7 +257,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
       this.notificationService.error("Application not found", "Failed to submit");
       return;
     }
-    const isSubmit= payloadData?.itemData?.data?.metaData?.onClickConfigs.filter(item=>item.action===ButtonActions.submit)?.length>0;
+    const isSubmit= payloadData?.itemData?.data?.metaData?.onClickConfigs?.filter(item=>item.action===ButtonActions.submit)?.length>0;
     this.userService.saveTransaction({ transactionId: this.transactionDetails?.transactionId, screenId: this.transactionDetails?.screenId }, this.formFields)
       .subscribe(result => {
           this.loading = false;

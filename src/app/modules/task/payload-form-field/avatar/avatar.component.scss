@@ -1,0 +1,46 @@
+:host{
+  --avatar-size: 40px;
+  --avatar-label-font-size: 12px;
+  --avatar-label-font-color: #373F51;
+  --avatar-caption-font-size: 12px;
+  --avatar-caption-font-color: #26262680;
+  --avatar-background-color: #dee2e6;
+  --avatar-text-font-color: #373F51;
+}
+
+.avatar{
+  display: inline-flex;
+  flex-direction: row;
+  .avatar-text{
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+    line-height: calc( var(--avatar-size)/2);
+    .avatar-label{
+      font-size: var(--avatar-label-font-size);
+      color: var(--avatar-label-font-color);
+    }
+    .avatar-caption{
+      font-size: var(--avatar-caption-font-size);
+      color: var(--avatar-caption-font-color);
+    }
+  }
+}
+img{
+  height: var(--avatar-size) !important;
+  width: var(--avatar-size) !important;
+  background-color: var(--avatar-background-color);
+  border-radius: 50%;
+}
+
+::ng-deep{
+  .p-avatar{
+    height: var(--avatar-size) !important;
+    width: var(--avatar-size) !important;
+    background-color: var(--avatar-background-color);
+  }
+  .p-avatar-text{
+    font-size: calc( var(--avatar-size)/2);
+    color: var(--avatar-text-font-color);
+  }
+}
