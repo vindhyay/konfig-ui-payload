@@ -15,7 +15,7 @@ COPY . /app
 #RUN rm -rf /app/package-lock.json
 
 #Install all the required dependencies in the container and Compile Prod build
-RUN npm install && npm install @angular/cli@11.2.2 && npm install typescript@4.0.7 && \
+RUN npm install && npm install @angular/cli@13.1.2 && npm install typescript@4.5.4 && \
     node --max_old_space_size=8192
 RUN npm run build    
 #RUN npm install @angular/cli@8.3.19
