@@ -81,7 +81,7 @@
       (onTableDataChange)="onTableDataChange.emit($event)"
       (onOptionChange)="optionChange($event, $event.data)"
       (checkHeight)="checkHeight()"
-      [items]="item.children[_selectedIndex].children"
+      [items]="item?.children[_selectedIndex]?.children"
     ></finlevit-grid>
   </div>
   <ng-template pTemplate="footer">
