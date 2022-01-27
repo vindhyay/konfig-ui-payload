@@ -75,10 +75,9 @@ export class PayloadFormFieldComponent implements OnInit, OnDestroy {
       data.value = { id: data?.value?.id, value: data?.value?.value ? data.value : null };
     }
     if (data?.metaData?.widgetType === WidgetTypes.Table) {
-      const metaData = data.metaData as TableMetaData<Column>;
       data.value = {
         id: data?.value?.id,
-        value: data?.value?.value?.length ? data.value.value : metaData?.options?.length ? metaData.options : [],
+        value: data?.value?.value?.length ? data.value.value : [],
       };
     }
     if (data?.metaData?.widgetType === WidgetTypes.Checkbox) {

@@ -253,6 +253,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
     delete this.modifyingData[index];
     delete this.editCells[index];
     delete this.rowErrors[index];
+    this.tableData = [...this.tableData];
   }
   onRowSave(index, rowData, isNew = false) {
     if (this.validateRow(index, rowData)) {
@@ -300,6 +301,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
     });
     this.modifyingData = {};
     this.editRows = {};
+    this.tableData = [...this.tableData];
   }
   validateRow(index, rowData, columnId = "") {
     let valid = true;
