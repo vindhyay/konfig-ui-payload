@@ -1,5 +1,6 @@
 import {
   AfterViewInit,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -66,7 +67,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
   get tableData() {
     return this._tableData;
   }
-  constructor() {}
+  constructor(private cdr: ChangeDetectorRef) {}
   Object = Object;
   CellAlignTypes = CELL_ALIGNMENTS_TYPES;
   PaginatorPositionTypes = TABLE_PAGINATION_POSITIONS;
@@ -226,7 +227,6 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
       return;
     }
     this.tableData.splice(index, 1);
-    this.tableData = [...this.tableData];
     delete this.rowErrors[index];
     delete this.newRows[index];
     delete this.modifyingData[index];
@@ -239,7 +239,9 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
       return;
     }
     this.editRows[rowIndex] = superClone(data);
-    this.modifyingData[rowIndex] = superClone(data);
+    if (!this.modifyingData[rowIndex]) {
+      this.modifyingData[rowIndex] = superClone(data);
+    }
     // if (!this.editCells[rowIndex]) {
     //   this.editCells[rowIndex] = {};
     // }
@@ -266,7 +268,6 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
       delete this.modifyingData[index];
       delete this.editCells[index];
       this.tableData[index] = rowData;
-      this.tableData = [...this.tableData];
     }
   }
   onColEdit($event, column, rowIndex, rowData) {
@@ -274,13 +275,14 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
       this.editCells[rowIndex] = {};
     }
     this.editCells[rowIndex][column.columnId] = superClone(this.tableData[rowIndex][column.columnId]);
-    this.modifyingData[rowIndex] = superClone(rowData);
+    if (!this.modifyingData[rowIndex]) {
+      this.modifyingData[rowIndex] = superClone(rowData);
+    }
   }
   onColSave($event) {
     Object.keys(this.modifyingData).map((index) => {
       if (this.validateRow(index, this.modifyingData[index])) {
         this.tableData[index] = { ...this.tableData[index], ...this.modifyingData[index] };
-        this.tableData = [...this.tableData];
         if (this.newRows[index]) {
           delete this.newRows[index];
         }
@@ -300,6 +302,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
     });
     this.modifyingData = {};
     this.editRows = {};
+    this.cdr.detectChanges();
   }
   validateRow(index, rowData, columnId = "") {
     let valid = true;
@@ -382,7 +385,6 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
       Object.assign(newRow, { [eachColumn.columnId]: eachColumn?.value?.value || null });
     });
     this.tableData.push(newRow);
-    this.tableData = [...this.tableData];
     if (this.isPaginationEnabled) {
       this.currentPage = Math.ceil(this.tableData.length / this.limitPerPage);
     } else {
@@ -431,7 +433,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
       this.onSort.emit($event);
       return;
     }
-    this.tableData = this.tableData.sort((row1, row2) => {
+    this.tableData.sort((row1, row2) => {
       const value1 = row1[$event.column];
       const value2 = row2[$event.column];
       let result = null;
@@ -448,7 +450,6 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
       }
       return order * result;
     });
-    this.tableData = [...this.tableData];
   }
 
   getRulesFromFilterColumns(columns) {
