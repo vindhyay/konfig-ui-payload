@@ -76,12 +76,12 @@
     <finlevit-grid
       [viewMode]="viewMode"
       [showEdit]="showEdit"
-      [parent]="item"
+      [parent]="item.children[_selectedIndex]"
       (onBtnClick)="onBtnClick.emit($event)"
       (onTableDataChange)="onTableDataChange.emit($event)"
       (onOptionChange)="optionChange($event, $event.data)"
       (checkHeight)="checkHeight()"
-      [items]="item?.children[_selectedIndex]?.children"
+      [items]="subchild"
     ></finlevit-grid>
   </div>
   <ng-template pTemplate="footer">
@@ -96,8 +96,8 @@
         <finlevit-grid
           [viewMode]="viewMode"
           [showEdit]="showEdit"
-          [parent]="item.children[0]"
-          [items]="item.children[0]?.children"
+          [parent]="item.children[_selectedIndex].children"
+          [items]="item.children[_selectedIndex]?.children[0].children"
           (onBtnClick)="onFooterClick($event)"
           (onTableDataChange)="onTableDataChange.emit($event)"
           (onOptionChange)="optionChange($event, $event.data)"

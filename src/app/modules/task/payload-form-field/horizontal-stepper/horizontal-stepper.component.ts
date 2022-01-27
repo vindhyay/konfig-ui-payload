@@ -1,38 +1,18 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from "@angular/core";
 import { getAllFromFields, eligibileReviewField } from "src/app/utils";
-import { TextStyles } from "../../model/create-form.models";
+import { StepperContainerMetaData, TextStyles } from "../../model/create-form.models";
 import { EditorService } from "../../editor.service";
 import { TaskService } from "../../services/task.service";
 @Component({
-  selector: "app-vertical-stepper",
-  templateUrl: "./vertical-stepper.component.html",
-  styleUrls: ["./vertical-stepper.component.scss"],
+  selector: "app-horizontal-stepper",
+  templateUrl: "./horizontal-stepper.component.html",
+  styleUrls: ["./horizontal-stepper.component.scss"],
 })
-export class VerticalStepperComponent implements OnInit {
+export class HorizontalStepperComponent implements OnInit {
   constructor(private editorService: EditorService, private taskService: TaskService) {}
-  @Input() children = [];
   @Input() headerContent = [];
   @Input() viewMode = false;
-  @Input() metaData = {
-    showHeader: false,
-    isReviewer: false,
-    indicatorPattern: "cicle",
-    textStyle: TextStyles.BODY1,
-    color: "#000000",
-    fontWeight: 400,
-    currentStepColor: "#000000",
-    completedStepColor: "#000000",
-    textDecortation: "",
-    fontStyle: "",
-    defaultBarColor: "",
-    completedBarColor: "",
-    buttonContainer: {},
-    footerBgColor: "#fff",
-    conentBgColor: "#fff",
-    leftPanelBgColor: "#fff",
-    headerHeight: 0,
-    stepperHeight: 0,
-  };
+  @Input() metaData : StepperContainerMetaData ;
   @Output() onNext = new EventEmitter();
   @Output() onPrev = new EventEmitter();
   @Output() onSelect = new EventEmitter();
@@ -44,6 +24,7 @@ export class VerticalStepperComponent implements OnInit {
   subchild: any = [];
   reviewData = [];
   _selectedIndex = 0;
+  _children= [];
   @ViewChild("contentConatiner", { read: ElementRef }) contentConatiner: ElementRef;
   @ViewChild("stepperBody", { read: ElementRef }) stepperBody: ElementRef;
   isInteract = false;
@@ -61,25 +42,24 @@ export class VerticalStepperComponent implements OnInit {
   }
 
   @Input() set selectedIndex(number) {
-    let reviewArray = [];
-    if (this.children && number === this.children.length - 1 && this.metaData?.isReviewer) {
-      this.children.forEach((child) => {
-        reviewArray.push({ label: child.label, children: getAllFromFields(child.children, eligibileReviewField) });
-      });
-      reviewArray.pop();
-      this.reviewData = reviewArray;
-    }
     this._selectedIndex = number;
     setTimeout(() => {
       this.manipulateData();
       this.checkHeight();
-      // this.checkVisibility();
-      this.scrollTo(this._selectedIndex);
+    }, 100);
+  }
+  @Input() set children(childrenArray) {
+    this._children = childrenArray;
+    setTimeout(() => {
+      this.manipulateData();
+      this.checkHeight();
     }, 100);
   }
 
+
   manipulateData() {
     this.subchild = this.children[this._selectedIndex]?.children?.slice(1);
+    console.log('_selectedIndex ',this._selectedIndex,this.children,this.children[this._selectedIndex],this.subchild);
   }
   private scrollTo(_index: any) {
     if (this.isInteract)

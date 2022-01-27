@@ -53,8 +53,8 @@ export class PayloadFormFieldComponent implements OnInit, OnDestroy {
   activeTabIndexes = {};
   activeStepperIndexes = {};
   modalStatus = {};
-  verticalStepIndex: number = 1;
-  modalStepIndex: number = 1;
+  verticalStepIndex: number = 0;
+  modalStepIndex: number = 0;
   completedSteps = {};
   selectedStep = 0;
   transactionStatus = null;
@@ -263,7 +263,7 @@ export class PayloadFormFieldComponent implements OnInit, OnDestroy {
     } else {
       index = this.modalStepIndex;
     }
-    if (stepIndex > 1) {
+    if (stepIndex > 0) {
       index -= 1;
     }
     if (type == "stepper") {
@@ -276,9 +276,15 @@ export class PayloadFormFieldComponent implements OnInit, OnDestroy {
     if (metaData.isFreeflow || this.verticalStepIndex > $event) {
       this.verticalStepIndex = $event;
     } else {
-      const child = this.item.children[this.verticalStepIndex];
-      const validate = validateFields(child.children);
-      if (validate) {
+      let isError= true;
+      for(let i=this.verticalStepIndex;i<$event;i++){
+        const child = this.item.children[i];
+        const validate = validateFields(child.children);
+        if(!validate){
+          isError= false;
+        }
+      }
+      if (isError) {
         this.verticalStepIndex = $event;
       }
     }

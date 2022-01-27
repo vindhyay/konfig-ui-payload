@@ -22,17 +22,22 @@ export class ModalComponent implements OnInit {
   @Output() onPrev = new EventEmitter();
   @Input() styles;
   @Input() selectionChange;
-  _selectedIndex = 1;
+  _selectedIndex = 0;
   modalStatus = false;
+  subchild: any = [];
   get metaData(): ModalMetaData {
     return this.item.metaData as ModalMetaData;
   }
   @Input() set selectedIndex(number) {
     this._selectedIndex = number;
-    this.checkVisibility();
+    this.manipulateData();
+    // this.checkVisibility();
     setTimeout(() => {
       this.checkHeight();
     });
+  }
+  manipulateData() {
+    this.subchild = this.item.children[this._selectedIndex]?.children?.slice(1);
   }
   onFooterClick(item: any) {
     const indexObj = item.data.metaData["onClickConfigs"].filter(
@@ -60,12 +65,6 @@ export class ModalComponent implements OnInit {
     this.modalStatus = this.editorService.modalStatus[this.modalId];
     setTimeout(() => {
       this.checkHeight();
-      this.checkVisibility();
-    });
-    this.taskService.transactionDetailsSubject.subscribe((value) => {
-      setTimeout(() => {
-        this.checkVisibility();
-      });
     });
   }
   toggleModal() {
@@ -77,34 +76,6 @@ export class ModalComponent implements OnInit {
     setTimeout(() => {
       this.checkHeight();
     });
-  }
-  checkVisibility() {
-    if (this.item.children[0].children.length && this.item.metaData["modalType"] === "MultiPage")
-      this.item.children[0].children = this.item.children[0].children.map((item) => {
-        const index = item?.metaData["onClickConfigs"].findIndex(
-          (subitem) => subitem.action === "previousStep" || subitem.action === "nextStep" || subitem.action === "submit"
-        );
-        if (index >= 0) {
-          switch (item.metaData["onClickConfigs"][index]?.action) {
-            case "previousStep":
-              return { ...item, metaData: { ...item.metaData, isHidden: this._selectedIndex <= 1 } };
-            case "nextStep":
-              return {
-                ...item,
-                metaData: { ...item.metaData, isHidden: this._selectedIndex === this.item.children.length - 1 },
-              };
-            case "submit":
-              return {
-                ...item,
-                metaData: { ...item.metaData, isHidden: this._selectedIndex !== this.item.children.length - 1 },
-              };
-            default:
-              return item;
-          }
-        } else {
-          return item;
-        }
-      });
   }
   checkHeight(containerName?) {
     if (this.item.children?.length && this.item.children[this._selectedIndex]) {

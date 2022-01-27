@@ -1,0 +1,47 @@
+<mat-horizontal-stepper
+  *ngIf="metaData?.stepperType !== 'Vertical'"
+  [ngClass]="{ 'stepper-container': true, 'no-stepper-child-container': _children.length === 0 }"
+  labelPosition="bottom"
+  [selectedIndex]="_selectedIndex"
+  (selectionChange)="onSelectIndexChange($event)"
+  #stepper
+>
+  <ng-container *ngFor="let child of _children; let i = index">
+    <mat-step>
+      <ng-template matStepLabel
+        ><i [class]="child.metaData.icon"></i> <span class="mat-step-label-text">{{ child.label }}</span></ng-template
+      >
+      <div
+        [ngClass]="{
+          'nested-grid-container': true,
+          'empty-child': !child.children.length
+        }"
+      >
+      <div *ngIf="!child.children.length" class="container-help-text">
+        <span>No Data Found</span>
+      </div>
+        <div class="scrollView">
+          <div [ngClass]="'content' + metaData.widgetId">
+            <finlevit-grid
+              [viewMode]="viewMode"
+              [parent]="child"
+              [items]="subchild"
+              (checkHeight)="checkHeight()"
+              (onBtnClick)="onBtnClick.emit($event)"
+              (onTableDataChange)="onTableDataChange.emit($event)"
+              (onOptionChange)="onOptionChange.emit($event)"
+            ></finlevit-grid>
+          </div>
+        </div>
+      </div>
+      <div class="stepper-btn-container">
+        <div>
+          <button *ngIf="i > 0" matStepperPrevious class="step-btn">Previous</button>
+        </div>
+        <div>
+          <button *ngIf="i !== _children.length - 1" matStepperNext class="step-btn">Next</button>
+        </div>
+      </div>
+    </mat-step>
+  </ng-container>
+</mat-horizontal-stepper>
