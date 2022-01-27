@@ -67,6 +67,15 @@ export class PayloadFormFieldComponent implements OnInit, OnDestroy {
     private editorService: EditorService
   ) {}
   @Input()
+  set options(optionsData: any) {
+    if (this.item?.metaData?.widgetType === WidgetTypes.Table) {
+      this.item.value = {
+        id: this.item?.value?.id,
+        value: optionsData?.length ? optionsData : this.item?.value?.value?.length ? this.item.value.value : [],
+      };
+    }
+  }
+  @Input()
   get item() {
     return this._item;
   }
@@ -75,9 +84,10 @@ export class PayloadFormFieldComponent implements OnInit, OnDestroy {
       data.value = { id: data?.value?.id, value: data?.value?.value ? data.value : null };
     }
     if (data?.metaData?.widgetType === WidgetTypes.Table) {
+      const metaData = data.metaData as TableMetaData<Column>;
       data.value = {
         id: data?.value?.id,
-        value: data?.value?.value?.length ? data.value.value : [],
+        value: metaData?.options?.length ? metaData.options : data?.value?.value?.length ? data.value.value : [],
       };
     }
     if (data?.metaData?.widgetType === WidgetTypes.Checkbox) {

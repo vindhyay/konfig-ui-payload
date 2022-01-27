@@ -793,13 +793,7 @@
         [columns]="item?.metaData?.columns"
         [actions]="item?.metaData?.actions"
         [rows]="item?.rows"
-        [tableData]="
-          item?.value?.value?.length
-            ? item?.value?.value
-            : item?.metaData?.options?.length
-            ? item?.metaData?.options
-            : item?.value?.value || []
-        "
+        [tableData]="item?.value?.value || []"
         [showPageOptions]="false"
         [addRows]="item?.metaData?.addRows"
         [filter]="item?.metaData?.filter"
