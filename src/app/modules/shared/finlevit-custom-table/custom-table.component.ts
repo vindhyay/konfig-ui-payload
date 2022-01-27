@@ -1,5 +1,6 @@
 import {
   AfterViewInit,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -66,7 +67,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
   get tableData() {
     return this._tableData;
   }
-  constructor() {}
+  constructor(private cdr: ChangeDetectorRef) {}
   Object = Object;
   CellAlignTypes = CELL_ALIGNMENTS_TYPES;
   PaginatorPositionTypes = TABLE_PAGINATION_POSITIONS;
@@ -238,7 +239,9 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
       return;
     }
     this.editRows[rowIndex] = superClone(data);
-    this.modifyingData[rowIndex] = superClone(data);
+    if (!this.modifyingData[rowIndex]) {
+      this.modifyingData[rowIndex] = superClone(data);
+    }
     // if (!this.editCells[rowIndex]) {
     //   this.editCells[rowIndex] = {};
     // }
@@ -299,6 +302,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
     });
     this.modifyingData = {};
     this.editRows = {};
+    this.cdr.detectChanges();
   }
   validateRow(index, rowData, columnId = "") {
     let valid = true;
