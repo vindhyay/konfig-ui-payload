@@ -338,6 +338,14 @@ export class TableMetaData<T> extends MetaData {
   columns: Array<T>;
   overflow: TABLE_OVERFLOW;
   options: Array<any>;
+  headerFontSize: string;
+  headerCellPaddingTop: string;
+  headerCellPaddingBottom: string;
+  headerCellPaddingLeft: string;
+  headerCellPaddingRight: string;
+  headerCellBackgroundColor: string;
+  paginatorBackgroundColor: string;
+  bodyFontSize: string;
   bodyCellColor: string;
   bodyCellBgColor: string;
 
@@ -356,7 +364,6 @@ export class TableMetaData<T> extends MetaData {
       pagination = false,
       color = "#6a6a6a",
       bgColor = "#ededed",
-      bodyCellColor = "#6a6a6a",
       bodyCellBgColor = "#fff",
       optionsPopulateConfig = [],
       columns = [],
@@ -365,14 +372,22 @@ export class TableMetaData<T> extends MetaData {
       horizontalBorder = true,
       verticalBorder = true,
       tableBorder = true,
-      borderColor = "#cccccc",
       actions = {},
       overflow = TABLE_OVERFLOW.PAGINATION,
       paginatorPosition = TABLE_PAGINATION_POSITIONS.BOTTOM,
       paginatorBgColor = "#ededed",
+      hideFooter = false,
+      headerFontSize = "14px",
+      headerCellPaddingTop = "11px",
+      headerCellPaddingBottom = "11px",
+      headerCellPaddingLeft = "11px",
+      headerCellPaddingRight = "11px",
+      headerCellBackgroundColor = "#f3f6f9",
+      bodyFontSize = "14px",
       paginatorColor = "#6a6a6a",
       options = [],
-      hideFooter = false,
+      bodyCellColor = "#373f51",
+      borderColor = "#cccccc",
     } = data;
     this.columns = columns;
     this.heading = heading;
@@ -401,6 +416,13 @@ export class TableMetaData<T> extends MetaData {
     this.bodyCellBgColor = bodyCellBgColor;
     this.options = options;
     this.hideFooter = hideFooter;
+    this.headerFontSize = headerFontSize;
+    this.headerCellPaddingTop = headerCellPaddingTop;
+    this.headerCellPaddingBottom = headerCellPaddingBottom;
+    this.headerCellPaddingLeft = headerCellPaddingLeft;
+    this.headerCellPaddingRight = headerCellPaddingRight;
+    this.headerCellBackgroundColor = headerCellBackgroundColor;
+    this.bodyFontSize = bodyFontSize;
   }
 }
 
