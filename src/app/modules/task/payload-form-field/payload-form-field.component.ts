@@ -332,7 +332,7 @@ export class PayloadFormFieldComponent implements OnInit, OnDestroy {
   }
   onChange($event) {
     const ifConditions = this.item.metaData?.conditions?.ifConditions || [];
-    // this.taskService.checkCondition(ifConditions);
+    this.taskService.checkCondition(ifConditions);
   }
   calculateFormulaValue(itemMetaData, id): any {
     let formulaValue = "";
