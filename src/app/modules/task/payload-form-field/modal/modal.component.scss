@@ -2,9 +2,6 @@
     .p-button {
       width: 100%;
       height: 100%;
-      font-size: inherit !important;
-      font-weight: inherit !important;
-      ;
     }
   }
   ::ng-deep {
@@ -20,7 +17,6 @@
       }
       &>div:nth-child(3){
         padding: 0 !important;
-        // height: 10%;
       }
     }
     .footer-content gridster{

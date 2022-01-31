@@ -1,16 +1,15 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { TransactionTableComponent } from './transaction-table.component';
+import { TransactionTableComponent } from "./transaction-table.component";
 
-describe('TransactionTableComponent', () => {
+describe("TransactionTableComponent", () => {
   let component: TransactionTableComponent;
   let fixture: ComponentFixture<TransactionTableComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TransactionTableComponent ]
-    })
-    .compileComponents();
+      declarations: [TransactionTableComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('TransactionTableComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

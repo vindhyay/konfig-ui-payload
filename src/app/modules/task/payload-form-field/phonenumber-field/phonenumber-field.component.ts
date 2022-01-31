@@ -67,12 +67,10 @@ export class PhonenumberFieldComponent implements OnInit {
     return this.item.metaData as PhonenumberInputMetaData;
   }
   ngOnInit(): void {
-    if(this.item.metaData.configure){
-      let phoneNumber = ('' + this.item.value.value).replace(/\D/g, '');
-      let match = phoneNumber.match(/^(\d{3})(\d{3})(\d{4})$/);
-      if (match) {
-        this.item.value.value = match[1] + '-' + match[2] + '-' + match[3];
-      }
+    let phoneNumber = ('' + this.item.value.value).replace(/\D/g, '');
+    let match = phoneNumber.match(/^(\d{3})(\d{3})(\d{4})$/);
+    if (match) {
+      this.item.value.value = match[1] + '-' + match[2] + '-' + match[3];
     }
   }
   

@@ -1,13 +1,13 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import {BaseWidget, SSNInputMetaData} from '../../model/create-form.models';
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { BaseWidget, SSNInputMetaData } from "../../model/create-form.models";
 
 @Component({
-  selector: 'app-ssninput-field',
-  templateUrl: './ssninput-field.component.html',
-  styleUrls: ['./ssninput-field.component.scss']
+  selector: "app-ssninput-field",
+  templateUrl: "./ssninput-field.component.html",
+  styleUrls: ["./ssninput-field.component.scss"],
 })
 export class ssnInputFieldComponent implements OnInit {
-  _type_mask:string = '000-00-0000'
+  _type_mask: string = "000-00-0000";
   @Input() item: BaseWidget = {} as BaseWidget;
   @Input() isDisabled = false;
   @Input() textColor: string;
@@ -66,33 +66,33 @@ export class ssnInputFieldComponent implements OnInit {
     return this.item.metaData as SSNInputMetaData;
   }
   ngOnInit(): void {
-    if(!this.metaData.rightIcon){
-      this.metaData.rightIcon= this.metaData.showIcon? this.metaData.showIcon: null;
+    if (!this.metaData.rightIcon) {
+      this.metaData.rightIcon = this.metaData.showIcon ? this.metaData.showIcon : null;
     }
   }
 
-  onRightIconClick(metaData:any){
+  onRightIconClick(metaData: any) {
     this.changeIcon(metaData);
   }
-  changeIcon(metaData){
-    if(this._type_mask=== this.metaData.showMask){
-      metaData.rightIcon= metaData?.hideIcon;
-      this._type_mask=metaData.hideMask;
-    }else{
-      metaData.rightIcon= metaData?.showIcon;
-      this._type_mask=metaData.showMask;
+  changeIcon(metaData) {
+    if (this._type_mask === this.metaData.showMask) {
+      metaData.rightIcon = metaData?.hideIcon;
+      this._type_mask = metaData.hideMask;
+    } else {
+      metaData.rightIcon = metaData?.showIcon;
+      this._type_mask = metaData.showMask;
     }
   }
-  validateField($event: any){
-    this._type_mask=this.metaData.hideMask;
+  validateField($event: any) {
+    this._type_mask = this.metaData.hideMask;
     this.changeIcon(this.metaData);
     this.onValueChange.emit($event);
   }
-  optionChange($event: any){
-    setTimeout(()=>{
-      this._type_mask=this.metaData.showMask;
+  optionChange($event: any) {
+    setTimeout(() => {
+      this._type_mask = this.metaData.showMask;
       this.changeIcon(this.metaData);
       this.onBlurChange.emit($event);
-    },0)
+    }, 0);
   }
 }

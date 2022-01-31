@@ -54,22 +54,25 @@
     <div
       [class]="'header-content'"
       [style]="{
-        'height': metaData?.modalHeader[0]?.headerHeight+'px',
+        height: metaData?.modalHeader[0]?.headerHeight + 'px',
         'background-color': styles?.properties?.headerBackgroundColor,
-        'font-family':styles?.properties?.headerFontFamily,
-        'color': styles?.properties?.headerLabelColor,
+        'font-family': styles?.properties?.headerFontFamily,
+        color: styles?.properties?.headerLabelColor,
         'font-size': styles?.properties?.headerFontSize,
-          'font-weight': styles?.properties?.labelFontWeight,
-          'font-style': styles?.properties?.labelStyle,
-          'text-decoration': styles?.properties?.labelTextDecoration
+        'font-weight': styles?.properties?.labelFontWeight,
+        'font-style': styles?.properties?.labelStyle,
+        'text-decoration': styles?.properties?.labelTextDecoration
       }"
     >
       {{ metaData?.modalHeader[_selectedIndex]?.title }}
     </div>
   </ng-template>
-  <div [class]="'modalcontent modal'+item?.metaData?.widgetId" [style]="{
-    'background-color': styles?.properties?.contentBackgroundColor
-  }">
+  <div
+    [class]="'modalcontent modal' + item?.metaData?.widgetId"
+    [style]="{
+      'background-color': styles?.properties?.contentBackgroundColor
+    }"
+  >
     <finlevit-grid
       [viewMode]="viewMode"
       [showEdit]="showEdit"
@@ -78,14 +81,14 @@
       (onTableDataChange)="onTableDataChange.emit($event)"
       (onOptionChange)="optionChange($event, $event.data)"
       (checkHeight)="checkHeight()"
-      [items]="item.children[_selectedIndex].children"
+      [items]="item?.children[_selectedIndex]?.children"
     ></finlevit-grid>
   </div>
   <ng-template pTemplate="footer">
     <div
       [ngClass]="{ 'footer-content': true }"
       [style]="{
-        'background-color':styles?.properties?.footerBackgroundColor,
+        'background-color': styles?.properties?.footerBackgroundColor,
         height: metaData?.footerHeight + 'px'
       }"
     >
@@ -98,7 +101,7 @@
           (onBtnClick)="onFooterClick($event)"
           (onTableDataChange)="onTableDataChange.emit($event)"
           (onOptionChange)="optionChange($event, $event.data)"
-          [style]="{width:'100%', 'background-color': styles?.properties?.footerBackgroundColor}"
+          [style]="{ width: '100%', 'background-color': styles?.properties?.footerBackgroundColor }"
         ></finlevit-grid>
       </ng-container>
     </div>

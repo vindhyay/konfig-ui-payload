@@ -5,12 +5,8 @@
   [label]="item?.label"
   [error]="item?.error == true"
   [options]="item?.metaData?.options"
-  [optionLabel]="
-    item?.metaData?.isLabelAndValue  ? item?.metaData?.optionLabel : 'name'
-  "
-  [optionValue]="
-    item?.metaData?.isLabelAndValue ? item?.metaData?.optionValue : 'value'
-  "
+  [optionLabel]="item?.metaData?.isLabelAndValue ? item?.metaData?.optionLabel : 'name'"
+  [optionValue]="item?.metaData?.isLabelAndValue ? item?.metaData?.optionValue : 'value'"
   [tooltip]="item?.metaData?.tooltip"
   [(ngModel)]="item.value.value"
   (ngModelChange)="onOptionChange($event)"

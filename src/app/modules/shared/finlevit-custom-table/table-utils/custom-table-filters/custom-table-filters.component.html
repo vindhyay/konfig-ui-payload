@@ -1,0 +1,83 @@
+<div #dropdownReference class="search-btn-wrapper">
+  <div class="search-btn" (click)="showDropdown()">
+    <i [ngClass]="{ 'pi pi-filter': true, 'filter-active': filtersEnabled }"></i>
+  </div>
+</div>
+<custom-dropdown [offsetX]="-550" [reference]="dropdownReference" #dropdownComp>
+  <div class="search-container">
+    <ng-container *ngFor="let control of advSearchForm.controls; index as i">
+      <div class="search-row" [formGroup]="control">
+        <finlevit-lib-select
+          class="m-2"
+          [isSmall]="true"
+          *ngIf="i"
+          placeholder="Select Operator"
+          [options]="operators"
+          optionLabel="name"
+          optionValue="id"
+          formControlName="operator"
+        ></finlevit-lib-select>
+        <finlevit-lib-select
+          [isRequired]="true"
+          [optionLabel]="'label'"
+          class="m-2"
+          [isSmall]="true"
+          placeholder="Select Column"
+          [options]="columns"
+          formControlName="field"
+        ></finlevit-lib-select>
+        <finlevit-lib-select
+          [isRequired]="true"
+          class="m-2"
+          [isSmall]="true"
+          optionLabel="name"
+          optionValue="id"
+          placeholder="Select Condition"
+          [options]="conditions[(control?.value?.field?.type || '').toUpperCase() || 'DEFAULT']"
+          formControlName="condition"
+        ></finlevit-lib-select>
+        <ng-container [ngSwitch]="control?.value?.field?.colType">
+          <finlevit-lib-datepicker
+            class="m-2"
+            [isSmall]="true"
+            *ngSwitchCase="DatePicker"
+            [placeholder]="control?.value?.field?.label || 'Enter Value'"
+            formControlName="value"
+          ></finlevit-lib-datepicker>
+          <finlevit-number
+            class="m-2"
+            *ngSwitchCase="Number"
+            [isSmall]="true"
+            [placeholder]="control?.value?.field?.label || 'Enter Value'"
+            formControlName="value"
+          >
+          </finlevit-number>
+          <finlevit-text
+            class="m-2"
+            *ngSwitchDefault
+            type="text"
+            [isSmall]="true"
+            [placeholder]="control?.value?.field?.label || 'Enter Value'"
+            formControlName="value"
+          ></finlevit-text>
+        </ng-container>
+        <div (click)="removeSearchField(i)" *ngIf="i">
+          <span class="material-icons clear-icon"> clear </span>
+        </div>
+        <div (click)="addSearchField()">
+          <span class="material-icons add-icon"> add </span>
+        </div>
+      </div>
+    </ng-container>
+    <div class="d-flex justify-content-center m-2 filter-actions">
+      <div class="m-2">
+        <app-btn-primary label="Search" [style.--button-label-font-size]="12" (btnClick)="onSearch()" [isSmall]="true">
+        </app-btn-primary>
+      </div>
+      <div class="m-2">
+        <app-btn-danger [style.--button-label-font-size]="12" [isSmall]="true" (btnClick)="clearSearch()" label="Clear">
+        </app-btn-danger>
+      </div>
+    </div>
+  </div>
+</custom-dropdown>

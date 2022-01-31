@@ -4,10 +4,10 @@ export interface Avatar {
 }
 
 export const enum UserRole {
-  Admin = 'Admin',
-  WorkflowManager = 'workflowManager',
-  Support = 'supportRole',
-  Agent = 'agent'
+  Admin = "Admin",
+  WorkflowManager = "workflowManager",
+  Support = "supportRole",
+  Agent = "agent",
 }
 export interface View {
   group: string[];
@@ -31,7 +31,7 @@ export interface Permissions {
 }
 
 export interface UserDataModel {
-  roles: Array<{originalName: string, id: string}>;
+  roles: Array<{ originalName: string; id: string }>;
   permissions: Permissions;
   userId: string;
   name: string;

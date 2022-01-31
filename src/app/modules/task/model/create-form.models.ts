@@ -11,19 +11,19 @@ export enum ButtonTypes {
   primary = "primary",
   info = "info",
   success = "success",
-  secondary = "secondary"
+  secondary = "secondary",
 }
 
 export enum ButtonVariants {
   raisedButton = "raisedButton",
   roundedButton = "roundedButton",
   raisedTextButton = "raisedTextButton",
-  outlinedButton = "outlinedButton"
+  outlinedButton = "outlinedButton",
 }
 
 export enum PopulateConfigOptionTypes {
   onload = "onload",
-  ontrigger = "ontrigger"
+  ontrigger = "ontrigger",
 }
 
 export enum ColumnTypes {
@@ -32,7 +32,7 @@ export enum ColumnTypes {
   TextArea = "TextArea",
   Number = "Number",
   DatePicker = "DatePicker",
-  Data = "Data"
+  Data = "Data",
 }
 
 export enum ButtonActions {
@@ -45,12 +45,12 @@ export enum ButtonActions {
   next = "next",
   previous = "previous",
   nextStep = "nextStep",
-  previousStep = "previousStep"
+  previousStep = "previousStep",
 }
 
 export enum PayloadType {
   NEW_PAYLOAD = "NEW_PAYLOAD",
-  OLD_PAYLOAD = "OLD_PAYLOAD"
+  OLD_PAYLOAD = "OLD_PAYLOAD",
 }
 
 export enum AlignTypes {
@@ -59,7 +59,7 @@ export enum AlignTypes {
   CENTER = "center",
   LEFT = "flex-start",
   MIDDLE = "center",
-  RIGHT = "flex-end"
+  RIGHT = "flex-end",
 }
 
 export enum TextStyles {
@@ -72,16 +72,16 @@ export enum TextStyles {
   SUBTITLE1 = "subtitle1",
   SUBTITLE2 = "subtitle2",
   BODY1 = "body1",
-  BODY2 = "body2"
+  BODY2 = "body2",
 }
 
 export enum ResourceType {
-  PAYLOAD_FIELD = "payload-field"
+  PAYLOAD_FIELD = "payload-field",
 }
 
 export const PayloadTypes = {
   NEW_PAYLOAD: PayloadType.NEW_PAYLOAD,
-  OLD_PAYLOAD: PayloadType.OLD_PAYLOAD
+  OLD_PAYLOAD: PayloadType.OLD_PAYLOAD,
 };
 
 export enum DATA_TYPES {
@@ -89,40 +89,45 @@ export enum DATA_TYPES {
   NUMBER = "number",
   BOOLEAN = "boolean",
   OBJECT = "object",
-  ARRAY = "array"
+  ARRAY = "array",
 }
 
 export enum CELL_ALIGNMENTS_TYPES {
   LEFT = "left",
   RIGHT = "right",
-  CENTER = "center"
+  CENTER = "center",
 }
 export enum TABLE_OVERFLOW {
   PAGINATION = "pagination",
-  SCROLL = "scroll"
+  SCROLL = "scroll",
 }
 export enum TABLE_PAGINATION_POSITIONS {
   TOP = "top",
-  BOTTOM = "bottom"
+  BOTTOM = "bottom",
 }
-
 
 export class TableActions {
   editRow: boolean;
+  emitOnEdit: boolean;
   deleteRow: boolean;
+  emitOnDelete: boolean;
   width: any;
   label: string;
   alignment: CELL_ALIGNMENTS_TYPES;
   constructor(data) {
     const {
       editRow = true,
+      emitOnEdit = false,
+      emitOnDelete = false,
       deleteRow = true,
       width = 100,
       label = "Actions",
-      align = CELL_ALIGNMENTS_TYPES.LEFT
+      align = CELL_ALIGNMENTS_TYPES.LEFT,
     } = data;
     this.editRow = editRow;
     this.deleteRow = deleteRow;
+    this.emitOnEdit = emitOnEdit;
+    this.emitOnDelete = emitOnDelete;
     this.width = width;
     this.label = label;
     this.alignment = align;
@@ -170,7 +175,7 @@ export enum WidgetTypes {
   Divider = "Divider",
   Spacer = "Spacer",
   Icon = "Icon",
-  Avatar = "Avatar"
+  Avatar = "Avatar",
 }
 class Validators {
   required: boolean;
@@ -192,7 +197,7 @@ class Validators {
       maxValue = null,
       minDate = null,
       maxDate = null,
-      pattern = null
+      pattern = null,
     } = validators;
     this.required = required;
     this.editable = editable;
@@ -303,7 +308,7 @@ export class TablePopulateConfig {
       populateResponsePath = null,
       datalistId = null,
       dataResourceId = null,
-      resourceId = null
+      resourceId = null,
     } = data;
     this.populateConfigType = populateConfigType;
     this.columns = columns;
@@ -333,6 +338,14 @@ export class TableMetaData<T> extends MetaData {
   columns: Array<T>;
   overflow: TABLE_OVERFLOW;
   options: Array<any>;
+  headerFontSize: string;
+  headerCellPaddingTop: string;
+  headerCellPaddingBottom: string;
+  headerCellPaddingLeft: string;
+  headerCellPaddingRight: string;
+  headerCellBackgroundColor: string;
+  paginatorBackgroundColor: string;
+  bodyFontSize: string;
   bodyCellColor: string;
   bodyCellBgColor: string;
 
@@ -351,7 +364,6 @@ export class TableMetaData<T> extends MetaData {
       pagination = false,
       color = "#6a6a6a",
       bgColor = "#ededed",
-      bodyCellColor = "#6a6a6a",
       bodyCellBgColor = "#fff",
       optionsPopulateConfig = [],
       columns = [],
@@ -360,14 +372,22 @@ export class TableMetaData<T> extends MetaData {
       horizontalBorder = true,
       verticalBorder = true,
       tableBorder = true,
-      borderColor = "#cccccc",
       actions = {},
       overflow = TABLE_OVERFLOW.PAGINATION,
       paginatorPosition = TABLE_PAGINATION_POSITIONS.BOTTOM,
       paginatorBgColor = "#ededed",
+      hideFooter = false,
+      headerFontSize = "14px",
+      headerCellPaddingTop = "11px",
+      headerCellPaddingBottom = "11px",
+      headerCellPaddingLeft = "11px",
+      headerCellPaddingRight = "11px",
+      headerCellBackgroundColor = "#f3f6f9",
+      bodyFontSize = "14px",
       paginatorColor = "#6a6a6a",
       options = [],
-      hideFooter = false,
+      bodyCellColor = "#373f51",
+      borderColor = "#cccccc",
     } = data;
     this.columns = columns;
     this.heading = heading;
@@ -396,6 +416,13 @@ export class TableMetaData<T> extends MetaData {
     this.bodyCellBgColor = bodyCellBgColor;
     this.options = options;
     this.hideFooter = hideFooter;
+    this.headerFontSize = headerFontSize;
+    this.headerCellPaddingTop = headerCellPaddingTop;
+    this.headerCellPaddingBottom = headerCellPaddingBottom;
+    this.headerCellPaddingLeft = headerCellPaddingLeft;
+    this.headerCellPaddingRight = headerCellPaddingRight;
+    this.headerCellBackgroundColor = headerCellBackgroundColor;
+    this.bodyFontSize = bodyFontSize;
   }
 }
 
@@ -426,7 +453,7 @@ export class OptionConfig {
       populateTriggerId = null,
       optionLabel = "",
       optionValue = "",
-      showDisplayField = false
+      showDisplayField = false,
     } = data;
     this.dataResourceId = dataResourceId;
     this.datalistId = datalistId;
@@ -492,7 +519,7 @@ export class DropdownMetaData extends MetaData {
       showErrorMessage = true,
       styleProperties = {},
       allowLabelWrapping = false,
-      showFieldDependencyConfig = false
+      showFieldDependencyConfig = false,
     } = data;
     this.placeholder = placeholder || "Select";
     this.optionType = optionType;
@@ -523,7 +550,7 @@ export class TextInputMetaData extends MetaData {
   formula = [];
   errorMessage: string;
   showErrorMessage: boolean;
-  styleProperties: { id: "", properties: any };
+  styleProperties: { id: ""; properties: any };
   adornmentBackgroundColor: string;
   allowLabelWrapping: boolean;
   showClearButton: boolean;
@@ -547,7 +574,7 @@ export class TextInputMetaData extends MetaData {
       allowLabelWrapping = false,
       showClearButton = false,
       prefixText = "",
-      suffixText = ""
+      suffixText = "",
     } = data;
     this.mask = mask;
     this.icon = icon;
@@ -587,7 +614,7 @@ export class PasswordInputMetaData extends MetaData {
   };
   errorMessage: string;
   showErrorMessage: boolean;
-  styleProperties: { id: "", properties: any };
+  styleProperties: { id: ""; properties: any };
   adornmentBackgroundColor: string;
   allowLabelWrapping: boolean;
   showClearButton: boolean;
@@ -611,7 +638,7 @@ export class PasswordInputMetaData extends MetaData {
         oneUpperCase: true,
         oneNumber: true,
         oneSpecialchar: true,
-        minLength: 8
+        minLength: 8,
       },
       errorMessage = "",
       showErrorMessage = true,
@@ -620,7 +647,7 @@ export class PasswordInputMetaData extends MetaData {
       allowLabelWrapping = false,
       showClearButton = false,
       prefixText = "",
-      suffixText = ""
+      suffixText = "",
     } = data;
     this.mask = mask;
     this.icon = icon;
@@ -690,7 +717,7 @@ export class StepperContainerMetaData extends MetaData {
       conentBgColor = "#fff",
       showHeader = false,
       headerContent = [],
-      headerHeight = 0
+      headerHeight = 0,
     } = data;
     this.sublabel = sublabel;
     this.stepperType = stepperType;
@@ -755,9 +782,8 @@ export class SSNInputMetaData extends MetaData {
       formula,
       selectedInput = "SSN",
       patterns = {
-        SSN:
-          "^(?!\\b(\\d)\\1+-(\\d)\\1+-(\\d)\\1+\\b)(?!123-45-6789|219-09-9999|078-05-1120)(?!666|000|9\\d{2})\\d{3}-(?!00)\\d{2}-(?!0{4})\\d{4}$",
-        ITIN: "^(9\\d{2})-([7]\\d|8[0-8])-(\\d{4})$"
+        SSN: "^(?!\\b(\\d)\\1+-(\\d)\\1+-(\\d)\\1+\\b)(?!123-45-6789|219-09-9999|078-05-1120)(?!666|000|9\\d{2})\\d{3}-(?!00)\\d{2}-(?!0{4})\\d{4}$",
+        ITIN: "^(9\\d{2})-([7]\\d|8[0-8])-(\\d{4})$",
       },
       errorMessage = "",
       showErrorMessage = true,
@@ -766,7 +792,7 @@ export class SSNInputMetaData extends MetaData {
       allowLabelWrapping = false,
       showClearButton = false,
       prefixText = "",
-      suffixText = ""
+      suffixText = "",
     } = data;
     this.mask = mask;
     this.icon = icon;
@@ -809,7 +835,7 @@ export class EmailMetaData extends MetaData {
   showClearButton: boolean;
   prefixText: string;
   suffixText: string;
-  styleProperties: { id: "", properties: any };
+  styleProperties: { id: ""; properties: any };
   constructor(data) {
     super(data);
     const {
@@ -828,7 +854,7 @@ export class EmailMetaData extends MetaData {
       allowLabelWrapping = false,
       showClearButton = false,
       prefixText = "",
-      suffixText = ""
+      suffixText = "",
     } = data;
     this.mask = mask;
     this.icon = icon;
@@ -860,7 +886,7 @@ export class PhonenumberInputMetaData extends MetaData {
   formula = [];
   errorMessage: string;
   showErrorMessage: boolean;
-  styleProperties: { id: "", properties: any };
+  styleProperties: { id: ""; properties: any };
   adornmentBackgroundColor: string;
   allowLabelWrapping: boolean;
   showClearButton: boolean;
@@ -884,7 +910,7 @@ export class PhonenumberInputMetaData extends MetaData {
       allowLabelWrapping = false,
       showClearButton = false,
       prefixText = "",
-      suffixText = ""
+      suffixText = "",
     } = data;
     this.mask = mask;
     this.icon = icon;
@@ -918,7 +944,7 @@ export class ButtonMetaData extends MetaData {
       iconPos = "left",
       type = ButtonTypes.primary,
       variant = ButtonVariants.raisedButton,
-      clickAction = ButtonActions.none
+      clickAction = ButtonActions.none,
     } = data;
     this.icon = icon;
     this.iconPos = iconPos;
@@ -954,15 +980,24 @@ export class DatePickerMetaData extends MetaData {
   stepMinute: number;
   constructor(data) {
     super(data);
-    const { viewDateFormat = "mm/dd/yy", returnDateFormat = "isoTimestamp", tooltip = "", placeholder = "",showTime=false,hourFormat=24,stepHour=1,stepMinute=1  } = data;
+    const {
+      viewDateFormat = "mm/dd/yy",
+      returnDateFormat = "isoTimestamp",
+      tooltip = "",
+      placeholder = "",
+      showTime = false,
+      hourFormat = 24,
+      stepHour = 1,
+      stepMinute = 1,
+    } = data;
     this.viewDateFormat = viewDateFormat;
     this.returnDateFormat = returnDateFormat;
     this.tooltip = tooltip;
     this.placeholder = placeholder;
-    this.showTime=showTime;
-    this.hourFormat=hourFormat;
-    this.stepHour=stepHour;
-    this.stepMinute=stepMinute;
+    this.showTime = showTime;
+    this.hourFormat = hourFormat;
+    this.stepHour = stepHour;
+    this.stepMinute = stepMinute;
   }
 }
 
@@ -1009,7 +1044,7 @@ export class NumberMetaData extends MetaData {
       showClearButton = false,
       adornmentBackgroundColor = "#ffffff",
       prefixText = "",
-      suffixText = ""
+      suffixText = "",
     } = data;
     this.prefix = prefix;
     this.suffix = suffix;
@@ -1049,7 +1084,7 @@ export class TextMetaData extends MetaData {
       horizontalAlign = AlignTypes.MIDDLE,
       verticalAlign = AlignTypes.CENTER,
       color = "#000000",
-      fontWeight = 400
+      fontWeight = 400,
     } = data;
     this.color = color;
     this.fontWeight = fontWeight;
@@ -1073,7 +1108,7 @@ export class ContainerMetaData extends MetaData {
   header: ContainerHeader;
   onClickConfigs: Array<OnChangeTriggerConfig>;
   externalLink: string;
-  styleProperties: { id: "", properties: any };
+  styleProperties: { id: ""; properties: any };
   constructor(data) {
     super(data);
     const { title = "", icon = "", styleProperties = {}, onClickConfig = {}, externalLink = "", header = {} } = data;
@@ -1151,7 +1186,7 @@ export class CheckboxGroupMetaData extends CheckboxMetaData {
       alignOptions = "Horizontal",
       columns = 1,
       allowLabelWrapping = false,
-      showFieldDependencyConfig = false
+      showFieldDependencyConfig = false,
     } = data;
     this.optionType = optionType;
     this.tooltip = tooltip;
@@ -1195,7 +1230,7 @@ export class RadioGroupMetaData extends CheckboxMetaData {
       allowLabelWrapping = false,
       showErrorMessage = true,
       errorMessage = "",
-      showFieldDependencyConfig = false
+      showFieldDependencyConfig = false,
     } = data;
     this.optionType = optionType;
     this.tooltip = tooltip;
@@ -1219,19 +1254,19 @@ export class ImageMetaData extends MetaData {
   remoteKey: string;
   position: string; // 'Cover' or 'Contain'
   horizontalAlign: string;
-  shorterEdge: string
-  styleProperties: { id: "", properties: any };
+  shorterEdge: string;
+  styleProperties: { id: ""; properties: any };
   constructor(data) {
     super(data);
-    const { 
+    const {
       url = "",
       altText = "",
-      source = 'Local',
+      source = "Local",
       remoteKey = "",
       position = "Contain",
       horizontalAlign = "Center",
       shorterEdge = "height",
-      styleProperties = {}
+      styleProperties = {},
     } = data;
     this.url = url;
     this.altText = altText;
@@ -1263,7 +1298,7 @@ export class AvatarMetaData extends MetaData {
       tooltip = "",
       imageUrl = "",
       fallbackText = "Admin",
-      configureLoginData = false
+      configureLoginData = false,
     } = data;
     this.caption = caption;
     this.styleProperties = styleProperties;
@@ -1333,8 +1368,8 @@ export class ModalMetaData extends MetaData {
   iconPos: string;
   type: ButtonTypes;
   variant: ButtonVariants;
-  textStyle:string;
-  fontStyle:string;
+  textStyle: string;
+  fontStyle: string;
   textDecortation: string;
   fontWeight: number;
   footerContent: any;
@@ -1357,16 +1392,16 @@ export class ModalMetaData extends MetaData {
       type = ButtonTypes.primary,
       variant = ButtonVariants.raisedButton,
       textStyle = TextStyles.BODY1,
-      fontStyle = '',
-      textDecortation = '',
+      fontStyle = "",
+      textDecortation = "",
       fontWeight = 400,
-      footerbgColor= "#ffffff",
+      footerbgColor = "#ffffff",
       footerContent = [],
-      footerHeight= 50,
-      modalHeader=[],
+      footerHeight = 50,
+      modalHeader = [],
       buttonContainer = {},
       modalType = "SinglePage",
-      styleProperties = {}
+      styleProperties = {},
     } = data;
     this.title = title;
     this.icon = icon;
@@ -1375,20 +1410,20 @@ export class ModalMetaData extends MetaData {
     this.color = color;
     this.bgColor = bgColor;
     this.button = new ContainerHeader(button);
-    this.iconPos=iconPos;
-    this.type=type;
-    this.variant=variant;
+    this.iconPos = iconPos;
+    this.type = type;
+    this.variant = variant;
     this.fontStyle = fontStyle;
     this.textStyle = textStyle;
-    this.textDecortation= textDecortation;
+    this.textDecortation = textDecortation;
     this.fontWeight = fontWeight;
-    this.footerbgColor=footerbgColor;
-    this.footerContent=footerContent;
-    this.footerHeight= footerHeight;
+    this.footerbgColor = footerbgColor;
+    this.footerContent = footerContent;
+    this.footerHeight = footerHeight;
     this.modalHeader = modalHeader;
     this.modalType = modalType;
     this.buttonContainer = buttonContainer;
-    this.styleProperties= styleProperties;
+    this.styleProperties = styleProperties;
   }
 }
 
@@ -1405,15 +1440,15 @@ export class DividerMetaData extends MetaData {
   constructor(data) {
     super(data);
     const {
-      align = 'center',
-      layout = 'horizontal',
-      type = 'dotted',
-      text = '',
-      textColor = 'black',
-      borderColor = '#d1d1d1',
-      borderStyle = 'solid',
-      fontFamily = 'Helvetica',
-      fontSize = '1em'
+      align = "center",
+      layout = "horizontal",
+      type = "dotted",
+      text = "",
+      textColor = "black",
+      borderColor = "#d1d1d1",
+      borderStyle = "solid",
+      fontFamily = "Helvetica",
+      fontSize = "1em",
     } = data;
     this.align = align;
     this.layout = layout;
@@ -1446,7 +1481,7 @@ export class IconMetaData extends MetaData {
       color = "black",
       fontSize = "20px",
       horizontalPosition = "center",
-      verticalPosition = "center"
+      verticalPosition = "center",
     } = data;
     this.iconType = iconType;
     this.color = color;
@@ -1513,7 +1548,7 @@ export class BaseWidget {
   status: boolean;
   error?: boolean;
   errorMsg?: string;
-  errorMessage?:string;
+  errorMessage?: string;
   children: BaseWidget[];
   validators: Validators;
   value: Value;
@@ -1544,7 +1579,7 @@ export class BaseWidget {
       maxItemCols,
       maxItemRows,
       width = 100,
-  } = data;
+    } = data;
     if (!metaData) {
       switch (widgetType) {
         case WidgetTypes.Text:
@@ -1674,7 +1709,7 @@ export class Column extends BaseWidget {
       populateResponsePath = "",
       columnId = "",
       children = [],
-      alignment = CELL_ALIGNMENTS_TYPES.LEFT
+      alignment = CELL_ALIGNMENTS_TYPES.LEFT,
     } = data;
     this.alignment = alignment;
     this.children = children || [];
