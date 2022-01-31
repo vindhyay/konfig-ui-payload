@@ -24,20 +24,14 @@ export class ModalComponent implements OnInit {
   @Input() selectionChange;
   _selectedIndex = 0;
   modalStatus = false;
-  subchild: any = [];
   get metaData(): ModalMetaData {
     return this.item.metaData as ModalMetaData;
   }
   @Input() set selectedIndex(number) {
     this._selectedIndex = number;
-    this.manipulateData();
-    // this.checkVisibility();
     setTimeout(() => {
       this.checkHeight();
     });
-  }
-  manipulateData() {
-    this.subchild = this.item.children[this._selectedIndex]?.children?.slice(1);
   }
   onFooterClick(item: any) {
     const indexObj = item.data.metaData["onClickConfigs"].filter(
@@ -46,11 +40,9 @@ export class ModalComponent implements OnInit {
     switch (indexObj[0]?.action) {
       case "previousStep":
         this.onPrev.emit(this._selectedIndex);
-        // this.onBtnClick.emit(item);
         break;
       case "nextStep":
         this.onNext.emit(this._selectedIndex);
-        // this.onBtnClick.emit(item);
         break;
       default:
         this.onBtnClick.emit(item);

@@ -30,7 +30,7 @@
       : globalStyle?.borderRadius
   }"
 >
-  <ng-container *ngFor="let item of items">
+  <ng-container *ngFor="let item of items | searchFilter: filter">
     <gridster-item
       [ngClass]="{
         'card-container': item?.metaData?.widgetType === Container,

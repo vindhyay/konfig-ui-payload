@@ -64,7 +64,8 @@
           <finlevit-grid
             [viewMode]="viewMode"
             [parent]="children[_selectedIndex]"
-            [items]="subchild"
+            [items]="children[_selectedIndex].children"
+            [filter]="{ metaData: { isFooterContainer: false } }"
             (onBtnClick)="onBtnClick.emit($event)"
             (checkHeight)="checkHeight()"
             [showEdit]="showEdit"

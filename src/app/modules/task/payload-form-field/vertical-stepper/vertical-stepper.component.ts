@@ -41,7 +41,6 @@ export class VerticalStepperComponent implements OnInit {
   @Output() onTableDataChange = new EventEmitter();
   @Input() completedSteps = {};
   @Input() showEdit = false;
-  subchild: any = [];
   reviewData = [];
   _selectedIndex = 0;
   @ViewChild("contentConatiner", { read: ElementRef }) contentConatiner: ElementRef;
@@ -54,7 +53,6 @@ export class VerticalStepperComponent implements OnInit {
     }, 100);
     this.taskService.transactionDetailsSubject.subscribe((value) => {
       setTimeout(() => {
-        // this.checkVisibility();
         this.scrollTo(this._selectedIndex);
       });
     });
@@ -71,16 +69,11 @@ export class VerticalStepperComponent implements OnInit {
     }
     this._selectedIndex = number;
     setTimeout(() => {
-      this.manipulateData();
       this.checkHeight();
-      // this.checkVisibility();
       this.scrollTo(this._selectedIndex);
     }, 100);
   }
 
-  manipulateData() {
-    this.subchild = this.children[this._selectedIndex]?.children?.slice(1);
-  }
   private scrollTo(_index: any) {
     if (this.isInteract)
       this.stepperBody.nativeElement
@@ -106,34 +99,6 @@ export class VerticalStepperComponent implements OnInit {
         break;
     }
   }
-  checkVisibility() {
-    if (this.children[0].children.length)
-      this.children[0].children = this.children[0].children.map((item) => {
-        const index = item?.metaData["onClickConfigs"].findIndex(
-          (subitem) => subitem.action === "previousStep" || subitem.action === "nextStep" || subitem.action === "submit"
-        );
-        if (index >= 0) {
-          switch (item.metaData["onClickConfigs"][index]?.action) {
-            case "previousStep":
-              return { ...item, metaData: { ...item.metaData, isHidden: this._selectedIndex <= 1 } };
-            case "nextStep":
-              return {
-                ...item,
-                metaData: { ...item.metaData, isHidden: this._selectedIndex === this.children.length - 1 },
-              };
-            case "submit":
-              return {
-                ...item,
-                metaData: { ...item.metaData, isHidden: this._selectedIndex !== this.children.length - 1 },
-              };
-            default:
-              return item;
-          }
-        }
-        return item;
-      });
-  }
-
   checkHeight(containerName?) {
     this.editorService.setAdjustableHeight(
       this.children[this._selectedIndex].children,

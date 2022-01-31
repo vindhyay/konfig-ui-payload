@@ -81,7 +81,8 @@
       (onTableDataChange)="onTableDataChange.emit($event)"
       (onOptionChange)="optionChange($event, $event.data)"
       (checkHeight)="checkHeight()"
-      [items]="subchild"
+      [items]="item.children[_selectedIndex].children"
+      [filter]="{ metaData: { isFooterContainer: false } }"
     ></finlevit-grid>
   </div>
   <ng-template pTemplate="footer">
