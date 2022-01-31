@@ -1,12 +1,12 @@
 <mat-horizontal-stepper
   *ngIf="metaData?.stepperType !== 'Vertical'"
-  [ngClass]="{ 'stepper-container': true, 'no-stepper-child-container': _children.length === 0 }"
+  [ngClass]="{ 'stepper-container': true, 'no-stepper-child-container': children.length === 0 }"
   labelPosition="bottom"
   [selectedIndex]="_selectedIndex"
   (selectionChange)="onSelectIndexChange($event)"
   #stepper
 >
-  <ng-container *ngFor="let child of _children; let i = index">
+  <ng-container *ngFor="let child of children; let i = index">
     <mat-step>
       <ng-template matStepLabel
         ><i [class]="child.metaData.icon"></i> <span class="mat-step-label-text">{{ child.label }}</span></ng-template
@@ -25,11 +25,12 @@
             <finlevit-grid
               [viewMode]="viewMode"
               [parent]="child"
-              [items]="subchild"
+              [items]="child?.children"
               (checkHeight)="checkHeight()"
               (onBtnClick)="onBtnClick.emit($event)"
               (onTableDataChange)="onTableDataChange.emit($event)"
               (onOptionChange)="onOptionChange.emit($event)"
+              [filter]="{ metaData: { isFooterContainer: false } }"
             ></finlevit-grid>
           </div>
         </div>
@@ -39,7 +40,7 @@
           <button *ngIf="i > 0" matStepperPrevious class="step-btn">Previous</button>
         </div>
         <div>
-          <button *ngIf="i !== _children.length - 1" matStepperNext class="step-btn">Next</button>
+          <button *ngIf="i !== children.length - 1" matStepperNext class="step-btn">Next</button>
         </div>
       </div>
     </mat-step>

@@ -21,10 +21,9 @@ export class HorizontalStepperComponent implements OnInit {
   @Output() onTableDataChange = new EventEmitter();
   @Input() completedSteps = {};
   @Input() showEdit = false;
-  subchild: any = [];
+  @Input() children = [];
   reviewData = [];
   _selectedIndex = 0;
-  _children= [];
   @ViewChild("contentConatiner", { read: ElementRef }) contentConatiner: ElementRef;
   @ViewChild("stepperBody", { read: ElementRef }) stepperBody: ElementRef;
   isInteract = false;
@@ -35,7 +34,6 @@ export class HorizontalStepperComponent implements OnInit {
     }, 100);
     this.taskService.transactionDetailsSubject.subscribe((value) => {
       setTimeout(() => {
-        // this.checkVisibility();
         this.scrollTo(this._selectedIndex);
       });
     });
@@ -44,22 +42,8 @@ export class HorizontalStepperComponent implements OnInit {
   @Input() set selectedIndex(number) {
     this._selectedIndex = number;
     setTimeout(() => {
-      this.manipulateData();
       this.checkHeight();
     }, 100);
-  }
-  @Input() set children(childrenArray) {
-    this._children = childrenArray;
-    setTimeout(() => {
-      this.manipulateData();
-      this.checkHeight();
-    }, 100);
-  }
-
-
-  manipulateData() {
-    this.subchild = this.children[this._selectedIndex]?.children?.slice(1);
-    console.log('_selectedIndex ',this._selectedIndex,this.children,this.children[this._selectedIndex],this.subchild);
   }
   private scrollTo(_index: any) {
     if (this.isInteract)
@@ -75,45 +59,15 @@ export class HorizontalStepperComponent implements OnInit {
     switch (actionName?.action) {
       case "previousStep":
         this.onPrev.emit({ stepIndex: this._selectedIndex, item: item });
-        // this.onBtnClick.emit(item);
         break;
       case "nextStep":
         this.onNext.emit({ stepIndex: this._selectedIndex, item: item });
-        // this.onBtnClick.emit(item);
         break;
       default:
         this.onBtnClick.emit(item);
         break;
     }
   }
-  checkVisibility() {
-    if (this.children[0].children.length)
-      this.children[0].children = this.children[0].children.map((item) => {
-        const index = item?.metaData["onClickConfigs"].findIndex(
-          (subitem) => subitem.action === "previousStep" || subitem.action === "nextStep" || subitem.action === "submit"
-        );
-        if (index >= 0) {
-          switch (item.metaData["onClickConfigs"][index]?.action) {
-            case "previousStep":
-              return { ...item, metaData: { ...item.metaData, isHidden: this._selectedIndex <= 1 } };
-            case "nextStep":
-              return {
-                ...item,
-                metaData: { ...item.metaData, isHidden: this._selectedIndex === this.children.length - 1 },
-              };
-            case "submit":
-              return {
-                ...item,
-                metaData: { ...item.metaData, isHidden: this._selectedIndex !== this.children.length - 1 },
-              };
-            default:
-              return item;
-          }
-        }
-        return item;
-      });
-  }
-
   checkHeight(containerName?) {
     this.editorService.setAdjustableHeight(
       this.children[this._selectedIndex].children,
