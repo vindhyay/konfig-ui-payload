@@ -29,7 +29,7 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
   @Input() showEdit: boolean = true;
   @Input() viewMode: boolean = false;
   @Input() modifyOptions: any = {};
-
+  @Input() filter: any = null;
   @Output() onBtnClick = new EventEmitter();
   @Output() onOptionChange = new EventEmitter();
   @Output() onTableDataChange = new EventEmitter();

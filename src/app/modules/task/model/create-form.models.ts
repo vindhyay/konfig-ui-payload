@@ -1109,15 +1109,17 @@ export class ContainerMetaData extends MetaData {
   onClickConfigs: Array<OnChangeTriggerConfig>;
   externalLink: string;
   styleProperties: { id: ""; properties: any };
+  isFooterContainer : boolean;
   constructor(data) {
     super(data);
-    const { title = "", icon = "", styleProperties = {}, onClickConfig = {}, externalLink = "", header = {} } = data;
+    const { title = "", icon = "", styleProperties = {}, onClickConfig = {}, externalLink = "", header = {} ,  isFooterContainer = false} = data;
     this.title = title;
     this.icon = icon;
     this.styleProperties = styleProperties;
     this.onClickConfigs = [new OnChangeTriggerConfig(onClickConfig)];
     this.externalLink = externalLink;
     this.header = new ContainerHeader(header);
+    this.isFooterContainer = isFooterContainer;
   }
 }
 
