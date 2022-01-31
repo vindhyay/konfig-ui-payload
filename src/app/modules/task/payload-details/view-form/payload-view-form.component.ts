@@ -41,14 +41,14 @@ export class PayloadViewFormComponent implements OnInit {
   convertPayload(data: any, isArray = false) {
     let payload: any = isArray ? [] : {};
     data.forEach((field: any) => {
-      if (field.type === DataTypes.object) {
+      if (field?.type === DataTypes.object) {
         if (isArray) {
           payload.push(this.convertPayload(field.children, field.type === DataTypes.array));
         } else {
           payload[field.widgetName] = this.convertPayload(field.children, field.type === DataTypes.array);
         }
       }
-      if (field.type === DataTypes.array) {
+      if (field?.type === DataTypes.array) {
         if (isArray) {
           if (field?.children?.length) {
             payload.push(this.convertPayload(field.children, field.type === DataTypes.array));
@@ -74,7 +74,7 @@ export class PayloadViewFormComponent implements OnInit {
           }
         }
       }
-      if (field.type !== DataTypes.array && field.type !== DataTypes.object) {
+      if (!!field && field?.type !== DataTypes.array && field?.type !== DataTypes.object) {
         if (isArray) {
           payload.push(getValueFromObjectByPath(field, "value.value") || "");
         } else {
@@ -89,13 +89,13 @@ export class PayloadViewFormComponent implements OnInit {
     let result = true;
     let errorFields = [];
     fields.forEach((field: any) => {
-      if (field.children && field.children.length) {
+      if (field?.children && field?.children?.length) {
         const {result:validationStatus, errorFields: errorFieldsData} = this.validateFields(field.children)
         if (!validationStatus) {
           result = false;
           errorFields = errorFields.concat(errorFieldsData)
         }
-      } else {
+      } else if(field) {
         const tempFormControl = new FormControl(field?.value?.value, getValidators(field?.validators || {}));
         if (tempFormControl.valid || field?.rows === 0 || field?.metaData?.isHidden) {
           field.error = false;
@@ -113,16 +113,20 @@ export class PayloadViewFormComponent implements OnInit {
     });
     return { result, errorFields }
   }
-  triggerClicksAll(data) {
-    const {result, errorFields} =  this.validateFields(this._payloadFields)
-    if (result) {
+  triggerClicksAll(data,isValidate) {
+    if(!isValidate){
       this.onSubmit.emit({ payload: this.convertPayload(this._payloadFields), itemData:data, payloadFields: this.updateValuesFromOptions(this._payloadFields) });
-    } else {
-      let errorMsg = "Failed to validate: "
-      if(errorFields.length){
-        errorMsg = errorMsg + ' ' + errorFields[0]?.label;
+    }else{
+      const {result, errorFields} =  this.validateFields(this._payloadFields)
+      if (result) {
+        this.onSubmit.emit({ payload: this.convertPayload(this._payloadFields), itemData:data, payloadFields: this.updateValuesFromOptions(this._payloadFields) });
+      } else {
+        let errorMsg = "Failed to validate: "
+        if(errorFields.length){
+          errorMsg = errorMsg + ' ' + errorFields[0]?.label;
+        }
+        this.notificationService.error(errorMsg, "Validation error");
       }
-      this.notificationService.error(errorMsg, "Validation error");
     }
   }
   updateValuesFromOptions(data: any) {
@@ -150,7 +154,7 @@ export class PayloadViewFormComponent implements OnInit {
       data: {
         isUnique = false,
         value: { value = null },
-        metaData: { onChangeConfig: { action: type = "", parameters = [] } = {} } = {},
+        metaData: { onChangeConfigs = [] , } = {},
         id
       }
     } = $event;
@@ -158,37 +162,15 @@ export class PayloadViewFormComponent implements OnInit {
       this.onUniqueFieldChange.emit({ id, value });
       return;
     }
-    if (type === ButtonActions.populate) {
-      let error = false;
-      const reqParams = JSON.parse(JSON.stringify(parameters));
-      reqParams.map(parameter => {
-        const { value, valueType } = parameter;
-        if (valueType === "ref") {
-          const paramField = this.getValueFromField(this._payloadFields, value);
-          const inputValue = paramField?.value?.value;
-          if (!inputValue && paramField) {
-            error = true;
-            const tempFormControl = new FormControl(
-              inputValue,
-              getValidators({ ...paramField?.validators, required: true })
-            );
-            if (tempFormControl.valid) {
-              paramField.error = false;
-              paramField.errorMsg = "";
-            } else {
-              paramField.error = true;
-              paramField.errorMsg = getErrorMessages(
-                tempFormControl.errors,
-                paramField?.label || paramField?.widgetName
-              )[0];
-            }
-          } else {
-            parameter.value = inputValue;
-          }
+    if(onChangeConfigs?.length)
+    {
+      const { action: type = "" } =  onChangeConfigs[0];
+      if (type === ButtonActions.populate) {
+        let error = this.validatePopulateParams(onChangeConfigs[0]);
+        if (!error) {
+          // this.onPopulate.emit({ isUnique, triggerId: id, parameters: reqParams, payloadFields: this._payloadFields });
+          this.triggerClicksAll({triggerId: id,data:$event?.data,uiAction:[]},false);
         }
-      });
-      if (!error) {
-        this.onPopulate.emit({ isUnique, triggerId: id, parameters: reqParams, payloadFields: this._payloadFields });
       }
     }
   }
@@ -216,39 +198,45 @@ export class PayloadViewFormComponent implements OnInit {
     const uiAction= onClickConfigs.filter(item=>Action_Config_UI.includes(item.action));
     const populateActionIndex= onClickConfigs.findIndex(item=>item.action===ButtonActions.populate) || null;
     let error = false;
+    const isValidate= onClickConfigs.length && (onClickConfigs[0].action === ButtonActions.submit || onClickConfigs[0].action === ButtonActions.next)
     if (populateActionIndex === 0) {
-      const { action: type = "", parameters = [] } = onClickConfigs[populateActionIndex];
-      const reqParams = JSON.parse(JSON.stringify(parameters));
-      reqParams.map(parameter => {
-        const { value, valueType } = parameter;
-        if (valueType === "ref") {
-          const paramField = this.getValueFromField(this._payloadFields, value);
-          const inputValue = paramField?.value?.value;
-          if (!inputValue && paramField) {
-            error = true;
-            const tempFormControl = new FormControl(
-              inputValue,
-              getValidators({ ...paramField?.validators, required: true })
-            );
-            if (tempFormControl.valid) {
-              paramField.error = false;
-              paramField.errorMsg = "";
-            } else {
-              paramField.error = true;
-              paramField.errorMsg = getErrorMessages(
-                tempFormControl.errors,
-                paramField?.label || paramField?.widgetName
-              )[0];
-            }
-          } else {
-            parameter.value = inputValue;
-          }
-        }
-      });
+     error = this.validatePopulateParams(onClickConfigs[populateActionIndex]);
     }
     if(!error){
-      this.triggerClicksAll({triggerId: id,data:$event?.data,uiAction:uiAction});
+      this.triggerClicksAll({triggerId: id,data:$event?.data,uiAction:uiAction},isValidate);
     }
+  }
+  validatePopulateParams(onConfigs){
+    const { action: type = "", parameters = [] } = onConfigs;
+    const reqParams = JSON.parse(JSON.stringify(parameters));
+    let error= false;
+    reqParams.map(parameter => {
+      const { value, valueType } = parameter;
+      if (valueType === "ref") {
+        const paramField = this.getValueFromField(this._payloadFields, value);
+        const inputValue = paramField?.value?.value;
+        if (!inputValue && paramField) {
+          error = true;
+          const tempFormControl = new FormControl(
+            inputValue,
+            getValidators({ ...paramField?.validators, required: true })
+          );
+          if (tempFormControl.valid) {
+            paramField.error = false;
+            paramField.errorMsg = "";
+          } else {
+            paramField.error = true;
+            paramField.errorMsg = getErrorMessages(
+              tempFormControl.errors,
+              paramField?.label || paramField?.widgetName
+            )[0];
+          }
+        } else {
+          parameter.value = inputValue;
+        }
+      }
+    });
+    return error;
   }
 
   getValueFromField(fields, fieldId) {

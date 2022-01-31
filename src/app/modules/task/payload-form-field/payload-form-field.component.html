@@ -761,9 +761,7 @@
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Image">
-    <div class="image-container">
-      <img [src]="item?.metaData?.url" />
-    </div>
+    <app-image [item]="item"></app-image>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Table">
     <div
@@ -876,7 +874,7 @@
     <div class="input-container">
       <app-checkbox-group
         [item]="item"
-        [viewMode]="true"
+        [viewMode]="viewMode"
         [editMode]="editMode"
         [dataListId]="item?.metaData?.datalistId"
         [isDisabled]="disable || item?.metaData?.readOnly"
@@ -1166,7 +1164,8 @@
       (selectionChange)="OnStepChange($event)"
       #stepper
     >
-      <mat-step *ngFor="let child of item.children; let i = index">
+    <ng-container *ngFor="let child of item.children; let i = index">
+      <mat-step *ngIf="i>0">
         <ng-template matStepLabel
           ><i [class]="child.metaData.icon"></i> <span class="mat-step-label-text">{{ child.label }}</span></ng-template
         >
@@ -1200,6 +1199,7 @@
           </div>
         </div>
       </mat-step>
+    </ng-container>
     </mat-horizontal-stepper>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === TabContainer">
@@ -1250,6 +1250,23 @@
   <ng-container *ngIf="item?.metaData?.widgetType === Icon">
     <div class="input-container">
       <app-icon [item]="item"></app-icon>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="item?.metaData?.widgetType === Avatar">
+    <div class="input-container">
+      <app-avatar
+              [item]="item"
+              [style.--avatar-size]="item?.metaData?.styleProperties?.properties?.avatarSize"
+              [style.--avatar-label-font-size]="item?.metaData?.styleProperties?.properties?.avatarLabelFontSize"
+              [style.--avatar-label-font-color]="item?.metaData?.styleProperties?.properties?.avatarLabelFontColor"
+              [style.--avatar-label-font-family]="item?.metaData?.styleProperties?.properties?.avatarLabelFontStyle"
+              [style.--avatar-caption-font-size]="item?.metaData?.styleProperties?.properties?.avatarCaptionFontSize"
+              [style.--avatar-caption-font-color]="item?.metaData?.styleProperties?.properties?.avatarCaptionFontColor"
+              [style.--avatar-caption-font-family]="item?.metaData?.styleProperties?.properties?.avatarCaptionFontStyle"
+              [style.--avatar-background-color]="item?.metaData?.styleProperties?.properties?.avatarBackgroundColor"
+              [style.--avatar-text-font-color]="item?.metaData?.styleProperties?.properties?.avatarTextFontColor"
+              [style.--avatar-text-font-family]="item?.metaData?.styleProperties?.properties?.avatarTextFontStyle"
+      ></app-avatar>
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Container">

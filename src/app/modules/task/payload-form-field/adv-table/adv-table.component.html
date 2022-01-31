@@ -95,12 +95,12 @@
               [optionLabel]="
                 colData?.metaData?.isLabelAndValue || colData?.metaData?.optionType === 'dataresource'
                   ? colData?.metaData?.optionLabel
-                  : ''
+                  : 'name'
               "
               [optionValue]="
                 colData?.metaData?.isLabelAndValue || colData?.metaData?.optionType === 'dataresource'
                   ? colData?.metaData?.optionValue
-                  : ''
+                  : 'value'
               "
               [error]="
                 rowErrors[rowIndex] && rowErrors[rowIndex][colData?.metaData?.widgetId]

@@ -48,6 +48,7 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
   Divider: WidgetTypes = WidgetTypes.Divider;
   Spacer: WidgetTypes = WidgetTypes.Spacer;
   Icon: WidgetTypes = WidgetTypes.Icon;
+  Avatar: WidgetTypes = WidgetTypes.Avatar;
   NESTED_MIN_COLUMNS: number = NESTED_MIN_COLUMNS;
   activeTabIndexes = {};
   activeStepperIndexes = {};
@@ -92,7 +93,7 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
   @Input() fieldIndex: number = 0;
   @Input() addMode = true;
   @Input() showEdit = true;
-  @Input() viewMode = true;
+  @Input() viewMode = false;
   @Input() showDelete = true;
   @Input() restrictHeight = true;
   @Input() list = null;
@@ -253,13 +254,14 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
     }
   }
   onPrevClick($event,type=''){
+    const {stepIndex=0,item={}}=$event;
     let index=1;
     if(type=='stepper'){
       index=this.verticalStepIndex;
     }else{
       index=this.modalStepIndex;
     }
-    if($event>1){
+    if(stepIndex>1){
       index -=1;
     }
     if(type=='stepper'){
@@ -280,6 +282,7 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
     }
   }
   onNextClick($event,type='') {
+    const {stepIndex=0,item={}}=$event;
     let index=1;
     if(type=='stepper'){
       index=this.verticalStepIndex;
@@ -291,6 +294,7 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
     if (validate) {
       this.completedSteps[child?.metaData?.widgetId] = true;
       index +=1;
+      this.onBtnClick.emit(item)
     }
     if(index>this.item.children.length-1){
       index=this.item.children.length-1;
@@ -317,7 +321,7 @@ export class PayloadFormFieldComponent implements OnInit,OnDestroy {
   }
   onChange($event) {
     const ifConditions = this.item.metaData?.conditions?.ifConditions || [];
-    this.taskService.checkCondition(ifConditions);
+    // this.taskService.checkCondition(ifConditions);
   }
   calculateFormulaValue(itemMetaData, id) : any{
     let formulaValue = '';

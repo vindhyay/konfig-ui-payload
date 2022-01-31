@@ -169,7 +169,8 @@ export enum WidgetTypes {
   Upload = "Upload",
   Divider = "Divider",
   Spacer = "Spacer",
-  Icon = "Icon"
+  Icon = "Icon",
+  Avatar = "Avatar"
 }
 class Validators {
   required: boolean;
@@ -469,6 +470,7 @@ export class DropdownMetaData extends MetaData {
   optionType: string;
   optionPopulateConfig: Array<OptionConfig>;
   onChangeConfig: OnChangeTriggerConfig;
+  onChangeConfigs?: Array<OnChangeTriggerConfig>;
   errorMessage: string;
   showErrorMessage: boolean;
   styleProperties: { id: "" };
@@ -501,6 +503,7 @@ export class DropdownMetaData extends MetaData {
     this.isLabelAndValue = isLabelAndValue;
     this.optionPopulateConfig = optionPopulateConfig;
     this.onChangeConfig = new OnChangeTriggerConfig(onChangeConfig);
+    this.onChangeConfigs = [new OnChangeTriggerConfig(onChangeConfig)];
     this.errorMessage = errorMessage;
     this.showErrorMessage = showErrorMessage;
     this.styleProperties = styleProperties;
@@ -1211,10 +1214,65 @@ export class RadioGroupMetaData extends CheckboxMetaData {
 
 export class ImageMetaData extends MetaData {
   url: string;
+  altText: string;
+  source: string; // 'Local' or 'Remote'
+  remoteKey: string;
+  position: string; // 'Cover' or 'Contain'
+  horizontalAlign: string;
+  shorterEdge: string
+  styleProperties: { id: "", properties: any };
   constructor(data) {
     super(data);
-    const { url = "" } = data;
+    const { 
+      url = "",
+      altText = "",
+      source = 'Local',
+      remoteKey = "",
+      position = "Contain",
+      horizontalAlign = "Center",
+      shorterEdge = "height",
+      styleProperties = {}
+    } = data;
     this.url = url;
+    this.altText = altText;
+    this.source = source;
+    this.remoteKey = remoteKey;
+    this.position = position;
+    this.horizontalAlign = horizontalAlign;
+    this.shorterEdge = shorterEdge;
+    this.styleProperties = styleProperties;
+  }
+}
+
+export class AvatarMetaData extends MetaData {
+  caption: string;
+  styleProperties: { id: ""; properties: any };
+  source: string;
+  remoteKey: string;
+  tooltip: string;
+  imageUrl: string;
+  fallbackText: string;
+  configureLoginData: boolean;
+  constructor(data) {
+    super(data);
+    const {
+      caption = "avatar caption",
+      styleProperties = {},
+      source = "",
+      remoteKey = "",
+      tooltip = "",
+      imageUrl = "",
+      fallbackText = "Admin",
+      configureLoginData = false
+    } = data;
+    this.caption = caption;
+    this.styleProperties = styleProperties;
+    this.source = source;
+    this.remoteKey = remoteKey;
+    this.tooltip = tooltip;
+    this.imageUrl = imageUrl;
+    this.fallbackText = fallbackText;
+    this.configureLoginData = configureLoginData;
   }
 }
 
@@ -1442,7 +1500,8 @@ export class BaseWidget {
     | SSNInputMetaData
     | StepperContainerMetaData
     | DividerMetaData
-    | SpacerMetaData;
+    | SpacerMetaData
+    | AvatarMetaData;
   name: string;
   displayName: string;
   label: string;

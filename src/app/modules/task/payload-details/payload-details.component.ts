@@ -53,20 +53,34 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
     }
     this.taskService.transactionDetailsSubject.subscribe(value => {
       if (value) {
-        this.transactionDetails = value;
         if(this.formFields.length){
-          if(this.formFields?.length!==value?.uiPayload?.length){
+          if(this.formFields?.length!==value?.uiPayload?.length || this.transactionDetails?.screenId !== value?.screenId){
             this.formFields = value?.uiPayload || [];
+            addOriginalPosition(this.formFields);
           }else{
             this.formFields.forEach((element,index) => {
               for (const prop in element) {
-                this.formFields[index][prop]=value.uiPayload[index][prop];
+                if(prop==='children'){
+                  this.formFields[index][prop].forEach((subelement,subindex)=>{
+                    for (const subprop in subelement) {
+                      this.formFields[index][prop][subindex][subprop]= value.uiPayload[index][prop][subindex][subprop];
+                    }
+                  })
+                }else if(prop==='value') {
+                  if (!element[prop]|| typeof element[prop]!= "object" || !element[prop]?.value) {
+                    this.formFields[index][prop] = { ...value.uiPayload[index][prop], value: value.uiPayload[index][prop].value ? value.uiPayload[index][prop].value : null };
+                  }
+                }else if(this.formFields[index][prop]!==value.uiPayload[index][prop]){
+                  this.formFields[index][prop]=value.uiPayload[index][prop];
+                }
               }
             });
           }
         }else{
           this.formFields = value?.uiPayload || [];
+          addOriginalPosition(this.formFields);
         }
+        this.transactionDetails = value;
         this.formFields = this.formFields.sort((a,b)=> a?.y - b?.y);
         const header = this.formFields.find(item => item?.metaData?.widgetType === WidgetTypes.Header);
         const errorContainer = this.formFields.find(item => item?.metaData?.widgetType === WidgetTypes.ErrorContainer);
@@ -243,7 +257,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
       this.notificationService.error("Application not found", "Failed to submit");
       return;
     }
-    const isSubmit= payloadData?.itemData?.data?.metaData?.onClickConfigs.filter(item=>item.action===ButtonActions.submit)?.length>0;
+    const isSubmit= payloadData?.itemData?.data?.metaData?.onClickConfigs?.filter(item=>item.action===ButtonActions.submit)?.length>0;
     this.userService.saveTransaction({ transactionId: this.transactionDetails?.transactionId, screenId: this.transactionDetails?.screenId }, this.formFields)
       .subscribe(result => {
           this.loading = false;
@@ -267,7 +281,6 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
                   if(toastMsg){
                     this.notificationService.success(toastMsg, "Success");
                   }
-                  this.transactionDetails = data;
                   this.taskService.setTransactionDetails(data);
                   this.id = data.id;
                   this.triggerUIAction(uiAction);
