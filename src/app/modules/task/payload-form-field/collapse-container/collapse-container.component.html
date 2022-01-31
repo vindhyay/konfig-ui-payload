@@ -33,6 +33,7 @@
           [viewMode]="viewMode"
           [parent]="item"
           [items]="item.children"
+          (onOptionChange)="optionChange($event, $event.data)"
         ></finlevit-grid>
       </div>
     </p-accordionTab>

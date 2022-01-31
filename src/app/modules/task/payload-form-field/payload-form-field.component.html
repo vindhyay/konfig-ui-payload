@@ -773,6 +773,7 @@
       [viewMode]="viewMode"
       [isDisabled]="disable"
       [editMode]="editMode"
+      (onOptionChange)="optionChange($event, $event.data)"
     ></app-collapse-container>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Upload">
