@@ -75,7 +75,7 @@ export class TaskService extends BaseService {
     const allFields = this.transactionDetailsSubject.value?.uiPayload || [];
     for (let i = 0; i < conditions.length; i++) {
       const condition = conditions[i];
-      let condMatched = true;
+      let condMatched = false;
       condition.rules.forEach((rule, index) => {
         const field = getFieldFromFields(allFields, rule?.field?.value);
         const fieldValue = field?.value?.value;
