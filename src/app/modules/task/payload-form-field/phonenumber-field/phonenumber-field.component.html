@@ -6,7 +6,7 @@
   [tooltip]="item?.metaData?.tooltip"
   [placeholder]="item?.metaData?.placeholder"
   [(ngModel)]="item.value.value"
-  (ngModelChange)="validateField($event); cursorPos()"
+  (ngModelChange)="validateField($event)"
   [isRequired]="item?.validators?.required"
   [label]="item?.label"
   (onBlur)="optionChange($event)"
