@@ -12,7 +12,6 @@
   (onBlur)="optionChange($event)"
   [pattern]="item?.validators?.pattern || null"
   [mask]="item?.metaData?.mask || null"
-  (focus)="cursorPos()"
   [style.--input-color]="textColor"
   [style.--input-text-align]="textHorizontalAlign"
   [style.--input-background-color]="backgroundColor"
@@ -61,5 +60,4 @@
   [labelPos]="labelPosition"
   [errorMsg]="errorMessage"
   [showErrorMsg]="showErrorMessage"
-  [id]="item?.displayName"
 ></finlevit-text>
