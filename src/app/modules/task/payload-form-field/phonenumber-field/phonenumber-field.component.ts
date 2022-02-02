@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {BaseWidget, PhonenumberInputMetaData} from '../../model/create-form.models';
 
 @Component({
@@ -80,4 +80,17 @@ export class PhonenumberFieldComponent implements OnInit {
   optionChange($event: any){
     this.onBlurChange.emit($event);
   }
+
+  cursorPos(){
+    let element = this.item.displayName
+    let el = document.getElementById(element);
+    console.log(el);
+    // el.selectionStart = el.selectionEnd = el.value.length;
+    // const length = el.value.length;
+    // el.setSelectionRange(length, length);
+    // setTimeout(() => {
+    //
+    // })
+  }
+
 }

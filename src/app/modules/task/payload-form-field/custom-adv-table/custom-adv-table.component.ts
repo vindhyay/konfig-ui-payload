@@ -166,7 +166,6 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
   }
   onDelete(index, rowData, isNew = false) {
     this.tableData.splice(index, 1);
-    this.tableData = [...this.tableData];
     delete this.rowErrors[index];
     delete this.newRows[index];
     delete this.modifyingData[index];
@@ -211,7 +210,6 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
         }
         eachColumn.value.value = rowData[eachColumn?.metaData?.widgetId];
       });
-      this.tableData = [...this.tableData];
     }
   }
   onColEdit($event, column: BaseWidget, rowIndex, rowData) {
@@ -236,7 +234,6 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
           }
           eachColumn.value.value = rowData[eachColumn?.metaData?.widgetId];
         });
-        this.tableData = [...this.tableData];
         if (this.newRows[index]) {
           delete this.newRows[index];
         }
@@ -363,7 +360,6 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
     const rowIndex = this.tableData.length - 1;
     this.newRows[rowIndex] = newRow;
     this.modifyingData[rowIndex] = newRowData;
-    this.tableData = [...this.tableData];
     if (!this.actions?.editRow) {
       if (!this.editCells[rowIndex]) {
         this.editCells[rowIndex] = {};
@@ -416,7 +412,6 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
       }
       return order * result;
     });
-    this.tableData = [...this.tableData];
   }
 
   getRulesFromFilterColumns(columns) {
