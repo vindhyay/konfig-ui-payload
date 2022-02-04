@@ -3606,10 +3606,10 @@
     "locate-path" "^5.0.0"
     "path-exists" "^4.0.0"
 
-"finlevit-library@file:lib/finlevit-library-1.1.1.tgz":
-  "integrity" "sha512-ekPOUKIZLK06zObsBw4MZNm0MZ566fw3dJ6Dykb9O7zV3EFrUQg+AD4tzJwMs+/O4rEbXGw/EeHI0YFLwSqTjw=="
-  "resolved" "file:lib/finlevit-library-1.1.1.tgz"
-  "version" "1.1.1"
+"finlevit-library@file:lib/finlevit-library-1.0.2.tgz":
+  "integrity" "sha512-ztuI1qKNaRFz7wf0QvjJa2wGicGRoSheEhOwVG6tbNdgThYhUGuU0IPVwmNpldf1OUHvhMgWBq/Jg0Sw+ABe+g=="
+  "resolved" "file:lib/finlevit-library-1.0.2.tgz"
+  "version" "1.0.2"
   dependencies:
     "tslib" "^2.3.0"
 
