@@ -270,7 +270,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
             files.forEach((file: any) => {
               payload.append("files", file);
             });
-            // this.loading = true;
+            this.loading = true;
             this.userService.submitMuliplAction(this.transactionDetails.transactionId,params, payload).subscribe(
               result => {
                 this.loading = false;
