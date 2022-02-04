@@ -79,4 +79,12 @@ export class PhonenumberFieldComponent implements OnInit {
   optionChange($event: any) {
     this.onBlurChange.emit($event);
   }
+
+  setCursor(){
+    let tempValue = this.item.value.value;
+    this.item.value.value = '';
+    setTimeout(() => {
+      this.item.value.value = tempValue;
+    }, 0)
+  }
 }
