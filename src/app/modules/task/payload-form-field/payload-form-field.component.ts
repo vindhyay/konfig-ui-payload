@@ -285,12 +285,12 @@ export class PayloadFormFieldComponent implements OnInit, OnDestroy {
     if (metaData.isFreeflow || this.verticalStepIndex > $event) {
       this.verticalStepIndex = $event;
     } else {
-      let isError= true;
-      for(let i=this.verticalStepIndex;i<$event;i++){
+      let isError = true;
+      for (let i = this.verticalStepIndex; i < $event; i++) {
         const child = this.item.children[i];
         const validate = validateFields(child.children);
-        if(!validate){
-          isError= false;
+        if (!validate) {
+          isError = false;
         }
       }
       if (isError) {
@@ -341,7 +341,7 @@ export class PayloadFormFieldComponent implements OnInit, OnDestroy {
     this.taskService.checkCondition(ifConditions);
   }
   calculateFormulaValue(item): any {
-    let formulaValue = '';
+    let formulaValue = "";
     let formula = [];
     if (item?.metaData?.formula?.length > 0) {
       item?.metaData?.formula.forEach((field) => {
@@ -425,13 +425,13 @@ export class PayloadFormFieldComponent implements OnInit, OnDestroy {
         let months = d.diff(date1, "months");
         d.add(-months, "months");
         let days = d.diff(date1, "days");
-        if(years){
-          formulaValue = years + '';
+        if (years) {
+          formulaValue = years + "";
           item.value.value = formulaValue;
         }
         return formulaValue;
       case "array":
-        switch(firstField.metaData.widgetType){
+        switch (firstField.metaData.widgetType) {
           case WidgetTypes.CheckboxGroup:
             if (firstField?.value?.value) {
               formulaValue = firstField?.value?.value.join(" ");
@@ -447,10 +447,10 @@ export class PayloadFormFieldComponent implements OnInit, OnDestroy {
                   }
                 });
                 if (values.length > 1) {
-                  if(formula[1].id === 'Sigma'){
+                  if (formula[1].id === "Sigma") {
                     formulaValue = eval(values.join(" + "));
                   }
-                  if(formula[1].id === 'Pi'){
+                  if (formula[1].id === "Pi") {
                     formulaValue = eval(values.join(" * "));
                   }
                 } else {
@@ -461,27 +461,30 @@ export class PayloadFormFieldComponent implements OnInit, OnDestroy {
             break;
           case WidgetTypes.AdvTable:
             const advTableValues = [];
-            if (formula[1]?.column?.metaData?.widgetType === "Number" || formula[1]?.column?.metaData?.widgetType === "number") {
+            if (
+              formula[1]?.column?.metaData?.widgetType === "Number" ||
+              formula[1]?.column?.metaData?.widgetType === "number"
+            ) {
               if (formula[0]?.children?.length > 0) {
                 formula[0]?.children?.forEach((value) => {
-                  value.forEach(val => {
+                  value.forEach((val) => {
                     if (val.id === formula[1]?.column?.id) {
                       advTableValues.push(val);
                     }
-                  })
+                  });
                 });
                 if (advTableValues?.length > 0) {
                   let advValues = [];
-                  advTableValues.forEach(value => {
-                    if(value?.value?.value){
+                  advTableValues.forEach((value) => {
+                    if (value?.value?.value) {
                       advValues.push(value?.value?.value);
                     }
-                  })
-                  if(advValues?.length > 0){
-                    if(formula[1].id === 'Sigma'){
+                  });
+                  if (advValues?.length > 0) {
+                    if (formula[1].id === "Sigma") {
                       formulaValue = eval(advValues.join(" + "));
                     }
-                    if(formula[1].id === 'Pi'){
+                    if (formula[1].id === "Pi") {
                       formulaValue = eval(advValues.join(" * "));
                     }
                   }
