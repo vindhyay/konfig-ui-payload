@@ -1,4 +1,10 @@
-<div class="stepper-container">
+<div
+  [class]="{
+    'stepper-container': true,
+    'vertical-stepper': metaData?.stepperType === 'Vertical',
+    'horizontal-stepper': metaData?.stepperType === 'Horizontal'
+  }"
+>
   <div class="progressbar">
     <div
       class="stepper-header"
@@ -14,9 +20,9 @@
       ></finlevit-grid>
     </div>
     <ul
-      class="stepper-body"
+      class="stepper-body step-list"
       [ngStyle]="{
-        height: metaData.stepperHeight + 'px'
+        height: metaData?.stepperType === 'Vertical' ? metaData.stepperHeight + 'px' : 'auto'
       }"
       #stepperBody
     >

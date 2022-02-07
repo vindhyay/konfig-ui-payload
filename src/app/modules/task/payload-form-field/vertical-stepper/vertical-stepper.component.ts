@@ -1,6 +1,6 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from "@angular/core";
 import { getAllFromFields, eligibileReviewField } from "src/app/utils";
-import { TextStyles } from "../../model/create-form.models";
+import { StepperContainerMetaData, TextStyles } from "../../model/create-form.models";
 import { EditorService } from "../../editor.service";
 import { TaskService } from "../../services/task.service";
 @Component({
@@ -13,26 +13,7 @@ export class VerticalStepperComponent implements OnInit {
   @Input() children = [];
   @Input() headerContent = [];
   @Input() viewMode = false;
-  @Input() metaData = {
-    showHeader: false,
-    isReviewer: false,
-    indicatorPattern: "cicle",
-    textStyle: TextStyles.BODY1,
-    color: "#000000",
-    fontWeight: 400,
-    currentStepColor: "#000000",
-    completedStepColor: "#000000",
-    textDecortation: "",
-    fontStyle: "",
-    defaultBarColor: "",
-    completedBarColor: "",
-    buttonContainer: {},
-    footerBgColor: "#fff",
-    conentBgColor: "#fff",
-    leftPanelBgColor: "#fff",
-    headerHeight: 0,
-    stepperHeight: 0,
-  };
+  @Input() metaData : StepperContainerMetaData;
   @Output() onNext = new EventEmitter();
   @Output() onPrev = new EventEmitter();
   @Output() onSelect = new EventEmitter();
