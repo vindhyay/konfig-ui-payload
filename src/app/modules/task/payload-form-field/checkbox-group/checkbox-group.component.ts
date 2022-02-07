@@ -50,7 +50,11 @@ export class CheckboxGroupComponent implements OnInit {
   }
   ngOnInit(): void {}
   onChange($event) {
-    const ifConditions = this.item.metaData?.conditions?.ifConditions || [];
-    this.taskService.checkCondition(ifConditions);
+    const ifConditions = this.item.metaData.conditions;
+    if(ifConditions?.length){
+      this.taskService.checkCondition(ifConditions);
+    }else if(ifConditions && !ifConditions?.length){
+      this.taskService.checkCondition([{...ifConditions}]);
+    }
   }
 }

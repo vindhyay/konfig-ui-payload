@@ -70,64 +70,67 @@ export class TaskService extends BaseService {
   getImageUrl = (): string => {
     return this.config.getApiUrls().getImageURL;
   };
-  checkCondition(conditions) {
+  checkCondition(conditionsArray) {
     let result = null;
     const allFields = this.transactionDetailsSubject.value?.uiPayload || [];
-    for (let i = 0; i < conditions.length; i++) {
-      const condition = conditions[i];
-      let condMatched = false;
-      condition.rules.forEach((rule, index) => {
-        const field = getFieldFromFields(allFields, rule?.field?.value);
-        const fieldValue = field?.value?.value;
-        let result = false;
-        if (rule.operator === "includes") {
-          if ((fieldValue || []).includes(rule.value)) {
-            result = true;
+    conditionsArray.forEach(element => {
+      let conditions= element.ifConditions;
+      for (let i = 0; i < conditions.length; i++) {
+        const condition = conditions[i];
+        let condMatched = false;
+        condition.rules.forEach((rule, index) => {
+          const field = getFieldFromFields(allFields, rule?.field?.value);
+          const fieldValue = field?.value?.value;
+          let result = false;
+          if (rule.operator === "includes") {
+            if ((fieldValue || []).includes(rule.value)) {
+              result = true;
+            }
+          } else if (rule.operator === "excludes") {
+            if (!(fieldValue || []).includes(rule.value)) {
+              result = true;
+            }
+          } else if (rule.operator === "notEquals") {
+            if (String(fieldValue) !== String(rule.value)) {
+              result = true;
+            }
+          } else {
+            if (String(fieldValue) == String(rule.value)) {
+              result = true;
+            }
           }
-        } else if (rule.operator === "excludes") {
-          if (!(fieldValue || []).includes(rule.value)) {
-            result = true;
-          }
-        } else if (rule.operator === "notEquals") {
-          if (String(fieldValue) !== String(rule.value)) {
-            result = true;
-          }
-        } else {
-          if (String(fieldValue) == String(rule.value)) {
-            result = true;
-          }
+          condMatched = index === 0 ? result : rule.condition === "and" ? condMatched && result : condMatched || result;
+        });
+        if (condMatched) {
+          result = condition.mappingField;
+          break;
         }
-        condMatched = index === 0 ? result : rule.condition === "and" ? condMatched && result : condMatched || result;
-      });
-      if (condMatched) {
-        result = condition.mappingField;
-        break;
       }
-    }
-    if (result) {
-      const showFields = result?.showFields || [];
-      const hideFields = result?.hideFields || [];
-      showFields.forEach((showField) => {
-        const showFieldRef = getFieldFromFields(allFields, showField?.value);
-        if (showFieldRef) {
-          showFieldRef.rows = showFieldRef.metaData?.defaultRows;
-          showFieldRef.minItemRows = showFieldRef.metaData?.defaultMinItemRows;
-          showFieldRef.minItemCols = showFieldRef.metaData?.defaultMinItemCols;
-          showFieldRef.metaData.movement = "DOWN";
-          this.editorService.widgetChange.next(showFieldRef);
-        }
-      });
-      hideFields.forEach((hideField) => {
-        const hideFieldRef = getFieldFromFields(allFields, hideField?.value);
-        if (hideFieldRef) {
-          hideFieldRef.rows = hideFieldRef?.metaData?.hideRows || 0;
-          hideFieldRef.minItemRows = hideFieldRef?.metaData?.hideRows || 0;
-          hideFieldRef.metaData.movement = "UP";
-          this.editorService.widgetChange.next(hideFieldRef);
-        }
-      });
-      this.editorService.setContainerHeight(allFields);
-    }
+      if (result) {
+        const showFields = result?.showFields || [];
+        const hideFields = result?.hideFields || [];
+        showFields.forEach((showField) => {
+          const showFieldRef = getFieldFromFields(allFields, showField?.value);
+          if (showFieldRef) {
+            showFieldRef.rows = showFieldRef.metaData?.defaultRows;
+            showFieldRef.minItemRows = showFieldRef.metaData?.defaultMinItemRows;
+            showFieldRef.minItemCols = showFieldRef.metaData?.defaultMinItemCols;
+            showFieldRef.metaData.movement = "DOWN";
+            this.editorService.widgetChange.next(showFieldRef);
+          }
+        });
+        hideFields.forEach((hideField) => {
+          const hideFieldRef = getFieldFromFields(allFields, hideField?.value);
+          if (hideFieldRef) {
+            hideFieldRef.rows = hideFieldRef?.metaData?.hideRows || 0;
+            hideFieldRef.minItemRows = hideFieldRef?.metaData?.hideRows || 0;
+            hideFieldRef.metaData.movement = "UP";
+            this.editorService.widgetChange.next(hideFieldRef);
+          }
+        });
+        this.editorService.setContainerHeight(allFields);
+      }
+    });
     return result;
   }
 }
