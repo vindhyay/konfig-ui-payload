@@ -337,8 +337,12 @@ export class PayloadFormFieldComponent implements OnInit, OnDestroy {
     this.editorService.setContainerHeight(this.taskService.transactionDetailsSubject.value?.uiPayload);
   }
   onChange($event) {
-    const ifConditions = this.item.metaData?.conditions?.ifConditions || [];
-    this.taskService.checkCondition(ifConditions);
+    const ifConditions = this.item.metaData.conditions;
+    if(ifConditions?.length){
+      this.taskService.checkCondition(ifConditions);
+    }else if(ifConditions && !ifConditions?.length){
+      this.taskService.checkCondition([{...ifConditions}]);
+    }
   }
   calculateFormulaValue(item): any {
     let formulaValue = "";
