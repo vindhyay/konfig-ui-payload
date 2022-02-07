@@ -37,12 +37,13 @@ export class ModalComponent implements OnInit {
     const indexObj = item.data.metaData["onClickConfigs"].filter(
       (subitem) => subitem.action === "previousStep" || subitem.action === "nextStep" || subitem.action === "submit"
     );
+    console.log(indexObj);
     switch (indexObj[0]?.action) {
       case "previousStep":
-        this.onPrev.emit(this._selectedIndex);
+        this.onPrev.emit({ stepIndex: this._selectedIndex, item: item });
         break;
       case "nextStep":
-        this.onNext.emit(this._selectedIndex);
+        this.onNext.emit({ stepIndex: this._selectedIndex, item: item });
         break;
       default:
         this.onBtnClick.emit(item);
