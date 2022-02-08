@@ -83,8 +83,16 @@ export class TaskService extends BaseService {
           const fieldValue = field?.value?.value;
           let result = false;
           if (rule.operator === "includes") {
-            if ((fieldValue || []).includes(rule.value)) {
-              result = true;
+            if (rule.value.indexOf(",") > 0) {
+              const ruleArray = rule.value.split(",");
+              const testCondition = ruleArray.every((r) => (fieldValue || []).includes(r));
+              if (testCondition) {
+                result = true;
+              }
+            } else {
+              if ((fieldValue || []).includes(rule.value)) {
+                result = true;
+              }
             }
           } else if (rule.operator === "excludes") {
             if (!(fieldValue || []).includes(rule.value)) {
@@ -103,7 +111,7 @@ export class TaskService extends BaseService {
         });
         if (condMatched) {
           result = condition.mappingField;
-          console.log('Success',result);
+          console.log("Success", result);
           break;
         }
       }
@@ -117,7 +125,7 @@ export class TaskService extends BaseService {
             showFieldRef.minItemRows = showFieldRef.metaData?.defaultMinItemRows;
             showFieldRef.minItemCols = showFieldRef.metaData?.defaultMinItemCols;
             showFieldRef.metaData.movement = "DOWN";
-             showFieldRef.y = showFieldRef.metaData.originalY;
+            showFieldRef.y = showFieldRef.metaData.originalY;
             this.editorService.widgetChange.next(showFieldRef);
           }
         });
@@ -127,7 +135,7 @@ export class TaskService extends BaseService {
             hideFieldRef.rows = hideFieldRef?.metaData?.hideRows || 0;
             hideFieldRef.minItemRows = hideFieldRef?.metaData?.hideRows || 0;
             hideFieldRef.metaData.movement = "UP";
-           this.editorService.widgetChange.next(hideFieldRef);
+            this.editorService.widgetChange.next(hideFieldRef);
           }
         });
         this.editorService.setContainerHeight(allFields);
