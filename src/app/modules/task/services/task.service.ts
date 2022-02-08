@@ -71,10 +71,10 @@ export class TaskService extends BaseService {
     return this.config.getApiUrls().getImageURL;
   };
   checkCondition(conditionsArray) {
-    let result = null;
     const allFields = this.transactionDetailsSubject.value?.uiPayload || [];
-    conditionsArray.forEach(element => {
-      let conditions= element.ifConditions;
+    conditionsArray.forEach((element) => {
+      let result = null;
+      let conditions = element.ifConditions;
       for (let i = 0; i < conditions.length; i++) {
         const condition = conditions[i];
         let condMatched = false;
@@ -103,6 +103,7 @@ export class TaskService extends BaseService {
         });
         if (condMatched) {
           result = condition.mappingField;
+          console.log('Success',result);
           break;
         }
       }
@@ -116,6 +117,7 @@ export class TaskService extends BaseService {
             showFieldRef.minItemRows = showFieldRef.metaData?.defaultMinItemRows;
             showFieldRef.minItemCols = showFieldRef.metaData?.defaultMinItemCols;
             showFieldRef.metaData.movement = "DOWN";
+             showFieldRef.y = showFieldRef.metaData.originalY;
             this.editorService.widgetChange.next(showFieldRef);
           }
         });
@@ -125,12 +127,11 @@ export class TaskService extends BaseService {
             hideFieldRef.rows = hideFieldRef?.metaData?.hideRows || 0;
             hideFieldRef.minItemRows = hideFieldRef?.metaData?.hideRows || 0;
             hideFieldRef.metaData.movement = "UP";
-            this.editorService.widgetChange.next(hideFieldRef);
+           this.editorService.widgetChange.next(hideFieldRef);
           }
         });
         this.editorService.setContainerHeight(allFields);
       }
     });
-    return result;
   }
 }

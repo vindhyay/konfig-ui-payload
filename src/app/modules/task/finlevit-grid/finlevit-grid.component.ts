@@ -115,7 +115,9 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
     }
     this.editorService.widgetChange$.subscribe((widget) => {
       this.allEligibleFields = [];
-      this.checkItemSize(widget);
+      if (widget) {
+        this.checkItemSize(widget);
+      }
     });
   }
 
