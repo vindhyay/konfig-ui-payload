@@ -69,11 +69,9 @@ export class VerticalStepperComponent implements OnInit {
     switch (actionName?.action) {
       case "previousStep":
         this.onPrev.emit({ stepIndex: this._selectedIndex, item: item });
-        // this.onBtnClick.emit(item);
         break;
       case "nextStep":
         this.onNext.emit({ stepIndex: this._selectedIndex, item: item });
-        // this.onBtnClick.emit(item);
         break;
       default:
         this.onBtnClick.emit(item);
