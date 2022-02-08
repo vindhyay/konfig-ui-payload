@@ -5,7 +5,7 @@ import { BaseWidget, TextMetaData } from "../../model/create-form.models";
 @Component({
   selector: "app-text-field",
   templateUrl: "./text-field.component.html",
-  styleUrls: ["./text-field.component.scss"]
+  styleUrls: ["./text-field.component.scss"],
 })
 export class TextFieldComponent implements OnInit {
   @Input() item: BaseWidget = {} as BaseWidget;

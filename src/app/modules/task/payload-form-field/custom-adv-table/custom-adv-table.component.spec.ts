@@ -1,16 +1,15 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { CustomAdvTableComponent } from './custom-adv-table.component';
+import { CustomAdvTableComponent } from "./custom-adv-table.component";
 
-describe('CustomAdvTableComponent', () => {
+describe("CustomAdvTableComponent", () => {
   let component: CustomAdvTableComponent;
   let fixture: ComponentFixture<CustomAdvTableComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CustomAdvTableComponent ]
-    })
-    .compileComponents();
+      declarations: [CustomAdvTableComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('CustomAdvTableComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

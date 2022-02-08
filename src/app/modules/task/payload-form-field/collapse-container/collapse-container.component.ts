@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, AfterViewInit } from "@angular/core";
+import {Component, OnInit, Input, AfterViewInit, Output, EventEmitter} from "@angular/core";
 import { EditorService } from "../../editor.service";
 import { BaseWidget, CollapseContainerMetaData } from "../../model/create-form.models";
 import { TaskService } from "../../services/task.service";
@@ -6,7 +6,7 @@ import { TaskService } from "../../services/task.service";
 @Component({
   selector: "app-collapse-container",
   templateUrl: "./collapse-container.component.html",
-  styleUrls: ["./collapse-container.component.scss"]
+  styleUrls: ["./collapse-container.component.scss"],
 })
 export class CollapseContainerComponent implements OnInit, AfterViewInit {
   collapseContainerStatus = true;
@@ -15,6 +15,8 @@ export class CollapseContainerComponent implements OnInit, AfterViewInit {
   @Input() showEdit = false;
   @Input() isDisabled: boolean = false;
   @Input() editMode: boolean = false;
+  @Output() onOptionChange = new EventEmitter();
+
   ngOnInit() {}
 
   ngAfterViewInit() {
@@ -39,5 +41,8 @@ export class CollapseContainerComponent implements OnInit, AfterViewInit {
     }
     this.editorService.widgetChange.next(item);
     this.editorService.setContainerHeight(this.taskService.transactionDetailsSubject.value?.uiPayload);
+  }
+  optionChange($event, data) {
+    this.onOptionChange.emit({ event: $event, data });
   }
 }

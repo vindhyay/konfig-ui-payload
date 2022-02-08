@@ -1,14 +1,14 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { DropdownFieldComponent } from './dropdown-field.component';
+import { DropdownFieldComponent } from "./dropdown-field.component";
 
-describe('DropdownFieldComponent', () => {
+describe("DropdownFieldComponent", () => {
   let component: DropdownFieldComponent;
   let fixture: ComponentFixture<DropdownFieldComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DropdownFieldComponent]
+      declarations: [DropdownFieldComponent],
     }).compileComponents();
   });
 
@@ -18,7 +18,7 @@ describe('DropdownFieldComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

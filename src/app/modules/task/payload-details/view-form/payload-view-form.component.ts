@@ -11,7 +11,7 @@ import { NotificationService } from "../../../../services/notification.service";
 @Component({
   selector: "app-payload-view-form",
   templateUrl: "./payload-view-form.component.html",
-  styleUrls: ["./payload-view-form.component.scss"]
+  styleUrls: ["./payload-view-form.component.scss"],
 })
 export class PayloadViewFormComponent implements OnInit {
   @Input()
@@ -56,14 +56,14 @@ export class PayloadViewFormComponent implements OnInit {
             payload.push(getValueFromObjectByPath(field, "value.value") || []);
           }
         } else {
-          if(field?.metaData?.widgetType === WidgetTypes.AdvTable){
+          if (field?.metaData?.widgetType === WidgetTypes.AdvTable) {
             const advTableData = [];
-            field?.children.forEach(rowData => {
+            field?.children.forEach((rowData) => {
               const rowObject = this.convertPayload(rowData);
-              advTableData.push(rowObject)
-            })
+              advTableData.push(rowObject);
+            });
             payload[field.widgetName] = advTableData;
-          }else if (field?.children?.length) {
+          } else if (field?.children?.length) {
             payload[field.widgetName] = this.convertPayload(field.children, field.type === DataTypes.array);
           } else if (field?.metaData?.widgetType === WidgetTypes.Table) {
             payload[field.widgetName] = field?.value?.value?.length
@@ -90,12 +90,12 @@ export class PayloadViewFormComponent implements OnInit {
     let errorFields = [];
     fields.forEach((field: any) => {
       if (field?.children && field?.children?.length) {
-        const {result:validationStatus, errorFields: errorFieldsData} = this.validateFields(field.children)
+        const { result: validationStatus, errorFields: errorFieldsData } = this.validateFields(field.children);
         if (!validationStatus) {
           result = false;
-          errorFields = errorFields.concat(errorFieldsData)
+          errorFields = errorFields.concat(errorFieldsData);
         }
-      } else if(field) {
+      } else if (field) {
         const tempFormControl = new FormControl(field?.value?.value, getValidators(field?.validators || {}));
         if (tempFormControl.valid || field?.rows === 0 || field?.metaData?.isHidden) {
           field.error = false;
@@ -111,19 +111,27 @@ export class PayloadViewFormComponent implements OnInit {
         }
       }
     });
-    return { result, errorFields }
+    return { result, errorFields };
   }
-  triggerClicksAll(data,isValidate) {
-    if(!isValidate){
-      this.onSubmit.emit({ payload: this.convertPayload(this._payloadFields), itemData:data, payloadFields: this.updateValuesFromOptions(this._payloadFields) });
-    }else{
-      const {result, errorFields} =  this.validateFields(this._payloadFields)
+  triggerClicksAll(data, isValidate) {
+    if (!isValidate) {
+      this.onSubmit.emit({
+        payload: this.convertPayload(this._payloadFields),
+        itemData: data,
+        payloadFields: this.updateValuesFromOptions(this._payloadFields),
+      });
+    } else {
+      const { result, errorFields } = this.validateFields(this._payloadFields);
       if (result) {
-        this.onSubmit.emit({ payload: this.convertPayload(this._payloadFields), itemData:data, payloadFields: this.updateValuesFromOptions(this._payloadFields) });
+        this.onSubmit.emit({
+          payload: this.convertPayload(this._payloadFields),
+          itemData: data,
+          payloadFields: this.updateValuesFromOptions(this._payloadFields),
+        });
       } else {
-        let errorMsg = "Failed to validate: "
-        if(errorFields.length){
-          errorMsg = errorMsg + ' ' + errorFields[0]?.label;
+        let errorMsg = "Failed to validate: ";
+        if (errorFields.length) {
+          errorMsg = errorMsg + " " + errorFields[0]?.label;
         }
         this.notificationService.error(errorMsg, "Validation error");
       }
@@ -131,14 +139,7 @@ export class PayloadViewFormComponent implements OnInit {
   }
   updateValuesFromOptions(data: any) {
     let payload = [];
-    data.forEach(field => {
-      if (field?.metaData?.widgetType === WidgetTypes.Table) {
-        if (field?.value) {
-          field.value.value = field.value?.value?.length ? field.value.value : field.metaData.options;
-        } else {
-          field.value = { id: null, value: field.metaData.options };
-        }
-      }
+    data.forEach((field) => {
       if (field?.children?.length && field?.metaData?.widgetType !== WidgetTypes.AdvTable) {
         field.children = this.updateValuesFromOptions(field.children);
       }
@@ -154,35 +155,34 @@ export class PayloadViewFormComponent implements OnInit {
       data: {
         isUnique = false,
         value: { value = null },
-        metaData: { onChangeConfigs = [] , } = {},
-        id
-      }
+        metaData: { onChangeConfigs = [] } = {},
+        id,
+      },
     } = $event;
     if (isUnique) {
       this.onUniqueFieldChange.emit({ id, value });
       return;
     }
-    if(onChangeConfigs?.length)
-    {
-      const { action: type = "" } =  onChangeConfigs[0];
+    if (onChangeConfigs?.length) {
+      const { action: type = "" } = onChangeConfigs[0];
       if (type === ButtonActions.populate) {
         let error = this.validatePopulateParams(onChangeConfigs[0]);
         if (!error) {
           // this.onPopulate.emit({ isUnique, triggerId: id, parameters: reqParams, payloadFields: this._payloadFields });
-          this.triggerClicksAll({triggerId: id,data:$event?.data,uiAction:[]},false);
+          this.triggerClicksAll({ triggerId: id, data: $event?.data, uiAction: [] }, false);
         }
       }
     }
   }
 
-  getScreen(data){
-    const {result, errorFields} =  this.validateFields(this._payloadFields)
+  getScreen(data) {
+    const { result, errorFields } = this.validateFields(this._payloadFields);
     if (result) {
       this.onGetScreen.emit({ payloadFields: this.updateValuesFromOptions(this._payloadFields), data });
     } else {
-      let errorMsg = "Failed to validate: "
-      if(errorFields.length){
-        errorMsg = errorMsg + ' ' + errorFields[0]?.label;
+      let errorMsg = "Failed to validate: ";
+      if (errorFields.length) {
+        errorMsg = errorMsg + " " + errorFields[0]?.label;
       }
       this.notificationService.error(errorMsg, "Validation error");
     }
@@ -192,25 +192,27 @@ export class PayloadViewFormComponent implements OnInit {
     const {
       data: {
         metaData: { onClickConfigs = [] },
-        id
+        id,
       },
     } = $event;
-    const uiAction= onClickConfigs.filter(item=>Action_Config_UI.includes(item.action));
-    const populateActionIndex= onClickConfigs.findIndex(item=>item.action===ButtonActions.populate) || null;
+    const uiAction = onClickConfigs.filter((item) => Action_Config_UI.includes(item.action));
+    const populateActionIndex = onClickConfigs.findIndex((item) => item.action === ButtonActions.populate) || null;
     let error = false;
-    const isValidate= onClickConfigs.length && (onClickConfigs[0].action === ButtonActions.submit || onClickConfigs[0].action === ButtonActions.next)
+    const isValidate =
+      onClickConfigs.length &&
+      (onClickConfigs[0].action === ButtonActions.submit || onClickConfigs[0].action === ButtonActions.next);
     if (populateActionIndex === 0) {
-     error = this.validatePopulateParams(onClickConfigs[populateActionIndex]);
+      error = this.validatePopulateParams(onClickConfigs[populateActionIndex]);
     }
-    if(!error){
-      this.triggerClicksAll({triggerId: id,data:$event?.data,uiAction:uiAction},isValidate);
+    if (!error) {
+      this.triggerClicksAll({ triggerId: id, data: $event?.data, uiAction: uiAction }, isValidate);
     }
   }
-  validatePopulateParams(onConfigs){
+  validatePopulateParams(onConfigs) {
     const { action: type = "", parameters = [] } = onConfigs;
     const reqParams = JSON.parse(JSON.stringify(parameters));
-    let error= false;
-    reqParams.map(parameter => {
+    let error = false;
+    reqParams.map((parameter) => {
       const { value, valueType } = parameter;
       if (valueType === "ref") {
         const paramField = this.getValueFromField(this._payloadFields, value);
@@ -241,7 +243,7 @@ export class PayloadViewFormComponent implements OnInit {
 
   getValueFromField(fields, fieldId) {
     let paramField = null;
-    fields.forEach(field => {
+    fields.forEach((field) => {
       if (field.children && field.children.length) {
         const nestedParamField = this.getValueFromField(field.children, fieldId);
         paramField = nestedParamField || paramField;
@@ -259,14 +261,14 @@ export class PayloadViewFormComponent implements OnInit {
       event: { column: { columnId = "", onChange = "", resultField = "" } = {} },
       tableData: {
         value: { value = [] } = {},
-        metaData: { optionPopulateConfig = [], options = [] }
-      }
+        metaData: { optionPopulateConfig = [], options = [] },
+      },
     } = $event;
     const valueData = value ? value : optionPopulateConfig.length ? options : value;
     if (onChange === "sum" && resultField) {
       const resultFieldData = this.getValueFromField(this._payloadFields, resultField);
       let sum = 0;
-      valueData.forEach(column => {
+      valueData.forEach((column) => {
         if (column[columnId]) {
           sum = sum + column[columnId];
         }

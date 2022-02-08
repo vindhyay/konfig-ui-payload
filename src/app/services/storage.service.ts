@@ -1,12 +1,12 @@
-import { Injectable } from '@angular/core';
-import { UserDataModel } from '../modules/auth/models';
-import { SelectedPreferencesModel } from '../modules/auth/models/selected-preferences.model';
-import { JWT_TOKEN, PREF, USER_DATA_KEY } from '../state/constants';
+import { Injectable } from "@angular/core";
+import { UserDataModel } from "../modules/auth/models";
+import { SelectedPreferencesModel } from "../modules/auth/models/selected-preferences.model";
+import { JWT_TOKEN, PREF, USER_DATA_KEY } from "../state/constants";
 
 // TODO change to cookies
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class StorageService {
   // Token data

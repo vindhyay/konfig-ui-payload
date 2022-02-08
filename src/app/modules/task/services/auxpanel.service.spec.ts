@@ -1,11 +1,11 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed } from "@angular/core/testing";
 
-import { AuxpanelService } from './auxpanel.service';
+import { AuxpanelService } from "./auxpanel.service";
 
-describe('AuxpanelService', () => {
+describe("AuxpanelService", () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
-  it('should be created', () => {
+  it("should be created", () => {
     const service: AuxpanelService = TestBed.get(AuxpanelService);
     expect(service).toBeTruthy();
   });

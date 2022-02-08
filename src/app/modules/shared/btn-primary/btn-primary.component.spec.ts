@@ -1,9 +1,9 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 
-import { BtnPrimaryComponent } from './btn-primary.component';
-import { SharedModule } from '../../shared.module';
+import { BtnPrimaryComponent } from "./btn-primary.component";
+import { SharedModule } from "../../shared.module";
 
-describe('BtnPrimaryComponent', () => {
+describe("BtnPrimaryComponent", () => {
   let component: BtnPrimaryComponent;
   let fixture: ComponentFixture<BtnPrimaryComponent>;
 
@@ -11,7 +11,7 @@ describe('BtnPrimaryComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [SharedModule],
-        declarations: []
+        declarations: [],
       }).compileComponents();
     })
   );
@@ -22,7 +22,7 @@ describe('BtnPrimaryComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });
