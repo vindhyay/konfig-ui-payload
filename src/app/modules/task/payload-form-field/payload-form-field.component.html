@@ -119,7 +119,7 @@
         [error]="isError(item)"
         [tooltip]="item?.metaData?.tooltip"
         [placeholder]="item?.metaData?.placeholder"
-        [ngModel]="calculateFormulaValue(item?.metaData, item?.id)"
+        [ngModel]="calculateFormulaValue(item)"
         (ngModelChange)="validateField($event, item)"
         [isRequired]="item?.validators?.required"
         [label]="item?.label"
@@ -260,7 +260,7 @@
         [error]="isError(item)"
         [tooltip]="item?.metaData?.tooltip"
         [placeholder]="item?.metaData?.placeholder"
-        [ngModel]="calculateFormulaValue(item?.metaData, item?.id)"
+        [ngModel]="calculateFormulaValue(item)"
         (ngModelChange)="validateField($event, item)"
         [isRequired]="item?.validators?.required"
         [label]="item?.label"
@@ -641,7 +641,7 @@
         [placeholder]="item?.metaData?.placeholder"
         [tooltip]="item?.metaData?.tooltip"
         [error]="isError(item)"
-        [ngModel]="calculateFormulaValue(item?.metaData, item?.id)"
+        [ngModel]="calculateFormulaValue(item)"
         (ngModelChange)="validateField($event, item)"
         [label]="item?.label"
         [isRequired]="item?.validators?.required"
@@ -1003,7 +1003,7 @@
         (onTableDataChange)="onTableDataChange.emit($event)"
         (onOptionChange)="optionChange($event, $event.data)"
         (selectionChange)="OnStepChange($event)"
-        [selectedIndex]="modalStepIndex || 1"
+        [selectedIndex]="modalStepIndex || 0"
         (onNext)="onNextClick($event, 'modal')"
         (onPrev)="onPrevClick($event, 'modal')"
         [styles]="item?.metaData?.styleProperties"
@@ -1137,9 +1137,8 @@
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === StepperContainer">
     <app-vertical-stepper
-      *ngIf="item?.metaData?.stepperType === 'Vertical'"
       [completedSteps]="completedSteps"
-      [selectedIndex]="verticalStepIndex || 1"
+      [selectedIndex]="verticalStepIndex || 0"
       [children]="item?.children"
       [metaData]="item?.metaData"
       [viewMode]="viewMode"
@@ -1187,52 +1186,6 @@
       [style.--input-border-left-width]="item?.metaData?.styleProperties?.properties?.borderLeftWidth"
     >
     </app-vertical-stepper>
-    <mat-horizontal-stepper
-      *ngIf="item?.metaData?.stepperType !== 'Vertical'"
-      [selectedIndex]="selectedStep"
-      [ngClass]="{ 'stepper-container': true, 'no-stepper-child-container': item.children.length === 0 }"
-      labelPosition="bottom"
-      (selectionChange)="OnStepChange($event)"
-      #stepper
-    >
-      <ng-container *ngFor="let child of item.children; let i = index">
-        <mat-step *ngIf="i > 0">
-          <ng-template matStepLabel
-            ><i [class]="child.metaData.icon"></i>
-            <span class="mat-step-label-text">{{ child.label }}</span></ng-template
-          >
-          <div
-            [ngClass]="{
-              'nested-grid-container': true,
-              'empty-child': !child.children.length
-            }"
-          >
-            <div *ngIf="!child.children.length" class="container-help-text">
-              <span>No Data Found</span>
-            </div>
-            <finlevit-grid
-              [viewMode]="viewMode"
-              [showEdit]="showEdit"
-              [parent]="child"
-              [items]="child.children"
-              (onBtnClick)="onBtnClick.emit($event)"
-              (onTableDataChange)="onTableDataChange.emit($event)"
-              (onOptionChange)="optionChange($event, $event.data)"
-            ></finlevit-grid>
-          </div>
-          <div class="stepper-btn-container">
-            <div>
-              <button *ngIf="i > 0" matStepperPrevious class="step-btn">Previous</button>
-            </div>
-            <div>
-              <button *ngIf="i != item.children.length - 1" class="step-btn" (click)="onNext($event, child, stepper)">
-                Next
-              </button>
-            </div>
-          </div>
-        </mat-step>
-      </ng-container>
-    </mat-horizontal-stepper>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === TabContainer">
     <div class="tab-container">
@@ -1249,10 +1202,6 @@
                 'empty-child': !child.children.length
               }"
             >
-              <!-- <div *ngIf="!child.children.length" class="container-help-text">
-                <i class="pi pi-plus"></i>
-                <span>Drag and drop fields to tab container</span>
-              </div> -->
               <finlevit-grid
                 [viewMode]="viewMode"
                 [showEdit]="showEdit"

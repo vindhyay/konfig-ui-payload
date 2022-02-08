@@ -143,6 +143,7 @@ export const scrollToBottom = (element) => {
 export const addOriginalPosition = (fields) => {
   fields.forEach((field) => {
     field.metaData.originalHeight = field.rows + field.y;
+    field.metaData.originalY = field.y;
     if (field.children && field.children.length) {
       addOriginalPosition(field.children);
     }

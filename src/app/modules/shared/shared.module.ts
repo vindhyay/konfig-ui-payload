@@ -25,6 +25,7 @@ import { CustomTableFiltersComponent } from "./finlevit-custom-table/table-utils
 import { BtnIconComponent } from "./btn-icon/btn-icon.component";
 import { BtnDangerComponent } from "./btn-danger/btn-danger.component";
 import { LoaderComponent } from "./loader/loader.component";
+import { FilterPipe } from "src/app/pipes/filter.pipe";
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { LoaderComponent } from "./loader/loader.component";
     BtnIconComponent,
     BtnDangerComponent,
     LoaderComponent,
+    FilterPipe
   ],
   imports: [
     CommonModule,
@@ -85,6 +87,7 @@ import { LoaderComponent } from "./loader/loader.component";
     BtnIconComponent,
     BtnDangerComponent,
     LoaderComponent,
+    FilterPipe
   ],
 })
 export class SharedModule {}

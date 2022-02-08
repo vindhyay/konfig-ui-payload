@@ -53,8 +53,8 @@ export class PayloadFormFieldComponent implements OnInit, OnDestroy {
   activeTabIndexes = {};
   activeStepperIndexes = {};
   modalStatus = {};
-  verticalStepIndex: number = 1;
-  modalStepIndex: number = 1;
+  verticalStepIndex: number = 0;
+  modalStepIndex: number = 0;
   completedSteps = {};
   selectedStep = 0;
   transactionStatus = null;
@@ -272,7 +272,7 @@ export class PayloadFormFieldComponent implements OnInit, OnDestroy {
     } else {
       index = this.modalStepIndex;
     }
-    if (stepIndex > 1) {
+    if (stepIndex > 0) {
       index -= 1;
     }
     if (type == "stepper") {
@@ -285,9 +285,15 @@ export class PayloadFormFieldComponent implements OnInit, OnDestroy {
     if (metaData.isFreeflow || this.verticalStepIndex > $event) {
       this.verticalStepIndex = $event;
     } else {
-      const child = this.item.children[this.verticalStepIndex];
-      const validate = validateFields(child.children);
-      if (validate) {
+      let isError = true;
+      for (let i = this.verticalStepIndex; i < $event; i++) {
+        const child = this.item.children[i];
+        const validate = validateFields(child.children);
+        if (!validate) {
+          isError = false;
+        }
+      }
+      if (isError) {
         this.verticalStepIndex = $event;
       }
     }
@@ -331,14 +337,18 @@ export class PayloadFormFieldComponent implements OnInit, OnDestroy {
     this.editorService.setContainerHeight(this.taskService.transactionDetailsSubject.value?.uiPayload);
   }
   onChange($event) {
-    const ifConditions = this.item.metaData?.conditions?.ifConditions || [];
-    this.taskService.checkCondition(ifConditions);
+    const ifConditions = this.item.metaData.conditions;
+    if(ifConditions?.length){
+      this.taskService.checkCondition(ifConditions);
+    }else if(ifConditions && !ifConditions?.length){
+      this.taskService.checkCondition([{...ifConditions}]);
+    }
   }
-  calculateFormulaValue(itemMetaData, id): any {
+  calculateFormulaValue(item): any {
     let formulaValue = "";
     let formula = [];
-    if (itemMetaData?.formula?.length > 0) {
-      itemMetaData?.formula.forEach((field) => {
+    if (item?.metaData?.formula?.length > 0) {
+      item?.metaData?.formula.forEach((field) => {
         if (field?.resourceType === resourceType.PAYLOAD_FIELD) {
           formula.push(getFieldFromFields(this.payloadFields, field?.id));
         } else {
@@ -373,8 +383,9 @@ export class PayloadFormFieldComponent implements OnInit, OnDestroy {
             formulaValue = eval(expression);
           }
         } else {
-          formulaValue = values[0]?.value?.value || "";
+          formulaValue = values[0]?.value?.value || null;
         }
+        item.value.value = formulaValue;
         return formulaValue;
       case "string":
         formula.forEach((field) => {
@@ -384,11 +395,12 @@ export class PayloadFormFieldComponent implements OnInit, OnDestroy {
             }
           }
           if (field?.resourceType === resourceType.FUNCTION) {
-            if (field?.separateBy) {
+            if (field?.separateBy && formulaValue) {
               formulaValue = formulaValue + field.separateBy;
             }
           }
         });
+        item.value.value = formulaValue;
         return formulaValue;
       case "date":
         const dateFunc = formula.filter((field) => {
@@ -417,42 +429,80 @@ export class PayloadFormFieldComponent implements OnInit, OnDestroy {
         let months = d.diff(date1, "months");
         d.add(-months, "months");
         let days = d.diff(date1, "days");
-        formulaValue = years + " years  " + months + " months  " + days + " days";
+        if (years) {
+          formulaValue = years + "";
+          item.value.value = formulaValue;
+        }
         return formulaValue;
       case "array":
-        if (firstField?.metaData?.widgetType === WidgetTypes.CheckboxGroup) {
-          if (firstField?.value?.value) {
-            formulaValue = firstField?.value?.value.join(" ");
-          }
-        }
-        if (firstField?.metaData?.widgetType !== WidgetTypes.CheckboxGroup) {
-          const values = [];
-          if (formula[1]?.column?.type === "Text" || formula[1]?.column?.type === "string") {
-            if (formula[0]?.value?.value) {
-              formula[0]?.value?.value.forEach((value) => {
-                values.push(value[formula[1]?.column?.columnId]);
-              });
-              formulaValue = values.join("");
+        switch (firstField.metaData.widgetType) {
+          case WidgetTypes.CheckboxGroup:
+            if (firstField?.value?.value) {
+              formulaValue = firstField?.value?.value.join(" ");
             }
-          }
-          if (formula[1]?.column?.type === "Number" || formula[1]?.column?.type === "number") {
-            if (formula[0]?.value?.value) {
-              formula[0]?.value?.value.forEach((value) => {
-                if (value[formula[1]?.column?.columnId] !== "" && value[formula[1]?.column?.columnId] !== null) {
-                  values.push(value[formula[1]?.column?.columnId]);
+            break;
+          case WidgetTypes.Table:
+            const values = [];
+            if (formula[1]?.column?.colType === "Number" || formula[1]?.column?.colType === "number") {
+              if (formula[0]?.value?.value) {
+                formula[0]?.value?.value.forEach((value) => {
+                  if (value[formula[1]?.column?.columnId] !== "" && value[formula[1]?.column?.columnId] !== null) {
+                    values.push(value[formula[1]?.column?.columnId]);
+                  }
+                });
+                if (values.length > 1) {
+                  if (formula[1].id === "Sigma") {
+                    formulaValue = eval(values.join(" + "));
+                  }
+                  if (formula[1].id === "Pi") {
+                    formulaValue = eval(values.join(" * "));
+                  }
+                } else {
+                  formulaValue = values[0] || null;
                 }
-              });
-              if (values.length > 1) {
-                formulaValue = eval(values.join(" + "));
-              } else {
-                formulaValue = values[0] || "";
               }
             }
-          }
+            break;
+          case WidgetTypes.AdvTable:
+            const advTableValues = [];
+            if (
+              formula[1]?.column?.metaData?.widgetType === "Number" ||
+              formula[1]?.column?.metaData?.widgetType === "number"
+            ) {
+              if (formula[0]?.children?.length > 0) {
+                formula[0]?.children?.forEach((value) => {
+                  value.forEach((val) => {
+                    if (val.id === formula[1]?.column?.id) {
+                      advTableValues.push(val);
+                    }
+                  });
+                });
+                if (advTableValues?.length > 0) {
+                  let advValues = [];
+                  advTableValues.forEach((value) => {
+                    if (value?.value?.value) {
+                      advValues.push(value?.value?.value);
+                    }
+                  });
+                  if (advValues?.length > 0) {
+                    if (formula[1].id === "Sigma") {
+                      formulaValue = eval(advValues.join(" + "));
+                    }
+                    if (formula[1].id === "Pi") {
+                      formulaValue = eval(advValues.join(" * "));
+                    }
+                  }
+                } else {
+                  formulaValue = advTableValues[0] || "";
+                }
+              }
+            }
+            break;
         }
+        item.value.value = formulaValue;
         return formulaValue;
     }
-    const currField = getFieldFromFields(this.payloadFields, id);
+    const currField = getFieldFromFields(this.payloadFields, item?.id);
     currField.value.value = formulaValue;
     return formulaValue;
   }

@@ -1,4 +1,10 @@
-<div class="stepper-container">
+<div
+  [class]="{
+    'stepper-container': true,
+    'vertical-stepper': metaData?.stepperType === 'Vertical',
+    'horizontal-stepper': metaData?.stepperType === 'Horizontal'
+  }"
+>
   <div class="progressbar">
     <div
       class="stepper-header"
@@ -14,9 +20,9 @@
       ></finlevit-grid>
     </div>
     <ul
-      class="stepper-body"
+      class="stepper-body step-list"
       [ngStyle]="{
-        height: metaData.stepperHeight + 'px'
+        height: metaData?.stepperType === 'Vertical' ? metaData.stepperHeight + 'px' : 'auto'
       }"
       #stepperBody
     >
@@ -24,8 +30,7 @@
         *ngFor="let child of children; let i = index"
         [ngClass]="{
           completed: _selectedIndex > i || completedSteps[child.metaData.widgetId],
-          selected: _selectedIndex === i,
-          hidden: i === 0
+          selected: _selectedIndex === i
         }"
         (click)="onSelectIndexChange(i)"
       >
@@ -66,13 +71,14 @@
             [viewMode]="viewMode"
             [parent]="children[_selectedIndex]"
             [items]="children[_selectedIndex].children"
+            [filter]="{ metaData: { isFooterContainer: false } }"
             (onBtnClick)="onBtnClick.emit($event)"
             (checkHeight)="checkHeight()"
             [showEdit]="showEdit"
             (onTableDataChange)="onTableDataChange.emit($event)"
             (onOptionChange)="onOptionChange.emit($event)"
           ></finlevit-grid>
-          <ng-container *ngIf="_selectedIndex == children.length - 1 && reviewData.length">
+          <ng-container *ngIf="_selectedIndex === children.length - 1 && reviewData.length">
             <div class="review_content">
               <div *ngFor="let child of reviewData; let i = index">
                 <h5>{{ child.label }}</h5>
@@ -98,8 +104,8 @@
         <finlevit-grid
           [viewMode]="viewMode"
           [showEdit]="showEdit"
-          [parent]="children[0]"
-          [items]="children[0]?.children"
+          [parent]="children[_selectedIndex].children[0]"
+          [items]="children[_selectedIndex].children[0]?.children"
           (onBtnClick)="setSelection($event)"
           [style]="{ width: '100%' }"
         ></finlevit-grid>
