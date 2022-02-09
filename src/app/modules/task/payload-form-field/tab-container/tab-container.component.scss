@@ -1,3 +1,25 @@
+.nested-grid-container {
+  height: 100%;
+  &.empty-child {
+    position: relative;
+    ::ng-deep {
+      .container-help-text {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        font-size: 13px;
+        justify-content: center;
+        color: gray;
+        position: absolute;
+        z-index: 1;
+        height: 100%;
+        left: 0;
+        right: 0;
+        pointer-events: none;
+      }
+    }
+  }
+}
 ::ng-deep{
   .p-tabview .p-tabview-nav {
     background: #ffffff;
