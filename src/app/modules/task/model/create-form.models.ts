@@ -671,6 +671,15 @@ export class PasswordInputMetaData extends MetaData {
   }
 }
 
+export class TabContainerMetaData extends MetaData {
+  suffixIcon?: string;
+  constructor(data) {
+    super(data);
+    const { suffixIcon } = data;
+    this.suffixIcon = suffixIcon;
+  }
+}
+
 export class StepperContainerMetaData extends MetaData {
   sublabel: string;
   stepperType: string;

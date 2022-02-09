@@ -1188,35 +1188,15 @@
     </app-vertical-stepper>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === TabContainer">
-    <div class="tab-container">
-      <p-tabView [activeIndex]="tabActiveIndex" (onChange)="onTabChange($event)">
-        <ng-container *ngFor="let child of item.children; let i = index">
-          <p-tabPanel *ngIf="!child?.metaData?.isHidden" [header]="child.label">
-            <ng-template pTemplate="header">
-              <i [class]="child?.metaData?.icon" class="pr-1"></i>
-              <span>{{ child.label }}</span>
-            </ng-template>
-            <div
-              [ngClass]="{
-                'nested-grid-container': true,
-                'empty-child': !child.children.length
-              }"
-            >
-              <finlevit-grid
-                [viewMode]="viewMode"
-                [showEdit]="showEdit"
-                [parent]="child"
-                [items]="child.children"
-                (onBtnClick)="onBtnClick.emit($event)"
-                (onTableDataChange)="onTableDataChange.emit($event)"
-                (onOptionChange)="optionChange($event, $event.data)"
-                (checkHeight)="checkHeight(child)"
-              ></finlevit-grid>
-            </div>
-          </p-tabPanel>
-        </ng-container>
-      </p-tabView>
-    </div>
+    <app-tab-container
+      (tabChangeEvent)="onTabChange($event)"
+      [item]="item"
+      [tabActiveIndex]="tabActiveIndex"
+      (btnClick)="onBtnClick.emit($event)"
+      (tableDataChange)="onTableDataChange.emit($event)"
+      (optionChange)="optionChange($event, $event.data)"
+    >
+    </app-tab-container>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Divider">
     <div class="input-container">
