@@ -30,6 +30,7 @@ import { AvatarComponent } from "./payload-form-field/avatar/avatar.component";
 import { TooltipModule } from "primeng/tooltip";
 import { AvatarModule } from "primeng/avatar";
 import { HorizontalStepperComponent } from "./payload-form-field/horizontal-stepper/horizontal-stepper.component";
+import { AppTabContainerComponent } from "./payload-form-field/tab-container/tab-container.component";
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { HorizontalStepperComponent } from "./payload-form-field/horizontal-step
     CustomAdvTableComponent,
     ImageComponent,
     AvatarComponent,
-    HorizontalStepperComponent
+    HorizontalStepperComponent,
+    AppTabContainerComponent,
   ],
   imports: [CommonModule, GridsterModule, SharedModule, ExtendedModule, TooltipModule, AvatarModule],
   providers: [TaskService, AuthService],
