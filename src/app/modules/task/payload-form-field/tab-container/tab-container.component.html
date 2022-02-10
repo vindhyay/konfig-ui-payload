@@ -1,5 +1,5 @@
 <div class="tab-container">
-  <p-tabView [activeIndex]="tabActiveIndex" (onChange)="tabChangeEvent.emit($event)">
+  <p-tabView [activeIndex]="tabActiveIndex" (onChange)="onTabChange($event)">
     <ng-container *ngFor="let child of item.children; let i = index">
       <p-tabPanel *ngIf="!child?.metaData?.isHidden" [header]="child.label">
         <ng-template pTemplate="header">
@@ -13,16 +13,7 @@
             'empty-child': !child.children.length
           }"
         >
-          <finlevit-grid
-            [viewMode]="viewMode"
-            [showEdit]="showEdit"
-            [parent]="child"
-            [items]="child.children"
-            (onBtnClick)="btnClick.emit($event)"
-            (onTableDataChange)="tableDataChange.emit($event)"
-            (onOptionChange)="onOptionChange($event)"
-            (checkHeight)="checkHeight(child)"
-          ></finlevit-grid>
+          <finlevit-grid [parent]="child" [items]="child.children"></finlevit-grid>
         </div>
       </p-tabPanel>
     </ng-container>

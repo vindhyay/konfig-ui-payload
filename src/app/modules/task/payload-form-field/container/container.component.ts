@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { BaseWidget, ContainerActions, ContainerMetaData } from "../../model/create-form.models";
+import { EditorService } from "../../editor.service";
 
 @Component({
   selector: "app-container",
@@ -7,18 +8,9 @@ import { BaseWidget, ContainerActions, ContainerMetaData } from "../../model/cre
   styleUrls: ["./container.component.scss"],
 })
 export class ContainerComponent implements OnInit {
-  constructor() {}
+  constructor(private editorService: EditorService) {}
 
   @Input() item: BaseWidget = {} as BaseWidget;
-  @Input() viewMode = false;
-  @Input() showEdit;
-  @Output() onBtnClick = new EventEmitter();
-  @Output() onOptionChange = new EventEmitter();
-  @Output() onTableDataChange = new EventEmitter();
-
-  optionChange($event, data) {
-    this.onOptionChange.emit({ event: $event, data });
-  }
 
   actionBtnClick($event, data) {
     $event.stopPropagation();
@@ -27,7 +19,7 @@ export class ContainerComponent implements OnInit {
       this.metaData.onClickConfigs[0].action === ContainerActions.next ||
       this.metaData.onClickConfigs[0].action === ContainerActions.previous
     ) {
-      this.onBtnClick.emit({ event: $event, data });
+      this.editorService.onBtnClick({ event: $event, data });
     } else if (this.metaData.onClickConfigs[0].action === ContainerActions.externalLink) {
       window.open(this.metaData.externalLink, "_blank");
     }

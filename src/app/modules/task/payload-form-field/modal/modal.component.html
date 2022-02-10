@@ -64,7 +64,7 @@
         'text-decoration': styles?.properties?.labelTextDecoration
       }"
     >
-      {{ metaData?.modalHeader[_selectedIndex]?.title }}
+      {{ metaData?.modalHeader[selectedIndex]?.title }}
     </div>
   </ng-template>
   <div
@@ -74,14 +74,8 @@
     }"
   >
     <finlevit-grid
-      [viewMode]="viewMode"
-      [showEdit]="showEdit"
-      [parent]="item.children[_selectedIndex]"
-      (onBtnClick)="onBtnClick.emit($event)"
-      (onTableDataChange)="onTableDataChange.emit($event)"
-      (onOptionChange)="optionChange($event, $event.data)"
-      (checkHeight)="checkHeight()"
-      [items]="item.children[_selectedIndex].children"
+      [parent]="item.children[selectedIndex]"
+      [items]="item.children[selectedIndex].children"
       [filter]="{ metaData: { isFooterContainer: false } }"
     ></finlevit-grid>
   </div>
@@ -95,13 +89,10 @@
     >
       <ng-container>
         <finlevit-grid
-          [viewMode]="viewMode"
-          [showEdit]="showEdit"
-          [parent]="item.children[_selectedIndex].children"
-          [items]="item.children[_selectedIndex]?.children[0].children"
+          [emitButtonEvent]="true"
+          [parent]="item.children[selectedIndex].children"
+          [items]="item.children[selectedIndex]?.children[0].children"
           (onBtnClick)="onFooterClick($event)"
-          (onTableDataChange)="onTableDataChange.emit($event)"
-          (onOptionChange)="optionChange($event, $event.data)"
           [style]="{ width: '100%', 'background-color': styles?.properties?.footerBackgroundColor }"
         ></finlevit-grid>
       </ng-container>

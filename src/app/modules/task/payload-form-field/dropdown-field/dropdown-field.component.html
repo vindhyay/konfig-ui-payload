@@ -1,6 +1,6 @@
 <finlevit-lib-select
   [placeholder]="item?.metaData?.placeholder"
-  [isDisabled]="(viewMode && (!item?.validators?.editable || !editMode)) || isDisabled"
+  [isDisabled]="isDisabled"
   [isRequired]="item?.validators?.required"
   [label]="item?.label"
   [error]="item?.error == true"

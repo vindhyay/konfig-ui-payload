@@ -3,7 +3,7 @@ import { result } from "./state/model/api-response";
 import { FormControl, Validators } from "@angular/forms";
 import { ButtonActions, WidgetTypes } from "./modules/task/model/create-form.models";
 
-export const Action_Config_UI = [ButtonActions.logout, ButtonActions.nextStep, ButtonActions.previousStep];
+export const UI_ACTIONS = [ButtonActions.logout, ButtonActions.nextStep, ButtonActions.previousStep];
 
 const uid = new ShortUniqueId();
 export const getValueFromObjectByPath = (obj: any, path: any) =>
@@ -48,13 +48,16 @@ export const parseApiResponse = (result: result): result => {
 };
 export const validateFields = (fields: any[]) => {
   let result = true;
+  let errorFields = [];
   fields.forEach((field: any) => {
-    if (field.children && field.children.length) {
-      if (!validateFields(field.children)) {
+    if (field?.children && field?.children?.length) {
+      const { result: validationStatus, errorFields: errorFieldsData } = validateFields(field.children);
+      if (!validationStatus) {
         result = false;
+        errorFields = errorFields.concat(errorFieldsData);
       }
-    } else {
-      const tempFormControl = new FormControl(field.value.value, getValidators(field.validators));
+    } else if (field) {
+      const tempFormControl = new FormControl(field?.value?.value, getValidators(field?.validators || {}));
       if (tempFormControl.valid || field?.rows === 0 || field?.metaData?.isHidden) {
         field.error = false;
         field.errorMsg = "";
@@ -64,11 +67,12 @@ export const validateFields = (fields: any[]) => {
           tempFormControl.errors,
           field?.label || field?.displayName || field?.widgetName
         )[0];
+        errorFields.push(field);
         result = false;
       }
     }
   });
-  return result;
+  return { result, errorFields };
 };
 export const getValidators = (validators: any) => {
   const _validators: any = [];
@@ -197,3 +201,17 @@ export class DeepCopy {
     return node;
   }
 }
+export const getValueFromField = (fields, fieldId) => {
+  let paramField = null;
+  fields.forEach((field) => {
+    if (field.children && field.children.length) {
+      const nestedParamField = getValueFromField(field.children, fieldId);
+      paramField = nestedParamField || paramField;
+    } else {
+      if (field?.id === fieldId) {
+        paramField = field;
+      }
+    }
+  });
+  return paramField;
+};

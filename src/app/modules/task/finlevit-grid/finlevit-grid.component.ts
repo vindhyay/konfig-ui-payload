@@ -10,11 +10,8 @@ import {
 import { BaseWidget, ContainerActions, MIN_COLUMNS, MIN_ROWS, WidgetTypes } from "../model/create-form.models";
 import { ActivatedRoute } from "@angular/router";
 import { EditorService } from "../editor.service";
-import { parseApiResponse } from "../../../utils";
 import { NotificationService } from "../../../services/notification.service";
 import { BaseComponent } from "../../shared/base/base.component";
-import { TaskService } from "../services/task.service";
-import { AuthService } from "../../auth/services/auth.service";
 
 @Component({
   selector: "finlevit-grid",
@@ -26,13 +23,11 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
   dashboard: Array<GridsterItem> | undefined;
   @Input() items: Array<BaseWidget> | undefined;
   @Input() parent: BaseWidget | undefined;
-  @Input() showEdit: boolean = true;
-  @Input() viewMode: boolean = false;
+  @Input() emitButtonEvent: boolean = false;
+  @Output() onBtnClick = new EventEmitter();
   @Input() modifyOptions: any = {};
   @Input() filter: any = null;
-  @Output() onBtnClick = new EventEmitter();
-  @Output() onOptionChange = new EventEmitter();
-  @Output() onTableDataChange = new EventEmitter();
+  @ViewChild("gridsterComponent", { static: false }) gridsterRef: any;
 
   Text: WidgetTypes = WidgetTypes.Text;
   Container: WidgetTypes = WidgetTypes.Container;
@@ -44,15 +39,12 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
   transactionId: any;
   taskId: any;
   allEligibleFields = [];
-  @ViewChild("gridsterComponent", { static: false }) gridsterRef: any;
   globalStyle;
 
   constructor(
     private editorService: EditorService,
     private notificationService: NotificationService,
-    private activatedRoute: ActivatedRoute,
-    private taskService: TaskService,
-    private authService: AuthService
+    private activatedRoute: ActivatedRoute
   ) {
     super();
   }
@@ -224,27 +216,6 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
     super.ngOnDestroy();
   }
 
-  onEdit(item: BaseWidget) {
-    const {
-      value: { value, id },
-    } = item;
-    const payload = { newValue: value };
-    const params = { dataId: id, transactionTaskId: this.taskId };
-    this.taskService.modifyTaskField(payload, params).subscribe(
-      (result: any) => {
-        const { data, error } = parseApiResponse(result);
-        if (data && !error) {
-          this.notificationService.success("Saved Successfully", "Success");
-          this.taskService.getWorkflowTaskData(this.transactionId, this.taskId);
-        } else {
-          this.notificationService.error(error.errorMessage);
-        }
-      },
-      () => {
-        this.notificationService.error("Failed to modify data", "Fail");
-      }
-    );
-  }
   checkCollision(item: GridsterItem, items: any[]): GridsterItemComponentInterface | boolean {
     let widgetsIndex: number = items.length - 1;
     let widget: GridsterItemComponentInterface;
