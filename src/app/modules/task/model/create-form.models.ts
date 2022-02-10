@@ -322,8 +322,6 @@ export class TablePopulateConfig {
 }
 
 export class TableMetaData<T> extends MetaData {
-  color: string;
-  bgColor: string;
   heading: string;
   sort: boolean;
   filter: boolean;
@@ -332,28 +330,21 @@ export class TableMetaData<T> extends MetaData {
   horizontalBorder: boolean;
   verticalBorder: boolean;
   tableBorder: boolean;
-  borderColor: string;
   actions: TableActions;
   optionPopulateConfig: Array<TablePopulateConfig>;
   columns: Array<T>;
   overflow: TABLE_OVERFLOW;
   options: Array<any>;
-  headerFontSize: string;
   headerCellPaddingTop: string;
   headerCellPaddingBottom: string;
   headerCellPaddingLeft: string;
   headerCellPaddingRight: string;
-  headerCellBackgroundColor: string;
-  paginatorBackgroundColor: string;
-  bodyFontSize: string;
-  bodyCellColor: string;
-  bodyCellBgColor: string;
 
   pagination: boolean;
   paginatorPosition: TABLE_PAGINATION_POSITIONS;
-  paginatorColor: string;
-  paginatorBgColor: string;
   hideFooter: boolean;
+
+  styleProperties: { id: ""; properties: any };
 
   constructor(data) {
     super(data);
@@ -362,9 +353,6 @@ export class TableMetaData<T> extends MetaData {
       sort = false,
       filter = false,
       pagination = false,
-      color = "#6a6a6a",
-      bgColor = "#ededed",
-      bodyCellBgColor = "#fff",
       optionsPopulateConfig = [],
       columns = [],
       addRows = true,
@@ -375,54 +363,40 @@ export class TableMetaData<T> extends MetaData {
       actions = {},
       overflow = TABLE_OVERFLOW.PAGINATION,
       paginatorPosition = TABLE_PAGINATION_POSITIONS.BOTTOM,
-      paginatorBgColor = "#ededed",
       hideFooter = false,
-      headerFontSize = "14px",
       headerCellPaddingTop = "11px",
       headerCellPaddingBottom = "11px",
       headerCellPaddingLeft = "11px",
       headerCellPaddingRight = "11px",
-      headerCellBackgroundColor = "#f3f6f9",
-      bodyFontSize = "14px",
-      paginatorColor = "#6a6a6a",
       options = [],
-      bodyCellColor = "#373f51",
-      borderColor = "#cccccc",
+      styleProperties = {},
     } = data;
     this.columns = columns;
     this.heading = heading;
     this.sort = sort;
     this.filter = filter;
     this.pagination = pagination;
-    this.color = color;
-    this.bgColor = bgColor;
     this.optionPopulateConfig = optionsPopulateConfig;
     this.addRows = addRows;
     this.hideHeader = hideHeader;
     this.horizontalBorder = horizontalBorder;
     this.verticalBorder = verticalBorder;
     this.tableBorder = tableBorder;
-    this.borderColor = borderColor;
 
     this.actions = new TableActions(actions);
     this.overflow = overflow;
 
     this.pagination = paginatorPosition;
     this.paginatorPosition = paginatorPosition;
-    this.paginatorBgColor = paginatorBgColor;
-    this.paginatorColor = paginatorColor;
 
-    this.bodyCellColor = bodyCellColor;
-    this.bodyCellBgColor = bodyCellBgColor;
     this.options = options;
     this.hideFooter = hideFooter;
-    this.headerFontSize = headerFontSize;
     this.headerCellPaddingTop = headerCellPaddingTop;
     this.headerCellPaddingBottom = headerCellPaddingBottom;
     this.headerCellPaddingLeft = headerCellPaddingLeft;
     this.headerCellPaddingRight = headerCellPaddingRight;
-    this.headerCellBackgroundColor = headerCellBackgroundColor;
-    this.bodyFontSize = bodyFontSize;
+
+    this.styleProperties = styleProperties;
   }
 }
 

@@ -7,26 +7,33 @@
   --body-cell-color: #312929;
   --body-font-size: 12px;
   --body-cell-padding: 11px;
+  --header-cell-font-family: Muli, Raleway, Montserrat, "Open Sans", sans-serif;
+
 
   --paginator-background-color: #ededed;
   --paginator-color: #6a6a6a;
 
-  --table-border-color: #cccccc;
   --table-header-right-border-color: var(--table-border-color);
   --table-header-bottom-border-color: var(--table-border-color);
   --table-cell-right-border-color: var(--table-border-color);
   --table-cell-bottom-border-color: var(--table-border-color);
 
+  --table-border-width: 1px;
+  --table-border-color: #cccccc;
+  --table-border-radius: 1px;
+  --table-border-style: solid;
+
   .table-widget {
     width: 100%;
     height: 100%;
-    border: 1px solid var(--table-border-color);
   }
   .finlevit-table {
     position: relative;
     display: flex;
     flex-direction: column;
     height: 100%;
+    border: var(--table-border-width) var(--table-border-style) var(--table-border-color);
+    border-radius: var(--table-border-radius);
     &.pagination-bottom {
       flex-direction: column;
     }
@@ -69,6 +76,7 @@
     background: var(--body-cell-background-color);
     color: var(--body-cell-color);
     overflow: auto;
+    font-family: var(--body-cell-font-family);
   }
   .f-table .f-tbody .f-tr-group {
     display: flex;
@@ -87,6 +95,7 @@
     line-height: normal;
     background-color: var(--header-cell-background-color);
     color: var(--header-cell-color);
+    font-family: var(--header-cell-font-family);
     .f-resizer {
       position: absolute;
       top: 0;
