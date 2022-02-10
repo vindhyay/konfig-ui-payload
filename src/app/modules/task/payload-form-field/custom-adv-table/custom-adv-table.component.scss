@@ -12,6 +12,8 @@
 
   --paginator-background-color: #ededed;
   --paginator-color: #6a6a6a;
+  --paginator-font-family: Muli, Raleway, Montserrat, "Open Sans", sans-serif;
+  --paginator-font-size: 12px;
 
   --table-header-right-border-color: var(--table-border-color);
   --table-header-bottom-border-color: var(--table-border-color);
@@ -217,8 +219,10 @@
     padding: 4px 12px;
     color: var(--paginator-color);
     background-color: var(--paginator-background-color);
+    font-family: var(--paginator-font-family);
+    font-size: var(--paginator-font-size);
     .table-results-counter {
-      font-size: 12px;
+      font-size: var(--paginator-font-size);
       display: inline-flex;
       justify-content: center;
       align-items: center;
