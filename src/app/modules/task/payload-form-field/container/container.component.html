@@ -18,13 +18,5 @@
     ></i
     >{{ item?.metaData?.title }}
   </div>
-  <finlevit-grid
-    [viewMode]="viewMode"
-    [showEdit]="showEdit"
-    [parent]="item"
-    [items]="item.children"
-    (onBtnClick)="onBtnClick.emit($event)"
-    (onTableDataChange)="onTableDataChange.emit($event)"
-    (onOptionChange)="optionChange($event, $event.data)"
-  ></finlevit-grid>
+  <finlevit-grid [parent]="item" [items]="item.children"></finlevit-grid>
 </div>

@@ -1,7 +1,6 @@
-import {Component, OnInit, Input, AfterViewInit, Output, EventEmitter} from "@angular/core";
+import { Component, OnInit, Input, AfterViewInit, Output, EventEmitter } from "@angular/core";
 import { EditorService } from "../../editor.service";
 import { BaseWidget, CollapseContainerMetaData } from "../../model/create-form.models";
-import { TaskService } from "../../services/task.service";
 
 @Component({
   selector: "app-collapse-container",
@@ -11,11 +10,6 @@ import { TaskService } from "../../services/task.service";
 export class CollapseContainerComponent implements OnInit, AfterViewInit {
   collapseContainerStatus = true;
   @Input() item: BaseWidget = {} as BaseWidget;
-  @Input() viewMode = false;
-  @Input() showEdit = false;
-  @Input() isDisabled: boolean = false;
-  @Input() editMode: boolean = false;
-  @Output() onOptionChange = new EventEmitter();
 
   ngOnInit() {}
 
@@ -24,7 +18,7 @@ export class CollapseContainerComponent implements OnInit, AfterViewInit {
       this.collapseContainerStatus = false;
     }
   }
-  constructor(private editorService: EditorService, private taskService: TaskService) {}
+  constructor(private editorService: EditorService) {}
   get metaData(): CollapseContainerMetaData {
     return this.item.metaData as CollapseContainerMetaData;
   }
@@ -40,9 +34,6 @@ export class CollapseContainerComponent implements OnInit, AfterViewInit {
       this.item.metaData.movement = "DOWN";
     }
     this.editorService.widgetChange.next(item);
-    this.editorService.setContainerHeight(this.taskService.transactionDetailsSubject.value?.uiPayload);
-  }
-  optionChange($event, data) {
-    this.onOptionChange.emit({ event: $event, data });
+    this.editorService.setContainerHeight(this.editorService.getFormFields());
   }
 }

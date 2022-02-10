@@ -46,13 +46,9 @@
       <app-payload-form-field
         *ngIf="!item?.metaData?.isHidden"
         [options]="item?.metaData?.options"
-        [viewMode]="viewMode"
-        [showEdit]="showEdit"
-        (edit)="onEdit($event)"
-        (onBtnClick)="onBtnClick.emit($event)"
-        (onOptionChange)="onOptionChange.emit($event)"
-        (onTableDataChange)="onTableDataChange.emit($event)"
         [item]="item"
+        [emitButtonEvent]="emitButtonEvent"
+        (onBtnClick)="onBtnClick.emit($event)"
       ></app-payload-form-field>
     </gridster-item>
   </ng-container>

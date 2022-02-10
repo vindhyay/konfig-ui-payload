@@ -240,6 +240,9 @@ export class MetaData {
   defaultMinItemRows: number;
   conditions: any;
   errorMessage: string;
+  readOnly?: boolean;
+  isEnable?: boolean;
+  styleProperties: any;
   constructor(data) {
     const {
       widgetId,
@@ -259,6 +262,7 @@ export class MetaData {
       hideRows,
       conditions,
       errorMessage = "",
+      readOnly = false,
     } = data;
     this.widgetId = widgetId || getUniqueId("widget");
     this.widgetType = widgetType;
@@ -277,6 +281,7 @@ export class MetaData {
     this.hideRows = hideRows;
     this.conditions = conditions;
     this.errorMessage = errorMessage;
+    this.readOnly = readOnly;
   }
 }
 export class SubColumn {
@@ -1118,10 +1123,18 @@ export class ContainerMetaData extends MetaData {
   onClickConfigs: Array<OnChangeTriggerConfig>;
   externalLink: string;
   styleProperties: { id: ""; properties: any };
-  isFooterContainer : boolean;
+  isFooterContainer: boolean;
   constructor(data) {
     super(data);
-    const { title = "", icon = "", styleProperties = {}, onClickConfig = {}, externalLink = "", header = {} ,  isFooterContainer = false} = data;
+    const {
+      title = "",
+      icon = "",
+      styleProperties = {},
+      onClickConfig = {},
+      externalLink = "",
+      header = {},
+      isFooterContainer = false,
+    } = data;
     this.title = title;
     this.icon = icon;
     this.styleProperties = styleProperties;

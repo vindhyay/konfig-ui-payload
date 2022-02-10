@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { AuthService } from "src/app/modules/auth/services/auth.service";
 import { AvatarMetaData, BaseWidget } from "../../model/create-form.models";
-import { TaskService } from "../../services/task.service";
+import { EditorService } from "../../editor.service";
 
 @Component({
   selector: "app-avatar",
@@ -9,7 +9,7 @@ import { TaskService } from "../../services/task.service";
   styleUrls: ["./avatar.component.scss"],
 })
 export class AvatarComponent implements OnInit {
-  constructor(private taskService: TaskService, private authService: AuthService) {}
+  constructor(private editorService: EditorService, private authService: AuthService) {}
 
   ngOnInit() {
     if (this.metaData.configureLoginData) {
@@ -21,7 +21,7 @@ export class AvatarComponent implements OnInit {
     return this.item.metaData as AvatarMetaData;
   }
 
-  getImageUrl = this.taskService.getImageUrl();
+  getImageUrl = this.editorService.getImageUrl();
   @Input() item: BaseWidget = {} as BaseWidget;
   currentUser: any;
 

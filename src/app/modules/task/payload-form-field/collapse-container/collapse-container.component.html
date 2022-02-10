@@ -28,13 +28,7 @@
           <i class="pi pi-plus"></i>
           <span>Drag and drop fields to container</span>
         </div>
-        <finlevit-grid
-          [showEdit]="showEdit"
-          [viewMode]="viewMode"
-          [parent]="item"
-          [items]="item.children"
-          (onOptionChange)="optionChange($event, $event.data)"
-        ></finlevit-grid>
+        <finlevit-grid [parent]="item" [items]="item.children"></finlevit-grid>
       </div>
     </p-accordionTab>
   </p-accordion>

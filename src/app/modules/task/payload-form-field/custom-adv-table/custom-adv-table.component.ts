@@ -108,10 +108,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
   @Output() onBtnClick = new EventEmitter();
   @Output() onOptionChange = new EventEmitter();
   @Output() onTableDataChange = new EventEmitter();
-  @Input() viewMode = false;
-  @Input() showEdit = false;
   @Input() isDisabled: boolean = false;
-  @Input() editMode: boolean = false;
   tableId: any = null;
   editRows = {};
   editCells = {};

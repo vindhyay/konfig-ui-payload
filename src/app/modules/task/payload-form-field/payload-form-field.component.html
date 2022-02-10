@@ -1,51 +1,9 @@
-<div
-  [ngClass]="{ 'preview-container': true, 'controls-active': showControls }"
-  (mouseleave)="toggleControls(false)"
-  (mouseover)="toggleControls(true)"
-  *ngIf="!hide"
->
-  <ul
-    *ngIf="
-      showEdit &&
-      showControls &&
-      (item?.metaData?.widgetType == TextInput ||
-        item?.metaData?.widgetType == PasswordInput ||
-        item?.metaData?.widgetType == SSNInput ||
-        item?.metaData?.widgetType == Email ||
-        item?.metaData?.widgetType == PhonenumberInput ||
-        item?.metaData?.widgetType == TextArea ||
-        item?.metaData?.widgetType == Number ||
-        item?.metaData?.widgetType == CheckboxGroup ||
-        item?.metaData?.widgetType == RadioGroup ||
-        item?.metaData?.widgetType == DatePicker ||
-        item?.metaData?.widgetType == Dropdown ||
-        item?.metaData?.widgetType == Checkbox)
-    "
-  >
-    <li title="Edit field" *ngIf="!editMode" (click)="onEdit($event, item)">
-      <i class="pi pi-pencil opt-icon"></i>
-    </li>
-    <li title="Save field" *ngIf="editMode" (click)="onSave(item)">
-      <i class="pi pi-save opt-icon"></i>
-    </li>
-    <li title="Cancel" *ngIf="editMode" (click)="onCancel()">
-      <i class="pi pi-times opt-icon"></i>
-    </li>
-  </ul>
-
-  <ng-container *ngIf="item?.metaData?.widgetType === ErrorContainer">
-    <div class="input-container">
-      <div class="error-msg" *ngFor="let value of item?.value?.value">
-        <span class="material-icons mr-2"> error </span><span>{{ value }}</span>
-      </div>
-    </div>
-  </ng-container>
-
+<div [ngClass]="{ 'preview-container': true }" *ngIf="!hide">
   <ng-container *ngIf="item?.metaData?.widgetType === TextInput">
     <div class="input-container">
       <finlevit-text
         *ngIf="!item?.metaData?.isFormulaField"
-        [isDisabled]="(viewMode && (!item?.validators?.editable || !editMode)) || disable || item?.metaData?.readOnly"
+        [isDisabled]="readonlyMode || disable"
         [leftIcon]="item?.metaData?.leftIcon"
         [rightIcon]="item?.metaData?.rightIcon"
         [error]="isError(item)"
@@ -113,7 +71,7 @@
       ></finlevit-text>
       <finlevit-text
         *ngIf="item?.metaData?.isFormulaField"
-        [isDisabled]="(viewMode && (!item?.validators?.editable || !editMode)) || disable || item?.metaData?.readOnly"
+        [isDisabled]="readonlyMode || disable"
         [leftIcon]="item?.metaData?.leftIcon"
         [rightIcon]="item?.metaData?.rightIcon"
         [error]="isError(item)"
@@ -186,7 +144,7 @@
     <div class="input-container">
       <finlevit-text
         *ngIf="!item?.metaData?.isFormulaField"
-        [isDisabled]="(viewMode && (!item?.validators?.editable || !editMode)) || disable || item?.metaData?.readOnly"
+        [isDisabled]="readonlyMode || disable"
         [leftIcon]="item?.metaData?.leftIcon"
         [rightIcon]="item?.metaData?.rightIcon"
         [error]="isError(item)"
@@ -254,7 +212,7 @@
       ></finlevit-text>
       <finlevit-text
         *ngIf="item?.metaData?.isFormulaField"
-        [isDisabled]="(viewMode && (!item?.validators?.editable || !editMode)) || disable || item?.metaData?.readOnly"
+        [isDisabled]="readonlyMode || disable"
         [leftIcon]="item?.metaData?.leftIcon"
         [rightIcon]="item?.metaData?.rightIcon"
         [error]="isError(item)"
@@ -326,7 +284,7 @@
   <ng-container *ngIf="item?.metaData?.widgetType === PasswordInput">
     <div class="input-container">
       <app-password-field
-        [isDisabled]="(viewMode && (!item?.validators?.editable || !editMode)) || disable || item?.metaData?.readOnly"
+        [isDisabled]="readonlyMode || disable"
         (onValueChange)="validateField($event, item)"
         (onBlurChange)="optionChange($event, item)"
         [item]="item"
@@ -384,7 +342,7 @@
   <ng-container *ngIf="item?.metaData?.widgetType === SSNInput">
     <div class="input-container">
       <app-ssninput-field
-        [isDisabled]="(viewMode && (!item?.validators?.editable || !editMode)) || disable || item?.metaData?.readOnly"
+        [isDisabled]="readonlyMode || disable"
         (onValueChange)="validateField($event, item)"
         (onBlurChange)="optionChange($event, item)"
         [item]="item"
@@ -442,7 +400,7 @@
   <ng-container *ngIf="item?.metaData?.widgetType === PhonenumberInput">
     <div class="input-container">
       <app-phonenumber-field
-        [isDisabled]="(viewMode && (!item?.validators?.editable || !editMode)) || disable || item?.metaData?.readOnly"
+        [isDisabled]="readonlyMode || disable"
         (onValueChange)="validateField($event, item)"
         (onBlurChange)="optionChange($event, item)"
         [item]="item"
@@ -500,7 +458,7 @@
   <ng-container *ngIf="item?.metaData?.widgetType === TextArea">
     <div class="input-container">
       <finlevit-lib-textarea
-        [isDisabled]="(viewMode && (!item?.validators?.editable || !editMode)) || disable || item?.metaData?.readOnly"
+        [isDisabled]="readonlyMode || disable"
         [rows]="item?.metaData?.rowsCount"
         [error]="isError(item)"
         [tooltip]="item?.metaData?.tooltip"
@@ -567,7 +525,7 @@
     <div class="input-container">
       <finlevit-number
         *ngIf="!item?.metaData?.isFormulaField"
-        [isDisabled]="(viewMode && (!item?.validators?.editable || !editMode)) || disable || item?.metaData?.readOnly"
+        [isDisabled]="readonlyMode || disable"
         [placeholder]="item?.metaData?.placeholder"
         [tooltip]="item?.metaData?.tooltip"
         [error]="isError(item)"
@@ -637,7 +595,7 @@
       ></finlevit-number>
       <finlevit-number
         *ngIf="item?.metaData?.isFormulaField"
-        [isDisabled]="(viewMode && (!item?.validators?.editable || !editMode)) || disable || item?.metaData?.readOnly"
+        [isDisabled]="readonlyMode || disable"
         [placeholder]="item?.metaData?.placeholder"
         [tooltip]="item?.metaData?.tooltip"
         [error]="isError(item)"
@@ -725,7 +683,7 @@
   <ng-container *ngIf="item?.metaData?.widgetType === Button">
     <div class="input-container button-input" [ngStyle]="{ width: '100%' }">
       <finlevit-button
-        [isDisabled]="item?.metaData?.isEnable === false || disable || item?.metaData?.readOnly"
+        [isDisabled]="item?.metaData?.isEnable === false || readonlyMode || disable"
         [icon]="item?.metaData?.icon"
         [iconPos]="item?.metaData?.iconPos"
         [label]="item?.label"
@@ -767,18 +725,11 @@
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === CollapseContainer">
-    <app-collapse-container
-      [item]="item"
-      [showEdit]="showEdit"
-      [viewMode]="viewMode"
-      [isDisabled]="disable"
-      [editMode]="editMode"
-      (onOptionChange)="optionChange($event, $event.data)"
-    ></app-collapse-container>
+    <app-collapse-container [item]="item"></app-collapse-container>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Upload">
     <div class="input-container button-input">
-      <app-upload [item]="item" [viewMode]="viewMode" [editMode]="editMode" [isDisabled]="disable"></app-upload>
+      <app-upload [item]="item" [isDisabled]="readonlyMode || disable"></app-upload>
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Image">
@@ -851,23 +802,18 @@
         [tableBorder]="item?.metaData?.tableBorder"
         [horizontalBorder]="item?.metaData?.horizontalBorder"
         [verticalBorder]="item?.metaData?.verticalBorder"
-        [showEdit]="showEdit"
-        [viewMode]="viewMode"
-        [isDisabled]="disable"
-        [editMode]="editMode"
-        (onBtnClick)="onBtnClick.emit($event)"
-        (onTableDataChange)="onTableDataChange.emit($event)"
-        (onOptionChange)="optionChange($event, $event.data)"
+        [isDisabled]="readonlyMode || disable"
+        (onBtnClick)="btnClick(null, $event)"
       ></finlevit-custom-adv-table>
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === TransactionTable">
-    <app-transaction-table [item]="item" [viewMode]="viewMode" [editMode]="editMode"></app-transaction-table>
+    <app-transaction-table [item]="item" [isDisabled]="readonlyMode || disable"></app-transaction-table>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Checkbox">
     <div class="input-container">
       <finlevit-lib-checkbox
-        [isDisabled]="(viewMode && (!item?.validators?.editable || !editMode)) || disable || item?.metaData?.readOnly"
+        [isDisabled]="readonlyMode || disable"
         [error]="isError(item)"
         [isRequired]="item?.validators?.required"
         [label]="item?.label"
@@ -899,10 +845,8 @@
     <div class="input-container">
       <app-checkbox-group
         [item]="item"
-        [viewMode]="viewMode"
-        [editMode]="editMode"
         [dataListId]="item?.metaData?.datalistId"
-        [isDisabled]="disable || item?.metaData?.readOnly"
+        [isDisabled]="readonlyMode || disable"
         [columns]="item?.metaData?.columns"
         [labelFontWeight]="item?.metaData?.styleProperties?.properties?.labelFontWeight"
         [labelStyle]="item?.metaData?.styleProperties?.properties?.labelStyle"
@@ -939,9 +883,7 @@
     <div class="input-container">
       <app-dropdown-field
         [item]="item"
-        [viewMode]="viewMode"
-        [isDisabled]="disable || item?.metaData?.readOnly"
-        [editMode]="editMode"
+        [isDisabled]="readonlyMode || disable"
         (optionChange)="optionChange($event, item); validateField($event, item); onChange($event)"
         [textColor]="item?.metaData?.styleProperties?.properties?.textColor"
         [textHorizontalAlign]="item?.metaData?.styleProperties?.properties?.textHorizontalAlign"
@@ -993,27 +935,13 @@
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Modal">
     <div class="input-container">
-      <app-modal
-        [item]="item"
-        [showEdit]="showEdit"
-        [viewMode]="viewMode"
-        [isDisabled]="disable"
-        [editMode]="editMode"
-        (onBtnClick)="onBtnClick.emit($event)"
-        (onTableDataChange)="onTableDataChange.emit($event)"
-        (onOptionChange)="optionChange($event, $event.data)"
-        (selectionChange)="OnStepChange($event)"
-        [selectedIndex]="modalStepIndex || 0"
-        (onNext)="onNextClick($event, 'modal')"
-        (onPrev)="onPrevClick($event, 'modal')"
-        [styles]="item?.metaData?.styleProperties"
-      ></app-modal>
+      <app-modal [item]="item" [isDisabled]="readonlyMode || disable"></app-modal>
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === RadioGroup">
     <div class="input-container">
       <finlevit-radio-group
-        [isDisabled]="(viewMode && (!item?.validators?.editable || !editMode)) || disable || item?.metaData?.readOnly"
+        [isDisabled]="readonlyMode || disable"
         [isRequired]="item?.validators?.required"
         [items]="item?.metaData?.options"
         [label]="item?.label"
@@ -1065,7 +993,7 @@
   <ng-container *ngIf="item?.metaData?.widgetType === DatePicker">
     <div class="input-container">
       <finlevit-lib-datepicker
-        [isDisabled]="(viewMode && (!item?.validators?.editable || !editMode)) || disable || item?.metaData?.readOnly"
+        [isDisabled]="readonlyMode || disable"
         [label]="item?.label"
         [errorMsg]="item?.errorMessage || item?.errorMsg"
         [error]="isError(item)"
@@ -1137,19 +1065,9 @@
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === StepperContainer">
     <app-vertical-stepper
-      [completedSteps]="completedSteps"
-      [selectedIndex]="verticalStepIndex || 0"
       [children]="item?.children"
       [metaData]="item?.metaData"
-      [viewMode]="viewMode"
-      (onNext)="onNextClick($event, 'stepper')"
-      (onSelect)="onSelectionClick($event, item.metaData)"
-      (onPrev)="onPrevClick($event, 'stepper')"
-      (onBtnClick)="onBtnClick.emit($event)"
-      [showEdit]="showEdit"
       [headerContent]="item?.metaData?.headerContent"
-      (onTableDataChange)="onTableDataChange.emit($event)"
-      (onOptionChange)="optionChange($event, $event.data)"
       [style.--input-color]="item?.metaData?.styleProperties?.properties?.textColor"
       [style.--input-text-align]="item?.metaData?.styleProperties?.properties?.textHorizontalAlign"
       [style.--input-background-color]="item?.metaData?.styleProperties?.properties?.backgroundColor"
@@ -1188,15 +1106,7 @@
     </app-vertical-stepper>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === TabContainer">
-    <app-tab-container
-      (tabChangeEvent)="onTabChange($event)"
-      [item]="item"
-      [tabActiveIndex]="tabActiveIndex"
-      (btnClick)="onBtnClick.emit($event)"
-      (tableDataChange)="onTableDataChange.emit($event)"
-      (optionChange)="optionChange($event, $event.data)"
-    >
-    </app-tab-container>
+    <app-tab-container [item]="item"></app-tab-container>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Divider">
     <div class="input-container">
@@ -1232,14 +1142,7 @@
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Container">
     <div class="input-container">
-      <app-container
-        [item]="item"
-        [viewMode]="viewMode"
-        [showEdit]="showEdit"
-        (onBtnClick)="onBtnClick.emit($event)"
-        (onTableDataChange)="onTableDataChange.emit($event)"
-        (onOptionChange)="optionChange($event, $event.data)"
-      ></app-container>
+      <app-container [item]="item"></app-container>
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Header || item?.metaData?.widgetType === Footer">
@@ -1273,13 +1176,8 @@
         >{{ item?.metaData?.title }}
       </div>
       <finlevit-grid
-        [viewMode]="viewMode"
-        [showEdit]="showEdit"
         [parent]="item"
         [items]="item.children"
-        (onBtnClick)="onBtnClick.emit($event)"
-        (onTableDataChange)="onTableDataChange.emit($event)"
-        (onOptionChange)="optionChange($event, $event.data)"
       ></finlevit-grid>
     </div>
   </ng-container>
