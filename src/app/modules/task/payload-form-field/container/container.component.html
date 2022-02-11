@@ -1,7 +1,8 @@
 <div
   [ngClass]="{
     'nested-grid-container': true,
-    'empty-child': !item.children.length
+    'empty-child': !item.children.length,
+    'cursor-pointer': item?.metaData?.onClickConfigs?.length > 0 && item?.metaData?.onClickConfigs[0]?.action !== 'none'
   }"
   (click)="actionBtnClick($event, item)"
 >
