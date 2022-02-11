@@ -8,6 +8,7 @@
   --header-cell-padding-bottom: 10px;
   --header-cell-padding-left: 10px;
   --header-cell-padding-right: 10px;
+  --header-cell-font-family: Muli, Raleway, Montserrat, "Open Sans", sans-serif;
 
   --body-cell-background-color: #fff;
   --body-cell-color: #312929;
@@ -15,26 +16,34 @@
   --body-cell-padding: 11px;
   --body-cell-hover-background-color: #fafafa;
   --body-cell-hover-color: #312929;
+  --body-cell-font-family: Muli, Raleway, Montserrat, "Open Sans", sans-serif;
 
   --paginator-background-color: #ededed;
   --paginator-color: #6a6a6a;
+  --paginator-font-family: Muli, Raleway, Montserrat, "Open Sans", sans-serif;
+  --paginator-font-size: 12px;
 
-  --table-border-color: #cccccc;
   --table-header-right-border-color: var(--table-border-color);
   --table-header-bottom-border-color: var(--table-border-color);
   --table-cell-right-border-color: var(--table-border-color);
   --table-cell-bottom-border-color: var(--table-border-color);
 
+  --table-border-width: 1px;
+  --table-border-color: #cccccc;
+  --table-border-radius: 1px;
+  --table-border-style: solid;
+
   .table-widget {
     width: 100%;
     height: 100%;
-    border: 1px solid var(--table-border-color);
   }
   .finlevit-table {
     position: relative;
     display: flex;
     flex-direction: column;
     height: 100%;
+    border: var(--table-border-width) var(--table-border-style) var(--table-border-color);
+    border-radius: var(--table-border-radius);
     &.pagination-bottom {
       flex-direction: column;
     }
@@ -85,6 +94,7 @@
     background: var(--body-cell-background-color);
     color: var(--body-cell-color);
     overflow: auto;
+    font-family: var(--body-cell-font-family);
   }
   .f-table .f-tbody .f-tr-group {
     display: flex;
@@ -129,6 +139,7 @@
     line-height: normal;
     background-color: var(--header-cell-background-color);
     color: var(--header-cell-color);
+    font-family: var(--header-cell-font-family);
     .f-resizable-header-content {
       width: 100%;
       font-size: var(--header-font-size);
@@ -237,8 +248,10 @@
     padding: 4px 12px;
     color: var(--paginator-color);
     background-color: var(--paginator-background-color);
+    font-family: var(--paginator-font-family);
+    font-size: var(--paginator-font-size);
     .table-results-counter {
-      font-size: 12px;
+      font-size: var(--paginator-font-size);
       display: inline-flex;
       justify-content: center;
       align-items: center;
