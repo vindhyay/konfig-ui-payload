@@ -276,19 +276,26 @@ export class EditorService extends BaseService {
   }
 
   checkCondition(conditionsArray) {
-    let result = null;
     const allFields = this.getFormFields();
     conditionsArray.forEach((element) => {
+      let result = null;
       let conditions = element.ifConditions;
-      for (let i = 0; i < conditions.length; i++) {
-        const condition = conditions[i];
+      for (let condition of conditions) {
         let condMatched = false;
         condition.rules.forEach((rule, index) => {
           const field = getFieldFromFields(allFields, rule?.field?.value);
           const fieldValue = field?.value?.value;
           let result = false;
           if (rule.operator === "includes") {
-            if ((fieldValue || []).includes(rule.value)) {
+            const ruleArray = rule.value.split(",");
+            const testCondition = ruleArray.every((r) => (fieldValue || []).includes(r));
+            if (testCondition) {
+              result = true;
+            }
+          } else if (rule.operator === "notIncludes") {
+            const ruleArray = rule.value.split(",");
+            const testCondition = ruleArray.some((r) => (fieldValue || []).includes(r));
+            if (!testCondition) {
               result = true;
             }
           } else if (rule.operator === "excludes") {
@@ -308,6 +315,7 @@ export class EditorService extends BaseService {
         });
         if (condMatched) {
           result = condition.mappingField;
+          console.log("Success", result);
           break;
         }
       }
@@ -321,6 +329,8 @@ export class EditorService extends BaseService {
             showFieldRef.minItemRows = showFieldRef.metaData?.defaultMinItemRows;
             showFieldRef.minItemCols = showFieldRef.metaData?.defaultMinItemCols;
             showFieldRef.metaData.movement = "DOWN";
+            showFieldRef.y = showFieldRef.metaData.originalY;
+            showFieldRef.metaData.hidden = false;
             this.widgetChange.next(showFieldRef);
           }
         });
@@ -330,13 +340,13 @@ export class EditorService extends BaseService {
             hideFieldRef.rows = hideFieldRef?.metaData?.hideRows || 0;
             hideFieldRef.minItemRows = hideFieldRef?.metaData?.hideRows || 0;
             hideFieldRef.metaData.movement = "UP";
+            hideFieldRef.metaData.hidden = true;
             this.widgetChange.next(hideFieldRef);
           }
         });
         this.setContainerHeight(allFields);
       }
     });
-    return result;
   }
 
   getDataListValues = (payload): Observable<any> => {
