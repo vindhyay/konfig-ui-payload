@@ -1010,6 +1010,7 @@ export class NumberMetaData extends MetaData {
   adornmentBackgroundColor: "#ffffff";
   prefixText: "";
   suffixText: "";
+  thousandsSeparator: boolean;
   constructor(data) {
     super(data);
     const {
@@ -1033,6 +1034,7 @@ export class NumberMetaData extends MetaData {
       adornmentBackgroundColor = "#ffffff",
       prefixText = "",
       suffixText = "",
+      thousandsSeparator = false
     } = data;
     this.prefix = prefix;
     this.suffix = suffix;
@@ -1054,6 +1056,7 @@ export class NumberMetaData extends MetaData {
     this.adornmentBackgroundColor = adornmentBackgroundColor;
     this.prefixText = prefixText;
     this.suffixText = suffixText;
+    this.thousandsSeparator = thousandsSeparator;
   }
 }
 

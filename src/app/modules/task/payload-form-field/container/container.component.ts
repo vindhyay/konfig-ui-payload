@@ -25,7 +25,9 @@ export class ContainerComponent implements OnInit {
     }
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log(this.item)
+  }
 
   get metaData(): ContainerMetaData {
     return this.item.metaData as ContainerMetaData;
