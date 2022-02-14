@@ -215,7 +215,8 @@ export const getValueFromField = (fields, fieldId) => {
   });
   return paramField;
 };
-export const getContainerBodyStyle = (style) => {
+
+export const getBorderStyle = (style) => {
   const styleProperties = style.properties;
   const {
     independentBorder,
