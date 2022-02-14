@@ -117,6 +117,9 @@
     word-spacing: var(--label-word-spacing);
     font-style: var(--label-style);  
  }
+ .p-tabview .p-tabview-nav li,.p-tabview .p-tabview-nav li>a>em {
+  font-size: 80%;
+}
   .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link{
     color: var(--active-text-color) !important;
   }
@@ -125,6 +128,7 @@
  }
  .p-tabview .p-tabview-panels{
     background-color: var(--label-background-color) !important;
+    padding: 0 !important;
  }
  .style-tab-container{
     .nested-grid-container {
