@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { BaseWidget, TabContainerMetaData } from "../../model/create-form.models";
 import { EditorService } from "../../editor.service";
+import { getContainerBodyStyle } from "src/app/utils";
 
 @Component({
   selector: "app-tab-container",
@@ -13,6 +14,11 @@ export class AppTabContainerComponent implements OnInit {
   tabActiveIndex = 0;
   @Input() item: BaseWidget = null;
   @Input() metaData: TabContainerMetaData;
+
+  containerBodyStyle;
+  @Input() set style(styleObj) {
+    this.containerBodyStyle = getContainerBodyStyle(styleObj);
+  }
 
   ngOnInit() {
     this.tabActiveIndex = this.editorService.activeTabIndexes[this.item.metaData.widgetId];

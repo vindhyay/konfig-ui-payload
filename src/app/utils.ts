@@ -215,3 +215,78 @@ export const getValueFromField = (fields, fieldId) => {
   });
   return paramField;
 };
+export const getContainerBodyStyle = (style) => {
+  const styleProperties = style.properties;
+  const {
+    independentBorder,
+    borderTopStyle,
+    borderLeftStyle,
+    borderBottomStyle,
+    borderRightStyle,
+    borderTopLeftRadius,
+    borderTopRightRadius,
+    borderBottomLeftRadius,
+    borderBottomRightRadius,
+    borderRadius,
+    borderTopColor,
+    borderLeftColor,
+    borderBottomColor,
+    borderRightColor,
+    borderColor,
+    borderTopWidth,
+    borderLeftWidth,
+    borderBottomWidth,
+    borderRightWidth,
+    borderWidth,
+    borderStyle,
+    shadowStyle,
+    horizontalOffset,
+    verticalOffset,
+    blurRadius,
+    spreadRadius,
+    boxShadowColor,
+  } = styleProperties;
+  let styles = {
+    "border-top-style": independentBorder ? borderTopStyle : borderStyle,
+    "border-left-style": independentBorder ? borderLeftStyle : borderStyle,
+    "border-bottom-style": independentBorder ? borderBottomStyle : borderStyle,
+    "border-right-style": independentBorder ? borderRightStyle : borderStyle,
+
+    "border-top-left-radius": independentBorder ? borderTopLeftRadius : borderRadius,
+    "border-top-right-radius": independentBorder ? borderTopRightRadius : borderRadius,
+    "border-bottom-left-radius": independentBorder ? borderBottomLeftRadius : borderRadius,
+    "border-bottom-right-radius": independentBorder ? borderBottomRightRadius : borderRadius,
+
+    "border-top-color": independentBorder ? borderTopColor : borderColor,
+    "border-left-color": independentBorder ? borderLeftColor : borderColor,
+    "border-bottom-color": independentBorder ? borderBottomColor : borderColor,
+    "border-right-color": independentBorder ? borderRightColor : borderColor,
+
+    "border-top-width": independentBorder ? borderTopWidth : borderWidth,
+    "border-left-width": independentBorder ? borderLeftWidth : borderWidth,
+    "border-bottom-width": independentBorder ? borderBottomWidth : borderWidth,
+    "border-right-width": independentBorder ? borderRightWidth : borderWidth,
+  };
+  switch (shadowStyle) {
+    case "none":
+      break;
+    case "inset":
+      styles["box-shadow"] =
+        horizontalOffset +
+        " " +
+        verticalOffset +
+        " " +
+        blurRadius +
+        " " +
+        spreadRadius +
+        " " +
+        boxShadowColor +
+        " inset";
+      break;
+    case "outset":
+      styles["box-shadow"] =
+        horizontalOffset + " " + verticalOffset + " " + blurRadius + " " + spreadRadius + " " + boxShadowColor;
+      break;
+  }
+  return styles;
+};
