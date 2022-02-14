@@ -773,7 +773,9 @@
         [style.--paginator-font-size]="item?.metaData?.styleProperties?.properties?.paginatorFontSize"
         [style.--header-cell-font-family]="item?.metaData?.styleProperties?.properties?.headerFontFamily"
         [style.--body-cell-font-family]="item?.metaData?.styleProperties?.properties?.bodyFontFamily"
-        [style.--body-cell-hover-background-color]="item?.metaData?.styleProperties?.properties?.bodyHoverBackgroundColor"
+        [style.--body-cell-hover-background-color]="
+          item?.metaData?.styleProperties?.properties?.bodyHoverBackgroundColor
+        "
         [style.--body-cell-hover-color]="item?.metaData?.styleProperties?.properties?.bodyHoverColor"
         [style.--header-font-size]="item?.metaData?.styleProperties?.properties?.headerFontSize"
         [style.--body-font-size]="item?.metaData?.styleProperties?.properties?.bodyFontSize"
@@ -820,7 +822,9 @@
         [style.--paginator-font-size]="item?.metaData?.styleProperties?.properties?.paginatorFontSize"
         [style.--header-cell-font-family]="item?.metaData?.styleProperties?.properties?.headerFontFamily"
         [style.--body-cell-font-family]="item?.metaData?.styleProperties?.properties?.bodyFontFamily"
-        [style.--body-cell-hover-background-color]="item?.metaData?.styleProperties?.properties?.bodyHoverBackgroundColor"
+        [style.--body-cell-hover-background-color]="
+          item?.metaData?.styleProperties?.properties?.bodyHoverBackgroundColor
+        "
         [style.--body-cell-hover-color]="item?.metaData?.styleProperties?.properties?.bodyHoverColor"
         [style.--header-font-size]="item?.metaData?.styleProperties?.properties?.headerFontSize"
         [style.--body-font-size]="item?.metaData?.styleProperties?.properties?.bodyFontSize"
@@ -1134,7 +1138,22 @@
     </app-vertical-stepper>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === TabContainer">
-    <app-tab-container [item]="item"></app-tab-container>
+    <app-tab-container
+      [item]="item"
+      [style]="item?.metaData?.styleProperties"
+      [style.--label-color]="item?.metaData?.styleProperties?.properties?.textColor"
+      [style.--label-background-color]="item?.metaData?.styleProperties?.properties?.backgroundColor"
+      [style.--lable-font-family]="item?.metaData?.styleProperties?.properties?.fontStyle"
+      [style.--label-text-decoration]="item?.metaData?.styleProperties?.properties?.textDecoration"
+      [style.--label-text-align]="item?.metaData?.styleProperties?.properties?.textHorizontalAlign"
+      [style.--label-style]="item?.metaData?.styleProperties?.properties?.textFontStyle"
+      [style.--label-font-weight]="item?.metaData?.styleProperties?.properties?.fontWeight"
+      [style.--label-letter-spacing]="item?.metaData?.styleProperties?.properties?.letterSpacing"
+      [style.--label-word-spacing]="item?.metaData?.styleProperties?.properties?.wordSpacing"
+      [style.--label-font-size]="item?.metaData?.styleProperties?.properties?.fontSize"
+      [style.--active-text-color]="item?.metaData?.styleProperties?.properties?.activetextColor"
+      [style.--active-border-color]="item?.metaData?.styleProperties?.properties?.activeBorderColor"
+    ></app-tab-container>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Divider">
     <div class="input-container">
@@ -1203,10 +1222,7 @@
         ></i
         >{{ item?.metaData?.title }}
       </div>
-      <finlevit-grid
-        [parent]="item"
-        [items]="item.children"
-      ></finlevit-grid>
+      <finlevit-grid [parent]="item" [items]="item.children"></finlevit-grid>
     </div>
   </ng-container>
 </div>
