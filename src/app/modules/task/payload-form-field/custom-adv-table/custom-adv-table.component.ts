@@ -103,6 +103,9 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
   @Output() onRowClick = new EventEmitter();
   @Output() onPageChange = new EventEmitter();
 
+  @Input() saveBtnProperties: any = {};
+  @Input() cancelBtnProperties: any = {};
+
   @Output() handleRowSave = new EventEmitter();
   @Output() handleRowDelete = new EventEmitter();
   @Output() onBtnClick = new EventEmitter();

@@ -93,6 +93,9 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
   _columns: Column[] = [];
   selection = new SelectionModel<any>(true, []);
   searchObject = {};
+
+  @Input() saveBtnProperties: any = {};
+  @Input() cancelBtnProperties: any = {};
   @Input() customTemplates = {};
   @Input() verticalBorder = true;
   @Input() horizontalBorder = true;

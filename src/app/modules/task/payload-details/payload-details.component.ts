@@ -56,12 +56,16 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
             this.formFields.forEach((element, index) => {
               for (const prop in element) {
                 if (prop === "children") {
-                  this.formFields[index][prop].forEach((subelement, subindex) => {
-                    for (const subprop in subelement) {
-                      this.formFields[index][prop][subindex][subprop] =
-                        transactionDetails.uiPayload[index][prop][subindex][subprop];
-                    }
-                  });
+                  if (this.formFields[index][prop]?.length === transactionDetails.uiPayload[index][prop]?.length) {
+                    this.formFields[index][prop].forEach((subelement, subindex) => {
+                      for (const subprop in subelement) {
+                        this.formFields[index][prop][subindex][subprop] =
+                          transactionDetails.uiPayload[index][prop][subindex][subprop];
+                      }
+                    });
+                  } else {
+                    this.formFields[index][prop] = transactionDetails.uiPayload[index][prop];
+                  }
                 } else if (prop === "value") {
                   if (!element[prop] || typeof element[prop] != "object" || !element[prop]?.value) {
                     this.formFields[index][prop] = {
