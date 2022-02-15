@@ -660,74 +660,35 @@ export class TabContainerMetaData extends MetaData {
 }
 
 export class StepperContainerMetaData extends MetaData {
-  sublabel: string;
   stepperType: string;
   isReviewer: boolean;
-  isFreeflow: boolean;
+  isFreeFlow: boolean;
   showHeader: boolean;
   indicatorPattern: string;
-  color: string;
-  currentStepColor: string;
-  completedStepColor: string;
-  fontWeight: string;
-  textStyle: string;
-  fontStyle: string;
-  textDecortation: string;
-  completedBarColor: string;
-  defaultBarColor: string;
-  buttonContainer: any;
-  footerBgColor: string;
-  leftPanelBgColor: string;
-  conentBgColor: string;
   headerContent: any;
   headerHeight: number;
   stepperHeight?: any;
+  styleProperties: { id: "" };
   constructor(data) {
     super(data);
     const {
-      sublabel = "",
       stepperType = "Vertical",
       isReviewer = false,
-      isFreeflow = false,
+      isFreeFlow = false,
       indicatorPattern = "circle",
-      textStyle = TextStyles.BODY1,
-      color = "#898585",
-      currentStepColor = "#000000",
-      completedStepColor = "#898585",
-      defaultBarColor = "",
-      fontStyle = "",
-      textDecortation = "",
-      completedBarColor = "",
-      fontWeight = 400,
-      buttonContainer = {},
-      footerBgColor = "#fff",
-      leftPanelBgColor = "#fff",
-      conentBgColor = "#fff",
       showHeader = false,
       headerContent = [],
       headerHeight = 0,
+      styleProperties = {},
     } = data;
-    this.sublabel = sublabel;
     this.stepperType = stepperType;
     this.isReviewer = isReviewer;
-    this.isFreeflow = isFreeflow;
+    this.isFreeFlow = isFreeFlow;
     this.indicatorPattern = indicatorPattern;
-    this.textStyle = textStyle;
-    this.color = color;
-    this.fontWeight = fontWeight;
-    this.currentStepColor = currentStepColor;
-    this.completedStepColor = completedStepColor;
-    this.textDecortation = textDecortation;
-    this.fontStyle = fontStyle;
-    this.defaultBarColor = defaultBarColor;
-    this.completedBarColor = completedBarColor;
-    this.buttonContainer = buttonContainer;
-    this.footerBgColor = footerBgColor;
-    this.leftPanelBgColor = leftPanelBgColor;
-    this.conentBgColor = conentBgColor;
     this.showHeader = showHeader;
     this.headerContent = headerContent;
     this.headerHeight = headerHeight;
+    this.styleProperties = styleProperties;
   }
 }
 export class SSNInputMetaData extends MetaData {
