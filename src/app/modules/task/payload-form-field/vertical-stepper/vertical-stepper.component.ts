@@ -97,7 +97,7 @@ export class VerticalStepperComponent implements OnInit {
   }
   onSelectIndexChange = (index) => {
     this.isInteract = true;
-    if (this.metaData.isFreeflow || this.selectedIndex > index) {
+    if (this.metaData.isFreeFlow || this.selectedIndex > index) {
       this.selectedIndex = index;
     } else {
       let isError = true;

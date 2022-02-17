@@ -13,10 +13,7 @@
         height: metaData.headerHeight + 'px'
       }"
     >
-      <finlevit-grid
-        [parent]="headerContent[0]"
-        [items]="headerContent[0]?.children"
-      ></finlevit-grid>
+      <finlevit-grid [parent]="headerContent[0]" [items]="headerContent[0]?.children"></finlevit-grid>
     </div>
     <ul
       class="stepper-body step-list"
@@ -51,7 +48,7 @@
           >
             {{ child.label }}
           </p>
-          <p class="sub-lable">{{ child?.metaData?.sublabel }}</p>
+          <p class="sub-lable">{{ child?.metaData?.subLabel }}</p>
         </div>
         <span
           [ngClass]="{
