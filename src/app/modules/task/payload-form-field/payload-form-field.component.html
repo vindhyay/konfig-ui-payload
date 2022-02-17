@@ -1,18 +1,10 @@
 <div [ngClass]="{ 'preview-container': true }" *ngIf="!hide">
   <ng-container *ngIf="item?.metaData?.widgetType === TextInput">
     <div class="input-container">
-      <finlevit-text
-        *ngIf="!item?.metaData?.isFormulaField"
-        [isDisabled]="readonlyMode || disable"
-        [leftIcon]="item?.metaData?.leftIcon"
-        [rightIcon]="item?.metaData?.rightIcon"
-        [error]="isError(item)"
-        [tooltip]="item?.metaData?.tooltip"
-        [placeholder]="item?.metaData?.placeholder"
-        [(ngModel)]="item.value.value"
-        (ngModelChange)="validateField($event, item)"
-        [isRequired]="item?.validators?.required"
-        [label]="item?.label"
+      <finlevit-text *ngIf="!item?.metaData?.isFormulaField" [isDisabled]="readonlyMode || disable"
+        [leftIcon]="item?.metaData?.leftIcon" [rightIcon]="item?.metaData?.rightIcon" [error]="isError(item)"
+        [tooltip]="item?.metaData?.tooltip" [placeholder]="item?.metaData?.placeholder" [(ngModel)]="item.value.value"
+        (ngModelChange)="validateField($event, item)" [isRequired]="item?.validators?.required" [label]="item?.label"
         [style.--input-adornment-background-color]="item?.metaData?.adornmentBackgroundColor"
         [style.--input-border-width]="item?.metaData?.styleProperties?.properties?.borderWidth"
         [style.--input-label-font-size]="item?.metaData?.styleProperties?.properties?.labelFontSize"
@@ -28,22 +20,17 @@
         [style.--input-border-bottom]="item?.metaData?.styleProperties?.properties?.borderBottomStyle"
         [style.--input-border-radius-bottom-right]="
           item?.metaData?.styleProperties?.properties?.borderBottomRightRadius
-        "
-        [style.--input-border-bottom-color]="item?.metaData?.styleProperties?.properties?.borderBottomColor"
+        " [style.--input-border-bottom-color]="item?.metaData?.styleProperties?.properties?.borderBottomColor"
         [style.--input-border-bottom-width]="item?.metaData?.styleProperties?.properties?.borderBottomWidth"
         [style.--input-border-left]="item?.metaData?.styleProperties?.properties?.borderLeftStyle"
         [style.--input-border-radius-bottom-left]="item?.metaData?.styleProperties?.properties?.borderBottomLeftRadius"
         [style.--input-border-left-color]="item?.metaData?.styleProperties?.properties?.borderLeftColor"
         [style.--input-border-left-width]="item?.metaData?.styleProperties?.properties?.borderLeftWidth"
         [independentBorders]="item?.metaData?.styleProperties?.properties?.independentBorder"
-        [allowLabelWrapping]="item?.metaData?.allowLabelWrapping"
-        [showClearButton]="item?.metaData?.showClearButton"
-        [prefixText]="item?.metaData?.prefixText"
-        [suffixText]="item?.metaData?.suffixText"
-        (onBlur)="optionChange($event, item)"
-        [pattern]="item?.validators?.pattern || null"
-        [mask]="item?.metaData?.mask || null"
-        [showMaxCharLimit]="item?.validators?.maxLength"
+        [allowLabelWrapping]="item?.metaData?.allowLabelWrapping" [showClearButton]="item?.metaData?.showClearButton"
+        [prefixText]="item?.metaData?.prefixText" [suffixText]="item?.metaData?.suffixText"
+        (onBlur)="optionChange($event, item)" [pattern]="item?.validators?.pattern || null"
+        [mask]="item?.metaData?.mask || null" [showMaxCharLimit]="item?.validators?.maxLength"
         [maxCharLimit]="item?.validators?.maxLength"
         [style.--input-color]="item?.metaData?.styleProperties?.properties?.textColor"
         [style.--input-text-align]="item?.metaData?.styleProperties?.properties?.textHorizontalAlign"
@@ -68,19 +55,16 @@
         [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
         [errorMsg]="item?.errorMessage || item?.metaData?.errorMessage"
         [showErrorMsg]="item?.errorMessage || item?.metaData?.showErrorMessage"
-      ></finlevit-text>
-      <finlevit-text
-        *ngIf="item?.metaData?.isFormulaField"
-        [isDisabled]="readonlyMode || disable"
-        [leftIcon]="item?.metaData?.leftIcon"
-        [rightIcon]="item?.metaData?.rightIcon"
-        [error]="isError(item)"
-        [tooltip]="item?.metaData?.tooltip"
-        [placeholder]="item?.metaData?.placeholder"
-        [ngModel]="calculateFormulaValue(item)"
-        (ngModelChange)="validateField($event, item)"
-        [isRequired]="item?.validators?.required"
-        [label]="item?.label"
+        [style.--input-label-margin-bottom]="item?.metaData?.styleProperties?.properties?.labelmarginBottom"
+        [style.--input-label-margin-top]="item?.metaData?.styleProperties?.properties?.labelmarginTop"
+        [style.--input-label-margin-left]="item?.metaData?.styleProperties?.properties?.labelmarginLeft"
+        [style.--input-label-margin-right]="item?.metaData?.styleProperties?.properties?.labelmarginRight">
+      </finlevit-text>
+      <finlevit-text *ngIf="item?.metaData?.isFormulaField" [isDisabled]="readonlyMode || disable"
+        [leftIcon]="item?.metaData?.leftIcon" [rightIcon]="item?.metaData?.rightIcon" [error]="isError(item)"
+        [tooltip]="item?.metaData?.tooltip" [placeholder]="item?.metaData?.placeholder"
+        [ngModel]="calculateFormulaValue(item)" (ngModelChange)="validateField($event, item)"
+        [isRequired]="item?.validators?.required" [label]="item?.label"
         [style.--input-adornment-background-color]="item?.metaData?.adornmentBackgroundColor"
         [style.--input-border-width]="item?.metaData?.styleProperties?.properties?.borderWidth"
         [style.--input-label-font-size]="item?.metaData?.styleProperties?.properties?.labelFontSize"
@@ -96,24 +80,18 @@
         [style.--input-border-bottom]="item?.metaData?.styleProperties?.properties?.borderBottomStyle"
         [style.--input-border-radius-bottom-right]="
           item?.metaData?.styleProperties?.properties?.borderBottomRightRadius
-        "
-        [style.--input-border-bottom-color]="item?.metaData?.styleProperties?.properties?.borderBottomColor"
+        " [style.--input-border-bottom-color]="item?.metaData?.styleProperties?.properties?.borderBottomColor"
         [style.--input-border-bottom-width]="item?.metaData?.styleProperties?.properties?.borderBottomWidth"
         [style.--input-border-left]="item?.metaData?.styleProperties?.properties?.borderLeftStyle"
         [style.--input-border-radius-bottom-left]="item?.metaData?.styleProperties?.properties?.borderBottomLeftRadius"
         [style.--input-border-left-color]="item?.metaData?.styleProperties?.properties?.borderLeftColor"
         [style.--input-border-left-width]="item?.metaData?.styleProperties?.properties?.borderLeftWidth"
         [independentBorders]="item?.metaData?.styleProperties?.properties?.independentBorder"
-        [allowLabelWrapping]="item?.metaData?.allowLabelWrapping"
-        [showClearButton]="item?.metaData?.showClearButton"
-        [prefixText]="item?.metaData?.prefixText"
-        [suffixText]="item?.metaData?.suffixText"
-        [errorMsg]="item?.errorMessage || item?.metaData?.errorMessage"
-        (onBlur)="optionChange($event, item)"
-        [pattern]="item?.validators?.pattern || null"
-        [mask]="item?.metaData?.mask || null"
-        [(ngModel)]="item.value.value"
-        [showMaxCharLimit]="item?.validators?.maxLength"
+        [allowLabelWrapping]="item?.metaData?.allowLabelWrapping" [showClearButton]="item?.metaData?.showClearButton"
+        [prefixText]="item?.metaData?.prefixText" [suffixText]="item?.metaData?.suffixText"
+        [errorMsg]="item?.errorMessage || item?.metaData?.errorMessage" (onBlur)="optionChange($event, item)"
+        [pattern]="item?.validators?.pattern || null" [mask]="item?.metaData?.mask || null"
+        [(ngModel)]="item.value.value" [showMaxCharLimit]="item?.validators?.maxLength"
         [maxCharLimit]="item?.validators?.maxLength"
         [style.--input-color]="item?.metaData?.styleProperties?.properties?.textColor"
         [style.--input-text-align]="item?.metaData?.styleProperties?.properties?.textHorizontalAlign"
@@ -137,23 +115,18 @@
         [style.--input-label-text-decoration]="item?.metaData?.styleProperties?.properties?.labelTextDecoration"
         [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
         [showErrorMsg]="item?.errorMessage || item?.metaData?.showErrorMessage"
-      ></finlevit-text>
+        [style.--input-label-margin-bottom]="item?.metaData?.styleProperties?.properties?.labelmarginBottom"
+        [style.--input-label-margin-top]="item?.metaData?.styleProperties?.properties?.labelmarginTop"
+        [style.--input-label-margin-left]="item?.metaData?.styleProperties?.properties?.labelmarginLeft"
+        [style.--input-label-margin-right]="item?.metaData?.styleProperties?.properties?.labelmarginRight"></finlevit-text>
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Email">
     <div class="input-container">
-      <finlevit-text
-        *ngIf="!item?.metaData?.isFormulaField"
-        [isDisabled]="readonlyMode || disable"
-        [leftIcon]="item?.metaData?.leftIcon"
-        [rightIcon]="item?.metaData?.rightIcon"
-        [error]="isError(item)"
-        [tooltip]="item?.metaData?.tooltip"
-        [placeholder]="item?.metaData?.placeholder"
-        [(ngModel)]="item.value.value"
-        (ngModelChange)="validateField($event, item)"
-        [isRequired]="item?.validators?.required"
-        [label]="item?.label"
+      <finlevit-text *ngIf="!item?.metaData?.isFormulaField" [isDisabled]="readonlyMode || disable"
+        [leftIcon]="item?.metaData?.leftIcon" [rightIcon]="item?.metaData?.rightIcon" [error]="isError(item)"
+        [tooltip]="item?.metaData?.tooltip" [placeholder]="item?.metaData?.placeholder" [(ngModel)]="item.value.value"
+        (ngModelChange)="validateField($event, item)" [isRequired]="item?.validators?.required" [label]="item?.label"
         [style.--input-adornment-background-color]="item?.metaData?.adornmentBackgroundColor"
         [style.--input-border-width]="item?.metaData?.styleProperties?.properties?.borderWidth"
         [style.--input-label-font-size]="item?.metaData?.styleProperties?.properties?.labelFontSize"
@@ -169,22 +142,17 @@
         [style.--input-border-bottom]="item?.metaData?.styleProperties?.properties?.borderBottomStyle"
         [style.--input-border-radius-bottom-right]="
           item?.metaData?.styleProperties?.properties?.borderBottomRightRadius
-        "
-        [style.--input-border-bottom-color]="item?.metaData?.styleProperties?.properties?.borderBottomColor"
+        " [style.--input-border-bottom-color]="item?.metaData?.styleProperties?.properties?.borderBottomColor"
         [style.--input-border-bottom-width]="item?.metaData?.styleProperties?.properties?.borderBottomWidth"
         [style.--input-border-left]="item?.metaData?.styleProperties?.properties?.borderLeftStyle"
         [style.--input-border-radius-bottom-left]="item?.metaData?.styleProperties?.properties?.borderBottomLeftRadius"
         [style.--input-border-left-color]="item?.metaData?.styleProperties?.properties?.borderLeftColor"
         [style.--input-border-left-width]="item?.metaData?.styleProperties?.properties?.borderLeftWidth"
         [independentBorders]="item?.metaData?.styleProperties?.properties?.independentBorder"
-        [allowLabelWrapping]="item?.metaData?.allowLabelWrapping"
-        [showClearButton]="item?.metaData?.showClearButton"
-        [prefixText]="item?.metaData?.prefixText"
-        [suffixText]="item?.metaData?.suffixText"
-        (onBlur)="optionChange($event, item)"
-        [pattern]="item?.validators?.pattern || null"
-        [mask]="item?.metaData?.mask || null"
-        [showMaxCharLimit]="item?.validators?.maxLength"
+        [allowLabelWrapping]="item?.metaData?.allowLabelWrapping" [showClearButton]="item?.metaData?.showClearButton"
+        [prefixText]="item?.metaData?.prefixText" [suffixText]="item?.metaData?.suffixText"
+        (onBlur)="optionChange($event, item)" [pattern]="item?.validators?.pattern || null"
+        [mask]="item?.metaData?.mask || null" [showMaxCharLimit]="item?.validators?.maxLength"
         [maxCharLimit]="item?.validators?.maxLength"
         [style.--input-color]="item?.metaData?.styleProperties?.properties?.textColor"
         [style.--input-text-align]="item?.metaData?.styleProperties?.properties?.textHorizontalAlign"
@@ -209,19 +177,16 @@
         [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
         [errorMsg]="item?.errorMessage || item?.metaData?.errorMessage"
         [showErrorMsg]="item?.errorMessage || item?.metaData?.showErrorMessage"
-      ></finlevit-text>
-      <finlevit-text
-        *ngIf="item?.metaData?.isFormulaField"
-        [isDisabled]="readonlyMode || disable"
-        [leftIcon]="item?.metaData?.leftIcon"
-        [rightIcon]="item?.metaData?.rightIcon"
-        [error]="isError(item)"
-        [tooltip]="item?.metaData?.tooltip"
-        [placeholder]="item?.metaData?.placeholder"
-        [ngModel]="calculateFormulaValue(item)"
-        (ngModelChange)="validateField($event, item)"
-        [isRequired]="item?.validators?.required"
-        [label]="item?.label"
+        [style.--input-label-margin-bottom]="item?.metaData?.styleProperties?.properties?.labelmarginBottom"
+        [style.--input-label-margin-top]="item?.metaData?.styleProperties?.properties?.labelmarginTop"
+        [style.--input-label-margin-left]="item?.metaData?.styleProperties?.properties?.labelmarginLeft"
+        [style.--input-label-margin-right]="item?.metaData?.styleProperties?.properties?.labelmarginRight">
+      </finlevit-text>
+      <finlevit-text *ngIf="item?.metaData?.isFormulaField" [isDisabled]="readonlyMode || disable"
+        [leftIcon]="item?.metaData?.leftIcon" [rightIcon]="item?.metaData?.rightIcon" [error]="isError(item)"
+        [tooltip]="item?.metaData?.tooltip" [placeholder]="item?.metaData?.placeholder"
+        [ngModel]="calculateFormulaValue(item)" (ngModelChange)="validateField($event, item)"
+        [isRequired]="item?.validators?.required" [label]="item?.label"
         [style.--input-adornment-background-color]="item?.metaData?.adornmentBackgroundColor"
         [style.--input-border-width]="item?.metaData?.styleProperties?.properties?.borderWidth"
         [style.--input-label-font-size]="item?.metaData?.styleProperties?.properties?.labelFontSize"
@@ -237,24 +202,18 @@
         [style.--input-border-bottom]="item?.metaData?.styleProperties?.properties?.borderBottomStyle"
         [style.--input-border-radius-bottom-right]="
           item?.metaData?.styleProperties?.properties?.borderBottomRightRadius
-        "
-        [style.--input-border-bottom-color]="item?.metaData?.styleProperties?.properties?.borderBottomColor"
+        " [style.--input-border-bottom-color]="item?.metaData?.styleProperties?.properties?.borderBottomColor"
         [style.--input-border-bottom-width]="item?.metaData?.styleProperties?.properties?.borderBottomWidth"
         [style.--input-border-left]="item?.metaData?.styleProperties?.properties?.borderLeftStyle"
         [style.--input-border-radius-bottom-left]="item?.metaData?.styleProperties?.properties?.borderBottomLeftRadius"
         [style.--input-border-left-color]="item?.metaData?.styleProperties?.properties?.borderLeftColor"
         [style.--input-border-left-width]="item?.metaData?.styleProperties?.properties?.borderLeftWidth"
         [independentBorders]="item?.metaData?.styleProperties?.properties?.independentBorder"
-        [allowLabelWrapping]="item?.metaData?.allowLabelWrapping"
-        [showClearButton]="item?.metaData?.showClearButton"
-        [prefixText]="item?.metaData?.prefixText"
-        [suffixText]="item?.metaData?.suffixText"
-        [errorMsg]="item?.errorMessage || item?.metaData?.errorMessage"
-        (onBlur)="optionChange($event, item)"
-        [pattern]="item?.validators?.pattern || null"
-        [mask]="item?.metaData?.mask || null"
-        [(ngModel)]="item.value.value"
-        [showMaxCharLimit]="item?.validators?.maxLength"
+        [allowLabelWrapping]="item?.metaData?.allowLabelWrapping" [showClearButton]="item?.metaData?.showClearButton"
+        [prefixText]="item?.metaData?.prefixText" [suffixText]="item?.metaData?.suffixText"
+        [errorMsg]="item?.errorMessage || item?.metaData?.errorMessage" (onBlur)="optionChange($event, item)"
+        [pattern]="item?.validators?.pattern || null" [mask]="item?.metaData?.mask || null"
+        [(ngModel)]="item.value.value" [showMaxCharLimit]="item?.validators?.maxLength"
         [maxCharLimit]="item?.validators?.maxLength"
         [style.--input-color]="item?.metaData?.styleProperties?.properties?.textColor"
         [style.--input-text-align]="item?.metaData?.styleProperties?.properties?.textHorizontalAlign"
@@ -278,16 +237,16 @@
         [style.--input-label-text-decoration]="item?.metaData?.styleProperties?.properties?.labelTextDecoration"
         [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
         [showErrorMsg]="item?.errorMessage || item?.metaData?.showErrorMessage"
-      ></finlevit-text>
+        [style.--input-label-margin-bottom]="item?.metaData?.styleProperties?.properties?.labelmarginBottom"
+        [style.--input-label-margin-top]="item?.metaData?.styleProperties?.properties?.labelmarginTop"
+        [style.--input-label-margin-left]="item?.metaData?.styleProperties?.properties?.labelmarginLeft"
+        [style.--input-label-margin-right]="item?.metaData?.styleProperties?.properties?.labelmarginRight"></finlevit-text>
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === PasswordInput">
     <div class="input-container">
-      <app-password-field
-        [isDisabled]="readonlyMode || disable"
-        (onValueChange)="validateField($event, item)"
-        (onBlurChange)="optionChange($event, item)"
-        [item]="item"
+      <app-password-field [isDisabled]="readonlyMode || disable" (onValueChange)="validateField($event, item)"
+        (onBlurChange)="optionChange($event, item)" [item]="item"
         [textColor]="item?.metaData?.styleProperties?.properties?.textColor"
         [textHorizontalAlign]="item?.metaData?.styleProperties?.properties?.textHorizontalAlign"
         [backgroundColor]="item?.metaData?.styleProperties?.properties?.backgroundColor"
@@ -329,23 +288,22 @@
         [borderLeftColor]="item?.metaData?.styleProperties?.properties?.borderLeftColor"
         [borderLeftWidth]="item?.metaData?.styleProperties?.properties?.borderLeftWidth"
         [independentBorder]="item?.metaData?.styleProperties?.properties?.independentBorder"
-        [allowLabelWrapping]="item?.metaData?.allowLabelWrapping"
-        [showClearButton]="item?.metaData?.showClearButton"
-        [prefixText]="item?.metaData?.prefixText"
-        [suffixText]="item?.metaData?.suffixText"
+        [allowLabelWrapping]="item?.metaData?.allowLabelWrapping" [showClearButton]="item?.metaData?.showClearButton"
+        [prefixText]="item?.metaData?.prefixText" [suffixText]="item?.metaData?.suffixText"
         [labelPosition]="item?.metaData?.styleProperties?.properties?.labelPosition"
         [errorMessage]="item?.errorMessage || item?.metaData?.errorMessage"
         [showErrorMessage]="item?.metaData?.showErrorMessage"
-      ></app-password-field>
+        [style.--input-label-margin-bottom]="item?.metaData?.styleProperties?.properties?.labelmarginBottom"
+        [style.--input-label-margin-top]="item?.metaData?.styleProperties?.properties?.labelmarginTop"
+        [style.--input-label-margin-left]="item?.metaData?.styleProperties?.properties?.labelmarginLeft"
+        [style.--input-label-margin-right]="item?.metaData?.styleProperties?.properties?.labelmarginRight">
+      </app-password-field>
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === SSNInput">
     <div class="input-container">
-      <app-ssninput-field
-        [isDisabled]="readonlyMode || disable"
-        (onValueChange)="validateField($event, item)"
-        (onBlurChange)="optionChange($event, item)"
-        [item]="item"
+      <app-ssninput-field [isDisabled]="readonlyMode || disable" (onValueChange)="validateField($event, item)"
+        (onBlurChange)="optionChange($event, item)" [item]="item"
         [textColor]="item?.metaData?.styleProperties?.properties?.textColor"
         [textHorizontalAlign]="item?.metaData?.styleProperties?.properties?.textHorizontalAlign"
         [backgroundColor]="item?.metaData?.styleProperties?.properties?.backgroundColor"
@@ -386,24 +344,23 @@
         [borderLeftColor]="item?.metaData?.styleProperties?.properties?.borderLeftColor"
         [borderLeftWidth]="item?.metaData?.styleProperties?.properties?.borderLeftWidth"
         [independentBorder]="item?.metaData?.styleProperties?.properties?.independentBorder"
-        [allowLabelWrapping]="item?.metaData?.allowLabelWrapping"
-        [showClearButton]="item?.metaData?.showClearButton"
-        [prefixText]="item?.metaData?.prefixText"
-        [suffixText]="item?.metaData?.suffixText"
+        [allowLabelWrapping]="item?.metaData?.allowLabelWrapping" [showClearButton]="item?.metaData?.showClearButton"
+        [prefixText]="item?.metaData?.prefixText" [suffixText]="item?.metaData?.suffixText"
         [adornmentBackgroundColor]="item?.metaData?.adornmentBackgroundColor"
         [labelPosition]="item?.metaData?.styleProperties?.properties?.labelPosition"
         [errorMessage]="item?.errorMessage || item?.metaData?.errorMessage"
         [showErrorMessage]="item?.metaData?.showErrorMessage"
-      ></app-ssninput-field>
+        [style.--input-label-margin-bottom]="item?.metaData?.styleProperties?.properties?.labelmarginBottom"
+        [style.--input-label-margin-top]="item?.metaData?.styleProperties?.properties?.labelmarginTop"
+        [style.--input-label-margin-left]="item?.metaData?.styleProperties?.properties?.labelmarginLeft"
+        [style.--input-label-margin-right]="item?.metaData?.styleProperties?.properties?.labelmarginRight">
+      </app-ssninput-field>
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === PhonenumberInput">
     <div class="input-container">
-      <app-phonenumber-field
-        [isDisabled]="readonlyMode || disable"
-        (onValueChange)="validateField($event, item)"
-        (onBlurChange)="optionChange($event, item)"
-        [item]="item"
+      <app-phonenumber-field [isDisabled]="readonlyMode || disable" (onValueChange)="validateField($event, item)"
+        (onBlurChange)="optionChange($event, item)" [item]="item"
         [textColor]="item?.metaData?.styleProperties?.properties?.textColor"
         [textHorizontalAlign]="item?.metaData?.styleProperties?.properties?.textHorizontalAlign"
         [backgroundColor]="item?.metaData?.styleProperties?.properties?.backgroundColor"
@@ -445,32 +402,26 @@
         [borderLeftColor]="item?.metaData?.styleProperties?.properties?.borderLeftColor"
         [borderLeftWidth]="item?.metaData?.styleProperties?.properties?.borderLeftWidth"
         [independentBorder]="item?.metaData?.styleProperties?.properties?.independentBorder"
-        [allowLabelWrapping]="item?.metaData?.allowLabelWrapping"
-        [showClearButton]="item?.metaData?.showClearButton"
-        [prefixText]="item?.metaData?.prefixText"
-        [suffixText]="item?.metaData?.suffixText"
+        [allowLabelWrapping]="item?.metaData?.allowLabelWrapping" [showClearButton]="item?.metaData?.showClearButton"
+        [prefixText]="item?.metaData?.prefixText" [suffixText]="item?.metaData?.suffixText"
         [labelPosition]="item?.metaData?.styleProperties?.properties?.labelPosition"
         [errorMessage]="item?.errorMessage || item?.metaData?.errorMessage"
         [showErrorMessage]="item?.metaData?.showErrorMessage"
-      ></app-phonenumber-field>
+        [style.--input-label-margin-bottom]="item?.metaData?.styleProperties?.properties?.labelmarginBottom"
+        [style.--input-label-margin-top]="item?.metaData?.styleProperties?.properties?.labelmarginTop"
+        [style.--input-label-margin-left]="item?.metaData?.styleProperties?.properties?.labelmarginLeft"
+        [style.--input-label-margin-right]="item?.metaData?.styleProperties?.properties?.labelmarginRight">
+      </app-phonenumber-field>
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === TextArea">
     <div class="input-container">
-      <finlevit-lib-textarea
-        [isDisabled]="readonlyMode || disable"
-        [rows]="item?.metaData?.rowsCount"
-        [error]="isError(item)"
-        [tooltip]="item?.metaData?.tooltip"
-        [placeholder]="item?.metaData?.placeholder"
-        [(ngModel)]="item.value.value"
-        (ngModelChange)="validateField($event, item)"
-        [isRequired]="item?.validators?.required"
-        [label]="item?.label"
-        [style.--input-adornment-background-color]="
+      <finlevit-lib-textarea [isDisabled]="readonlyMode || disable" [rows]="item?.metaData?.rowsCount"
+        [error]="isError(item)" [tooltip]="item?.metaData?.tooltip" [placeholder]="item?.metaData?.placeholder"
+        [(ngModel)]="item.value.value" (ngModelChange)="validateField($event, item)"
+        [isRequired]="item?.validators?.required" [label]="item?.label" [style.--input-adornment-background-color]="
           item?.metaData?.styleProperties?.properties?.adornmentBackgroundColor
-        "
-        [style.--input-border-width]="item?.metaData?.styleProperties?.properties?.borderWidth"
+        " [style.--input-border-width]="item?.metaData?.styleProperties?.properties?.borderWidth"
         [style.--input-label-font-size]="item?.metaData?.styleProperties?.properties?.labelFontSize"
         [style.--input-label-width]="item?.metaData?.styleProperties?.properties?.labelWidth + '%'"
         [style.--input-border-top]="item?.metaData?.styleProperties?.properties?.borderTopStyle"
@@ -484,8 +435,7 @@
         [style.--input-border-bottom]="item?.metaData?.styleProperties?.properties?.borderBottomStyle"
         [style.--input-border-radius-bottom-right]="
           item?.metaData?.styleProperties?.properties?.borderBottomRightRadius
-        "
-        [style.--input-border-bottom-color]="item?.metaData?.styleProperties?.properties?.borderBottomColor"
+        " [style.--input-border-bottom-color]="item?.metaData?.styleProperties?.properties?.borderBottomColor"
         [style.--input-border-bottom-width]="item?.metaData?.styleProperties?.properties?.borderBottomWidth"
         [style.--input-border-left]="item?.metaData?.styleProperties?.properties?.borderLeftStyle"
         [style.--input-border-radius-bottom-left]="item?.metaData?.styleProperties?.properties?.borderBottomLeftRadius"
@@ -518,22 +468,19 @@
         [style.--input-label-text-decoration]="item?.metaData?.styleProperties?.properties?.labelTextDecoration"
         [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
         [showErrorMsg]="item?.errorMessage || item?.metaData?.showErrorMessage"
-      ></finlevit-lib-textarea>
+        [style.--input-label-margin-bottom]="item?.metaData?.styleProperties?.properties?.labelmarginBottom"
+        [style.--input-label-margin-top]="item?.metaData?.styleProperties?.properties?.labelmarginTop"
+        [style.--input-label-margin-left]="item?.metaData?.styleProperties?.properties?.labelmarginLeft"
+        [style.--input-label-margin-right]="item?.metaData?.styleProperties?.properties?.labelmarginRight">
+      </finlevit-lib-textarea>
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Number">
     <div class="input-container">
-      <finlevit-number
-        *ngIf="!item?.metaData?.isFormulaField"
-        [isDisabled]="readonlyMode || disable"
-        [placeholder]="item?.metaData?.placeholder"
-        [tooltip]="item?.metaData?.tooltip"
-        [error]="isError(item)"
-        [(ngModel)]="item.value.value"
-        (ngModelChange)="validateField($event, item)"
-        [label]="item?.label"
-        [isRequired]="item?.validators?.required"
-        (onBlur)="optionChange($event, item)"
+      <finlevit-number *ngIf="!item?.metaData?.isFormulaField" [isDisabled]="readonlyMode || disable"
+        [placeholder]="item?.metaData?.placeholder" [tooltip]="item?.metaData?.tooltip" [error]="isError(item)"
+        [(ngModel)]="item.value.value" (ngModelChange)="validateField($event, item)" [label]="item?.label"
+        [isRequired]="item?.validators?.required" (onBlur)="optionChange($event, item)"
         [useGrouping]="item?.metaData?.thousandsSeparator"
         [style.--input-adornment-background-color]="item?.metaData?.adornmentBackgroundColor"
         [style.--input-border-width]="item?.metaData?.styleProperties?.properties?.borderWidth"
@@ -550,8 +497,7 @@
         [style.--input-border-bottom]="item?.metaData?.styleProperties?.properties?.borderBottomStyle"
         [style.--input-border-radius-bottom-right]="
           item?.metaData?.styleProperties?.properties?.borderBottomRightRadius
-        "
-        [style.--input-border-bottom-color]="item?.metaData?.styleProperties?.properties?.borderBottomColor"
+        " [style.--input-border-bottom-color]="item?.metaData?.styleProperties?.properties?.borderBottomColor"
         [style.--input-border-bottom-width]="item?.metaData?.styleProperties?.properties?.borderBottomWidth"
         [style.--input-border-left]="item?.metaData?.styleProperties?.properties?.borderLeftStyle"
         [style.--input-border-radius-bottom-left]="item?.metaData?.styleProperties?.properties?.borderBottomLeftRadius"
@@ -562,16 +508,11 @@
         [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
         [errorMsg]="item?.errorMessage || item?.metaData?.errorMessage"
         [showErrorMsg]="item?.errorMessage || item?.metaData?.showErrorMessage"
-        [prefixText]="item?.metaData?.prefixText"
-        [suffixText]="item?.metaData?.suffixText"
-        [showClearButton]="item?.metaData?.showClearButton"
-        [step]="item?.metaData?.step"
-        [showButtons]="item?.metaData?.showStepperButtons"
-        [mode]="item?.metaData?.mode"
-        [currency]="item?.metaData?.currency"
-        [minFractionDigits]="item?.metaData?.minFractionDigits"
-        [maxFractionDigits]="item?.metaData?.maxFractionDigits"
-        [maxLength]="item?.validators?.maxLength"
+        [prefixText]="item?.metaData?.prefixText" [suffixText]="item?.metaData?.suffixText"
+        [showClearButton]="item?.metaData?.showClearButton" [step]="item?.metaData?.step"
+        [showButtons]="item?.metaData?.showStepperButtons" [mode]="item?.metaData?.mode"
+        [currency]="item?.metaData?.currency" [minFractionDigits]="item?.metaData?.minFractionDigits"
+        [maxFractionDigits]="item?.metaData?.maxFractionDigits" [maxLength]="item?.validators?.maxLength"
         [showMaxCharLimit]="item?.validators?.maxLength"
         [style.--input-color]="item?.metaData?.styleProperties?.properties?.textColor"
         [style.--input-text-align]="item?.metaData?.styleProperties?.properties?.textHorizontalAlign"
@@ -593,20 +534,16 @@
         [style.--input-label-font-weight]="item?.metaData?.styleProperties?.properties?.labelFontWeight"
         [style.--input-label-font-style]="item?.metaData?.styleProperties?.properties?.labelStyle"
         [style.--input-label-text-decoration]="item?.metaData?.styleProperties?.properties?.labelTextDecoration"
-      ></finlevit-number>
-      <finlevit-number
-        *ngIf="item?.metaData?.isFormulaField"
-        [isDisabled]="readonlyMode || disable"
-        [placeholder]="item?.metaData?.placeholder"
-        [tooltip]="item?.metaData?.tooltip"
-        [error]="isError(item)"
-        [ngModel]="calculateFormulaValue(item)"
-        (ngModelChange)="validateField($event, item)"
-        [label]="item?.label"
-        [isRequired]="item?.validators?.required"
-        (onBlur)="optionChange($event, item)"
-        [currency]="item?.metaData?.currency"
-        [useGrouping]="item?.metaData?.thousandsSeparator"
+        [style.--input-label-margin-bottom]="item?.metaData?.styleProperties?.properties?.labelmarginBottom"
+        [style.--input-label-margin-top]="item?.metaData?.styleProperties?.properties?.labelmarginTop"
+        [style.--input-label-margin-left]="item?.metaData?.styleProperties?.properties?.labelmarginLeft"
+        [style.--input-label-margin-right]="item?.metaData?.styleProperties?.properties?.labelmarginRight">
+      </finlevit-number>
+      <finlevit-number *ngIf="item?.metaData?.isFormulaField" [isDisabled]="readonlyMode || disable"
+        [placeholder]="item?.metaData?.placeholder" [tooltip]="item?.metaData?.tooltip" [error]="isError(item)"
+        [ngModel]="calculateFormulaValue(item)" (ngModelChange)="validateField($event, item)" [label]="item?.label"
+        [isRequired]="item?.validators?.required" (onBlur)="optionChange($event, item)"
+        [currency]="item?.metaData?.currency" [useGrouping]="item?.metaData?.thousandsSeparator"
         [style.--input-adornment-background-color]="item?.metaData?.adornmentBackgroundColor"
         [style.--input-border-width]="item?.metaData?.styleProperties?.properties?.borderWidth"
         [style.--input-label-font-size]="item?.metaData?.styleProperties?.properties?.labelFontSize"
@@ -622,8 +559,7 @@
         [style.--input-border-bottom]="item?.metaData?.styleProperties?.properties?.borderBottomStyle"
         [style.--input-border-radius-bottom-right]="
           item?.metaData?.styleProperties?.properties?.borderBottomRightRadius
-        "
-        [style.--input-border-bottom-color]="item?.metaData?.styleProperties?.properties?.borderBottomColor"
+        " [style.--input-border-bottom-color]="item?.metaData?.styleProperties?.properties?.borderBottomColor"
         [style.--input-border-bottom-width]="item?.metaData?.styleProperties?.properties?.borderBottomWidth"
         [style.--input-border-left]="item?.metaData?.styleProperties?.properties?.borderLeftStyle"
         [style.--input-border-radius-bottom-left]="item?.metaData?.styleProperties?.properties?.borderBottomLeftRadius"
@@ -634,14 +570,10 @@
         [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
         [errorMsg]="item?.errorMessage || item?.metaData?.errorMessage"
         [showErrorMsg]="item?.errorMessage || item?.metaData?.showErrorMessage"
-        [prefixText]="item?.metaData?.prefixText"
-        [suffixText]="item?.metaData?.suffixText"
-        [showClearButton]="item?.metaData?.showClearButton"
-        [step]="item?.metaData?.step"
-        [showButtons]="item?.metaData?.showStepperButtons"
-        [minFractionDigits]="item?.metaData?.minFractionDigits"
-        [maxFractionDigits]="item?.metaData?.maxFractionDigits"
-        [maxLength]="item?.validators?.maxLength"
+        [prefixText]="item?.metaData?.prefixText" [suffixText]="item?.metaData?.suffixText"
+        [showClearButton]="item?.metaData?.showClearButton" [step]="item?.metaData?.step"
+        [showButtons]="item?.metaData?.showStepperButtons" [minFractionDigits]="item?.metaData?.minFractionDigits"
+        [maxFractionDigits]="item?.metaData?.maxFractionDigits" [maxLength]="item?.validators?.maxLength"
         [showMaxCharLimit]="item?.validators?.maxLength"
         [style.--input-color]="item?.metaData?.styleProperties?.properties?.textColor"
         [style.--input-text-align]="item?.metaData?.styleProperties?.properties?.textHorizontalAlign"
@@ -663,34 +595,30 @@
         [style.--input-label-font-weight]="item?.metaData?.styleProperties?.properties?.labelFontWeight"
         [style.--input-label-font-style]="item?.metaData?.styleProperties?.properties?.labelStyle"
         [style.--input-label-text-decoration]="item?.metaData?.styleProperties?.properties?.labelTextDecoration"
-      ></finlevit-number>
+        [style.--input-label-margin-bottom]="item?.metaData?.styleProperties?.properties?.labelmarginBottom"
+        [style.--input-label-margin-top]="item?.metaData?.styleProperties?.properties?.labelmarginTop"
+        [style.--input-label-margin-left]="item?.metaData?.styleProperties?.properties?.labelmarginLeft"
+        [style.--input-label-margin-right]="item?.metaData?.styleProperties?.properties?.labelmarginRight">
+      </finlevit-number>
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Text">
     <app-text-field *ngIf="item?.metaData?.advanced" [item]="item"></app-text-field>
-    <div
-      *ngIf="!item?.metaData?.advanced"
-      [class]="'text-content text-style-' + item?.metaData?.textStyle"
-      [ngStyle]="{
+    <div *ngIf="!item?.metaData?.advanced" [class]="'text-content text-style-' + item?.metaData?.textStyle" [ngStyle]="{
         'justify-content': item?.metaData?.horizontalAlign,
         'align-items': item?.metaData?.verticalAlign,
         'text-align': item?.metaData?.horizontalAlign,
         color: item?.metaData?.color,
         'font-weight': item?.metaData?.fontWeight
-      }"
-    >
+      }">
       {{ item?.value?.value || item?.metaData?._value }}
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Button">
     <div class="input-container button-input" [ngStyle]="{ width: '100%' }">
-      <finlevit-button
-        [isDisabled]="item?.metaData?.isEnable === false || readonlyMode || disable"
-        [icon]="item?.metaData?.icon"
-        [iconPos]="item?.metaData?.iconPos"
-        [label]="item?.label"
-        (btnClick)="btnClick($event, item)"
-        [type]="item?.metaData?.type"
+      <finlevit-button [isDisabled]="item?.metaData?.isEnable === false || readonlyMode || disable"
+        [icon]="item?.metaData?.icon" [iconPos]="item?.metaData?.iconPos" [label]="item?.label"
+        (btnClick)="btnClick($event, item)" [type]="item?.metaData?.type"
         [bgColor]="item?.metaData?.styleProperties?.properties?.backgroundColor"
         [borderColor]="item?.metaData?.styleProperties?.properties?.borderColor"
         [style.--button-border]="item?.metaData?.styleProperties?.properties?.borderStyle"
@@ -714,16 +642,14 @@
         [style.--button-border-bottom]="item?.metaData?.styleProperties?.properties?.borderBottomStyle"
         [style.--button-border-radius-bottom-right]="
           item?.metaData?.styleProperties?.properties?.borderBottomRightRadius
-        "
-        [borderBottomColor]="item?.metaData?.styleProperties?.properties?.borderBottomColor"
+        " [borderBottomColor]="item?.metaData?.styleProperties?.properties?.borderBottomColor"
         [style.--button-border-bottom-width]="item?.metaData?.styleProperties?.properties?.borderBottomWidth"
         [style.--button-border-left]="item?.metaData?.styleProperties?.properties?.borderLeftStyle"
         [style.--button-border-radius-bottom-left]="item?.metaData?.styleProperties?.properties?.borderBottomLeftRadius"
         [borderLeftColor]="item?.metaData?.styleProperties?.properties?.borderLeftColor"
         [style.--button-border-left-width]="item?.metaData?.styleProperties?.properties?.borderLeftWidth"
         [independentBorders]="item?.metaData?.styleProperties?.properties?.independentBorder"
-        [variant]="item?.metaData?.styleProperties?.properties?.variant"
-      ></finlevit-button>
+        [variant]="item?.metaData?.styleProperties?.properties?.variant"></finlevit-button>
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === CollapseContainer">
@@ -738,25 +664,14 @@
     <app-image [item]="item"></app-image>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Table">
-    <div
-      [ngClass]="{
+    <div [ngClass]="{
         'input-container': true
-      }"
-    >
-      <finlevit-custom-table
-        [columns]="item?.metaData?.columns"
-        [actions]="item?.metaData?.actions"
-        [rows]="item?.rows"
-        [tableData]="item?.value?.value || []"
-        [showPageOptions]="false"
-        [addRows]="item?.metaData?.addRows"
-        [filter]="item?.metaData?.filter"
-        [sort]="item?.metaData?.sort"
-        [fixedRecordsPerPage]="0"
-        [overflowType]="item?.metaData?.overflow"
-        [paginatorPosition]="item?.metaData?.paginatorPosition"
-        [hideHeader]="item?.metaData?.hideHeader"
-        [hideFooter]="item?.metaData?.hideFooter"
+      }">
+      <finlevit-custom-table [columns]="item?.metaData?.columns" [actions]="item?.metaData?.actions" [rows]="item?.rows"
+        [tableData]="item?.value?.value || []" [showPageOptions]="false" [addRows]="item?.metaData?.addRows"
+        [filter]="item?.metaData?.filter" [sort]="item?.metaData?.sort" [fixedRecordsPerPage]="0"
+        [overflowType]="item?.metaData?.overflow" [paginatorPosition]="item?.metaData?.paginatorPosition"
+        [hideHeader]="item?.metaData?.hideHeader" [hideFooter]="item?.metaData?.hideFooter"
         [saveBtnProperties]="item?.metaData?.saveBtnProperties"
         [cancelBtnProperties]="item?.metaData?.cancelBtnProperties"
         [style.--header-cell-padding-bottom]="item?.metaData?.headerCellPaddingBottom"
@@ -775,38 +690,26 @@
         [style.--body-cell-font-family]="item?.metaData?.styleProperties?.properties?.bodyFontFamily"
         [style.--body-cell-hover-background-color]="
           item?.metaData?.styleProperties?.properties?.bodyHoverBackgroundColor
-        "
-        [style.--body-cell-hover-color]="item?.metaData?.styleProperties?.properties?.bodyHoverColor"
+        " [style.--body-cell-hover-color]="item?.metaData?.styleProperties?.properties?.bodyHoverColor"
         [style.--header-font-size]="item?.metaData?.styleProperties?.properties?.headerFontSize"
         [style.--body-font-size]="item?.metaData?.styleProperties?.properties?.bodyFontSize"
         [style.--table-border-width]="item?.metaData?.styleProperties?.properties?.borderWidth"
         [style.--table-border-style]="item?.metaData?.styleProperties?.properties?.borderStyle"
         [style.--table-border-color]="item?.metaData?.styleProperties?.properties?.borderColor"
         [style.--table-border-radius]="item?.metaData?.styleProperties?.properties?.borderRadius"
-        [horizontalBorder]="item?.metaData?.horizontalBorder"
-        [verticalBorder]="item?.metaData?.verticalBorder"
-      ></finlevit-custom-table>
+        [horizontalBorder]="item?.metaData?.horizontalBorder" [verticalBorder]="item?.metaData?.verticalBorder">
+      </finlevit-custom-table>
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === AdvTable">
-    <div
-      [ngClass]="{
+    <div [ngClass]="{
         'input-container': true
-      }"
-    >
-      <finlevit-custom-adv-table
-        [columns]="item?.metaData?.columns"
-        [actions]="item?.metaData?.actions"
-        [rows]="item?.rows"
-        [tableData]="item?.children"
-        [addRows]="item?.metaData?.addRows"
-        [filter]="item?.metaData?.filter"
-        [sort]="item?.metaData?.sort"
-        [overflowType]="item?.metaData?.overflow"
-        [paginatorPosition]="item?.metaData?.paginatorPosition"
-        [hideHeader]="item?.metaData?.hideHeader"
-        [hideFooter]="item?.metaData?.hideFooter"
-        [saveBtnProperties]="item?.metaData?.saveBtnProperties"
+      }">
+      <finlevit-custom-adv-table [columns]="item?.metaData?.columns" [actions]="item?.metaData?.actions"
+        [rows]="item?.rows" [tableData]="item?.children" [addRows]="item?.metaData?.addRows"
+        [filter]="item?.metaData?.filter" [sort]="item?.metaData?.sort" [overflowType]="item?.metaData?.overflow"
+        [paginatorPosition]="item?.metaData?.paginatorPosition" [hideHeader]="item?.metaData?.hideHeader"
+        [hideFooter]="item?.metaData?.hideFooter" [saveBtnProperties]="item?.metaData?.saveBtnProperties"
         [cancelBtnProperties]="item?.metaData?.cancelBtnProperties"
         [style.--header-cell-padding-bottom]="item?.metaData?.headerCellPaddingBottom"
         [style.--header-cell-padding-top]="item?.metaData?.headerCellPaddingTop"
@@ -824,19 +727,15 @@
         [style.--body-cell-font-family]="item?.metaData?.styleProperties?.properties?.bodyFontFamily"
         [style.--body-cell-hover-background-color]="
           item?.metaData?.styleProperties?.properties?.bodyHoverBackgroundColor
-        "
-        [style.--body-cell-hover-color]="item?.metaData?.styleProperties?.properties?.bodyHoverColor"
+        " [style.--body-cell-hover-color]="item?.metaData?.styleProperties?.properties?.bodyHoverColor"
         [style.--header-font-size]="item?.metaData?.styleProperties?.properties?.headerFontSize"
         [style.--body-font-size]="item?.metaData?.styleProperties?.properties?.bodyFontSize"
         [style.--table-border-width]="item?.metaData?.styleProperties?.properties?.borderWidth"
         [style.--table-border-style]="item?.metaData?.styleProperties?.properties?.borderStyle"
         [style.--table-border-color]="item?.metaData?.styleProperties?.properties?.borderColor"
         [style.--table-border-radius]="item?.metaData?.styleProperties?.properties?.borderRadius"
-        [horizontalBorder]="item?.metaData?.horizontalBorder"
-        [verticalBorder]="item?.metaData?.verticalBorder"
-        [isDisabled]="readonlyMode || disable"
-        (onBtnClick)="btnClick(null, $event)"
-      ></finlevit-custom-adv-table>
+        [horizontalBorder]="item?.metaData?.horizontalBorder" [verticalBorder]="item?.metaData?.verticalBorder"
+        [isDisabled]="readonlyMode || disable" (onBtnClick)="btnClick(null, $event)"></finlevit-custom-adv-table>
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === TransactionTable">
@@ -844,12 +743,8 @@
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Checkbox">
     <div class="input-container">
-      <finlevit-lib-checkbox
-        [isDisabled]="readonlyMode || disable"
-        [error]="isError(item)"
-        [isRequired]="item?.validators?.required"
-        [label]="item?.label"
-        [(ngModel)]="item.value.value"
+      <finlevit-lib-checkbox [isDisabled]="readonlyMode || disable" [error]="isError(item)"
+        [isRequired]="item?.validators?.required" [label]="item?.label" [(ngModel)]="item.value.value"
         (ngModelChange)="validateField($event, item); onChange($event)"
         [style.--input-label-font-weight]="item?.metaData?.styleProperties?.properties?.labelFontWeight"
         [style.--input-label-font-style]="item?.metaData?.styleProperties?.properties?.labelStyle"
@@ -861,24 +756,19 @@
         [style.--input-letter-spacing]="item?.metaData?.styleProperties?.properties?.letterSpacing"
         [style.--input-unchecked-background-color]="
           item?.metaData?.styleProperties?.properties?.uncheckedBackgroundColor
-        "
-        [style.--input-unchecked-border-color]="item?.metaData?.styleProperties?.properties?.uncheckedBorderColor"
+        " [style.--input-unchecked-border-color]="item?.metaData?.styleProperties?.properties?.uncheckedBorderColor"
         [style.--input-checked-background-color]="item?.metaData?.styleProperties?.properties?.checkedBackgroundColor"
         [style.--input-checked-border-color]="item?.metaData?.styleProperties?.properties?.checkedBorderColor"
         [style.--input-check-icon-color]="item?.metaData?.styleProperties?.properties?.checkIconColor"
         [style.--input-flex-direction]="item?.metaData?.styleProperties?.properties?.checkboxAlign"
         [style.--input-checkbox-size]="item?.metaData?.styleProperties?.properties?.checkboxSize"
         [errorMsg]="item?.errorMessage || item?.metaData?.errorMessage"
-        [showErrorMsg]="item?.errorMessage || item?.metaData?.showErrorMessage"
-      ></finlevit-lib-checkbox>
+        [showErrorMsg]="item?.errorMessage || item?.metaData?.showErrorMessage"></finlevit-lib-checkbox>
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === CheckboxGroup">
     <div class="input-container">
-      <app-checkbox-group
-        [item]="item"
-        [dataListId]="item?.metaData?.datalistId"
-        [isDisabled]="readonlyMode || disable"
+      <app-checkbox-group [item]="item" [dataListId]="item?.metaData?.datalistId" [isDisabled]="readonlyMode || disable"
         [columns]="item?.metaData?.columns"
         [labelFontWeight]="item?.metaData?.styleProperties?.properties?.labelFontWeight"
         [labelStyle]="item?.metaData?.styleProperties?.properties?.labelStyle"
@@ -908,14 +798,13 @@
         [checkboxSize]="item?.metaData?.styleProperties?.properties?.checkboxSize"
         [errorMessage]="item?.errorMessage || item?.metaData?.errorMessage"
         [showErrorMessage]="item?.errorMessage || item?.metaData?.showErrorMessage"
-      ></app-checkbox-group>
+        [optionPaddingBottom]="item?.metaData?.styleProperties?.properties?.optionPaddingBottom"
+        ></app-checkbox-group>
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Dropdown">
     <div class="input-container">
-      <app-dropdown-field
-        [item]="item"
-        [isDisabled]="readonlyMode || disable"
+      <app-dropdown-field [item]="item" [isDisabled]="readonlyMode || disable"
         (optionChange)="optionChange($event, item); validateField($event, item); onChange($event)"
         [textColor]="item?.metaData?.styleProperties?.properties?.textColor"
         [textHorizontalAlign]="item?.metaData?.styleProperties?.properties?.textHorizontalAlign"
@@ -962,7 +851,11 @@
         [allowLabelWrapping]="item?.metaData?.allowLabelWrapping"
         [errorMessage]="item?.errorMessage || item?.metaData?.errorMessage"
         [showErrorMessage]="item?.errorMessage || item?.metaData?.showErrorMessage"
-      ></app-dropdown-field>
+        [labelmarginBottom]="item?.metaData?.styleProperties?.properties?.labelmarginBottom"
+      [labelmarginTop]="item?.metaData?.styleProperties?.properties?.labelmarginTop"
+      [labelmarginLeft]="item?.metaData?.styleProperties?.properties?.labelmarginLeft"
+      [labelmarginRight]="item?.metaData?.styleProperties?.properties?.labelmarginRight"
+     ></app-dropdown-field>
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Modal">
@@ -972,18 +865,12 @@
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === RadioGroup">
     <div class="input-container">
-      <finlevit-radio-group
-        [isDisabled]="readonlyMode || disable"
-        [isRequired]="item?.validators?.required"
-        [items]="item?.metaData?.options"
-        [label]="item?.label"
+      <finlevit-radio-group [isDisabled]="readonlyMode || disable" [isRequired]="item?.validators?.required"
+        [items]="item?.metaData?.options" [label]="item?.label"
         [optionLabel]="item?.metaData?.isLabelAndValue ? item?.metaData?.optionLabel : 'name'"
         [optionValue]="item?.metaData?.isLabelAndValue ? item?.metaData?.optionValue : 'name'"
-        [(ngModel)]="item.value.value"
-        (ngModelChange)="validateField($event, item); onChange($event)"
-        [error]="isError(item)"
-        [alignOptions]="item?.metaData?.alignOptions"
-        [columns]="item?.metaData?.columns"
+        [(ngModel)]="item.value.value" (ngModelChange)="validateField($event, item); onChange($event)"
+        [error]="isError(item)" [alignOptions]="item?.metaData?.alignOptions" [columns]="item?.metaData?.columns"
         [tooltip]="item?.metaData?.tooltip"
         [style.--input-label-font-weight]="item?.metaData?.styleProperties?.properties?.labelFontWeight"
         [style.--input-label-font-style]="item?.metaData?.styleProperties?.properties?.labelStyle"
@@ -995,8 +882,7 @@
         [style.--input-letter-spacing]="item?.metaData?.styleProperties?.properties?.letterSpacing"
         [style.--input-unselected-background-color]="
           item?.metaData?.styleProperties?.properties?.unselectedBackgroundColor
-        "
-        [style.--input-unselected-border-color]="item?.metaData?.styleProperties?.properties?.unselectedBorderColor"
+        " [style.--input-unselected-border-color]="item?.metaData?.styleProperties?.properties?.unselectedBorderColor"
         [style.--input-selected-background-color]="item?.metaData?.styleProperties?.properties?.selectedBackgroundColor"
         [style.--input-selected-border-color]="item?.metaData?.styleProperties?.properties?.selectedBorderColor"
         [style.--input-flex-direction]="item?.metaData?.styleProperties?.properties?.radioAlign"
@@ -1018,28 +904,18 @@
         [showErrorMsg]="item?.errorMessage || item?.metaData?.showErrorMessage"
         [style.--input-label-width]="item?.metaData?.styleProperties?.properties?.labelWidth + '%'"
         [style.--input-radiobutton-size]="item?.metaData?.styleProperties?.properties?.radiobuttonSize"
-        [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
-      ></finlevit-radio-group>
+        [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"></finlevit-radio-group>
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === DatePicker">
     <div class="input-container">
-      <finlevit-lib-datepicker
-        [isDisabled]="readonlyMode || disable"
-        [label]="item?.label"
-        [errorMsg]="item?.errorMessage || item?.errorMsg"
-        [error]="isError(item)"
-        [isRequired]="item?.validators?.required"
-        [tooltip]="item?.metaData?.tooltip"
-        [placeholder]="item?.metaData?.placeholder"
-        [viewDateFormat]="item?.metaData?.viewDateFormat"
-        [returnDateFormat]="item?.metaData?.returnDateFormat"
-        [minDate]="item?.validators?.minDate"
-        [maxDate]="item?.validators?.maxDate"
-        [(ngModel)]="item.value.value"
-        (ngModelChange)="validateField($event, item)"
-        [yearNavigator]="true"
-        [monthNavigator]="true"
+      <finlevit-lib-datepicker [isDisabled]="readonlyMode || disable" [label]="item?.label"
+        [errorMsg]="item?.errorMessage || item?.errorMsg" [error]="isError(item)"
+        [isRequired]="item?.validators?.required" [tooltip]="item?.metaData?.tooltip"
+        [placeholder]="item?.metaData?.placeholder" [viewDateFormat]="item?.metaData?.viewDateFormat"
+        [returnDateFormat]="item?.metaData?.returnDateFormat" [minDate]="item?.validators?.minDate"
+        [maxDate]="item?.validators?.maxDate" [(ngModel)]="item.value.value"
+        (ngModelChange)="validateField($event, item)" [yearNavigator]="true" [monthNavigator]="true"
         [style.--input-color]="item?.metaData?.styleProperties?.properties?.textColor"
         [style.--input-text-align]="item?.metaData?.styleProperties?.properties?.textHorizontalAlign"
         [style.--input-background-color]="item?.metaData?.styleProperties?.properties?.backgroundColor"
@@ -1061,15 +937,11 @@
         [style.--input-label-font-weight]="item?.metaData?.styleProperties?.properties?.labelFontWeight"
         [style.--input-label-font-style]="item?.metaData?.styleProperties?.properties?.labelStyle"
         [style.--input-label-text-decoration]="item?.metaData?.styleProperties?.properties?.labelTextDecoration"
-        [showErrorMsg]="item?.errorMessage || item?.metaData?.showErrorMessage"
-        [showTime]="item?.metaData?.showTime"
-        [hourFormat]="item?.metaData?.hourFormat"
-        [stepMinute]="item?.metaData?.stepMinute"
-        [stepHour]="item?.metaData?.stepHour"
-        [style.--input-adornment-background-color]="
+        [showErrorMsg]="item?.errorMessage || item?.metaData?.showErrorMessage" [showTime]="item?.metaData?.showTime"
+        [hourFormat]="item?.metaData?.hourFormat" [stepMinute]="item?.metaData?.stepMinute"
+        [stepHour]="item?.metaData?.stepHour" [style.--input-adornment-background-color]="
           item?.metaData?.styleProperties?.properties?.adornmentBackgroundColor
-        "
-        [style.--input-border-width]="item?.metaData?.styleProperties?.properties?.borderWidth"
+        " [style.--input-border-width]="item?.metaData?.styleProperties?.properties?.borderWidth"
         [style.--input-label-font-size]="item?.metaData?.styleProperties?.properties?.labelFontSize"
         [style.--input-label-width]="item?.metaData?.styleProperties?.properties?.labelWidth + '%'"
         [style.--input-border-top]="item?.metaData?.styleProperties?.properties?.borderTopStyle"
@@ -1083,8 +955,7 @@
         [style.--input-border-bottom]="item?.metaData?.styleProperties?.properties?.borderBottomStyle"
         [style.--input-border-radius-bottom-right]="
           item?.metaData?.styleProperties?.properties?.borderBottomRightRadius
-        "
-        [style.--input-border-bottom-color]="item?.metaData?.styleProperties?.properties?.borderBottomColor"
+        " [style.--input-border-bottom-color]="item?.metaData?.styleProperties?.properties?.borderBottomColor"
         [style.--input-border-bottom-width]="item?.metaData?.styleProperties?.properties?.borderBottomWidth"
         [style.--input-border-left]="item?.metaData?.styleProperties?.properties?.borderLeftStyle"
         [style.--input-border-radius-bottom-left]="item?.metaData?.styleProperties?.properties?.borderBottomLeftRadius"
@@ -1092,13 +963,16 @@
         [style.--input-border-left-width]="item?.metaData?.styleProperties?.properties?.borderLeftWidth"
         [independentBorders]="item?.metaData?.styleProperties?.properties?.independentBorder"
         [allowLabelWrapping]="item?.metaData?.styleProperties?.properties?.allowLabelWrapping"
-      ></finlevit-lib-datepicker>
+        [style.--input-label-margin-bottom]="item?.metaData?.styleProperties?.properties?.labelmarginBottom"
+      [style.--input-label-margin-top]="item?.metaData?.styleProperties?.properties?.labelmarginTop"
+      [style.--input-label-margin-left]="item?.metaData?.styleProperties?.properties?.labelmarginLeft"
+      [style.--input-label-margin-right]="item?.metaData?.styleProperties?.properties?.labelmarginRight"
+   >
+      </finlevit-lib-datepicker>
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === StepperContainer">
-    <app-vertical-stepper
-      [children]="item?.children"
-      [metaData]="item?.metaData"
+    <app-vertical-stepper [children]="item?.children" [metaData]="item?.metaData"
       [headerContent]="item?.metaData?.headerContent"
       [style.--input-color]="item?.metaData?.styleProperties?.properties?.textColor"
       [style.--input-text-align]="item?.metaData?.styleProperties?.properties?.textHorizontalAlign"
@@ -1133,14 +1007,11 @@
       [style.--input-border-left]="item?.metaData?.styleProperties?.properties?.borderLeftStyle"
       [style.--input-border-radius-bottom-left]="item?.metaData?.styleProperties?.properties?.borderBottomLeftRadius"
       [style.--input-border-left-color]="item?.metaData?.styleProperties?.properties?.borderLeftColor"
-      [style.--input-border-left-width]="item?.metaData?.styleProperties?.properties?.borderLeftWidth"
-    >
+      [style.--input-border-left-width]="item?.metaData?.styleProperties?.properties?.borderLeftWidth">
     </app-vertical-stepper>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === TabContainer">
-    <app-tab-container
-      [item]="item"
-      [style]="item?.metaData?.styleProperties"
+    <app-tab-container [item]="item" [style]="item?.metaData?.styleProperties"
       [style.--label-color]="item?.metaData?.styleProperties?.properties?.textColor"
       [style.--label-background-color]="item?.metaData?.styleProperties?.properties?.backgroundColor"
       [style.--lable-font-family]="item?.metaData?.styleProperties?.properties?.fontStyle"
@@ -1152,8 +1023,8 @@
       [style.--label-word-spacing]="item?.metaData?.styleProperties?.properties?.wordSpacing"
       [style.--label-font-size]="item?.metaData?.styleProperties?.properties?.fontSize"
       [style.--active-text-color]="item?.metaData?.styleProperties?.properties?.activetextColor"
-      [style.--active-border-color]="item?.metaData?.styleProperties?.properties?.activeBorderColor"
-    ></app-tab-container>
+      [style.--active-border-color]="item?.metaData?.styleProperties?.properties?.activeBorderColor">
+    </app-tab-container>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Divider">
     <div class="input-container">
@@ -1172,9 +1043,7 @@
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Avatar">
     <div class="input-container">
-      <app-avatar
-        [item]="item"
-        [style.--avatar-size]="item?.metaData?.styleProperties?.properties?.avatarSize"
+      <app-avatar [item]="item" [style.--avatar-size]="item?.metaData?.styleProperties?.properties?.avatarSize"
         [style.--avatar-label-font-size]="item?.metaData?.styleProperties?.properties?.avatarLabelFontSize"
         [style.--avatar-label-font-color]="item?.metaData?.styleProperties?.properties?.avatarLabelFontColor"
         [style.--avatar-label-font-family]="item?.metaData?.styleProperties?.properties?.avatarLabelFontStyle"
@@ -1183,8 +1052,8 @@
         [style.--avatar-caption-font-family]="item?.metaData?.styleProperties?.properties?.avatarCaptionFontStyle"
         [style.--avatar-background-color]="item?.metaData?.styleProperties?.properties?.avatarBackgroundColor"
         [style.--avatar-text-font-color]="item?.metaData?.styleProperties?.properties?.avatarTextFontColor"
-        [style.--avatar-text-font-family]="item?.metaData?.styleProperties?.properties?.avatarTextFontStyle"
-      ></app-avatar>
+        [style.--avatar-text-font-family]="item?.metaData?.styleProperties?.properties?.avatarTextFontStyle">
+      </app-avatar>
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Container">
@@ -1193,34 +1062,23 @@
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Header || item?.metaData?.widgetType === Footer">
-    <div
-      [ngClass]="{
+    <div [ngClass]="{
         'nested-grid-container': true,
         'header-container': item?.metaData?.widgetType === Header,
         'footer-container': item?.metaData?.widgetType === Footer
-      }"
-    >
-      <div
-        *ngIf="item?.metaData?.title"
-        class="container-title"
-        [ngStyle]="{
+      }">
+      <div *ngIf="item?.metaData?.title" class="container-title" [ngStyle]="{
           'background-color': item?.metaData?.header?.bgColor,
           color: item?.metaData?.header?.color,
           'font-size': item?.metaData?.header?.fontSize + 'px',
           height: item?.metaData?.header?.height + 'px'
-        }"
-      >
-        <i
-          *ngIf="item?.metaData?.header?.icon"
-          [class]="item?.metaData?.header?.icon"
-          [ngStyle]="{
+        }">
+        <i *ngIf="item?.metaData?.header?.icon" [class]="item?.metaData?.header?.icon" [ngStyle]="{
             color: item?.metaData?.header?.color,
             'font-size': item?.metaData?.header?.fontSize + 'px',
             'font-weight': 'inherit',
             marginRight: '0.5rem'
-          }"
-        ></i
-        >{{ item?.metaData?.title }}
+          }"></i>{{ item?.metaData?.title }}
       </div>
       <finlevit-grid [parent]="item" [items]="item.children"></finlevit-grid>
     </div>
