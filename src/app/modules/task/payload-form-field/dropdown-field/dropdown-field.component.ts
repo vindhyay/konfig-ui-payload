@@ -56,6 +56,10 @@ export class DropdownFieldComponent implements OnInit {
   @Input() labelFontWeight: string;
   @Input() labelFontStyle: string;
   @Input() labelTextDecoration: string;
+  @Input() labelmarginBottom: string;
+  @Input() labelmarginTop: string;
+  @Input() labelmarginLeft: string;
+  @Input() labelmarginRight: string;
   get metaData(): DropdownMetaData {
     return this.item.metaData as DropdownMetaData;
   }

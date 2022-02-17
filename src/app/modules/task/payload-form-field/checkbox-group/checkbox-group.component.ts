@@ -40,7 +40,7 @@ export class CheckboxGroupComponent implements OnInit {
   @Input() showErrorMessage: boolean;
   @Input() labelAlignment: string;
   @Input() checkboxSize: string;
-
+  @Input() optionPaddingBottom: string
   @Input() columns: number;
   constructor(private editorService: EditorService) {}
   get metaData(): MetaData {
