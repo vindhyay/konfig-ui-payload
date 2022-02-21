@@ -319,10 +319,10 @@
                             {{ rowData[col.columnId] | date }}
                           </ng-container>
                           <ng-container *ngSwitchCase="Number">
-                            {{ rowData[col.columnId] | number }}
+                            {{ col?.metaData?.isFormulaField ? calculateCellValue(col, rowIndex) : rowData[col.columnId] | number }}
                           </ng-container>
                           <ng-container *ngSwitchDefault>
-                            {{ rowData[col.columnId] }}
+                            {{ col?.metaData?.isFormulaField ? calculateCellValue(col, rowIndex) : rowData[col.columnId] }}
                           </ng-container>
                         </ng-template>
                       </ng-container>
@@ -341,7 +341,11 @@
                             [tooltip]="col?.metaData?.tooltip"
                             [placeholder]="col?.metaData?.placeholder"
                             [isRequired]="col?.validators?.required"
-                            [(ngModel)]="modifyingData[rowIndex][col.columnId]"
+                            [(ngModel)]="
+                              col?.metaData?.isFormulaField
+                                ? calculateCellValue(col, rowIndex)
+                                : modifyingData[rowIndex][col.columnId]
+                            "
                             (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col.columnId)"
                             [isSmall]="true"
                             [style.--input-color]="col?.metaData?.styleProperties?.properties?.textColor"
@@ -632,7 +636,11 @@
                             [showClearButton]="col?.metaData?.showClearButton"
                             [step]="col?.metaData?.step"
                             [showButtons]="col?.metaData?.showStepperButtons"
-                            [(ngModel)]="modifyingData[rowIndex][col.columnId]"
+                            [(ngModel)]="
+                              col?.metaData?.isFormulaField
+                                ? calculateCellValue(col, rowIndex)
+                                : modifyingData[rowIndex][col.columnId]
+                            "
                             (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col.columnId)"
                             [isSmall]="true"
                             [showErrorMsg]="col?.metaData?.showErrorMessage"

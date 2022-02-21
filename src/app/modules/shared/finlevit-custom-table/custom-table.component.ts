@@ -24,6 +24,8 @@ import { getUniqueId, scrollToBottom, superClone } from "../../../utils";
 import { CustomTableFiltersComponent } from "./table-utils/custom-table-filters/custom-table-filters.component";
 import { PaginationDirective } from "./table-utils/pagination.directive";
 import { SelectionModel } from "@angular/cdk/collections";
+import { resourceType } from "../../task/payload-form-field/payload-form-field.component";
+import * as moment from "moment";
 
 const MIN_ROW_HEIGHT = 50;
 
@@ -505,5 +507,77 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
     this.currentPage = 1;
     this.updateRowsLimit();
     this.onPageChange.emit({ limit: $event, page: this.currentPage });
+  }
+  calculateCellValue(col, rowIndex) {
+    let cellValue = "";
+    let columnFormula = col?.metaData?.formula;
+    let firstColumn = columnFormula.find((column) => column?.resourceType === resourceType.PAYLOAD_FIELD);
+    switch (firstColumn?.type) {
+      case "number":
+        let expression = "";
+        columnFormula.forEach((field) => {
+          if (field?.resourceType === resourceType.PAYLOAD_FIELD) {
+            expression = expression + " " + this.tableData[rowIndex][field.columnId];
+          }
+          if (field?.resourceType === resourceType.BRACKET) {
+            expression = expression + " " + field?.displayName;
+          }
+          if (field?.resourceType === resourceType.FUNCTION) {
+            expression = expression + " " + field?.expression;
+          }
+        });
+        if (eval(expression) === Infinity) {
+          cellValue = "∞";
+        } else {
+          cellValue = eval(expression) || null;
+        }
+        this.tableData[rowIndex][col.columnId] = cellValue;
+        return cellValue;
+      case "string":
+        columnFormula.forEach((field) => {
+          if (field?.resourceType === resourceType.PAYLOAD_FIELD) {
+            if (this.tableData[rowIndex][field.columnId]) {
+              cellValue = cellValue + this.tableData[rowIndex][field.columnId];
+            }
+          }
+          if (field?.resourceType === resourceType.FUNCTION) {
+            if (field?.separateBy && cellValue) {
+              cellValue = cellValue + field.separateBy;
+            }
+          }
+        });
+        this.tableData[rowIndex][col.columnId] = cellValue;
+        return cellValue;
+      case "date":
+        const dateFunc = columnFormula.filter((field) => {
+          return field?.resourceType === resourceType.FUNCTION;
+        });
+        let date1;
+        let date2;
+        const dateIndex = columnFormula.indexOf(dateFunc[0]);
+        if (columnFormula[dateIndex - 1].displayName === "Current Date") {
+          date1 = new Date();
+        } else {
+          if (this.tableData[rowIndex][columnFormula[dateIndex - 1].columnId]) {
+            date1 = moment.utc(this.tableData[rowIndex][columnFormula[dateIndex - 1].columnId]).toDate();
+          }
+        }
+        if (columnFormula[dateIndex + 1]?.displayName === "Current Date") {
+          date2 = new Date();
+        } else {
+          if (this.tableData[rowIndex][columnFormula[dateIndex + 1].columnId]) {
+            date2 = moment.utc(this.tableData[rowIndex][columnFormula[dateIndex + 1].columnId]).toDate();
+          }
+        }
+        let d = moment(date2);
+        let years = d.diff(date1, "years");
+        d.add(-years, "years");
+        if (years) {
+          cellValue = years + "";
+        }
+        this.tableData[rowIndex][col.columnId] = cellValue;
+        return cellValue;
+    }
+    return cellValue;
   }
 }
