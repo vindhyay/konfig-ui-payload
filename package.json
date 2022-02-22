@@ -24,7 +24,7 @@
     "@angular/router": "~13.1.1",
     "angular-material": "^1.2.2",
     "bootstrap": "^4.6.0",
-    "finlevit-library": "file:lib/finlevit-library-1.0.6.tgz",
+    "finlevit-library": "file:lib/finlevit-library-1.0.7.tgz",
     "lodash": "^4.17.21",
     "moment": "2.24.0",
     "ngx-loading": "^8.0.0",
