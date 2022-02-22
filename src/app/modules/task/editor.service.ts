@@ -122,10 +122,10 @@ export class EditorService extends BaseService {
           );
           if (tempFormControl.valid) {
             paramField.error = false;
-            paramField.errorMsg = "";
+            paramField.errorMessage = "";
           } else {
             paramField.error = true;
-            paramField.errorMsg = getErrorMessages(
+            paramField.metaData.errorMessage = getErrorMessages(
               tempFormControl.errors,
               paramField?.label || paramField?.widgetName
             )[0];
@@ -155,7 +155,7 @@ export class EditorService extends BaseService {
     const formFields = this.getFormFields();
     this.setHiddenFieldValue(formFields);
     // Checking the first action is populate action if yes validate require params
-    const populateActionIndex = onClickConfigs.findIndex((item) => item.action === ButtonActions.populate) || null;
+    const populateActionIndex = onClickConfigs.findIndex((item) => item.action === ButtonActions.populate);
     let error = false;
     if (populateActionIndex === 0) {
       error = this.validatePopulateParams(onClickConfigs[populateActionIndex], formFields);
