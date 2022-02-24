@@ -339,6 +339,12 @@
       box-shadow: none;
     }
   }
+  .hide-footer-cell-actions{
+    display: flex;
+    padding: 4px 12px;
+    color: var(--paginator-color);
+    background-color: var(--paginator-background-color);
+  }
 }
 .no-data-container {
   background-image: url('/assets/images/nodata-found.png');

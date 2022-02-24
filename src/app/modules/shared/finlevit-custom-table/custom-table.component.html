@@ -844,6 +844,9 @@
         </ng-template>
       </div>
     </div>
+    <div [ngClass]="{ 'hide-footer-cell-actions': true }" *ngIf="hideFooter && Object.keys(editCells).length">
+      <ng-container *ngTemplateOutlet="cellEditActions"></ng-container>
+    </div>
     <div [ngClass]="{ '-pagination': true, 'table-footer': !hideFooter }">
       <div class="-left d-flex">
         <div class="table-results-counter" *ngIf="!Object.keys(editCells).length; else cellEditActions">
