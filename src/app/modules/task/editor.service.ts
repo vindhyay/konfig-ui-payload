@@ -219,10 +219,14 @@ export class EditorService extends BaseService {
               this.hideLoader();
               const { data, error } = parseApiResponse(result);
               if (data && !error) {
-                if (isSubmit) this.notificationService.success("Transaction Submitted Successfully", "Success");
                 if (toastMsg) {
                   this.notificationService.success(toastMsg, "Success");
                 }
+                if (!toastMsg && isSubmit)
+                  this.notificationService.success(
+                    "This transaction is in progress, Modifications not allowed",
+                    "Success"
+                  );
                 this.setTransactionDetails(data);
                 this.triggerUIActions(uiActions);
               } else {
