@@ -178,12 +178,6 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
       currentRow[eachColumn?.metaData?.widgetId] = eachColumn?.value?.value;
     });
     this.modifyingData[rowIndex] = currentRow;
-    // if (!this.editCells[rowIndex]) {
-    //   this.editCells[rowIndex] = {};
-    // }
-    // this.columns.forEach(column => {
-    //   this.editCells[rowIndex][column?.columnId] = data[column?.columnId];
-    // });
   }
   onRowEditCancel(index, rowData) {
     this.tableData[index] = this.editRows[index];
@@ -221,7 +215,9 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
       this.editCells[rowIndex] = {};
     }
     this.editCells[rowIndex][column?.metaData?.widgetId] = colRowData[column?.metaData?.widgetId];
-    this.modifyingData[rowIndex] = superClone(colRowData);
+    if (!this.modifyingData[rowIndex]) {
+      this.modifyingData[rowIndex] = superClone(colRowData);
+    }
   }
   onColSave($event) {
     Object.keys(this.modifyingData).map((index) => {
