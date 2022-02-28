@@ -140,6 +140,9 @@ export class PayloadFormFieldComponent implements OnInit, OnDestroy {
             }
           }
         }
+        setTimeout(() => {
+          this.editorService.setContainerHeight(this._payloadFields);
+        })
       }
     });
     this.readonlyMode = this.item?.metaData?.readOnly || this.item?.validators?.editable === false;
