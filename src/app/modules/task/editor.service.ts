@@ -272,7 +272,6 @@ export class EditorService extends BaseService {
   }
 
   setClosedModals(fields) {
-    console.log("closing modals");
     this.modalStatus.next(fields.map((field) => ({ id: field, type: ButtonActions.closeModals })));
   }
 
