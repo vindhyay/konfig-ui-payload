@@ -3,7 +3,13 @@ import { result } from "./state/model/api-response";
 import { FormControl, Validators } from "@angular/forms";
 import { ButtonActions, WidgetTypes } from "./modules/task/model/create-form.models";
 
-export const UI_ACTIONS = [ButtonActions.logout, ButtonActions.nextStep, ButtonActions.previousStep];
+export const UI_ACTIONS = [
+  ButtonActions.logout,
+  ButtonActions.nextStep,
+  ButtonActions.previousStep,
+  ButtonActions.openModals,
+  ButtonActions.closeModals,
+];
 
 const uid = new ShortUniqueId();
 export const getValueFromObjectByPath = (obj: any, path: any) =>
