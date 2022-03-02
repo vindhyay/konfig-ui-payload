@@ -46,6 +46,8 @@ export enum ButtonActions {
   previous = "previous",
   nextStep = "nextStep",
   previousStep = "previousStep",
+  closeModals = "closeModals",
+  openModals = "openModals",
 }
 
 export enum PayloadType {
@@ -995,7 +997,7 @@ export class NumberMetaData extends MetaData {
       adornmentBackgroundColor = "#ffffff",
       prefixText = "",
       suffixText = "",
-      thousandsSeparator = false
+      thousandsSeparator = false,
     } = data;
     this.prefix = prefix;
     this.suffix = suffix;

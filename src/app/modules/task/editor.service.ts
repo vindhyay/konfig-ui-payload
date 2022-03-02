@@ -35,7 +35,6 @@ export class EditorService extends BaseService {
   }
   activeTabIndexes = {};
   activeStepperIndexes = {};
-  modalStatus = {};
   unsavedChanges: boolean = false;
 
   public widgetChange = new BehaviorSubject<any>(null);
@@ -43,6 +42,9 @@ export class EditorService extends BaseService {
 
   public loaderStatus = new BehaviorSubject<any>(false);
   public loaderStatus$ = this.loaderStatus.asObservable();
+
+  public modalStatus = new BehaviorSubject<any>([]);
+  public modalStatus$ = this.modalStatus.asObservable();
 
   //Add Typings
   private transactionDetails = new BehaviorSubject(null);
@@ -249,14 +251,29 @@ export class EditorService extends BaseService {
     );
   }
 
-  triggerUIActions(uiAction = []) {
-    if (uiAction?.length) {
-      uiAction.forEach((item) => {
+  triggerUIActions(uiActions = []) {
+    if (uiActions?.length) {
+      uiActions.forEach((item) => {
         if (item.action === ButtonActions.logout) {
           this.authService.logoff(false, this.activatedRoute);
         }
+        if (item.action === ButtonActions.openModals) {
+          this.setOpenModals(item.fields);
+        }
+        if (item.action === ButtonActions.closeModals) {
+          this.setClosedModals(item.fields);
+        }
       });
     }
+  }
+
+  setOpenModals(fields) {
+    this.modalStatus.next(fields.map((field) => ({ id: field, type: ButtonActions.openModals })));
+  }
+
+  setClosedModals(fields) {
+    console.log("closing modals");
+    this.modalStatus.next(fields.map((field) => ({ id: field, type: ButtonActions.closeModals })));
   }
 
   onOptionChange($event) {

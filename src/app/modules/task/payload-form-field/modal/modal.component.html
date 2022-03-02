@@ -36,7 +36,6 @@
   [variant]="styles?.properties?.variant"
 ></finlevit-button>
 <p-dialog
-  *ngIf="modalStatus"
   appendTo="body"
   [blockScroll]="false"
   [draggable]="false"
@@ -49,7 +48,7 @@
   [autoZIndex]="false"
   [closeOnEscape]="true"
   (onShow)="onShow($event)"
-  (onHide)="onHide($event)"
+  [closable]="false"
 >
   <ng-template pTemplate="header">
     <div
@@ -66,6 +65,7 @@
       }"
     >
       {{ metaData?.modalHeader[selectedIndex]?.title }}
+      <span><i class="pi pi-times cursor-pointer" (click)="toggleModal()"></i></span>
     </div>
   </ng-template>
   <div

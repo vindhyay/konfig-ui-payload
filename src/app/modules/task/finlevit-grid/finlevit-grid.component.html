@@ -44,7 +44,6 @@
       [ngStyle]="getGlobalStyles(item)"
     >
       <app-payload-form-field
-        *ngIf="!item?.metaData?.isHidden"
         [options]="item?.metaData?.options"
         [item]="item"
         [emitButtonEvent]="emitButtonEvent"

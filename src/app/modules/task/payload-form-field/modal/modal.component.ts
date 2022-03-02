@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { BaseWidget, ModalMetaData } from "../../model/create-form.models";
+import { BaseWidget, ButtonActions, ModalMetaData } from "../../model/create-form.models";
 import { EditorService } from "../../editor.service";
 import { validateFields } from "../../../../utils";
 
@@ -59,18 +59,29 @@ export class ModalComponent implements OnInit {
   }
   constructor(private editorService: EditorService) {}
   ngOnInit(): void {
+    this.editorService.modalStatus$.subscribe((modalsStatus) => {
+      if (modalsStatus && modalsStatus.length) {
+        const modalStatus: { id: string; type: ButtonActions } = modalsStatus.find(
+          (modal) => modal.id === this.item.id
+        );
+        if (modalStatus) {
+          this.modalStatus = modalStatus.type === ButtonActions.openModals;
+        }
+      }
+    });
     this.styles = this.item?.metaData?.styleProperties;
     if (!this.modalId) {
       this.modalId = this.item.metaData.widgetId;
     }
-    this.modalStatus = this.editorService.modalStatus[this.modalId];
     setTimeout(() => {
       this.checkHeight();
     });
   }
   toggleModal() {
     this.modalStatus = !this.modalStatus;
-    this.editorService.modalStatus[this.modalId] = this.modalStatus;
+    if (!this.modalStatus) {
+      this.editorService.setClosedModals([this.item.id]);
+    }
   }
   onShow($event) {
     window.dispatchEvent(new Event("resize"));
@@ -85,8 +96,5 @@ export class ModalComponent implements OnInit {
         ".modal" + this.item?.metaData?.widgetId
       );
     }
-  }
-  onHide($event) {
-    this.editorService.modalStatus[this.modalId] = false;
   }
 }
