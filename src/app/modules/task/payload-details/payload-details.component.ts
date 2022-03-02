@@ -4,7 +4,7 @@ import { AuthService } from "../../auth/services/auth.service";
 import { BaseComponent } from "../../shared/base/base.component";
 import { NotificationService } from "../../../services/notification.service";
 import { UserDataModel } from "../../auth/models";
-import { addOriginalPosition, parseApiResponse } from "../../../utils";
+import { addOriginalPosition, getFieldFromFields, parseApiResponse } from "../../../utils";
 import { EditorService } from "../editor.service";
 
 @Component({
@@ -50,42 +50,19 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
             this.formFields?.length !== transactionDetails?.uiPayload?.length ||
             this.transactionDetails?.screenId !== transactionDetails?.screenId
           ) {
+            // Directly updating form fields
             this.formFields = transactionDetails?.uiPayload || [];
-            addOriginalPosition(this.formFields);
           } else {
-            this.formFields.forEach((element, index) => {
-              for (const prop in element) {
-                if (prop === "children") {
-                  if (this.formFields[index][prop]?.length === transactionDetails.uiPayload[index][prop]?.length) {
-                    this.formFields[index][prop].forEach((subelement, subindex) => {
-                      for (const subprop in subelement) {
-                        this.formFields[index][prop][subindex][subprop] =
-                          transactionDetails.uiPayload[index][prop][subindex][subprop];
-                      }
-                    });
-                  } else {
-                    this.formFields[index][prop] = transactionDetails.uiPayload[index][prop];
-                  }
-                } else if (prop === "value") {
-                  if (!element[prop] || typeof element[prop] != "object" || !element[prop]?.value) {
-                    this.formFields[index][prop] = {
-                      ...transactionDetails.uiPayload[index][prop],
-                      value: transactionDetails.uiPayload[index][prop].value
-                        ? transactionDetails.uiPayload[index][prop].value
-                        : null,
-                    };
-                  }
-                } else if (this.formFields[index][prop] !== transactionDetails.uiPayload[index][prop]) {
-                  this.formFields[index][prop] = transactionDetails.uiPayload[index][prop];
-                }
-              }
-            });
+            // indirectly updating form fields
+            const newFormFields = transactionDetails.uiPayload || [];
+            this.recursiveUpdateFieldProperties(this.formFields, newFormFields);
           }
         } else {
           this.formFields = transactionDetails?.uiPayload || [];
-          addOriginalPosition(this.formFields);
         }
+        addOriginalPosition(this.formFields);
         this.transactionDetails = transactionDetails;
+        this.editorService.setFormFields(this.formFields);
         this.formFields = this.formFields.sort((a, b) => a?.y - b?.y);
       }
     });
@@ -115,5 +92,22 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
           }
         }
       );
+  }
+
+  recursiveUpdateFieldProperties(formFields = [], newFormFields = []) {
+    newFormFields.forEach((newField) => {
+      const findField = getFieldFromFields(formFields, newField.id);
+      if (findField) {
+        for (const prop in newField) {
+          if (prop !== "children") {
+            findField[prop] = newField[prop];
+          } else {
+            this.recursiveUpdateFieldProperties(findField?.children, newField?.children);
+          }
+        }
+      } else {
+        formFields.push(newField);
+      }
+    });
   }
 }

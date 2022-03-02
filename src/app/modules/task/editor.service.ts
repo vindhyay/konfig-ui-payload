@@ -48,8 +48,11 @@ export class EditorService extends BaseService {
 
   //Add Typings
   private transactionDetails = new BehaviorSubject(null);
-
   public transactionDetails$ = this.transactionDetails.asObservable();
+
+  private formFields = new BehaviorSubject(null);
+  public formFields$ = this.formFields.asObservable();
+
   public setTransactionDetails(transactionDetails: any) {
     this.transactionDetails.next(transactionDetails);
   }
@@ -57,8 +60,11 @@ export class EditorService extends BaseService {
     return this.transactionDetails.getValue();
   }
 
+  public setFormFields(fields: any) {
+    this.formFields.next(fields);
+  }
   public getFormFields() {
-    return this.getTransactionDetails()?.uiPayload || [];
+    return this.formFields.value || [];
   }
   public showLoader() {
     this.loaderStatus.next(true);
