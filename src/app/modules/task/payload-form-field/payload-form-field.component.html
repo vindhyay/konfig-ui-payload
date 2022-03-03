@@ -734,7 +734,7 @@
     <div class="input-container button-input" [ngStyle]="{ width: '100%' }">
       <finlevit-button
         [isDisabled]="item?.metaData?.isEnable === false || readonlyMode || disable"
-        [icon]="item?.metaData?.icon"
+        [icon]="loading ? 'pi pi-spin pi-spinner' : item?.metaData?.icon"
         [iconPos]="item?.metaData?.iconPos"
         [label]="item?.label"
         (btnClick)="btnClick($event, item)"

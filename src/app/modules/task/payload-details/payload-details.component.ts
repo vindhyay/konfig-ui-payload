@@ -6,6 +6,7 @@ import { NotificationService } from "../../../services/notification.service";
 import { UserDataModel } from "../../auth/models";
 import { addOriginalPosition, getFieldFromFields, parseApiResponse } from "../../../utils";
 import { EditorService } from "../editor.service";
+import { LoaderService } from "../../../services/loader.service";
 
 @Component({
   selector: "app-payload-details",
@@ -18,7 +19,8 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private authService: AuthService,
     private notificationService: NotificationService,
-    private editorService: EditorService
+    private editorService: EditorService,
+    private loaderService: LoaderService
   ) {
     super();
   }
@@ -40,7 +42,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
       this.authService.updateUserDetails(this.applicationId);
       this.createTransaction(this.applicationId, this.transactionDetails?.id);
     }
-    this.subscribe(this.editorService.loaderStatus$, (loader) => {
+    this.subscribe(this.loaderService.getLoadingStatus(), (loader) => {
       this.loading = loader;
     });
     this.subscribe(this.editorService.transactionDetails$, (transactionDetails) => {
@@ -68,7 +70,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
     });
   }
   createTransaction(applicationId: string, id = "") {
-    this.editorService.showLoader();
+    this.loading = true;
     this.editorService
       .createTransaction({ applicationId, ...(id && { id }) }, { sessionData: this.sessionFields })
       .subscribe(
@@ -79,10 +81,10 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
           } else {
             this.notificationService.error(error.errorMessage);
           }
-          this.editorService.hideLoader();
+          this.loading = false;
         },
         (error) => {
-          this.editorService.hideLoader();
+          this.loading = false;
           if (error.status === 401) {
             this.authService.logoff(false, this.activatedRoute);
           }
@@ -99,10 +101,18 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
       const findField = getFieldFromFields(formFields, newField.id);
       if (findField) {
         for (const prop in newField) {
+          // value and children are special properties need to handle differently
+          // check key is children if yes add all child properties recursively
           if (prop !== "children") {
             findField[prop] = newField[prop];
           } else {
             this.recursiveUpdateFieldProperties(findField?.children, newField?.children);
+          }
+          // check if key is value if yes check for value structure {id, value} if not add default value
+          if (prop === "value") {
+            findField[prop] = Object(newField[prop] || {}).hasOwnProperty("value")
+              ? newField[prop]
+              : { id: null, value: null };
           }
         }
       } else {
