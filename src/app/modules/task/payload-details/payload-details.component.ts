@@ -7,6 +7,7 @@ import { UserDataModel } from "../../auth/models";
 import { addOriginalPosition, getFieldFromFields, parseApiResponse } from "../../../utils";
 import { EditorService } from "../editor.service";
 import { LoaderService } from "../../../services/loader.service";
+import { WidgetTypes } from "../model/create-form.models";
 
 @Component({
   selector: "app-payload-details",
@@ -103,7 +104,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
         for (const prop in newField) {
           // value and children are special properties need to handle differently
           // check key is children if yes add all child properties recursively
-          if (prop !== "children") {
+          if (prop !== "children" || findField?.metaData?.widgetType === WidgetTypes.AdvTable) {
             findField[prop] = newField[prop];
           } else {
             this.recursiveUpdateFieldProperties(findField?.children, newField?.children);

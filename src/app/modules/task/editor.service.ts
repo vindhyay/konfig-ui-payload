@@ -222,7 +222,6 @@ export class EditorService extends BaseService {
       (result) => {
         const { data, error } = parseApiResponse(result);
         if (data && !error) {
-          this.setTransactionDetails(data);
           this.submitMultipleAction(data?.transactionId, {
             triggerId,
             screenId,
@@ -251,6 +250,7 @@ export class EditorService extends BaseService {
             }
           );
         } else {
+          this.setTransactionDetails(data);
           this.hideLoader();
           this.notificationService.error(error.errorMessage);
         }
