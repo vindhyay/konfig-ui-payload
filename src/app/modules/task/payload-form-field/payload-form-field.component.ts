@@ -6,13 +6,15 @@ import { getErrorMessages, getFieldFromFields, getValidators } from "../../../ut
 import { AuthService } from "../../auth/services/auth.service";
 import { EditorService } from "../editor.service";
 import * as moment from "moment";
+import { LoaderService } from "../../../services/loader.service";
+import { BaseComponent } from "../../shared/base/base.component";
 
 @Component({
   selector: "app-payload-form-field",
   templateUrl: "./payload-form-field.component.html",
   styleUrls: ["./payload-form-field.component.scss"],
 })
-export class PayloadFormFieldComponent implements OnInit, OnDestroy {
+export class PayloadFormFieldComponent extends BaseComponent implements OnInit, OnDestroy {
   _item: BaseWidget = {} as BaseWidget;
   Text: WidgetTypes = WidgetTypes.Text;
   Table: WidgetTypes = WidgetTypes.Table;
@@ -51,7 +53,13 @@ export class PayloadFormFieldComponent implements OnInit, OnDestroy {
   disable = false;
   readonlyMode = false;
 
-  constructor(private authService: AuthService, private editorService: EditorService) {}
+  constructor(
+    private authService: AuthService,
+    private editorService: EditorService,
+    private loaderService: LoaderService
+  ) {
+    super();
+  }
 
   @Input() emitButtonEvent: boolean = false;
   @Output() onBtnClick = new EventEmitter();
@@ -142,11 +150,14 @@ export class PayloadFormFieldComponent implements OnInit, OnDestroy {
         }
         setTimeout(() => {
           this.editorService.setContainerHeight(this._payloadFields);
-        })
+        });
       }
     });
     this.readonlyMode = this.item?.metaData?.readOnly || this.item?.validators?.editable === false;
     this.transactionDetailsSubscription.unsubscribe();
+    this.subscribe(this.editorService.loaderField$, (fieldId) => {
+      this.loading = fieldId === this.item?.id;
+    });
   }
 
   ngAfterViewInit() {

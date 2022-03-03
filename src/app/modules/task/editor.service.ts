@@ -19,6 +19,7 @@ import { HttpClient } from "@angular/common/http";
 import { AppConfigService } from "../../app-config-providers/app-config.service";
 import { resourceType } from "./payload-form-field/payload-form-field.component";
 import * as moment from "moment";
+import { LoaderService } from "../../services/loader.service";
 
 @Injectable({
   providedIn: "root",
@@ -29,7 +30,8 @@ export class EditorService extends BaseService {
     private notificationService: NotificationService,
     private authService: AuthService,
     private activatedRoute: ActivatedRoute,
-    protected config: AppConfigService
+    protected config: AppConfigService,
+    protected loaderService: LoaderService
   ) {
     super(http);
   }
@@ -40,16 +42,19 @@ export class EditorService extends BaseService {
   public widgetChange = new BehaviorSubject<any>(null);
   public widgetChange$ = this.widgetChange.asObservable();
 
-  public loaderStatus = new BehaviorSubject<any>(false);
-  public loaderStatus$ = this.loaderStatus.asObservable();
+  public loaderField = new BehaviorSubject<any>(false);
+  public loaderField$ = this.loaderField.asObservable();
 
   public modalStatus = new BehaviorSubject<any>([]);
   public modalStatus$ = this.modalStatus.asObservable();
 
   //Add Typings
   private transactionDetails = new BehaviorSubject(null);
-
   public transactionDetails$ = this.transactionDetails.asObservable();
+
+  private formFields = new BehaviorSubject(null);
+  public formFields$ = this.formFields.asObservable();
+
   public setTransactionDetails(transactionDetails: any) {
     this.transactionDetails.next(transactionDetails);
   }
@@ -57,14 +62,20 @@ export class EditorService extends BaseService {
     return this.transactionDetails.getValue();
   }
 
-  public getFormFields() {
-    return this.getTransactionDetails()?.uiPayload || [];
+  public setFormFields(fields: any) {
+    this.formFields.next(fields);
   }
-  public showLoader() {
-    this.loaderStatus.next(true);
+  public getFormFields() {
+    return this.formFields.value || [];
+  }
+  public showLoader(fieldId?) {
+    //show loader if no response after 600 milli seconds
+    this.loaderService.start(600);
+    this.loaderField.next(fieldId);
   }
   public hideLoader() {
-    this.loaderStatus.next(false);
+    this.loaderService.complete();
+    this.loaderField.next(null);
   }
 
   public setAdjustableHeight(items, containerName = ".gridster-container") {
@@ -95,7 +106,7 @@ export class EditorService extends BaseService {
     this.uniqueKeyTransaction(transactionId, { uniqueField }, { screenId }).subscribe(
       (result) => {
         const { data, error } = parseApiResponse(result);
-        this.showLoader();
+        this.showLoader(uniqueField?.id);
         if (data) {
           this.setTransactionDetails(data);
         }
@@ -206,13 +217,12 @@ export class EditorService extends BaseService {
       return;
     }
     const isSubmit = onClickConfigs?.filter((item) => item.action === ButtonActions.submit)?.length > 0;
+    this.showLoader(triggerData?.data?.id);
     this.saveTransaction({ transactionId, screenId }, formFields).subscribe(
       (result) => {
-        this.hideLoader();
         const { data, error } = parseApiResponse(result);
         if (data && !error) {
           this.setTransactionDetails(data);
-          this.showLoader();
           this.submitMultipleAction(data?.transactionId, {
             triggerId,
             screenId,

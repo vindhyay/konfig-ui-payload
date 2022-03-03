@@ -4,8 +4,9 @@ import { AuthService } from "../../auth/services/auth.service";
 import { BaseComponent } from "../../shared/base/base.component";
 import { NotificationService } from "../../../services/notification.service";
 import { UserDataModel } from "../../auth/models";
-import { addOriginalPosition, parseApiResponse } from "../../../utils";
+import { addOriginalPosition, getFieldFromFields, parseApiResponse } from "../../../utils";
 import { EditorService } from "../editor.service";
+import { LoaderService } from "../../../services/loader.service";
 
 @Component({
   selector: "app-payload-details",
@@ -18,7 +19,8 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private authService: AuthService,
     private notificationService: NotificationService,
-    private editorService: EditorService
+    private editorService: EditorService,
+    private loaderService: LoaderService
   ) {
     super();
   }
@@ -40,7 +42,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
       this.authService.updateUserDetails(this.applicationId);
       this.createTransaction(this.applicationId, this.transactionDetails?.id);
     }
-    this.subscribe(this.editorService.loaderStatus$, (loader) => {
+    this.subscribe(this.loaderService.getLoadingStatus(), (loader) => {
       this.loading = loader;
     });
     this.subscribe(this.editorService.transactionDetails$, (transactionDetails) => {
@@ -50,48 +52,25 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
             this.formFields?.length !== transactionDetails?.uiPayload?.length ||
             this.transactionDetails?.screenId !== transactionDetails?.screenId
           ) {
+            // Directly updating form fields
             this.formFields = transactionDetails?.uiPayload || [];
-            addOriginalPosition(this.formFields);
           } else {
-            this.formFields.forEach((element, index) => {
-              for (const prop in element) {
-                if (prop === "children") {
-                  if (this.formFields[index][prop]?.length === transactionDetails.uiPayload[index][prop]?.length) {
-                    this.formFields[index][prop].forEach((subelement, subindex) => {
-                      for (const subprop in subelement) {
-                        this.formFields[index][prop][subindex][subprop] =
-                          transactionDetails.uiPayload[index][prop][subindex][subprop];
-                      }
-                    });
-                  } else {
-                    this.formFields[index][prop] = transactionDetails.uiPayload[index][prop];
-                  }
-                } else if (prop === "value") {
-                  if (!element[prop] || typeof element[prop] != "object" || !element[prop]?.value) {
-                    this.formFields[index][prop] = {
-                      ...transactionDetails.uiPayload[index][prop],
-                      value: transactionDetails.uiPayload[index][prop].value
-                        ? transactionDetails.uiPayload[index][prop].value
-                        : null,
-                    };
-                  }
-                } else if (this.formFields[index][prop] !== transactionDetails.uiPayload[index][prop]) {
-                  this.formFields[index][prop] = transactionDetails.uiPayload[index][prop];
-                }
-              }
-            });
+            // indirectly updating form fields
+            const newFormFields = transactionDetails.uiPayload || [];
+            this.recursiveUpdateFieldProperties(this.formFields, newFormFields);
           }
         } else {
           this.formFields = transactionDetails?.uiPayload || [];
-          addOriginalPosition(this.formFields);
         }
+        addOriginalPosition(this.formFields);
         this.transactionDetails = transactionDetails;
+        this.editorService.setFormFields(this.formFields);
         this.formFields = this.formFields.sort((a, b) => a?.y - b?.y);
       }
     });
   }
   createTransaction(applicationId: string, id = "") {
-    this.editorService.showLoader();
+    this.loading = true;
     this.editorService
       .createTransaction({ applicationId, ...(id && { id }) }, { sessionData: this.sessionFields })
       .subscribe(
@@ -102,10 +81,10 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
           } else {
             this.notificationService.error(error.errorMessage);
           }
-          this.editorService.hideLoader();
+          this.loading = false;
         },
         (error) => {
-          this.editorService.hideLoader();
+          this.loading = false;
           if (error.status === 401) {
             this.authService.logoff(false, this.activatedRoute);
           }
@@ -115,5 +94,30 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
           }
         }
       );
+  }
+
+  recursiveUpdateFieldProperties(formFields = [], newFormFields = []) {
+    newFormFields.forEach((newField) => {
+      const findField = getFieldFromFields(formFields, newField.id);
+      if (findField) {
+        for (const prop in newField) {
+          // value and children are special properties need to handle differently
+          // check key is children if yes add all child properties recursively
+          if (prop !== "children") {
+            findField[prop] = newField[prop];
+          } else {
+            this.recursiveUpdateFieldProperties(findField?.children, newField?.children);
+          }
+          // check if key is value if yes check for value structure {id, value} if not add default value
+          if (prop === "value") {
+            findField[prop] = Object(newField[prop] || {}).hasOwnProperty("value")
+              ? newField[prop]
+              : { id: null, value: null };
+          }
+        }
+      } else {
+        formFields.push(newField);
+      }
+    });
   }
 }
