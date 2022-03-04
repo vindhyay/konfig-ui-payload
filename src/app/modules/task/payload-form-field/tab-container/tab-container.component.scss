@@ -131,7 +131,7 @@
     padding: 0 !important;
  }
  .style-tab-container{
-    .nested-grid-container {
+    .p-tabview-panel>.nested-grid-container {
       &>finlevit-grid>gridster{
         background-color: var(--label-background-color) !important;
       }
