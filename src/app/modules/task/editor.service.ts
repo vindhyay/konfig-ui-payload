@@ -9,7 +9,6 @@ import {
   parseApiResponse,
   getFieldFromFields,
   validateFields,
-  getValueFromField,
 } from "../../utils";
 import { NotificationService } from "../../services/notification.service";
 import { AuthService } from "../auth/services/auth.service";
@@ -125,7 +124,7 @@ export class EditorService extends BaseService {
     reqParams.map((parameter) => {
       const { value, valueType } = parameter;
       if (valueType === "ref") {
-        const paramField = getValueFromField(fields, value);
+        const paramField = getFieldFromFields(fields, value);
         const inputValue = paramField?.value?.value;
         if (!inputValue && paramField) {
           error = true;
