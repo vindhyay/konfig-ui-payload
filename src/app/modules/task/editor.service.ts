@@ -314,46 +314,48 @@ export class EditorService extends BaseService {
     const allFields = this.getFormFields();
     conditionsArray.forEach((element) => {
       let result = null;
-      let conditions = element.ifConditions;
-      for (let condition of conditions) {
-        let condMatched = false;
-        condition.rules.forEach((rule, index) => {
-          const field = getFieldFromFields(allFields, rule?.field?.value);
-          const fieldValue = field?.value?.value;
-          let result = false;
-          if (rule.operator === "includes") {
-            const ruleArray = rule.value.split(",");
-            const testCondition = ruleArray.every((r) => (fieldValue || []).includes(r));
-            if (testCondition) {
-              result = true;
+      let conditions = element?.ifConditions;
+      if (!!conditions)
+        for (let condition of conditions) {
+          let condMatched = false;
+          condition.rules.forEach((rule, index) => {
+            const field = getFieldFromFields(allFields, rule?.field?.value);
+            const fieldValue = field?.value?.value;
+            let result = false;
+            if (rule.operator === "includes") {
+              const ruleArray = rule.value.split(",");
+              const testCondition = ruleArray.every((r) => (fieldValue || []).includes(r));
+              if (testCondition) {
+                result = true;
+              }
+            } else if (rule.operator === "notIncludes") {
+              const ruleArray = rule.value.split(",");
+              const testCondition = ruleArray.some((r) => (fieldValue || []).includes(r));
+              if (!testCondition) {
+                result = true;
+              }
+            } else if (rule.operator === "excludes") {
+              if (!(fieldValue || []).includes(rule.value)) {
+                result = true;
+              }
+            } else if (rule.operator === "notEquals") {
+              if (String(fieldValue) !== String(rule.value)) {
+                result = true;
+              }
+            } else {
+              if (String(fieldValue) == String(rule.value)) {
+                result = true;
+              }
             }
-          } else if (rule.operator === "notIncludes") {
-            const ruleArray = rule.value.split(",");
-            const testCondition = ruleArray.some((r) => (fieldValue || []).includes(r));
-            if (!testCondition) {
-              result = true;
-            }
-          } else if (rule.operator === "excludes") {
-            if (!(fieldValue || []).includes(rule.value)) {
-              result = true;
-            }
-          } else if (rule.operator === "notEquals") {
-            if (String(fieldValue) !== String(rule.value)) {
-              result = true;
-            }
-          } else {
-            if (String(fieldValue) == String(rule.value)) {
-              result = true;
-            }
+            condMatched =
+              index === 0 ? result : rule.condition === "and" ? condMatched && result : condMatched || result;
+          });
+          if (condMatched) {
+            result = condition.mappingField;
+            console.log("Success", result);
+            break;
           }
-          condMatched = index === 0 ? result : rule.condition === "and" ? condMatched && result : condMatched || result;
-        });
-        if (condMatched) {
-          result = condition.mappingField;
-          console.log("Success", result);
-          break;
         }
-      }
       if (result) {
         const showFields = result?.showFields || [];
         const hideFields = result?.hideFields || [];
@@ -364,14 +366,14 @@ export class EditorService extends BaseService {
             showFieldRef.minItemRows = showFieldRef.metaData?.defaultMinItemRows;
             showFieldRef.minItemCols = showFieldRef.metaData?.defaultMinItemCols;
             showFieldRef.metaData.movement = "DOWN";
-            showFieldRef.y = showFieldRef.metaData.originalY;
+            // showFieldRef.y = showFieldRef.metaData.originalY;
             showFieldRef.metaData.hidden = false;
             this.widgetChange.next(showFieldRef);
           }
         });
         hideFields.forEach((hideField) => {
           const hideFieldRef = getFieldFromFields(allFields, hideField?.value);
-          if (hideFieldRef) {
+          if (hideFieldRef && !hideFieldRef.metaData.hidden) {
             hideFieldRef.rows = hideFieldRef?.metaData?.hideRows || 0;
             hideFieldRef.minItemRows = hideFieldRef?.metaData?.hideRows || 0;
             hideFieldRef.metaData.movement = "UP";
