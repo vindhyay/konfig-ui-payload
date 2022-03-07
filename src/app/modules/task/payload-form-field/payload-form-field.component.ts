@@ -153,7 +153,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
         });
       }
     });
-    this.readonlyMode = this.item?.metaData?.readOnly || this.item?.validators?.editable === false;
+    this.readonlyMode = this.item?.metaData?.readOnly;
     this.transactionDetailsSubscription.unsubscribe();
     this.subscribe(this.editorService.loaderField$, (fieldId) => {
       this.loading = fieldId === this.item?.id;
