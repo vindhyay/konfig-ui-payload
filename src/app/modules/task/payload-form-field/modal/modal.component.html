@@ -36,6 +36,7 @@
   [variant]="styles?.properties?.variant"
 ></finlevit-button>
 <p-dialog
+  *ngIf="modalStatus"
   appendTo="body"
   [blockScroll]="false"
   [draggable]="false"
