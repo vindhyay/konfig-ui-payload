@@ -107,6 +107,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
   @Input() showDelete = true;
   @Output() edit = new EventEmitter();
   private _payloadFields: any;
+  formulaValue;
   get payloadFields(): any {
     return this._payloadFields;
   }
@@ -214,7 +215,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
     }
   }
   calculateFormulaValue(item): any {
-    let formulaValue = "";
+    let formulaValue;
     let formula = [];
     if (item?.metaData?.formula?.length > 0) {
       item?.metaData?.formula.forEach((field) => {
@@ -226,6 +227,13 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
       });
     }
     let firstField = formula.find((field) => field?.resourceType === resourceType.PAYLOAD_FIELD);
+    formulaValue = this.formulaCalculation(firstField, formula);
+    item.value.value = formulaValue;
+    return formulaValue;
+  }
+
+  formulaCalculation(firstField, formula) {
+    let formulaValue;
     switch (firstField?.dataType) {
       case "number":
         let expression = "";
@@ -248,15 +256,17 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
           });
           if (eval(expression) === Infinity) {
             formulaValue = "∞";
+          } else if (isNaN(eval(expression))) {
+            formulaValue = undefined;
           } else {
             formulaValue = eval(expression);
           }
         } else {
           formulaValue = values[0]?.value?.value || null;
         }
-        item.value.value = formulaValue;
         return formulaValue;
       case "string":
+        formulaValue = "";
         formula.forEach((field) => {
           if (field?.resourceType === resourceType.PAYLOAD_FIELD) {
             if (field?.value?.value) {
@@ -269,7 +279,6 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
             }
           }
         });
-        item.value.value = formulaValue;
         return formulaValue;
       case "date":
         const dateFunc = formula.filter((field) => {
@@ -300,7 +309,6 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
         let days = d.diff(date1, "days");
         if (years) {
           formulaValue = years + "";
-          item.value.value = formulaValue;
         }
         return formulaValue;
       case "array":
@@ -368,12 +376,8 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
             }
             break;
         }
-        item.value.value = formulaValue;
         return formulaValue;
     }
-    const currField = getFieldFromFields(this.payloadFields, item?.id);
-    currField.value.value = formulaValue;
-    return formulaValue;
   }
 
   checkHeight(child?) {
