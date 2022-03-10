@@ -189,6 +189,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
   }
   optionChange($event, data) {
     this.editorService.onOptionChange({ event: $event, data });
+    this.onChange($event);
   }
 
   onCollapse(status, item) {

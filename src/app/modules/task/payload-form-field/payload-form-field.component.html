@@ -1091,7 +1091,7 @@
         [minDate]="item?.validators?.minDate"
         [maxDate]="item?.validators?.maxDate"
         [(ngModel)]="item.value.value"
-        (ngModelChange)="validateField($event, item)"
+        (ngModelChange)="validateField($event, item); onChange($event)"
         [yearNavigator]="true"
         [monthNavigator]="true"
         [style.--input-color]="item?.metaData?.styleProperties?.properties?.textColor"
