@@ -522,7 +522,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
           if (field?.resourceType === resourceType.BRACKET) {
             expression = expression + " " + field?.displayName;
           }
-          if (field?.resourceType === resourceType.FUNCTION) {
+          if (field?.resourceType === resourceType.FUNCTION && String(expression).length > 0) {
             expression = expression + " " + field?.expression;
           }
         });

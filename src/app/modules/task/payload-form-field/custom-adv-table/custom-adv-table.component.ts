@@ -22,6 +22,8 @@ import { DeepCopy, getUniqueId, scrollToBottom, superClone } from "../../../../u
 import { FormControl, Validators } from "@angular/forms";
 import { PaginationDirective } from "../../../shared/finlevit-custom-table/table-utils/pagination.directive";
 import { CustomTableFiltersComponent } from "../../../shared/finlevit-custom-table/table-utils/custom-table-filters/custom-table-filters.component";
+import { resourceType } from "../payload-form-field.component";
+import * as moment from "moment";
 
 const MIN_ROW_HEIGHT = 50;
 
@@ -455,5 +457,100 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
   }
   optionChange($event, data) {
     this.onOptionChange.emit({ event: $event, data });
+  }
+
+  calculateCellValue(col, rowIndex) {
+    let cellValue = "";
+    let columnFormula = col?.metaData?.formula;
+    let firstColumn = columnFormula?.find((column) => column?.resourceType === resourceType.PAYLOAD_FIELD);
+    switch (firstColumn?.type) {
+      case "number":
+        let expression = "";
+        columnFormula.forEach((field) => {
+          if (field?.resourceType === resourceType.PAYLOAD_FIELD) {
+            this.tableData[rowIndex].forEach((row) => {
+              if (row.metaData.widgetId === field.metaData.widgetId && row.value.value) {
+                expression = expression + " " + row.value.value;
+              }
+            });
+          }
+          if (field?.resourceType === resourceType.BRACKET) {
+            expression = expression + " " + field?.displayName;
+          }
+          if (field?.resourceType === resourceType.FUNCTION && String(expression).length > 0) {
+            expression = expression + " " + field?.expression;
+          }
+        });
+        if (eval(expression) === Infinity) {
+          cellValue = "∞";
+        } else {
+          cellValue = eval(expression) || null;
+        }
+        this.tableData[rowIndex].forEach((row) => {
+          if (row.metaData.widgetId === col.metaData.widgetId) {
+            row.value.value = cellValue;
+          }
+        });
+        return cellValue;
+      case "string":
+        columnFormula.forEach((field) => {
+          if (field?.resourceType === resourceType.PAYLOAD_FIELD) {
+            this.tableData[rowIndex].forEach((row) => {
+              if (row.metaData.widgetId === field.metaData.widgetId && row.value.value) {
+                cellValue = cellValue + row.value.value;
+              }
+            });
+          }
+          if (field?.resourceType === resourceType.FUNCTION) {
+            if (field?.separateBy && cellValue) {
+              cellValue = cellValue + field.separateBy;
+            }
+          }
+        });
+        this.tableData[rowIndex].forEach((row) => {
+          if (row.metaData.widgetId === col.metaData.widgetId) {
+            row.value.value = cellValue;
+          }
+        });
+        return cellValue;
+      case "date":
+        const dateFunc = columnFormula.filter((field) => {
+          return field?.resourceType === resourceType.FUNCTION;
+        });
+        let date1;
+        let date2;
+        const dateIndex = columnFormula.indexOf(dateFunc[0]);
+        if (columnFormula[dateIndex - 1].displayName === "Current Date") {
+          date1 = new Date();
+        } else {
+          this.tableData[rowIndex].forEach((row) => {
+            if (row.metaData.widgetId === columnFormula[dateIndex - 1].metaData.widgetId && row.value.value) {
+              date1 = moment.utc(row.value.value).toDate();
+            }
+          });
+        }
+        if (columnFormula[dateIndex + 1]?.displayName === "Current Date") {
+          date2 = new Date();
+        } else {
+          this.tableData[rowIndex].forEach((row) => {
+            if (row.metaData.widgetId === columnFormula[dateIndex + 1].metaData.widgetId && row.value.value) {
+              date2 = moment.utc(row.value.value).toDate();
+            }
+          });
+        }
+        let d = moment(date2);
+        let years = d.diff(date1, "years");
+        d.add(-years, "years");
+        if (years) {
+          cellValue = years + "";
+        }
+        this.tableData[rowIndex].forEach((row) => {
+          if (row.metaData.widgetId === col.metaData.widgetId) {
+            row.value.value = cellValue;
+          }
+        });
+        return cellValue;
+    }
+    return cellValue;
   }
 }
