@@ -146,7 +146,7 @@
                             )
                           "
                         >
-                          {{ col?.value?.value }}
+                          {{ col?.metaData?.isFormulaField ? calculateCellValue(col, rowIndex) : col?.value?.value }}
                         </ng-container>
                         <finlevit-text
                           *ngIf="
@@ -155,7 +155,11 @@
                               newRows[rowIndex] ||
                               (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.metaData?.widgetId)))
                           "
-                          [(ngModel)]="modifyingData[rowIndex][col.metaData.widgetId]"
+                          [(ngModel)]="
+                            col?.metaData?.isFormulaField
+                              ? calculateCellValue(col, rowIndex)
+                              : modifyingData[rowIndex][col.metaData.widgetId]
+                          "
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
                           [leftIcon]="col?.metaData?.leftIcon"
                           [rightIcon]="col?.metaData?.rightIcon"
@@ -584,7 +588,7 @@
                             )
                           "
                         >
-                          {{ col?.value?.value }}
+                          {{ col?.metaData?.isFormulaField ? calculateCellValue(col, rowIndex) : col?.value?.value }}
                         </ng-container>
                         <finlevit-number
                           *ngIf="
@@ -593,7 +597,11 @@
                               newRows[rowIndex] ||
                               (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.metaData?.widgetId)))
                           "
-                          [(ngModel)]="modifyingData[rowIndex][col.metaData.widgetId]"
+                          [(ngModel)]="
+                            col?.metaData?.isFormulaField
+                              ? calculateCellValue(col, rowIndex)
+                              : modifyingData[rowIndex][col.metaData.widgetId]
+                          "
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
                           [placeholder]="col?.metaData?.placeholder"
                           [tooltip]="col?.metaData?.tooltip"
