@@ -320,32 +320,7 @@ export class EditorService extends BaseService {
           condition.rules.forEach((rule, index) => {
             const field = getFieldFromFields(allFields, rule?.field?.value);
             const fieldValue = field?.value?.value;
-            let result = false;
-            if (rule.operator === "includes") {
-              const ruleArray = rule.value.split(",");
-              const testCondition = ruleArray.every((r) => (fieldValue || []).includes(r));
-              if (testCondition) {
-                result = true;
-              }
-            } else if (rule.operator === "notIncludes") {
-              const ruleArray = rule.value.split(",");
-              const testCondition = ruleArray.some((r) => (fieldValue || []).includes(r));
-              if (!testCondition) {
-                result = true;
-              }
-            } else if (rule.operator === "excludes") {
-              if (!(fieldValue || []).includes(rule.value)) {
-                result = true;
-              }
-            } else if (rule.operator === "notEquals") {
-              if (String(fieldValue) !== String(rule.value)) {
-                result = true;
-              }
-            } else {
-              if (String(fieldValue) == String(rule.value)) {
-                result = true;
-              }
-            }
+            let result = this.conditionValidation(rule, fieldValue);
             condMatched =
               index === 0 ? result : rule.condition === "and" ? condMatched && result : condMatched || result;
           });
@@ -384,7 +359,91 @@ export class EditorService extends BaseService {
       }
     });
   }
-
+  conditionValidation = (rule, fieldValue): boolean => {
+    let result = false;
+    let ruleArray = [];
+    let testCondition = false;
+    switch (rule.operator) {
+      case "includes":
+        ruleArray = rule?.value?.split(",");
+        testCondition = ruleArray.every((r) => (fieldValue || []).includes(r));
+        if (testCondition) {
+          result = true;
+        }
+        break;
+      case "startsWith":
+        result = String(fieldValue).startsWith(String(rule.value));
+        break;
+      case "endsWith":
+        result = String(fieldValue).endsWith(String(rule.value));
+        break;
+      case "notIncludes":
+        ruleArray = rule?.value?.split(",");
+        testCondition = ruleArray.some((r) => (fieldValue || []).includes(r));
+        if (!testCondition) {
+          result = true;
+        }
+        break;
+      case "excludes":
+        if (!(fieldValue || []).includes(rule.value)) {
+          result = true;
+        }
+        break;
+      case "greaterThan":
+        result = this.isGreaterThan(fieldValue, rule.value);
+        break;
+      case "greaterthanEquals":
+        result = this.isGreaterThanEqual(fieldValue, rule.value);
+        break;
+      case "lessthan":
+        result = this.isLessThan(fieldValue, rule.value);
+        break;
+      case "lessthanEquals":
+        result = this.isLessThanEqual(fieldValue, rule.value);
+        break;
+      case "equalsIgnoreCase":
+        result = String(fieldValue).toLowerCase() == String(rule.value).toLowerCase();
+        break;
+      case "lengthEquals":
+        result = !!fieldValue && String(fieldValue).length == rule.value;
+        break;
+      case "lengthGreater":
+        result = !!fieldValue && this.isGreaterThan(String(fieldValue).length, rule.value);
+        break;
+      case "lengthLess":
+        result = !!fieldValue && this.isLessThan(String(fieldValue).length, rule.value);
+        break;
+      case "lengthGreaterAndEquals":
+        result = !!fieldValue && this.isGreaterThanEqual(String(fieldValue).length, rule.value);
+        break;
+      case "lengthLessAndEquals":
+        result = !!fieldValue && this.isLessThanEqual(String(fieldValue).length, rule.value);
+        break;
+      case "notEquals":
+        if (String(fieldValue) !== String(rule.value)) {
+          result = true;
+        }
+        break;
+      default:
+        if (String(fieldValue) == String(rule.value)) {
+          result = true;
+        }
+        break;
+    }
+    return result;
+  };
+  isGreaterThan = (fieldValue: number, value: number): boolean => {
+    return fieldValue > value;
+  };
+  isGreaterThanEqual = (fieldValue: number, value: number): boolean => {
+    return fieldValue >= value;
+  };
+  isLessThan = (fieldValue: number, value: number): boolean => {
+    return fieldValue < value;
+  };
+  isLessThanEqual = (fieldValue: number, value: number): boolean => {
+    return fieldValue <= value;
+  };
   getDataListValues = (payload): Observable<any> => {
     const url = `${this.config.getApiUrls().getDataListValuesURL}`;
     return this.postData(url, payload);
