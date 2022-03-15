@@ -30,7 +30,7 @@
       : globalStyle?.borderRadius
   }"
 >
-  <ng-container *ngFor="let item of items | searchFilter: filter">
+  <ng-container *ngFor="let item of items | searchFilter: filter; let i = index">
     <gridster-item
       [ngClass]="{
         'card-container': item?.metaData?.widgetType === Container,
@@ -41,7 +41,7 @@
         'error-container': item?.metaData?.widgetType === ErrorContainer
       }"
       [item]="item"
-      [ngStyle]="getGlobalStyles(item)"
+      [ngStyle]="getGlobalStyles(item, i)"
     >
       <app-payload-form-field
         [options]="item?.metaData?.options"
