@@ -1336,11 +1336,8 @@ export class ModalMetaData extends MetaData {
   fontStyle: string;
   textDecortation: string;
   fontWeight: number;
-  footerContent: any;
   footerHeight: number;
   modalHeader: any;
-  modalType: string;
-  buttonContainer: any;
   styleProperties: { id: "" };
   constructor(data) {
     super(data);
@@ -1360,11 +1357,8 @@ export class ModalMetaData extends MetaData {
       textDecortation = "",
       fontWeight = 400,
       footerbgColor = "#ffffff",
-      footerContent = [],
       footerHeight = 50,
       modalHeader = [],
-      buttonContainer = {},
-      modalType = "SinglePage",
       styleProperties = {},
     } = data;
     this.title = title;
@@ -1382,11 +1376,8 @@ export class ModalMetaData extends MetaData {
     this.textDecortation = textDecortation;
     this.fontWeight = fontWeight;
     this.footerbgColor = footerbgColor;
-    this.footerContent = footerContent;
     this.footerHeight = footerHeight;
     this.modalHeader = modalHeader;
-    this.modalType = modalType;
-    this.buttonContainer = buttonContainer;
     this.styleProperties = styleProperties;
   }
 }
