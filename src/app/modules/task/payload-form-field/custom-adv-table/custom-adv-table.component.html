@@ -139,23 +139,27 @@
                         <ng-container
                           *ngIf="
                             !(
-                              col?.validators?.editable &&
+                              !col?.metaData?.readOnly &&
                               (editRows[rowIndex] ||
                                 newRows[rowIndex] ||
                                 (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.metaData?.widgetId)))
                             )
                           "
                         >
-                          {{ col?.value?.value }}
+                          {{ col?.metaData?.isFormulaField ? calculateCellValue(col, rowIndex) : col?.value?.value }}
                         </ng-container>
                         <finlevit-text
                           *ngIf="
-                            col?.validators?.editable &&
+                            !col?.metaData?.readOnly &&
                             (editRows[rowIndex] ||
                               newRows[rowIndex] ||
                               (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.metaData?.widgetId)))
                           "
-                          [(ngModel)]="modifyingData[rowIndex][col.metaData.widgetId]"
+                          [(ngModel)]="
+                            col?.metaData?.isFormulaField
+                              ? calculateCellValue(col, rowIndex)
+                              : modifyingData[rowIndex][col.metaData.widgetId]
+                          "
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
                           [leftIcon]="col?.metaData?.leftIcon"
                           [rightIcon]="col?.metaData?.rightIcon"
@@ -250,7 +254,7 @@
                         <ng-container
                           *ngIf="
                             !(
-                              col?.validators?.editable &&
+                              !col?.metaData?.readOnly &&
                               (editRows[rowIndex] ||
                                 newRows[rowIndex] ||
                                 (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.metaData?.widgetId)))
@@ -261,7 +265,7 @@
                         </ng-container>
                         <finlevit-lib-select
                           *ngIf="
-                            col?.validators?.editable &&
+                            !col?.metaData?.readOnly &&
                             (editRows[rowIndex] ||
                               newRows[rowIndex] ||
                               (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.metaData?.widgetId)))
@@ -367,7 +371,7 @@
                         <ng-container
                           *ngIf="
                             !(
-                              col?.validators?.editable &&
+                              !col?.metaData?.readOnly &&
                               (editRows[rowIndex] ||
                                 newRows[rowIndex] ||
                                 (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.metaData?.widgetId)))
@@ -378,7 +382,7 @@
                         </ng-container>
                         <finlevit-text
                           *ngIf="
-                            col?.validators?.editable &&
+                            !col?.metaData?.readOnly &&
                             (editRows[rowIndex] ||
                               newRows[rowIndex] ||
                               (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.metaData?.widgetId)))
@@ -481,7 +485,7 @@
                         <ng-container
                           *ngIf="
                             !(
-                              col?.validators?.editable &&
+                              !col?.metaData?.readOnly &&
                               (editRows[rowIndex] ||
                                 newRows[rowIndex] ||
                                 (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.metaData?.widgetId)))
@@ -492,7 +496,7 @@
                         </ng-container>
                         <finlevit-lib-checkbox
                           *ngIf="
-                            col?.validators?.editable &&
+                            !col?.metaData?.readOnly &&
                             (editRows[rowIndex] ||
                               newRows[rowIndex] ||
                               (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.metaData?.widgetId)))
@@ -541,7 +545,7 @@
                         <ng-container
                           *ngIf="
                             !(
-                              col?.validators?.editable &&
+                              !col?.metaData?.readOnly &&
                               (editRows[rowIndex] ||
                                 newRows[rowIndex] ||
                                 (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.metaData?.widgetId)))
@@ -552,7 +556,7 @@
                         </ng-container>
                         <finlevit-lib-textarea
                           *ngIf="
-                            col?.validators?.editable &&
+                            !col?.metaData?.readOnly &&
                             (editRows[rowIndex] ||
                               newRows[rowIndex] ||
                               (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.metaData?.widgetId)))
@@ -577,23 +581,27 @@
                         <ng-container
                           *ngIf="
                             !(
-                              col?.validators?.editable &&
+                              !col?.metaData?.readOnly &&
                               (editRows[rowIndex] ||
                                 newRows[rowIndex] ||
                                 (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.metaData?.widgetId)))
                             )
                           "
                         >
-                          {{ col?.value?.value }}
+                          {{ col?.metaData?.isFormulaField ? calculateCellValue(col, rowIndex) : col?.value?.value }}
                         </ng-container>
                         <finlevit-number
                           *ngIf="
-                            col?.validators?.editable &&
+                            !col?.metaData?.readOnly &&
                             (editRows[rowIndex] ||
                               newRows[rowIndex] ||
                               (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.metaData?.widgetId)))
                           "
-                          [(ngModel)]="modifyingData[rowIndex][col.metaData.widgetId]"
+                          [(ngModel)]="
+                            col?.metaData?.isFormulaField
+                              ? calculateCellValue(col, rowIndex)
+                              : modifyingData[rowIndex][col.metaData.widgetId]
+                          "
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
                           [placeholder]="col?.metaData?.placeholder"
                           [tooltip]="col?.metaData?.tooltip"
@@ -693,7 +701,7 @@
                         <ng-container
                           *ngIf="
                             !(
-                              col?.validators?.editable &&
+                              !col?.metaData?.readOnly &&
                               (editRows[rowIndex] ||
                                 newRows[rowIndex] ||
                                 (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.metaData?.widgetId)))
@@ -704,7 +712,7 @@
                         </ng-container>
                         <finlevit-lib-textarea
                           *ngIf="
-                            col?.validators?.editable &&
+                            !col?.metaData?.readOnly &&
                             (editRows[rowIndex] ||
                               newRows[rowIndex] ||
                               (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.metaData?.widgetId)))
@@ -803,7 +811,7 @@
                         <ng-container
                           *ngIf="
                             !(
-                              col?.validators?.editable &&
+                              !col?.metaData?.readOnly &&
                               (editRows[rowIndex] ||
                                 newRows[rowIndex] ||
                                 (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.metaData?.widgetId)))
@@ -814,7 +822,7 @@
                         </ng-container>
                         <finlevit-radio-group
                           *ngIf="
-                            col?.validators?.editable &&
+                            !col?.metaData?.readOnly &&
                             (editRows[rowIndex] ||
                               newRows[rowIndex] ||
                               (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.metaData?.widgetId)))
@@ -887,7 +895,7 @@
                         <ng-container
                           *ngIf="
                             !(
-                              col?.validators?.editable &&
+                              !col?.metaData?.readOnly &&
                               (editRows[rowIndex] ||
                                 newRows[rowIndex] ||
                                 (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.metaData?.widgetId)))
@@ -898,7 +906,7 @@
                         </ng-container>
                         <finlevit-lib-datepicker
                           *ngIf="
-                            col?.validators?.editable &&
+                            !col?.metaData?.readOnly &&
                             (editRows[rowIndex] ||
                               newRows[rowIndex] ||
                               (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.metaData?.widgetId)))

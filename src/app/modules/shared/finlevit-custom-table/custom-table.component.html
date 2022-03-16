@@ -281,7 +281,7 @@
                   flex: (col?.width || 100) + ' 0 auto'
                 }"
                 *ngFor="let col of columns"
-                (dblclick)="col?.validators?.editable ? onColEdit($event, col, rowIndex, rowData) : null"
+                (dblclick)="!col?.metaData?.readOnly ? onColEdit($event, col, rowIndex, rowData) : null"
               >
                 <div
                   [ngClass]="{ 'cell-container': true }"
@@ -303,7 +303,7 @@
                         <div class="pl-1" *ngSwitchCase="TextInput">
                           <ng-container
                             *ngIf="
-                              col?.validators?.editable &&
+                              !col?.metaData?.readOnly &&
                               (editRows[rowIndex] ||
                                 newRows[rowIndex] ||
                                 (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.columnId)))
@@ -426,7 +426,7 @@
                           <ng-container
                             *ngIf="
                               !(
-                                col?.validators?.editable &&
+                                !col?.metaData?.readOnly &&
                                 (editRows[rowIndex] ||
                                   newRows[rowIndex] ||
                                   (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.columnId)))
@@ -450,7 +450,7 @@
                         <div class="pl-1" *ngSwitchCase="TextArea">
                           <ng-container
                             *ngIf="
-                              col?.validators?.editable &&
+                              !col?.metaData?.readOnly &&
                               (editRows[rowIndex] ||
                                 newRows[rowIndex] ||
                                 (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.columnId)))
@@ -569,7 +569,7 @@
                           <ng-container
                             *ngIf="
                               !(
-                                col?.validators?.editable &&
+                                !col?.metaData?.readOnly &&
                                 (editRows[rowIndex] ||
                                   newRows[rowIndex] ||
                                   (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.columnId)))
@@ -593,7 +593,7 @@
                         <div class="pl-1" *ngSwitchCase="Number">
                           <ng-container
                             *ngIf="
-                              col?.validators?.editable &&
+                              !col?.metaData?.readOnly &&
                               (editRows[rowIndex] ||
                                 newRows[rowIndex] ||
                                 (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.columnId)))
@@ -723,7 +723,7 @@
                           <ng-container
                             *ngIf="
                               !(
-                                col?.validators?.editable &&
+                                !col?.metaData?.readOnly &&
                                 (editRows[rowIndex] ||
                                   newRows[rowIndex] ||
                                   (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.columnId)))
@@ -747,7 +747,7 @@
                         <div class="pl-1" *ngSwitchCase="DatePicker">
                           <ng-container
                             *ngIf="
-                              col?.validators?.editable &&
+                              !col?.metaData?.readOnly &&
                               (editRows[rowIndex] ||
                                 newRows[rowIndex] ||
                                 (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.columnId)))
@@ -873,7 +873,7 @@
                           <ng-container
                             *ngIf="
                               !(
-                                col?.validators?.editable &&
+                                !col?.metaData?.readOnly &&
                                 (editRows[rowIndex] ||
                                   newRows[rowIndex] ||
                                   (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.columnId)))

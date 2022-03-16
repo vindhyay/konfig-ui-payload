@@ -237,10 +237,11 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
     );
   }
 
-  getGlobalStyles(item) {
+  getGlobalStyles(item, index) {
     if (!item?.metaData || item?.metaData?.widgetType !== this.Container) return {};
     let style = {};
     if (
+      this.gridsterRef?.grid[index]?.width &&
       item.rows &&
       item.metaData &&
       item.metaData?.styleProperties &&
