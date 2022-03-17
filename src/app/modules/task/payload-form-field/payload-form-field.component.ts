@@ -1,22 +1,20 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from "@angular/core";
-import { FormControl, Validators } from "@angular/forms";
+import { FormControl } from "@angular/forms";
 import { FieldData } from "../model/field-data.model";
-import { DataTypes } from "../model/payload-field.model";
-import { BaseWidget, Column, NESTED_MIN_COLUMNS, TableMetaData, WidgetTypes } from "../model/create-form.models";
-import { getErrorMessages, getFieldFromFields, getValidators, validateFields } from "../../../utils";
-import { TaskService } from "../services/task.service";
+import { BaseWidget, Column, TableMetaData, WidgetTypes } from "../model/create-form.models";
+import { getErrorMessages, getFieldFromFields, getValidators } from "../../../utils";
 import { AuthService } from "../../auth/services/auth.service";
 import { EditorService } from "../editor.service";
 import * as moment from "moment";
+import { LoaderService } from "../../../services/loader.service";
+import { BaseComponent } from "../../shared/base/base.component";
 
 @Component({
   selector: "app-payload-form-field",
   templateUrl: "./payload-form-field.component.html",
   styleUrls: ["./payload-form-field.component.scss"],
 })
-export class PayloadFormFieldComponent implements OnInit, OnDestroy {
-  tabActiveIndex = 0;
-
+export class PayloadFormFieldComponent extends BaseComponent implements OnInit, OnDestroy {
   _item: BaseWidget = {} as BaseWidget;
   Text: WidgetTypes = WidgetTypes.Text;
   Table: WidgetTypes = WidgetTypes.Table;
@@ -49,23 +47,23 @@ export class PayloadFormFieldComponent implements OnInit, OnDestroy {
   Spacer: WidgetTypes = WidgetTypes.Spacer;
   Icon: WidgetTypes = WidgetTypes.Icon;
   Avatar: WidgetTypes = WidgetTypes.Avatar;
-  NESTED_MIN_COLUMNS: number = NESTED_MIN_COLUMNS;
-  activeTabIndexes = {};
-  activeStepperIndexes = {};
-  modalStatus = {};
-  verticalStepIndex: number = 0;
-  modalStepIndex: number = 0;
-  completedSteps = {};
-  selectedStep = 0;
+
   transactionStatus = null;
   hide = false;
   disable = false;
-  collapseContainerStatus = true;
+  readonlyMode = false;
+
   constructor(
-    private taskService: TaskService,
     private authService: AuthService,
-    private editorService: EditorService
-  ) {}
+    private editorService: EditorService,
+    private loaderService: LoaderService
+  ) {
+    super();
+  }
+
+  @Input() emitButtonEvent: boolean = false;
+  @Output() onBtnClick = new EventEmitter();
+
   @Input()
   set options(optionsData: any) {
     if (this.item?.metaData?.widgetType === WidgetTypes.Table) {
@@ -107,14 +105,7 @@ export class PayloadFormFieldComponent implements OnInit, OnDestroy {
   @Input() showEdit = true;
   @Input() viewMode = false;
   @Input() showDelete = true;
-  @Input() restrictHeight = true;
-  @Input() list = null;
-  @Input() customClass = "";
-  dataTypes = DataTypes;
   @Output() edit = new EventEmitter();
-  @Output() onBtnClick = new EventEmitter();
-  @Output() onOptionChange = new EventEmitter();
-  @Output() onTableDataChange = new EventEmitter();
   private _payloadFields: any;
   get payloadFields(): any {
     return this._payloadFields;
@@ -126,14 +117,12 @@ export class PayloadFormFieldComponent implements OnInit, OnDestroy {
     }
   }
 
-  isTextInput(widgetType: any): boolean {
-    return widgetType === "TextInput" || widgetType === "Email";
-  }
   isError(item) {
     return item?.errorMessage?.length > 0 || item.error === true;
   }
+
   ngOnInit() {
-    this.transactionDetailsSubscription = this.taskService.transactionDetailsSubject.subscribe((value) => {
+    this.transactionDetailsSubscription = this.editorService.transactionDetails$.subscribe((value) => {
       if (value) {
         this._payloadFields = value.uiPayload;
         this.transactionStatus = value?.transactionStatus || null;
@@ -159,76 +148,26 @@ export class PayloadFormFieldComponent implements OnInit, OnDestroy {
             }
           }
         }
+        setTimeout(() => {
+          this.editorService.setContainerHeight(this._payloadFields);
+        });
       }
     });
+    this.readonlyMode = this.item?.metaData?.readOnly;
     this.transactionDetailsSubscription.unsubscribe();
-    this.tabActiveIndex = this.editorService.activeTabIndexes[this.item.metaData.widgetId];
-    this.selectedStep = this.editorService.activeStepperIndexes[this.item.metaData.widgetId];
+    this.subscribe(this.editorService.loaderField$, (fieldId) => {
+      this.loading = fieldId === this.item?.id;
+    });
   }
 
   ngAfterViewInit() {
-    if (this.item?.metaData?.movement === "UP") {
-      this.collapseContainerStatus = false;
-    }
     // Apply conditions based on default value
     setTimeout(() => {
       this.onChange(this.item?.value?.value);
     });
   }
-  showControls: boolean = false;
   editMode: boolean = false;
-  originalValue: any = "";
 
-  onEdit($event: any, item: any) {
-    const {
-      value: { value = "" },
-      metaData: {},
-    } = item;
-    this.originalValue = JSON.parse(JSON.stringify(value));
-    this.editMode = true;
-  }
-
-  onCancel() {
-    this.item.errorMsg = "";
-    this.item.error = false;
-    this.item.value.value = this.originalValue;
-    this.editMode = false;
-  }
-
-  onSave(item: BaseWidget) {
-    const {
-      value: { value = "" },
-      metaData: {},
-    } = item;
-    const tempFormControl = new FormControl(value, getValidators(item.validators));
-    if (tempFormControl.valid) {
-      this.originalValue = JSON.parse(JSON.stringify(value));
-      this.editMode = false;
-      this.edit.emit(item);
-    }
-  }
-
-  toggleControls(status: boolean) {
-    this.showControls = this.editMode ? true : status;
-  }
-
-  addNew(field: any, children: any) {
-    const child = JSON.parse(JSON.stringify(children[0]));
-    this.clearValue(child);
-    children.push(child);
-  }
-  clearValue(child: any) {
-    if (child && (child.type === DataTypes.object || child.type === DataTypes.array)) {
-      child.children.forEach((child: any) => {
-        this.clearValue(child);
-      });
-    } else {
-      child.value = { id: null, value: "" };
-    }
-  }
-  remove(parent: any) {
-    parent.children.splice(this.fieldIndex, 1);
-  }
   validateField($event: any, field: any) {
     const { validators = {}, label = "" } = field;
     const tempFormControl = new FormControl($event, getValidators(validators));
@@ -242,86 +181,17 @@ export class PayloadFormFieldComponent implements OnInit, OnDestroy {
     }
   }
   btnClick($event, data) {
-    this.onBtnClick.emit({ event: $event, data });
+    if (this.emitButtonEvent) {
+      this.onBtnClick.emit({ event: $event, data });
+    } else {
+      this.editorService.onBtnClick({ event: $event, data });
+    }
   }
   optionChange($event, data) {
-    this.onOptionChange.emit({ event: $event, data });
-  }
-  onTabChange($event) {
-    const { index = 0 } = $event;
-    this.editorService.activeTabIndexes[this.item.metaData.widgetId] = index;
-    this.tabActiveIndex = index;
-    window.dispatchEvent(new Event("resize"));
-  }
-  onColDataChange($event) {
-    this.onTableDataChange.emit({ tableData: this.item, event: $event });
+    this.editorService.onOptionChange({ event: $event, data });
+    this.onChange($event);
   }
 
-  onNext($event, child, stepperRef) {
-    const validate = validateFields(child.children);
-    if (validate) {
-      this.completedSteps[child?.metaData?.widgetId] = true;
-      stepperRef.next();
-    }
-  }
-  onPrevClick($event, type = "") {
-    const { stepIndex = 0, item = {} } = $event;
-    let index = 1;
-    if (type == "stepper") {
-      index = this.verticalStepIndex;
-    } else {
-      index = this.modalStepIndex;
-    }
-    if (stepIndex > 0) {
-      index -= 1;
-    }
-    if (type == "stepper") {
-      this.verticalStepIndex = index;
-    } else {
-      this.modalStepIndex = index;
-    }
-  }
-  onSelectionClick($event, metaData) {
-    if (metaData.isFreeflow || this.verticalStepIndex > $event) {
-      this.verticalStepIndex = $event;
-    } else {
-      let isError = true;
-      for (let i = this.verticalStepIndex; i < $event; i++) {
-        const child = this.item.children[i];
-        const validate = validateFields(child.children);
-        if (!validate) {
-          isError = false;
-        }
-      }
-      if (isError) {
-        this.verticalStepIndex = $event;
-      }
-    }
-  }
-  onNextClick($event, type = "") {
-    const { stepIndex = 0, item = {} } = $event;
-    let index = 1;
-    if (type == "stepper") {
-      index = this.verticalStepIndex;
-    } else {
-      index = this.modalStepIndex;
-    }
-    const child = this.item.children[index];
-    const validate = validateFields(child.children);
-    if (validate) {
-      this.completedSteps[child?.metaData?.widgetId] = true;
-      index += 1;
-      this.onBtnClick.emit(item);
-    }
-    if (index > this.item.children.length - 1) {
-      index = this.item.children.length - 1;
-    }
-    if (type == "stepper") {
-      this.verticalStepIndex = index;
-    } else {
-      this.modalStepIndex = index;
-    }
-  }
   onCollapse(status, item) {
     if (!status) {
       this.item.rows = item?.metaData?.hideRows || 0;
@@ -334,14 +204,14 @@ export class PayloadFormFieldComponent implements OnInit, OnDestroy {
       this.item.metaData.movement = "DOWN";
     }
     this.editorService.widgetChange.next(item);
-    this.editorService.setContainerHeight(this.taskService.transactionDetailsSubject.value?.uiPayload);
+    this.editorService.setContainerHeight(this.editorService.getFormFields());
   }
   onChange($event) {
     const ifConditions = this.item.metaData.conditions;
-    if(ifConditions?.length){
-      this.taskService.checkCondition(ifConditions);
-    }else if(ifConditions && !ifConditions?.length){
-      this.taskService.checkCondition([{...ifConditions}]);
+    if (ifConditions?.length) {
+      this.editorService.checkCondition(ifConditions);
+    } else if (ifConditions && !ifConditions?.length) {
+      this.editorService.checkCondition([{ ...ifConditions }]);
     }
   }
   calculateFormulaValue(item): any {
@@ -506,12 +376,7 @@ export class PayloadFormFieldComponent implements OnInit, OnDestroy {
     currField.value.value = formulaValue;
     return formulaValue;
   }
-  OnStepChange($event) {
-    const { selectedIndex = 1 } = $event;
-    this.editorService.activeStepperIndexes[this.item.metaData.widgetId] = selectedIndex;
-    this.selectedStep = selectedIndex;
-    window.dispatchEvent(new Event("resize"));
-  }
+
   checkHeight(child?) {
     if (child.children?.length) {
       this.editorService.setAdjustableHeight(child?.children, ".nested-grid-container");

@@ -46,6 +46,8 @@ export enum ButtonActions {
   previous = "previous",
   nextStep = "nextStep",
   previousStep = "previousStep",
+  closeModals = "closeModals",
+  openModals = "openModals",
 }
 
 export enum PayloadType {
@@ -240,6 +242,9 @@ export class MetaData {
   defaultMinItemRows: number;
   conditions: any;
   errorMessage: string;
+  readOnly?: boolean;
+  isEnable?: boolean;
+  styleProperties: any;
   constructor(data) {
     const {
       widgetId,
@@ -259,6 +264,7 @@ export class MetaData {
       hideRows,
       conditions,
       errorMessage = "",
+      readOnly = false,
     } = data;
     this.widgetId = widgetId || getUniqueId("widget");
     this.widgetType = widgetType;
@@ -277,6 +283,7 @@ export class MetaData {
     this.hideRows = hideRows;
     this.conditions = conditions;
     this.errorMessage = errorMessage;
+    this.readOnly = readOnly;
   }
 }
 export class SubColumn {
@@ -322,8 +329,6 @@ export class TablePopulateConfig {
 }
 
 export class TableMetaData<T> extends MetaData {
-  color: string;
-  bgColor: string;
   heading: string;
   sort: boolean;
   filter: boolean;
@@ -332,28 +337,21 @@ export class TableMetaData<T> extends MetaData {
   horizontalBorder: boolean;
   verticalBorder: boolean;
   tableBorder: boolean;
-  borderColor: string;
   actions: TableActions;
   optionPopulateConfig: Array<TablePopulateConfig>;
   columns: Array<T>;
   overflow: TABLE_OVERFLOW;
   options: Array<any>;
-  headerFontSize: string;
   headerCellPaddingTop: string;
   headerCellPaddingBottom: string;
   headerCellPaddingLeft: string;
   headerCellPaddingRight: string;
-  headerCellBackgroundColor: string;
-  paginatorBackgroundColor: string;
-  bodyFontSize: string;
-  bodyCellColor: string;
-  bodyCellBgColor: string;
 
   pagination: boolean;
   paginatorPosition: TABLE_PAGINATION_POSITIONS;
-  paginatorColor: string;
-  paginatorBgColor: string;
   hideFooter: boolean;
+
+  styleProperties: { id: ""; properties: any };
 
   constructor(data) {
     super(data);
@@ -362,9 +360,6 @@ export class TableMetaData<T> extends MetaData {
       sort = false,
       filter = false,
       pagination = false,
-      color = "#6a6a6a",
-      bgColor = "#ededed",
-      bodyCellBgColor = "#fff",
       optionsPopulateConfig = [],
       columns = [],
       addRows = true,
@@ -375,54 +370,40 @@ export class TableMetaData<T> extends MetaData {
       actions = {},
       overflow = TABLE_OVERFLOW.PAGINATION,
       paginatorPosition = TABLE_PAGINATION_POSITIONS.BOTTOM,
-      paginatorBgColor = "#ededed",
       hideFooter = false,
-      headerFontSize = "14px",
       headerCellPaddingTop = "11px",
       headerCellPaddingBottom = "11px",
       headerCellPaddingLeft = "11px",
       headerCellPaddingRight = "11px",
-      headerCellBackgroundColor = "#f3f6f9",
-      bodyFontSize = "14px",
-      paginatorColor = "#6a6a6a",
       options = [],
-      bodyCellColor = "#373f51",
-      borderColor = "#cccccc",
+      styleProperties = {},
     } = data;
     this.columns = columns;
     this.heading = heading;
     this.sort = sort;
     this.filter = filter;
     this.pagination = pagination;
-    this.color = color;
-    this.bgColor = bgColor;
     this.optionPopulateConfig = optionsPopulateConfig;
     this.addRows = addRows;
     this.hideHeader = hideHeader;
     this.horizontalBorder = horizontalBorder;
     this.verticalBorder = verticalBorder;
     this.tableBorder = tableBorder;
-    this.borderColor = borderColor;
 
     this.actions = new TableActions(actions);
     this.overflow = overflow;
 
     this.pagination = paginatorPosition;
     this.paginatorPosition = paginatorPosition;
-    this.paginatorBgColor = paginatorBgColor;
-    this.paginatorColor = paginatorColor;
 
-    this.bodyCellColor = bodyCellColor;
-    this.bodyCellBgColor = bodyCellBgColor;
     this.options = options;
     this.hideFooter = hideFooter;
-    this.headerFontSize = headerFontSize;
     this.headerCellPaddingTop = headerCellPaddingTop;
     this.headerCellPaddingBottom = headerCellPaddingBottom;
     this.headerCellPaddingLeft = headerCellPaddingLeft;
     this.headerCellPaddingRight = headerCellPaddingRight;
-    this.headerCellBackgroundColor = headerCellBackgroundColor;
-    this.bodyFontSize = bodyFontSize;
+
+    this.styleProperties = styleProperties;
   }
 }
 
@@ -671,75 +652,45 @@ export class PasswordInputMetaData extends MetaData {
   }
 }
 
+export class TabContainerMetaData extends MetaData {
+  suffixIcon?: string;
+  constructor(data) {
+    super(data);
+    const { suffixIcon } = data;
+    this.suffixIcon = suffixIcon;
+  }
+}
+
 export class StepperContainerMetaData extends MetaData {
-  sublabel: string;
   stepperType: string;
   isReviewer: boolean;
-  isFreeflow: boolean;
+  isFreeFlow: boolean;
   showHeader: boolean;
   indicatorPattern: string;
-  color: string;
-  currentStepColor: string;
-  completedStepColor: string;
-  fontWeight: string;
-  textStyle: string;
-  fontStyle: string;
-  textDecortation: string;
-  completedBarColor: string;
-  defaultBarColor: string;
-  buttonContainer: any;
-  footerBgColor: string;
-  leftPanelBgColor: string;
-  conentBgColor: string;
   headerContent: any;
   headerHeight: number;
   stepperHeight?: any;
+  styleProperties: { id: "" };
   constructor(data) {
     super(data);
     const {
-      sublabel = "",
       stepperType = "Vertical",
       isReviewer = false,
-      isFreeflow = false,
+      isFreeFlow = false,
       indicatorPattern = "circle",
-      textStyle = TextStyles.BODY1,
-      color = "#898585",
-      currentStepColor = "#000000",
-      completedStepColor = "#898585",
-      defaultBarColor = "",
-      fontStyle = "",
-      textDecortation = "",
-      completedBarColor = "",
-      fontWeight = 400,
-      buttonContainer = {},
-      footerBgColor = "#fff",
-      leftPanelBgColor = "#fff",
-      conentBgColor = "#fff",
       showHeader = false,
       headerContent = [],
       headerHeight = 0,
+      styleProperties = {},
     } = data;
-    this.sublabel = sublabel;
     this.stepperType = stepperType;
     this.isReviewer = isReviewer;
-    this.isFreeflow = isFreeflow;
+    this.isFreeFlow = isFreeFlow;
     this.indicatorPattern = indicatorPattern;
-    this.textStyle = textStyle;
-    this.color = color;
-    this.fontWeight = fontWeight;
-    this.currentStepColor = currentStepColor;
-    this.completedStepColor = completedStepColor;
-    this.textDecortation = textDecortation;
-    this.fontStyle = fontStyle;
-    this.defaultBarColor = defaultBarColor;
-    this.completedBarColor = completedBarColor;
-    this.buttonContainer = buttonContainer;
-    this.footerBgColor = footerBgColor;
-    this.leftPanelBgColor = leftPanelBgColor;
-    this.conentBgColor = conentBgColor;
     this.showHeader = showHeader;
     this.headerContent = headerContent;
     this.headerHeight = headerHeight;
+    this.styleProperties = styleProperties;
   }
 }
 export class SSNInputMetaData extends MetaData {
@@ -1022,6 +973,7 @@ export class NumberMetaData extends MetaData {
   adornmentBackgroundColor: "#ffffff";
   prefixText: "";
   suffixText: "";
+  thousandsSeparator: boolean;
   constructor(data) {
     super(data);
     const {
@@ -1045,6 +997,7 @@ export class NumberMetaData extends MetaData {
       adornmentBackgroundColor = "#ffffff",
       prefixText = "",
       suffixText = "",
+      thousandsSeparator = false,
     } = data;
     this.prefix = prefix;
     this.suffix = suffix;
@@ -1066,6 +1019,7 @@ export class NumberMetaData extends MetaData {
     this.adornmentBackgroundColor = adornmentBackgroundColor;
     this.prefixText = prefixText;
     this.suffixText = suffixText;
+    this.thousandsSeparator = thousandsSeparator;
   }
 }
 
@@ -1109,10 +1063,18 @@ export class ContainerMetaData extends MetaData {
   onClickConfigs: Array<OnChangeTriggerConfig>;
   externalLink: string;
   styleProperties: { id: ""; properties: any };
-  isFooterContainer : boolean;
+  isFooterContainer: boolean;
   constructor(data) {
     super(data);
-    const { title = "", icon = "", styleProperties = {}, onClickConfig = {}, externalLink = "", header = {} ,  isFooterContainer = false} = data;
+    const {
+      title = "",
+      icon = "",
+      styleProperties = {},
+      onClickConfig = {},
+      externalLink = "",
+      header = {},
+      isFooterContainer = false,
+    } = data;
     this.title = title;
     this.icon = icon;
     this.styleProperties = styleProperties;
@@ -1374,11 +1336,8 @@ export class ModalMetaData extends MetaData {
   fontStyle: string;
   textDecortation: string;
   fontWeight: number;
-  footerContent: any;
   footerHeight: number;
   modalHeader: any;
-  modalType: string;
-  buttonContainer: any;
   styleProperties: { id: "" };
   constructor(data) {
     super(data);
@@ -1398,11 +1357,8 @@ export class ModalMetaData extends MetaData {
       textDecortation = "",
       fontWeight = 400,
       footerbgColor = "#ffffff",
-      footerContent = [],
       footerHeight = 50,
       modalHeader = [],
-      buttonContainer = {},
-      modalType = "SinglePage",
       styleProperties = {},
     } = data;
     this.title = title;
@@ -1420,11 +1376,8 @@ export class ModalMetaData extends MetaData {
     this.textDecortation = textDecortation;
     this.fontWeight = fontWeight;
     this.footerbgColor = footerbgColor;
-    this.footerContent = footerContent;
     this.footerHeight = footerHeight;
     this.modalHeader = modalHeader;
-    this.modalType = modalType;
-    this.buttonContainer = buttonContainer;
     this.styleProperties = styleProperties;
   }
 }

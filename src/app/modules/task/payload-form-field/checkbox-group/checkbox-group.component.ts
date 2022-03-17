@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { BaseWidget, MetaData } from "../../model/create-form.models";
-import { TaskService } from "../../services/task.service";
+import { EditorService } from "../../editor.service";
 
 @Component({
   selector: "app-checkbox-group",
@@ -11,8 +11,6 @@ export class CheckboxGroupComponent implements OnInit {
   _value = [];
   @Input() item: BaseWidget = {} as BaseWidget;
   @Input() isDisabled = false;
-  @Input() viewMode = false;
-  @Input() editMode = false;
   @Input() dataListId = "";
   @Input() checkedBorderColor: string;
   @Input() uncheckedBorderColor: string;
@@ -42,19 +40,19 @@ export class CheckboxGroupComponent implements OnInit {
   @Input() showErrorMessage: boolean;
   @Input() labelAlignment: string;
   @Input() checkboxSize: string;
-
+  @Input() optionPaddingBottom: string
   @Input() columns: number;
-  constructor(private taskService: TaskService) {}
+  constructor(private editorService: EditorService) {}
   get metaData(): MetaData {
     return this.item.metaData as MetaData;
   }
   ngOnInit(): void {}
   onChange($event) {
     const ifConditions = this.item.metaData.conditions;
-    if(ifConditions?.length){
-      this.taskService.checkCondition(ifConditions);
-    }else if(ifConditions && !ifConditions?.length){
-      this.taskService.checkCondition([{...ifConditions}]);
+    if (ifConditions?.length) {
+      this.editorService.checkCondition(ifConditions);
+    } else if (ifConditions && !ifConditions?.length) {
+      this.editorService.checkCondition([{ ...ifConditions }]);
     }
   }
 }

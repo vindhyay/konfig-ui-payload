@@ -1,5 +1,5 @@
 <finlevit-lib-checkbox-group
-  [isDisabled]="(viewMode && (!item?.validators?.editable || !editMode)) || isDisabled"
+  [isDisabled]="isDisabled"
   [isRequired]="item?.validators?.required"
   [label]="item?.label"
   [items]="item?.metaData?.options"
@@ -46,4 +46,5 @@
   [style.--input-label-align]="labelAlignment"
   [errorMsg]="errorMessage"
   [showErrorMsg]="showErrorMessage"
+  [style.--input-options-padding]="optionPaddingBottom"
 ></finlevit-lib-checkbox-group>

@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { TaskService } from "../../services/task.service";
 import { BaseWidget, UploadMetaData } from "../../model/create-form.models";
 import { parseApiResponse } from "../../../../utils";
 import { NotificationService } from "../../../../services/notification.service";
+import { EditorService } from "../../editor.service";
 
 @Component({
   selector: "app-upload",
@@ -10,8 +10,12 @@ import { NotificationService } from "../../../../services/notification.service";
   styleUrls: ["./upload.component.scss"],
 })
 export class UploadComponent implements OnInit {
-  constructor(private taskService: TaskService, private notificationService: NotificationService) {}
-
+  @Input() item: BaseWidget = {} as BaseWidget;
+  @Input() isDisabled = false;
+  loading = false;
+  uploadStatus = "";
+  file: any = null;
+  constructor(private editorService: EditorService, private notificationService: NotificationService) {}
   ngOnInit(): void {
     if (this.item?.value?.value) {
       this.file = {
@@ -20,20 +24,12 @@ export class UploadComponent implements OnInit {
     }
   }
 
-  @Input() item: BaseWidget = {} as BaseWidget;
-  @Input() viewMode = false;
-  @Input() editMode = false;
-  @Input() isDisabled = false;
-  loading = false;
-  uploadStatus = "";
-  file: any = null;
-
   get metaData(): UploadMetaData {
     return this.item.metaData as UploadMetaData;
   }
 
   uploadFile(fileData) {
-    const transactionId = this.taskService.getTransactionDetails()?.transactionId;
+    const transactionId = this.editorService.getTransactionDetails()?.transactionId;
     if (!this.file) {
       this.notificationService.info("Please select file for upload", "Info");
       return;
@@ -41,7 +37,7 @@ export class UploadComponent implements OnInit {
     if (transactionId) {
       this.loading = true;
       this.uploadStatus = "pending";
-      this.taskService.uploadFile(fileData, { transactionId }).subscribe(
+      this.editorService.uploadFile(fileData, { transactionId }).subscribe(
         (result) => {
           this.loading = false;
           const { data, error } = parseApiResponse(result);

@@ -1,0 +1,21 @@
+<div class="tab-container style-tab-container" [ngStyle]="containerBodyStyle">
+  <p-tabView [activeIndex]="tabActiveIndex" (onChange)="onTabChange($event)">
+    <ng-container *ngFor="let child of item.children; let i = index">
+      <p-tabPanel *ngIf="!child?.metaData?.isHidden" [header]="child.label">
+        <ng-template pTemplate="header">
+          <em [class]="child?.metaData?.icon" class="p-pr-1 mr-2"></em>
+          <span>{{ child.label }}</span>
+          <em [class]="child?.metaData?.suffixIcon" class="p-pr-1 ml-2"></em>
+        </ng-template>
+        <div
+          [ngClass]="{
+            'nested-grid-container': true,
+            'empty-child': !child.children.length
+          }"
+        >
+          <finlevit-grid [parent]="child" [items]="child.children"></finlevit-grid>
+        </div>
+      </p-tabPanel>
+    </ng-container>
+  </p-tabView>
+</div>

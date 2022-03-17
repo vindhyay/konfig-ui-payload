@@ -1,21 +1,21 @@
 import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 
-import { HorizontalStepperComponent } from "./horizontal-stepper.component";
+import { AppTabContainerComponent } from "./tab-container.component";
 
 describe("EditorStepperComponent", () => {
-  let component: HorizontalStepperComponent;
-  let fixture: ComponentFixture<HorizontalStepperComponent>;
+  let component: AppTabContainerComponent;
+  let fixture: ComponentFixture<AppTabContainerComponent>;
 
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [HorizontalStepperComponent],
+        declarations: [AppTabContainerComponent],
       }).compileComponents();
     })
   );
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(HorizontalStepperComponent);
+    fixture = TestBed.createComponent(AppTabContainerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

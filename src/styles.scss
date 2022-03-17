@@ -8,12 +8,13 @@
 @import "~primeflex/primeflex.css";
 
 /* You can add global styles to this file, and also import other style files */
-@import '~bootstrap/dist/css/bootstrap.css';
-@import './assets/scss/index.scss';
+@import "~bootstrap/dist/css/bootstrap.css";
+@import "./assets/scss/index.scss";
 
 /* normalize css start */
-.preview-container{
-  input[type=checkbox], input[type=radio] {
+.preview-container {
+  input[type="checkbox"],
+  input[type="radio"] {
     box-sizing: border-box;
     padding: 0;
     visibility: hidden;
@@ -83,13 +84,13 @@
   .label-tooltip {
     color: gray;
   }
-  font-family: 'Muli';
+  font-family: "Muli";
   font-weight: 400;
   .required {
     color: $red;
   }
 }
-.radio-group-label{
+.radio-group-label {
   font-weight: 400 !important;
 }
 .p-field-checkbox > label,
@@ -98,8 +99,8 @@
   line-height: 1;
   margin-bottom: 0;
 }
-.button-input{
-  .p-button{
+.button-input {
+  .p-button {
     width: 100%;
     height: 100%;
   }
@@ -107,33 +108,33 @@
 .tab-container {
   height: 100%;
   padding: 4px;
-  .p-tabview{
+  .p-tabview {
     height: 100%;
     display: flex;
     flex-direction: column;
   }
-  .p-tabview-panels{
+  .p-tabview-panels {
     height: 100%;
     border: 1px solid #dee2e6;
     border-top: 0;
     font-size: 14px;
     color: inherit;
   }
-  &.no-tab-container{
+  &.no-tab-container {
     .p-tabview-panels {
       height: 100%;
     }
-    .p-tabview{
+    .p-tabview {
       height: 100%;
     }
   }
-  .p-tabview-panel{
+  .p-tabview-panel {
     height: 100%;
   }
-  .p-tabview .p-tabview-nav li:not(.p-highlight) .p-tabview-nav-link{
+  .p-tabview .p-tabview-nav li:not(.p-highlight) .p-tabview-nav-link {
     border-color: #dee2e6;
   }
-  .p-tabview .p-tabview-nav li .p-tabview-nav-link:not(.p-disabled):focus{
+  .p-tabview .p-tabview-nav li .p-tabview-nav-link:not(.p-disabled):focus {
     box-shadow: none;
   }
 }
@@ -159,7 +160,7 @@
   }
 }
 /* Mat stepper widget css */
-.mat-stepper-horizontal{
+.mat-stepper-horizontal {
   display: flex !important;
   flex-direction: column;
   height: 100%;
@@ -167,7 +168,7 @@
 .mat-horizontal-content-container {
   flex-grow: 1;
 }
-.mat-horizontal-stepper-content{
+.mat-horizontal-stepper-content {
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -183,18 +184,20 @@
   font-size: 1rem;
   justify-content: center;
 }
-.mat-step-label-text{
+.mat-step-label-text {
   padding: 0 0.3rem;
 }
-.mat-step-header.cdk-keyboard-focused, .mat-step-header.cdk-program-focused, .mat-step-header:hover {
+.mat-step-header.cdk-keyboard-focused,
+.mat-step-header.cdk-program-focused,
+.mat-step-header:hover {
   background-color: rgb(169 167 167 / 4%);
 }
-.stepper-btn-container{
+.stepper-btn-container {
   display: flex;
   justify-content: space-between;
   padding: 0 2rem;
 }
-.step-btn{
+.step-btn {
   color: #ffffff;
   background: #007bff;
   border: 1px solid #007bff;
@@ -203,13 +206,15 @@
   transition: background-color 0.15s, border-color 0.15s, box-shadow 0.15s;
   border-radius: 30px;
 }
-.mat-step-header .mat-step-icon-selected, .mat-step-header .mat-step-icon-state-done, .mat-step-header .mat-step-icon-state-edit {
+.mat-step-header .mat-step-icon-selected,
+.mat-step-header .mat-step-icon-state-done,
+.mat-step-header .mat-step-icon-state-edit {
   background-color: #007bfe;
   color: white;
 }
 /* Mat stepper widget css */
 /* Table css */
-.p-paginator .p-paginator-pages .p-paginator-page.p-highlight{
+.p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
   background: none;
   color: inherit;
 }
@@ -218,10 +223,10 @@
     padding: 0;
   }
   .text-tiny {
-    font-size: .7em;
+    font-size: 0.7em;
   }
   .text-small {
-    font-size: .85em;
+    font-size: 0.85em;
   }
   .text-big {
     font-size: 1.4em;
@@ -236,12 +241,13 @@
     height: 100%;
     border: 1px double #b3b3b3;
   }
-  .table table td, .ck-content .table table th {
+  .table table td,
+  .ck-content .table table th {
     min-width: 2em;
-    padding: .4em;
+    padding: 0.4em;
     border: 1px solid #bfbfbf;
   }
-  blockquote{
+  blockquote {
     overflow: hidden;
     padding-right: 1.5em;
     padding-left: 1.5em;
@@ -250,46 +256,45 @@
     font-style: italic;
     border-left: 5px solid #ccc;
   }
-  figure{
+  figure {
     margin: auto;
   }
 }
-
 
 //Field Modal styles
 .field-modal-content {
   height: 100%;
   width: 100%;
-  &.p-dialog-content{
+  &.p-dialog-content {
     padding: 0;
   }
 }
-.p-dialog-mask{
+.p-dialog-mask {
   z-index: 100;
 }
 
 //Collapse Container
-.collapse-container{
+.collapse-container {
   height: 100%;
-  .p-accordion{
+  .p-accordion {
     height: 100%;
   }
-  .p-accordion-tab{
+  .p-accordion-tab {
     height: 100%;
     display: flex;
     flex-direction: column;
   }
-  .p-toggleable-content{
+  .p-toggleable-content {
     height: 100%;
   }
-  .p-accordion-content{
+  .p-accordion-content {
     height: 100%;
     padding: 0;
   }
-  .p-accordion .p-accordion-header:not(.p-disabled) .p-accordion-header-link:focus{
+  .p-accordion .p-accordion-header:not(.p-disabled) .p-accordion-header-link:focus {
     box-shadow: none;
   }
-  .p-accordion .p-accordion-header .p-accordion-header-link{
+  .p-accordion .p-accordion-header .p-accordion-header-link {
     padding: 0;
     text-decoration: none;
   }
@@ -311,24 +316,30 @@
 .p-datatable-wrapper {
   font-family: sans-serif, serif;
   font-size: 13px;
-  .p-datatable-thead > tr > th{
+  .p-datatable-thead > tr > th {
     font-weight: 500;
     line-height: 2rem;
   }
-  .p-sortable-column-icon{
+  .p-sortable-column-icon {
     font-size: 11px;
   }
-  .pi-filter-icon{
+  .pi-filter-icon {
     font-size: 11px;
   }
 }
 .p-datatable.p-datatable-sm .p-datatable-thead > tr > th {
   padding: 0.2rem 0.5rem;
 }
-.p-datatable-tbody>tr>td,
-.p-datatable-tfoot>tr>td,
-.p-datatable-thead>tr>th {
+.p-datatable-tbody > tr > td,
+.p-datatable-tfoot > tr > td,
+.p-datatable-thead > tr > th {
   overflow: hidden;
   white-space: nowrap;
 }
 //Table css end
+
+// modal footer button css start
+.p-dialog .p-dialog-footer button{
+  width: 100%
+}
+// modal footer button css end
