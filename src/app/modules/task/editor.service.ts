@@ -19,6 +19,7 @@ import { AppConfigService } from "../../app-config-providers/app-config.service"
 import { resourceType } from "./payload-form-field/payload-form-field.component";
 import * as moment from "moment";
 import { LoaderService } from "../../services/loader.service";
+import { isNull } from "lodash";
 
 @Injectable({
   providedIn: "root",
@@ -420,12 +421,12 @@ export class EditorService extends BaseService {
         result = !!fieldValue && this.isLessThanEqual(String(fieldValue).length, rule.value);
         break;
       case "notEquals":
-        if (String(fieldValue) !== String(rule.value)) {
+        if ((isNull(fieldValue) && String(rule.value) === "None") || String(fieldValue) !== String(rule.value)) {
           result = true;
         }
         break;
       default:
-        if (String(fieldValue) == String(rule.value)) {
+        if ((isNull(fieldValue) && String(rule.value) === "None") || String(fieldValue) == String(rule.value)) {
           result = true;
         }
         break;
