@@ -169,18 +169,6 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
   }
   editMode: boolean = false;
 
-  validateField($event: any, field: any) {
-    const { validators = {}, label = "" } = field;
-    const tempFormControl = new FormControl($event, getValidators(validators));
-    if (tempFormControl.valid) {
-      field.value.value = $event;
-      field.error = false;
-      field.errorMsg = "";
-    } else {
-      field.error = true;
-      field.errorMsg = getErrorMessages(tempFormControl.errors, label);
-    }
-  }
   btnClick($event, data) {
     if (this.emitButtonEvent) {
       this.onBtnClick.emit({ event: $event, data });
@@ -215,6 +203,18 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
       this.editorService.checkCondition([{ ...ifConditions }]);
     }
   }
+  validateField($event: any, field: any) {
+    const { validators = {}, label = "" } = field;
+    const tempFormControl = new FormControl($event, getValidators(validators));
+    if (tempFormControl.valid) {
+      field.value.value = $event;
+      field.error = false;
+      field.errorMsg = "";
+    } else {
+      field.error = true;
+      field.errorMsg = getErrorMessages(tempFormControl.errors, label);
+    }
+  }
   calculateFormulaValue(item): any {
     let formulaValue;
     let formula = [];
@@ -246,6 +246,9 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
         if (values.length > 0) {
           formula.forEach((field) => {
             if (field?.resourceType === resourceType.PAYLOAD_FIELD) {
+              if (field?.value?.value === null) {
+                field.value.value = undefined;
+              }
               expression = expression + " " + field?.value?.value;
             }
             if (field?.resourceType === resourceType.BRACKET) {
@@ -265,6 +268,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
         } else {
           formulaValue = values[0]?.value?.value || null;
         }
+        console.log(expression)
         return formulaValue;
       case "string":
         formulaValue = "";
