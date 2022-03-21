@@ -117,7 +117,7 @@
                   flex: (columns[colIndex]?.width || 100) + ' 0 auto'
                 }"
                 *ngFor="let col of rowData; let colIndex = index"
-                (dblclick)="onColEdit($event, col, rowIndex, rowData)"
+                (dblclick)="isColumnEdit && onColEdit($event, col, rowIndex, rowData)"
               >
                 <div
                   [ngClass]="{ 'cell-container': true }"

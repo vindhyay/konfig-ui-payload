@@ -281,7 +281,7 @@
                   flex: (col?.width || 100) + ' 0 auto'
                 }"
                 *ngFor="let col of columns"
-                (dblclick)="!col?.metaData?.readOnly ? onColEdit($event, col, rowIndex, rowData) : null"
+                (dblclick)="!col?.metaData?.readOnly && isColumnEdit ? onColEdit($event, col, rowIndex, rowData) : null"
               >
                 <div
                   [ngClass]="{ 'cell-container': true }"

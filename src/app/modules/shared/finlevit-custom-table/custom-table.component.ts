@@ -69,6 +69,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
   get tableData() {
     return this._tableData;
   }
+  @Input() isColumnEdit: boolean = false;
   constructor(private cdr: ChangeDetectorRef) {}
   Object = Object;
   CellAlignTypes = CELL_ALIGNMENTS_TYPES;
