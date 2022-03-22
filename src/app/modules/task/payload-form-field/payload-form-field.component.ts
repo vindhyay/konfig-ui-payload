@@ -209,10 +209,10 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
     if (tempFormControl.valid) {
       field.value.value = $event;
       field.error = false;
-      field.errorMsg = "";
+      field.errorMessage = "";
     } else {
       field.error = true;
-      field.errorMsg = getErrorMessages(tempFormControl.errors, label);
+      field.errorMessage = getErrorMessages(tempFormControl.errors, label);
     }
   }
   calculateFormulaValue(item): any {
@@ -268,7 +268,6 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
         } else {
           formulaValue = values[0]?.value?.value || null;
         }
-        console.log(expression)
         return formulaValue;
       case "string":
         formulaValue = "";
