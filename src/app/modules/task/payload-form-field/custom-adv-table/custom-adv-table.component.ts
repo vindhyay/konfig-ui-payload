@@ -56,6 +56,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
   @Input() horizontalBorder = true;
   @Input() tableBorder = true;
   @Input() isColumnEdit: boolean = false;
+  @Input() dateFormat: string;
   @Input()
   set columns(columns) {
     this._columns = columns.map((column) => {
