@@ -79,6 +79,12 @@
         }"
         #tableBody
       >
+        <app-loader [loading]="isLoading"></app-loader>
+        <ng-container
+          *ngIf="!isLoading && !(tableFilters?.filtersEnabled ? filteredTableData.length : tableData.length)"
+        >
+          <div class="no-data-container"></div>
+        </ng-container>
         <ng-container
           *ngFor="
             let rowData of (tableFilters?.filtersEnabled ? filteredTableData : tableData)

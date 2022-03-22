@@ -52,6 +52,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
   RadioGroup: WidgetTypes = WidgetTypes.RadioGroup;
   Upload: WidgetTypes = WidgetTypes.Upload;
   _columns: BaseWidget[] = [];
+  @Input() isLoading = false;
   @Input() verticalBorder = true;
   @Input() horizontalBorder = true;
   @Input() tableBorder = true;
