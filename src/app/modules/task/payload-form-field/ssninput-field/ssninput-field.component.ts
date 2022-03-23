@@ -92,7 +92,6 @@ export class ssnInputFieldComponent implements OnInit {
     setTimeout(() => {
       this._type_mask = this.metaData.showMask;
       this.changeIcon(this.metaData);
-      this.onValueChange.emit($event.target.value);
       this.onBlurChange.emit($event);
     }, 0);
   }
