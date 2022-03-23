@@ -124,6 +124,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() actions: TableActions = null;
   @Input() selectable = false;
   @Input() colSearch = false;
+  @Input() dateFormat: string;
   @Output() onColSearch = new EventEmitter();
   @Output() selectionHandler = new EventEmitter();
   @Output() selectedRows = new EventEmitter();

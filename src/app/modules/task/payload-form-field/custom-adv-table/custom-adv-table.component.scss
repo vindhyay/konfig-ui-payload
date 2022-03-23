@@ -300,4 +300,11 @@
     color: var(--paginator-color);
     background-color: var(--paginator-background-color);
   }
+  .no-data-container {
+    background-image: url("/assets/images/nodata-found.png");
+    height: 100%;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
 }

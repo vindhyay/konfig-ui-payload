@@ -52,10 +52,12 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
   RadioGroup: WidgetTypes = WidgetTypes.RadioGroup;
   Upload: WidgetTypes = WidgetTypes.Upload;
   _columns: BaseWidget[] = [];
+  @Input() isLoading = false;
   @Input() verticalBorder = true;
   @Input() horizontalBorder = true;
   @Input() tableBorder = true;
   @Input() isColumnEdit: boolean = false;
+  @Input() dateFormat: string;
   @Input()
   set columns(columns) {
     this._columns = columns.map((column) => {
