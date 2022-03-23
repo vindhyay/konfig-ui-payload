@@ -894,6 +894,16 @@
                             </ng-template>
                           </ng-container>
                         </div>
+                        <div class="pl-1" *ngSwitchDefault>
+                          <ng-container
+                            *ngIf="customTemplates && customTemplates[col?.columnId]; else generic"
+                            [ngTemplateOutlet]="customTemplates[col?.columnId]"
+                            [ngTemplateOutletContext]="{ row: rowData, column: col }"
+                          ></ng-container>
+                          <ng-template #generic>
+                            {{ rowData[col?.columnId] }}
+                          </ng-template>
+                        </div>
                       </ng-container>
                     </ng-container>
                   </div>
