@@ -903,7 +903,9 @@
                           "
                         >
                           {{
-                            dateFormat ? (col?.value?.value | customDate: dateFormat) : (col?.value?.value | customDate)
+                            col?.metaData?.tableViewDateFormat
+                              ? (col?.value?.value | customDate: col?.metaData?.tableViewDateFormat)
+                              : (col?.value?.value | customDate: dateFormat)
                           }}
                         </ng-container>
                         <finlevit-lib-datepicker
