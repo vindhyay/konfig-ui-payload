@@ -908,7 +908,11 @@
                             )
                           "
                         >
-                          {{ col?.value?.value | date }}
+                          {{
+                            col?.metaData?.viewDateFormat
+                              ? (col?.value?.value | customDate: col?.metaData?.viewDateFormat)
+                              : (col?.value?.value | customDate: dateFormat)
+                          }}
                         </ng-container>
                         <finlevit-lib-datepicker
                           *ngIf="
