@@ -887,8 +887,8 @@
                             ></ng-container>
                             <ng-template #generic>
                               {{
-                                col?.metaData?.tableViewDateFormat
-                                  ? (rowData[col.columnId] | customDate: col?.metaData?.tableViewDateFormat)
+                                col?.metaData?.viewDateFormat
+                                  ? (rowData[col.columnId] | customDate: col?.metaData?.viewDateFormat)
                                   : (rowData[col.columnId] | customDate: dateFormat)
                               }}
                             </ng-template>

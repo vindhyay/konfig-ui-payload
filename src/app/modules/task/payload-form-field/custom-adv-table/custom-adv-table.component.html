@@ -903,8 +903,8 @@
                           "
                         >
                           {{
-                            col?.metaData?.tableViewDateFormat
-                              ? (col?.value?.value | customDate: col?.metaData?.tableViewDateFormat)
+                            col?.metaData?.viewDateFormat
+                              ? (col?.value?.value | customDate: col?.metaData?.viewDateFormat)
                               : (col?.value?.value | customDate: dateFormat)
                           }}
                         </ng-container>
