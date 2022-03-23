@@ -890,6 +890,27 @@
                             </ng-template>
                           </ng-container>
                         </div>
+                        <div class="pl-1" *ngSwitchDefault>
+                          <ng-container
+                            *ngIf="
+                              !(
+                                !col?.metaData?.readOnly &&
+                                (editRows[rowIndex] ||
+                                  newRows[rowIndex] ||
+                                  (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.columnId)))
+                              )
+                            "
+                          >
+                            <ng-container
+                              *ngIf="customTemplates && customTemplates[col?.columnId]; else generic"
+                              [ngTemplateOutlet]="customTemplates[col?.columnId]"
+                              [ngTemplateOutletContext]="{ row: rowData, column: col }"
+                            ></ng-container>
+                            <ng-template #generic>
+                              {{ rowData[col?.columnId] }}
+                            </ng-template>
+                          </ng-container>
+                        </div>
                       </ng-container>
                     </ng-container>
                   </div>
