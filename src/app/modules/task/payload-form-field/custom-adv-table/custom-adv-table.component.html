@@ -1056,7 +1056,12 @@
                       <div
                         [ngClass]="{ 'row-actions edit-action-mode': true, disabled: Object.keys(editCells).length }"
                       >
-                        <i class="pi pi-check save-icon" (click)="onRowSave(rowIndex, modifyingData[rowIndex])"></i>
+                        <i
+                          [class]="
+                            saveLoadingRows[rowIndex] ? 'pi pi-spin pi-spinner save-icon' : 'pi pi-check save-icon'
+                          "
+                          (click)="onRowSave(rowIndex, modifyingData[rowIndex])"
+                        ></i>
                         <i
                           class="pi pi-times cancel-icon"
                           (click)="onRowEditCancel(rowIndex, modifyingData[rowIndex])"
@@ -1078,14 +1083,15 @@
                     <ng-container *ngIf="!editRows[rowIndex] && !newRows[rowIndex]">
                       <div [ngClass]="{ 'row-actions': true, disabled: Object.keys(editCells).length }">
                         <span class="edit-action" *ngIf="actions?.editRow" (click)="onEdit(rowIndex, rowData)">
-                          <i class="pi pi-pencil"></i>
+                          <i class="pi pi-pencil edit-icon"></i>
                         </span>
                         <span
                           class="delete-action"
                           *ngIf="actions?.deleteRow"
                           (click)="onDelete(rowIndex, modifyingData[rowIndex])"
                         >
-                          <i class="pi pi-trash delete-icon"></i>
+                          <i [class]="
+                            deleteLoadingRows[rowIndex] ? 'pi pi-spin pi-spinner delete-icon' : 'pi pi-trash delete-icon'"></i>
                         </span>
                       </div>
                     </ng-container>

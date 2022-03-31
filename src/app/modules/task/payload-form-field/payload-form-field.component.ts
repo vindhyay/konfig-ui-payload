@@ -2,12 +2,13 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from "@angu
 import { FormControl } from "@angular/forms";
 import { FieldData } from "../model/field-data.model";
 import { BaseWidget, Column, TableMetaData, WidgetTypes } from "../model/create-form.models";
-import { getErrorMessages, getFieldFromFields, getValidators } from "../../../utils";
+import { DeepCopy, getErrorMessages, getFieldFromFields, getValidators, parseApiResponse } from "../../../utils";
 import { AuthService } from "../../auth/services/auth.service";
 import { EditorService } from "../editor.service";
 import * as moment from "moment";
 import { LoaderService } from "../../../services/loader.service";
 import { BaseComponent } from "../../shared/base/base.component";
+import { NotificationService } from "../../../services/notification.service";
 
 @Component({
   selector: "app-payload-form-field",
@@ -56,7 +57,8 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
   constructor(
     private authService: AuthService,
     private editorService: EditorService,
-    private loaderService: LoaderService
+    private loaderService: LoaderService,
+    private notificationService: NotificationService
   ) {
     super();
   }
@@ -176,6 +178,54 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
       this.editorService.onBtnClick({ event: $event, data });
     }
   }
+  onRowEdit = (data) => {
+    return new Promise((resolve, reject) => {
+      const params = { action: "update" };
+      const payload = DeepCopy.copy(this.item);
+      payload.children = [data];
+      this.editorService.updateTableRowData(payload, params).subscribe(
+        (result) => {
+          const { data, error } = parseApiResponse(result);
+          if (data && !error) {
+            this.item.children = data?.children;
+            resolve(result);
+          } else {
+            this.notificationService.error("Failed to update row", "Error");
+            reject(error);
+          }
+        },
+        (error) => {
+          this.notificationService.error("Failed to update row", "Error");
+          reject(error);
+        }
+      );
+    });
+  };
+
+  onRowDelete = (data) => {
+    return new Promise((resolve, reject) => {
+      const params = { action: "delete" };
+      const payload = DeepCopy.copy(this.item);
+      payload.children = [data];
+      this.editorService.updateTableRowData(payload, params).subscribe(
+        (result) => {
+          const { data, error } = parseApiResponse(result);
+          if (data && !error) {
+            this.item.children = data?.children;
+            resolve(result);
+          } else {
+            this.notificationService.error("Failed to delete row", "Error");
+            reject(error);
+          }
+        },
+        (error) => {
+          this.notificationService.error("Failed to delete row", "Error");
+          reject(error);
+        }
+      );
+    });
+  };
+
   optionChange($event, data) {
     this.editorService.onOptionChange({ event: $event, data });
     this.onChange($event);

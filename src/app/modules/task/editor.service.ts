@@ -494,6 +494,12 @@ export class EditorService extends BaseService {
     return this.getData(url);
   };
 
+  // update table row
+  updateTableRowData = (payload, params): Observable<any> => {
+    const url = `${this.config.getApiUrls().updateTableRowDataURL}`;
+    return this.putData(url, payload, params);
+  };
+
   //Updating hidden field values based on formula --- work around
   setHiddenFieldValue(payloadFields) {
     payloadFields?.forEach((field) => {

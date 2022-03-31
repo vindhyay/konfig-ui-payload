@@ -886,6 +886,10 @@
         [isDisabled]="readonlyMode || disable"
         (onBtnClick)="btnClick(null, $event)"
         [isColumnEdit]="true"
+        [rowEditConfigure]="item?.metaData?.rowEditConfigure"
+        [rowDeleteConfigure]="item?.metaData?.rowDeleteConfigure"
+        [onRowEdit]="onRowEdit"
+        [onRowDelete]="onRowDelete"
       ></finlevit-custom-adv-table>
     </div>
   </ng-container>
