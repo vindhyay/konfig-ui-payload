@@ -328,6 +328,52 @@ export class TablePopulateConfig {
   }
 }
 
+export enum RowActionConfigOptionTypes {
+  getById = "getById",
+  getAll = "getAll",
+  delete = "delete",
+  update = "update",
+}
+
+export class ConfigColumns {
+  columnId: string;
+  populateResponsePath: string;
+  name: string;
+  isUnique?: boolean;
+  constructor(data) {
+    const { columnId, populateResponsePath, name, isUnique = false } = data;
+    this.columnId = columnId;
+    this.populateResponsePath = populateResponsePath;
+    this.name = name;
+    this.isUnique = isUnique;
+  }
+}
+
+export class TableRowActionConfig {
+  name: string;
+  configType: RowActionConfigOptionTypes;
+  columns: Array<ConfigColumns>;
+  parameters: Array<any>;
+  datalistId: string;
+  dataResourceId: string;
+  constructor(data) {
+    const {
+      name = "",
+      configType = null,
+      columns = [],
+      parameters = [],
+      datalistId = null,
+      dataResourceId = null,
+    } = data;
+    this.name = name;
+    this.configType = configType;
+    this.columns = columns;
+    this.parameters = parameters;
+    this.datalistId = datalistId;
+    this.dataResourceId = dataResourceId;
+  }
+}
+
 export class TableMetaData<T> extends MetaData {
   heading: string;
   sort: boolean;
@@ -338,6 +384,9 @@ export class TableMetaData<T> extends MetaData {
   verticalBorder: boolean;
   tableBorder: boolean;
   actions: TableActions;
+  rowEditConfigure: boolean;
+  rowDeleteConfigure: boolean;
+  rowActionsConfig: Array<TableRowActionConfig>;
   optionPopulateConfig: Array<TablePopulateConfig>;
   columns: Array<T>;
   overflow: TABLE_OVERFLOW;

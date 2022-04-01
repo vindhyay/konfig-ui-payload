@@ -117,12 +117,20 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
   @Output() onOptionChange = new EventEmitter();
   @Output() onTableDataChange = new EventEmitter();
   @Input() isDisabled: boolean = false;
+  @Input() onRowEdit: Function = null;
+  @Input() onRowDelete: Function = null;
+  @Input() rowEditConfigure: boolean = false;
+  @Input() rowDeleteConfigure: boolean = false;
   tableId: any = null;
   editRows = {};
   editCells = {};
   newRows = {};
   modifyingData = {};
   rowErrors = {};
+
+  //loading rows
+  saveLoadingRows = {};
+  deleteLoadingRows = {};
 
   // pagination related
   currentPage = 1;
@@ -170,11 +178,25 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
     return sum + "px";
   }
   onDelete(index, rowData, isNew = false) {
-    this.tableData.splice(index, 1);
-    delete this.rowErrors[index];
-    delete this.newRows[index];
-    delete this.modifyingData[index];
-    this.handleRowDelete.emit({ index, rowData, isNew });
+    if (this.rowDeleteConfigure && !isNew) {
+      this.deleteLoadingRows[index] = true;
+      this.onRowDelete(this.tableData[index])
+        .then(() => {
+          this.deleteLoadingRows[index] = false;
+          delete this.rowErrors[index];
+          delete this.newRows[index];
+          delete this.modifyingData[index];
+        })
+        .catch((error) => {
+          this.deleteLoadingRows[index] = false;
+        });
+    } else {
+      this.tableData.splice(index, 1);
+      delete this.rowErrors[index];
+      delete this.newRows[index];
+      delete this.modifyingData[index];
+      this.handleRowDelete.emit({ index, rowData, isNew });
+    }
   }
   onEdit(rowIndex, rowData: Array<any>) {
     this.editRows[rowIndex] = rowData;
@@ -193,22 +215,44 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
   }
   onRowSave(index, rowData, isNew = false) {
     if (this.validateRow(index, rowData)) {
-      this.handleRowSave.emit({ index, rowData });
-      if (isNew) {
-        delete this.newRows[index];
+      if (this.rowEditConfigure && !isNew) {
+        this.saveLoadingRows[index] = true;
+        const updatedRowData = DeepCopy.copy(this.tableData[index]);
+        (updatedRowData || []).forEach((eachColumn) => {
+          if (!eachColumn?.value) {
+            eachColumn.value = {};
+          }
+          eachColumn.value.value = rowData[eachColumn?.metaData?.widgetId];
+        });
+        this.onRowEdit(updatedRowData)
+          .then(() => {
+            this.saveLoadingRows[index] = false;
+            delete this.editRows[index];
+            delete this.rowErrors[index];
+            delete this.modifyingData[index];
+            delete this.editCells[index];
+          })
+          .catch((error) => {
+            this.saveLoadingRows[index] = false;
+          });
       } else {
-        delete this.editRows[index];
-      }
-      delete this.rowErrors[index];
-      delete this.modifyingData[index];
-      delete this.editCells[index];
-      const oldRowData = this.tableData[index];
-      (oldRowData || []).forEach((eachColumn) => {
-        if (!eachColumn?.value) {
-          eachColumn.value = {};
+        this.handleRowSave.emit({ index, rowData });
+        if (isNew) {
+          delete this.newRows[index];
+        } else {
+          delete this.editRows[index];
         }
-        eachColumn.value.value = rowData[eachColumn?.metaData?.widgetId];
-      });
+        delete this.rowErrors[index];
+        delete this.modifyingData[index];
+        delete this.editCells[index];
+        const oldRowData = this.tableData[index];
+        (oldRowData || []).forEach((eachColumn) => {
+          if (!eachColumn?.value) {
+            eachColumn.value = {};
+          }
+          eachColumn.value.value = rowData[eachColumn?.metaData?.widgetId];
+        });
+      }
     }
   }
   onColEdit($event, column: BaseWidget, rowIndex, rowData) {
