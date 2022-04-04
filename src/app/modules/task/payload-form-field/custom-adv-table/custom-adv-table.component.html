@@ -866,7 +866,6 @@
                           [style.--input-selected-border-color]="
                             col?.metaData?.styleProperties?.properties?.selectedBorderColor
                           "
-                          [style.--input-flex-direction]="col?.metaData?.styleProperties?.properties?.radioAlign"
                           [style.--input-color]="col?.metaData?.styleProperties?.properties?.textColor"
                           [style.--input-text-align]="col?.metaData?.styleProperties?.properties?.textHorizontalAlign"
                           [style.--input-background-color]="col?.metaData?.styleProperties?.properties?.backgroundColor"
@@ -885,6 +884,74 @@
                           [style.--input-label-width]="col?.metaData?.styleProperties?.properties?.labelWidth + '%'"
                           [style.--input-radiobutton-size]="col?.metaData?.styleProperties?.properties?.radiobuttonSize"
                           [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
+                          [style.--input-option-tile-height]="
+                          col?.metaData?.styleProperties?.properties?.optionTileHeight
+                        "
+                        [style.--input-option-tile-width]="
+                          col?.metaData?.styleProperties?.properties?.optionTileWidth
+                        "
+                        [style.--input-option-tile-backgroundColor]="
+                          col?.metaData?.styleProperties?.properties?.optionTileBackgroundColor
+                        "
+                        [horizontalContentAlignment]="
+                          col?.metaData?.styleProperties?.properties?.horizontalOptionAlignment
+                        "
+                        [verticalContentAlignment]="
+                          col?.metaData?.styleProperties?.properties?.verticalOptionAlignment
+                        "
+                        [style.--input-option-label-margin]="
+                          col?.metaData?.styleProperties?.properties?.labelTextMargin
+                        "
+                        [buttonType]="
+                          col?.metaData?.styleProperties?.properties?.buttonType
+                            ? col?.metaData?.styleProperties?.properties?.buttonType
+                            : 'radio'
+                        "
+                        [independentBorders]="col?.metaData?.styleProperties?.properties?.independentBorder"
+                        [style.--input-border-width]="col?.metaData?.styleProperties?.properties?.borderWidth"
+                        [style.--input-border-color]="col?.metaData?.styleProperties?.properties?.borderColor"
+                        [style.--input-border]="col?.metaData?.styleProperties?.properties?.borderStyle"
+                        [style.--input-border-radius]="col?.metaData?.styleProperties?.properties?.borderRadius"
+                        [style.--input-border-top]="col?.metaData?.styleProperties?.properties?.borderTopStyle"
+                        [style.--input-border-radius-top-left]="
+                          col?.metaData?.styleProperties?.properties?.borderTopLeftRadius
+                        "
+                        [style.--input-border-top-color]="col?.metaData?.styleProperties?.properties?.borderTopColor"
+                        [style.--input-border-top-width]="col?.metaData?.styleProperties?.properties?.borderTopWidth"
+                        [style.--input-border-right]="col?.metaData?.styleProperties?.properties?.borderRightStyle"
+                        [style.--input-border-radius-top-right]="
+                          col?.metaData?.styleProperties?.properties?.borderTopRightRadius
+                        "
+                        [style.--input-border-right-color]="
+                          col?.metaData?.styleProperties?.properties?.borderRightColor
+                        "
+                        [style.--input-border-right-width]="
+                          col?.metaData?.styleProperties?.properties?.borderRightWidth
+                        "
+                        [style.--input-border-bottom]="col?.metaData?.styleProperties?.properties?.borderBottomStyle"
+                        [style.--input-border-radius-bottom-right]="
+                          col?.metaData?.styleProperties?.properties?.borderBottomRightRadius
+                        "
+                        [style.--input-border-bottom-color]="
+                          col?.metaData?.styleProperties?.properties?.borderBottomColor
+                        "
+                        [style.--input-border-bottom-width]="
+                          col?.metaData?.styleProperties?.properties?.borderBottomWidth
+                        "
+                        [style.--input-border-left]="col?.metaData?.styleProperties?.properties?.borderLeftStyle"
+                        [style.--input-border-radius-bottom-left]="
+                          col?.metaData?.styleProperties?.properties?.borderBottomLeftRadius
+                        "
+                        [style.--input-border-left-color]="
+                          col?.metaData?.styleProperties?.properties?.borderLeftColor
+                        "
+                        [style.--input-border-left-width]="
+                          col?.metaData?.styleProperties?.properties?.borderLeftWidth
+                        "
+                        [style.--input-option-tile-margin]="
+                          col?.metaData?.styleProperties?.properties.optionTileMargin
+                        "
+                        [buttonAlignment]="col?.metaData?.styleProperties?.properties.radioAlign"
                           [error]="
                             rowErrors[rowIndex] && rowErrors[rowIndex][col?.metaData?.widgetId]
                               ? rowErrors[rowIndex][col?.metaData?.widgetId]['error']
