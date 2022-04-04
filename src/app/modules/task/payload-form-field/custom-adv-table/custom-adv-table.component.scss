@@ -311,3 +311,16 @@
     background-repeat: no-repeat;
   }
 }
+::ng-deep {
+  //Table confirm dialog footer buttons start
+  .p-dialog .p-dialog-footer .rejectBtn {
+    width: 80px;
+    color: #d41111;
+    background: transparent;
+    border: 1px solid #d41111;
+  }
+  .p-dialog .p-dialog-footer .acceptBtn {
+    width: 80px;
+  }
+  //Table confirm dialog footer buttons end
+}

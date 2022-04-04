@@ -23,6 +23,7 @@ import { FormControl, Validators } from "@angular/forms";
 import { PaginationDirective } from "../../../shared/finlevit-custom-table/table-utils/pagination.directive";
 import { CustomTableFiltersComponent } from "../../../shared/finlevit-custom-table/table-utils/custom-table-filters/custom-table-filters.component";
 import { resourceType } from "../payload-form-field.component";
+import { ConfirmationService } from "primeng/api";
 import * as moment from "moment";
 
 const MIN_ROW_HEIGHT = 50;
@@ -31,6 +32,7 @@ const MIN_ROW_HEIGHT = 50;
   selector: "finlevit-custom-adv-table",
   templateUrl: "./custom-adv-table.component.html",
   styleUrls: ["./custom-adv-table.component.scss"],
+  providers: [ConfirmationService],
 })
 export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit {
   Object = Object;
@@ -138,7 +140,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
   @ViewChild("tableBody", { static: false }) tableBody: ElementRef;
   @ViewChild("tableFilters", { static: false }) tableFilters: CustomTableFiltersComponent;
   @ViewChild("pagination", { static: false }) tablePagination: PaginationDirective;
-  constructor() {}
+  constructor(private confirmationService: ConfirmationService) {}
 
   ngOnInit(): void {
     this.tableId = getUniqueId("table");
@@ -177,19 +179,27 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
     }
     return sum + "px";
   }
+  doDelete(index) {
+    this.deleteLoadingRows[index] = true;
+    this.onRowDelete(this.tableData[index])
+      .then(() => {
+        this.deleteLoadingRows[index] = false;
+        delete this.rowErrors[index];
+        delete this.newRows[index];
+        delete this.modifyingData[index];
+      })
+      .catch((error) => {
+        this.deleteLoadingRows[index] = false;
+      });
+  }
   onDelete(index, rowData, isNew = false) {
     if (this.rowDeleteConfigure && !isNew) {
-      this.deleteLoadingRows[index] = true;
-      this.onRowDelete(this.tableData[index])
-        .then(() => {
-          this.deleteLoadingRows[index] = false;
-          delete this.rowErrors[index];
-          delete this.newRows[index];
-          delete this.modifyingData[index];
-        })
-        .catch((error) => {
-          this.deleteLoadingRows[index] = false;
-        });
+      this.confirmationService.confirm({
+        message: "Are you sure that you want to delete this record?",
+        accept: () => {
+          this.doDelete(index);
+        },
+      });
     } else {
       this.tableData.splice(index, 1);
       delete this.rowErrors[index];

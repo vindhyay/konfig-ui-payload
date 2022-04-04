@@ -1090,8 +1090,13 @@
                           *ngIf="actions?.deleteRow"
                           (click)="onDelete(rowIndex, modifyingData[rowIndex])"
                         >
-                          <i [class]="
-                            deleteLoadingRows[rowIndex] ? 'pi pi-spin pi-spinner delete-icon' : 'pi pi-trash delete-icon'"></i>
+                          <i
+                            [class]="
+                              deleteLoadingRows[rowIndex]
+                                ? 'pi pi-spin pi-spinner delete-icon'
+                                : 'pi pi-trash delete-icon'
+                            "
+                          ></i>
                         </span>
                       </div>
                     </ng-container>
@@ -1242,3 +1247,10 @@
     </div>
   </div>
 </div>
+<p-confirmDialog
+  acceptButtonStyleClass="acceptBtn"
+  rejectButtonStyleClass="rejectBtn"
+  styleClass="table-confirm-dialog"
+  header="Delete Confirmation"
+  icon="pi pi-exclamation-triangle"
+></p-confirmDialog>
