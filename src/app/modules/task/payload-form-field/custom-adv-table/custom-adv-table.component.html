@@ -618,6 +618,7 @@
                           [isRequired]="col?.validators?.required"
                           [maxLength]="col?.validators?.maxLength"
                           [showMaxCharLimit]="col?.validators?.maxLength"
+                          [useGrouping]="col?.metaData?.thousandsSeparator"
                           [style.--input-color]="col?.metaData?.styleProperties?.properties?.textColor"
                           [style.--input-text-align]="col?.metaData?.styleProperties?.properties?.textHorizontalAlign"
                           [style.--input-background-color]="col?.metaData?.styleProperties?.properties?.backgroundColor"
