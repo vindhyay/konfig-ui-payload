@@ -602,8 +602,7 @@
                             <finlevit-number
                               [placeholder]="col?.metaData?.placeholder"
                               [tooltip]="col?.metaData?.tooltip"
-                              [mode]="col?.metaData?.mode"
-                              [currency]="col?.metaData?.currency"
+                              [mode]="col?.metaData?.mode === 'currency' ? 'decimal' : col?.metaData?.mode"
                               [minFractionDigits]="col?.metaData?.minFractionDigits"
                               [maxFractionDigits]="col?.metaData?.maxFractionDigits"
                               [isRequired]="col?.validators?.required"
@@ -694,7 +693,7 @@
                               [independentBorders]="col?.metaData?.styleProperties?.properties?.independentBorder"
                               [allowLabelWrapping]="col?.metaData?.allowLabelWrapping"
                               [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
-                              [prefixText]="col?.metaData?.prefixText"
+                              [prefixText]="col.metaData.prefixText || col?.metaData?.currency"
                               [suffixText]="col?.metaData?.suffixText"
                               [showClearButton]="col?.metaData?.showClearButton"
                               [step]="col?.metaData?.step"
@@ -719,7 +718,6 @@
                               "
                             ></finlevit-number>
                           </ng-container>
-
                           <ng-container
                             *ngIf="
                               !(
@@ -739,7 +737,11 @@
                               {{
                                 col?.metaData?.isFormulaField
                                   ? calculateCellValue(col, rowIndex)
-                                  : (rowData[col.columnId] | number)
+                                  : col.metaData?.currency
+                                  ? col.metaData.currency + " " + rowData[col.columnId]
+                                  : col.metaData?.thousandsSeparator
+                                  ? (rowData[col.columnId] | number)
+                                  : rowData[col.columnId]
                               }}
                             </ng-template>
                           </ng-container>
