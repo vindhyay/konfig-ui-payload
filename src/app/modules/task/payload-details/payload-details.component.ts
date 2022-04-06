@@ -7,7 +7,7 @@ import { UserDataModel } from "../../auth/models";
 import { addOriginalPosition, getFieldFromFields, parseApiResponse } from "../../../utils";
 import { EditorService } from "../editor.service";
 import { LoaderService } from "../../../services/loader.service";
-import { WidgetTypes } from "../model/create-form.models";
+import { IStyleConfig, WidgetTypes } from "../model/create-form.models";
 
 @Component({
   selector: "app-payload-details",
@@ -29,7 +29,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
   transactionDetails: any = {};
   formFields: any = [];
   currentUser: UserDataModel | undefined;
-  showActions: boolean = true;
+  styleConfig: IStyleConfig = {} as IStyleConfig;
   sessionFields = {};
   ngOnInit(): void {
     this.currentUser = this.authService.getCurrentUser();
@@ -79,6 +79,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
           const { data: transactionDetails, error } = parseApiResponse(result);
           if (transactionDetails && !error) {
             this.editorService.setTransactionDetails(transactionDetails);
+            this.styleConfig = transactionDetails?.styleConfig;
           } else {
             this.notificationService.error(error.errorMessage);
           }
