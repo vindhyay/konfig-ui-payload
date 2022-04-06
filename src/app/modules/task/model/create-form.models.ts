@@ -335,6 +335,10 @@ export enum RowActionConfigOptionTypes {
   update = "update",
 }
 
+export interface IStyleConfig {
+  canvasColor: string;
+}
+
 export class ConfigColumns {
   columnId: string;
   populateResponsePath: string;
