@@ -280,8 +280,9 @@
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
                           [placeholder]="col?.metaData?.placeholder || 'select'"
                           [isDisabled]="false"
+                          [isSmall]="true"
                           [isRequired]="col?.validators?.required"
-                          [options]="col?.metaData?.options"
+                          [options]="columns[colIndex]?.metaData?.options"
                           [optionLabel]="
                             col?.metaData?.isLabelAndValue || col?.metaData?.optionType === 'dataresource'
                               ? col?.metaData?.optionLabel
