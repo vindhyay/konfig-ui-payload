@@ -8,9 +8,7 @@ import { AlignTypes, BaseWidget, DropdownMetaData } from "../../model/create-for
 })
 export class DropdownFieldComponent implements OnInit {
   @Input() item: BaseWidget = {} as BaseWidget;
-  @Input() viewMode: boolean = false;
   @Input() isDisabled: boolean = false;
-  @Input() editMode: boolean = false;
   @Output() optionChange = new EventEmitter();
   @Input() borderColor: string;
   @Input() backgroundColor: string;
@@ -58,6 +56,10 @@ export class DropdownFieldComponent implements OnInit {
   @Input() labelFontWeight: string;
   @Input() labelFontStyle: string;
   @Input() labelTextDecoration: string;
+  @Input() labelmarginBottom: string;
+  @Input() labelmarginTop: string;
+  @Input() labelmarginLeft: string;
+  @Input() labelmarginRight: string;
   get metaData(): DropdownMetaData {
     return this.item.metaData as DropdownMetaData;
   }

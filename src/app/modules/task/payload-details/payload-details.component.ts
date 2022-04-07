@@ -1,139 +1,90 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { QUEUE_TYPES } from "../../../state/model/queue-types-model";
-import { UserService } from "../../user/services/user.service";
 import { AuthService } from "../../auth/services/auth.service";
 import { BaseComponent } from "../../shared/base/base.component";
 import { NotificationService } from "../../../services/notification.service";
 import { UserDataModel } from "../../auth/models";
-import { addOriginalPosition, getValueFromObjectByPath, parseApiResponse } from "../../../utils";
-import { TaskService } from "../services/task.service";
-import { BaseWidget, ButtonActions, DATA_TYPES, WidgetTypes } from "../model/create-form.models";
+import { addOriginalPosition, getFieldFromFields, parseApiResponse } from "../../../utils";
 import { EditorService } from "../editor.service";
+import { LoaderService } from "../../../services/loader.service";
+import { WidgetTypes } from "../model/create-form.models";
 
 @Component({
   selector: "app-payload-details",
   templateUrl: "./payload-details.component.html",
-  styleUrls: ["./payload-details.component.scss"]
+  styleUrls: ["./payload-details.component.scss"],
 })
 export class PayloadDetailsComponent extends BaseComponent implements OnInit {
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private userService: UserService,
     private authService: AuthService,
     private notificationService: NotificationService,
-    private taskService: TaskService,
-    private editorService: EditorService
+    private editorService: EditorService,
+    private loaderService: LoaderService
   ) {
     super();
   }
-  screenHeight: number;
-  screenWidth: number;
   applicationId: string | null = "";
   transactionDetails: any = {};
-  id: any;
   formFields: any = [];
   currentUser: UserDataModel | undefined;
   showActions: boolean = true;
-  queueType: QUEUE_TYPES = QUEUE_TYPES.NEW;
   sessionFields = {};
   ngOnInit(): void {
     this.currentUser = this.authService.getCurrentUser();
-    this.queueType = getValueFromObjectByPath(this.activatedRoute, "snapshot.data.queueType");
     this.activatedRoute.queryParamMap.subscribe((queryParams: any) => {
       this.sessionFields = Object.keys(queryParams.params).length
         ? queryParams.params
         : { name: this.currentUser?.name, userId: this.currentUser?.userId, email: this.currentUser?.emailId };
     });
-    this.applicationId = this.activatedRoute.snapshot?.params?.applicationId
+    this.applicationId = this.activatedRoute.snapshot?.params?.applicationId;
     if (this.applicationId) {
       this.authService.updateUserDetails(this.applicationId);
-      this.createTransaction(this.applicationId, this.id);
+      this.createTransaction(this.applicationId, this.transactionDetails?.id);
     }
-    this.taskService.transactionDetailsSubject.subscribe(value => {
-      if (value) {
-        if(this.formFields.length){
-          if(this.formFields?.length!==value?.uiPayload?.length || this.transactionDetails?.screenId !== value?.screenId){
-            this.formFields = value?.uiPayload || [];
-            addOriginalPosition(this.formFields);
-          }else{
-            this.formFields.forEach((element,index) => {
-              for (const prop in element) {
-                if(prop==='children'){
-                  this.formFields[index][prop].forEach((subelement,subindex)=>{
-                    for (const subprop in subelement) {
-                      this.formFields[index][prop][subindex][subprop]= value.uiPayload[index][prop][subindex][subprop];
-                    }
-                  })
-                }else if(prop==='value') {
-                  if (!element[prop]|| typeof element[prop]!= "object" || !element[prop]?.value) {
-                    this.formFields[index][prop] = { ...value.uiPayload[index][prop], value: value.uiPayload[index][prop].value ? value.uiPayload[index][prop].value : null };
-                  }
-                }else if(this.formFields[index][prop]!==value.uiPayload[index][prop]){
-                  this.formFields[index][prop]=value.uiPayload[index][prop];
-                }
-              }
-            });
+    this.subscribe(this.loaderService.getLoadingStatus(), (loader) => {
+      this.loading = loader;
+    });
+    this.subscribe(this.editorService.transactionDetails$, (transactionDetails) => {
+      if (transactionDetails) {
+        if (this.formFields.length) {
+          if (
+            this.formFields?.length !== transactionDetails?.uiPayload?.length ||
+            this.transactionDetails?.screenId !== transactionDetails?.screenId
+          ) {
+            // Directly updating form fields
+            this.formFields = transactionDetails?.uiPayload || [];
+          } else {
+            // indirectly updating form fields
+            const newFormFields = transactionDetails.uiPayload || [];
+            this.recursiveUpdateFieldProperties(this.formFields, newFormFields);
           }
-        }else{
-          this.formFields = value?.uiPayload || [];
-          addOriginalPosition(this.formFields);
+        } else {
+          this.formFields = transactionDetails?.uiPayload || [];
         }
-        this.transactionDetails = value;
-        this.formFields = this.formFields.sort((a,b)=> a?.y - b?.y);
-        const header = this.formFields.find(item => item?.metaData?.widgetType === WidgetTypes.Header);
-        const errorContainer = this.formFields.find(item => item?.metaData?.widgetType === WidgetTypes.ErrorContainer);
-        if (header && value?.errorMessage?.length && !errorContainer) {
-          const errorRows = value?.errorMessage.length * 3 + 5;
-          const errorContainer = new BaseWidget({
-            label: "Container",
-            description: "To hold error components",
-            widgetType: WidgetTypes.ErrorContainer,
-            cols: header.cols,
-            rows: 2,
-            x: header.x,
-            y: header.y + header.rows,
-            minItemCols: 20,
-            minItemRows: 0,
-            hideRows: 2,
-            defaultRows: errorRows,
-            defaultMinItemRows: 0,
-            defaultMinItemCols: 20,
-            dataType: DATA_TYPES.OBJECT,
-            movement: null,
-            value: { value: this.transactionDetails.errorMessage }
-          });
-           this.formFields.push(errorContainer);
-          setTimeout(() => {
-            errorContainer.rows = errorRows;
-            errorContainer.metaData.movement = "DOWN";
-            this.editorService.widgetChange.next(errorContainer);
-          });
-        }
+        addOriginalPosition(this.formFields);
+        this.transactionDetails = transactionDetails;
+        this.editorService.setFormFields(this.formFields);
+        this.formFields = this.formFields.sort((a, b) => a?.y - b?.y);
       }
     });
   }
   createTransaction(applicationId: string, id = "") {
     this.loading = true;
-    this.userService
+    this.editorService
       .createTransaction({ applicationId, ...(id && { id }) }, { sessionData: this.sessionFields })
       .subscribe(
-        result => {
+        (result) => {
           const { data: transactionDetails, error } = parseApiResponse(result);
           if (transactionDetails && !error) {
-            this.transactionDetails = transactionDetails;
-            const payloadFields = this.transactionDetails?.uiPayload || [];
-            addOriginalPosition(payloadFields);
-            this.transactionDetails.uiPayload = payloadFields;
-            this.taskService.setTransactionDetails(transactionDetails);
-            this.id = transactionDetails.id;
+            this.editorService.setTransactionDetails(transactionDetails);
           } else {
             this.notificationService.error(error.errorMessage);
           }
           this.loading = false;
         },
-        error => {
+        (error) => {
           this.loading = false;
           if (error.status === 401) {
             this.authService.logoff(false, this.activatedRoute);
@@ -146,165 +97,28 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
       );
   }
 
-  uniqueFieldChange($event) {
-    this.userService.uniqueKeyTransaction(this.transactionDetails.transactionId, { uniqueField: $event }, {screenId:  this.transactionDetails?.screenId}).subscribe(
-      result => {
-        const { data, error } = parseApiResponse(result);
-        this.loading = false;
-        if (data) {
-          this.transactionDetails = data;
-          this.taskService.setTransactionDetails(data);
-        }
-      },
-      error => {
-        this.loading = false;
-        this.notificationService.error(error.errorMessage);
-      }
-    );
-  }
-
-  async populateTransaction($event) {
-    const { triggerId, parameters, isUnique = false } = $event;
-    this.loading = true;
-    if (!isUnique) {
-      const saveResult = await this.userService
-        .saveTransaction({ transactionId: this.transactionDetails?.transactionId, screenId: this.transactionDetails?.screenId }, this.formFields)
-        .toPromise();
-    }
-    this.userService.populateTransaction(this.id, { triggerId, screenId: this.transactionDetails?.screenId }, { parameters }).subscribe(
-      result => {
-        const { data, error } = parseApiResponse(result);
-        this.loading = false;
-        if (data) {
-          this.transactionDetails = data;
-          this.taskService.setTransactionDetails(data);
-        }
-      },
-      error => {
-        this.loading = false;
-        this.notificationService.error(error.errorMessage);
-      }
-    );
-  }
-  getScreenData(event: any){
-    const { payloadFields: payloadMetaData, data: { metaData: { widgetId = '', status: statusId = "" } = {} } = {} } = event;
-    this.loading = true;
-    this.userService.saveAndValidateScreen({ statusId, screenId: this.transactionDetails?.screenId, transactionId: this.transactionDetails.transactionId }, payloadMetaData)
-      .subscribe(result => {
-      const { data, error } = parseApiResponse(result);
-      if (data && !error) {
-        this.userService.getScreenData(this.transactionDetails.id, {screenId: this.transactionDetails?.screenId, actionId: widgetId }).subscribe(result => {
-          this.loading = false;
-          const { data, error } = parseApiResponse(result);
-          if (data && !error) {
-            this.transactionDetails = data;
-            this.taskService.setTransactionDetails(data);
-          }else{
-            this.notificationService.error(error?.errorMessage || 'Failed', error?.errorCode)
-          }
-        }, error => {
-          this.loading = false;
-          this.notificationService.error(error?.error?.error?.errorMessage);
-        })
-      } else {
-        this.notificationService.error(error.errorMessage);
-      }
-    },error => {
-        this.loading = false;
-        this.notificationService.error(error?.error?.error?.errorMessage);
-      })
-  }
-
-  saveTransaction(event: any) {
-    const { payloadFields: payloadMetaData, data: { metaData: { status: statusId = "" } = {} } = {} } = event;
-    this.loading = true;
-    this.userService
-      .saveTransaction({ statusId, screenId: this.transactionDetails?.screenId, transactionId: this.transactionDetails.transactionId }, payloadMetaData)
-      .subscribe(
-        result => {
-          this.loading = false;
-          const { data, error } = parseApiResponse(result);
-          if (data && !error) {
-            this.taskService.setTransactionDetails(data);
-            this.notificationService.success("Transaction Saved Successfully", "Success");
+  recursiveUpdateFieldProperties(formFields = [], newFormFields = []) {
+    newFormFields.forEach((newField) => {
+      const findField = getFieldFromFields(formFields, newField.id);
+      if (findField) {
+        for (const prop in newField) {
+          // value and children are special properties need to handle differently
+          // check key is children if yes add all child properties recursively
+          if (prop !== "children" || findField?.metaData?.widgetType === WidgetTypes.AdvTable) {
+            findField[prop] = newField[prop];
           } else {
-            this.notificationService.error(error.errorMessage);
+            this.recursiveUpdateFieldProperties(findField?.children, newField?.children);
           }
-        },
-        error => {
-          this.loading = false;
-          this.notificationService.error(error?.error?.error?.errorMessage);
-        }
-      );
-  }
-  triggerUIAction(uiAction){
-    if(uiAction?.length){
-      uiAction.forEach(item=>{
-        if(item.action===ButtonActions.logout){
-          this.authService.logoff(false, this.activatedRoute);
-        }
-      })
-    }
-  }
-  triggerClicksAll(payloadData: any) {
-    const { payloadFields: payloadMetaData, payload: screenDataJson, files = [], itemData: {data:{ metaData: { status: statusId = "", toastMsg = "" } = {} },triggerId,uiAction} } = payloadData;
-    const params = {
-      triggerId,
-      screenId: this.transactionDetails.screenId,
-    };
-    const appId = this.transactionDetails?.application?.appId;
-    if (!appId) {
-      this.notificationService.error("Application not found", "Failed to submit");
-      return;
-    }
-    const isSubmit= payloadData?.itemData?.data?.metaData?.onClickConfigs?.filter(item=>item.action===ButtonActions.submit)?.length>0;
-    this.userService.saveTransaction({ transactionId: this.transactionDetails?.transactionId, screenId: this.transactionDetails?.screenId }, this.formFields)
-      .subscribe(result => {
-          this.loading = false;
-          const { data, error } = parseApiResponse(result);
-          if (data && !error) {
-            this.taskService.setTransactionDetails(data);
-            const payload = new FormData();
-            const allScreenData = {...this.transactionDetails.dataPayload, [this.transactionDetails.screenAlias]: screenDataJson}
-            payload.append("payload", JSON.stringify(allScreenData));
-            files.forEach((file: any) => {
-              payload.append("files", file);
-            });
-            this.loading = true;
-            this.userService.submitMuliplAction(this.transactionDetails.transactionId,params, payload).subscribe(
-              result => {
-                this.loading = false;
-                const { data, error } = parseApiResponse(result);
-                if (data && !error) {
-                  if(isSubmit)
-                    this.notificationService.success("Transaction Submitted Successfully", "Success");
-                  if(toastMsg){
-                    this.notificationService.success(toastMsg, "Success");
-                  }
-                  this.taskService.setTransactionDetails(data);
-                  this.id = data.id;
-                  this.triggerUIAction(uiAction);
-                } else {
-                  this.notificationService.error(error.errorMessage, "Error");
-                }
-              },
-              error => {
-                this.loading = false;
-                this.notificationService.error(error?.error?.error?.errorMessage);
-              }
-            );
-          }else{
-            this.loading = false;
-            this.notificationService.error(error.errorMessage);
+          // check if key is value if yes check for value structure {id, value} if not add default value
+          if (prop === "value") {
+            findField[prop] = Object(newField[prop] || {}).hasOwnProperty("value")
+              ? newField[prop]
+              : { id: null, value: null };
           }
-        }, error => {
-          this.loading = false;
-        })
-  }
-
-  redirectTo(QUEUE_TYPE?: any) {
-    this.router.navigate(["../../"], {
-      relativeTo: this.activatedRoute
+        }
+      } else {
+        formFields.push(newField);
+      }
     });
   }
 }

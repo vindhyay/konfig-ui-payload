@@ -1,4 +1,10 @@
-<div class="stepper-container">
+<div
+  [class]="{
+    'stepper-container': true,
+    'vertical-stepper': metaData?.stepperType === 'Vertical',
+    'horizontal-stepper': metaData?.stepperType === 'Horizontal'
+  }"
+>
   <div class="progressbar">
     <div
       class="stepper-header"
@@ -7,25 +13,20 @@
         height: metaData.headerHeight + 'px'
       }"
     >
-      <finlevit-grid
-        [viewMode]="viewMode"
-        [parent]="headerContent[0]"
-        [items]="headerContent[0]?.children"
-      ></finlevit-grid>
+      <finlevit-grid [parent]="headerContent[0]" [items]="headerContent[0]?.children"></finlevit-grid>
     </div>
     <ul
-      class="stepper-body"
+      class="stepper-body step-list"
       [ngStyle]="{
-        height: metaData.stepperHeight + 'px'
+        height: metaData?.stepperType === 'Vertical' ? metaData.stepperHeight + 'px' : 'auto'
       }"
       #stepperBody
     >
       <li
         *ngFor="let child of children; let i = index"
         [ngClass]="{
-          completed: _selectedIndex > i || completedSteps[child.metaData.widgetId],
-          selected: _selectedIndex === i,
-          hidden: i === 0
+          completed: selectedIndex > i || completedSteps[child.metaData.widgetId],
+          selected: selectedIndex === i
         }"
         (click)="onSelectIndexChange(i)"
       >
@@ -40,19 +41,19 @@
         <div class="step-label">
           <p
             [ngClass]="{
-              completedStep: _selectedIndex > i,
-              currentStep: _selectedIndex === i,
-              defaultColor: i > _selectedIndex
+              completedStep: selectedIndex > i,
+              currentStep: selectedIndex === i,
+              defaultColor: i > selectedIndex
             }"
           >
             {{ child.label }}
           </p>
-          <p class="sub-lable">{{ child?.metaData?.sublabel }}</p>
+          <p class="sub-lable">{{ child?.metaData?.subLabel }}</p>
         </div>
         <span
           [ngClass]="{
-            completedBar: _selectedIndex > i,
-            currentBar: _selectedIndex <= i
+            completedBar: selectedIndex > i,
+            currentBar: selectedIndex <= i
           }"
         ></span>
       </li>
@@ -63,16 +64,11 @@
       <div class="scrollView">
         <div [ngClass]="'content' + ' content' + metaData['widgetId']" #contentConatiner>
           <finlevit-grid
-            [viewMode]="viewMode"
-            [parent]="children[_selectedIndex]"
-            [items]="children[_selectedIndex].children"
-            (onBtnClick)="onBtnClick.emit($event)"
-            (checkHeight)="checkHeight()"
-            [showEdit]="showEdit"
-            (onTableDataChange)="onTableDataChange.emit($event)"
-            (onOptionChange)="onOptionChange.emit($event)"
+            [parent]="children[selectedIndex]"
+            [items]="children[selectedIndex].children"
+            [filter]="{ metaData: { isFooterContainer: false } }"
           ></finlevit-grid>
-          <ng-container *ngIf="_selectedIndex == children.length - 1 && reviewData.length">
+          <ng-container *ngIf="selectedIndex === children.length - 1 && reviewData.length">
             <div class="review_content">
               <div *ngFor="let child of reviewData; let i = index">
                 <h5>{{ child.label }}</h5>
@@ -96,10 +92,9 @@
         }"
       >
         <finlevit-grid
-          [viewMode]="viewMode"
-          [showEdit]="showEdit"
-          [parent]="children[0]"
-          [items]="children[0]?.children"
+          [parent]="children[selectedIndex].children[0]"
+          [items]="children[selectedIndex].children[0]?.children"
+          [emitButtonEvent]="true"
           (onBtnClick)="setSelection($event)"
           [style]="{ width: '100%' }"
         ></finlevit-grid>

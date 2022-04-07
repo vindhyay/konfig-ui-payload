@@ -1,10 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { BaseWidget } from "../../model/create-form.models";
-import { TaskService } from "../../services/task.service";
 import { parseApiResponse } from "../../../../utils";
 import { BaseComponent } from "../../../shared/base/base.component";
-import { UserService } from "../../../user/services/user.service";
 import { NotificationService } from "../../../../services/notification.service";
+import { EditorService } from "../../editor.service";
 
 @Component({
   selector: "app-transaction-table",
@@ -13,17 +12,11 @@ import { NotificationService } from "../../../../services/notification.service";
 })
 export class TransactionTableComponent extends BaseComponent implements OnInit {
   @Input() item: BaseWidget = {} as BaseWidget;
-  @Input() viewMode: boolean = false;
-  @Input() editMode: boolean = false;
-  @Output() optionChange = new EventEmitter();
+  @Input() isDisabled: boolean = false;
   tableData = [];
   totalRecords = 0;
   columns = [];
-  constructor(
-    private taskService: TaskService,
-    private userService: UserService,
-    private notificationService: NotificationService
-  ) {
+  constructor(private editorService: EditorService, private notificationService: NotificationService) {
     super();
   }
   get metaData(): any {
@@ -31,7 +24,7 @@ export class TransactionTableComponent extends BaseComponent implements OnInit {
   }
   ngOnInit(): void {}
   getTransactionTableData(params) {
-    this.taskService.getTransactionTableData(params).subscribe((result) => {
+    this.editorService.getTransactionTableData(params).subscribe((result) => {
       const { data, error } = parseApiResponse(result);
       if (!error && data) {
         this.totalRecords = data.totalRecordCount;
@@ -56,18 +49,18 @@ export class TransactionTableComponent extends BaseComponent implements OnInit {
   }
   onPageChange($event) {
     const { page = 1, limit = 10 } = $event || {};
-    const { applicationId } = this.taskService.getTransactionDetails();
+    const { applicationId } = this.editorService.getTransactionDetails();
     const { id: fieldId } = this.item;
     const params = { applicationId, fieldId, pageNo: page - 1, recordNo: limit };
     this.getTransactionTableData(params);
   }
   getTransactionDetails(id) {
     this.loading = true;
-    this.userService.getTransactionDetails(id).subscribe(
+    this.editorService.fetchTransactionDetails(id).subscribe(
       (result) => {
         const { data: transactionDetails, error } = parseApiResponse(result);
         if (transactionDetails && !error) {
-          this.taskService.setTransactionDetails(transactionDetails);
+          this.editorService.setTransactionDetails(transactionDetails);
         } else {
           this.notificationService.error(error.errorMessage);
         }

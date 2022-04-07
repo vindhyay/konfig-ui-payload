@@ -3,7 +3,13 @@ import { result } from "./state/model/api-response";
 import { FormControl, Validators } from "@angular/forms";
 import { ButtonActions, WidgetTypes } from "./modules/task/model/create-form.models";
 
-export const Action_Config_UI = [ButtonActions.logout, ButtonActions.nextStep, ButtonActions.previousStep];
+export const UI_ACTIONS = [
+  ButtonActions.logout,
+  ButtonActions.nextStep,
+  ButtonActions.previousStep,
+  ButtonActions.openModals,
+  ButtonActions.closeModals,
+];
 
 const uid = new ShortUniqueId();
 export const getValueFromObjectByPath = (obj: any, path: any) =>
@@ -48,13 +54,16 @@ export const parseApiResponse = (result: result): result => {
 };
 export const validateFields = (fields: any[]) => {
   let result = true;
+  let errorFields = [];
   fields.forEach((field: any) => {
-    if (field.children && field.children.length) {
-      if (!validateFields(field.children)) {
+    if (field?.children && field?.children?.length) {
+      const { result: validationStatus, errorFields: errorFieldsData } = validateFields(field.children);
+      if (!validationStatus) {
         result = false;
+        errorFields = errorFields.concat(errorFieldsData);
       }
-    } else {
-      const tempFormControl = new FormControl(field.value.value, getValidators(field.validators));
+    } else if (field) {
+      const tempFormControl = new FormControl(field?.value?.value, getValidators(field?.validators || {}));
       if (tempFormControl.valid || field?.rows === 0 || field?.metaData?.isHidden) {
         field.error = false;
         field.errorMsg = "";
@@ -64,11 +73,12 @@ export const validateFields = (fields: any[]) => {
           tempFormControl.errors,
           field?.label || field?.displayName || field?.widgetName
         )[0];
+        errorFields.push(field);
         result = false;
       }
     }
   });
-  return result;
+  return { result, errorFields };
 };
 export const getValidators = (validators: any) => {
   const _validators: any = [];
@@ -143,7 +153,8 @@ export const scrollToBottom = (element) => {
 export const addOriginalPosition = (fields) => {
   fields.forEach((field) => {
     field.metaData.originalHeight = field.rows + field.y;
-    if (field.children && field.children.length) {
+    field.metaData.originalY = field.y;
+    if (field.children && field.children.length && field?.metaData?.widgetType !== WidgetTypes.AdvTable) {
       addOriginalPosition(field.children);
     }
   });
@@ -196,3 +207,93 @@ export class DeepCopy {
     return node;
   }
 }
+export const getValueFromField = (fields, fieldId) => {
+  let paramField = null;
+  fields.forEach((field) => {
+    if (field.children && field.children.length) {
+      const nestedParamField = getValueFromField(field.children, fieldId);
+      paramField = nestedParamField || paramField;
+    } else {
+      if (field?.id === fieldId) {
+        paramField = field;
+      }
+    }
+  });
+  return paramField;
+};
+
+export const getBorderStyle = (style) => {
+  const styleProperties = style.properties;
+  const {
+    independentBorder,
+    borderTopStyle,
+    borderLeftStyle,
+    borderBottomStyle,
+    borderRightStyle,
+    borderTopLeftRadius,
+    borderTopRightRadius,
+    borderBottomLeftRadius,
+    borderBottomRightRadius,
+    borderRadius,
+    borderTopColor,
+    borderLeftColor,
+    borderBottomColor,
+    borderRightColor,
+    borderColor,
+    borderTopWidth,
+    borderLeftWidth,
+    borderBottomWidth,
+    borderRightWidth,
+    borderWidth,
+    borderStyle,
+    shadowStyle,
+    horizontalOffset,
+    verticalOffset,
+    blurRadius,
+    spreadRadius,
+    boxShadowColor,
+  } = styleProperties;
+  let styles = {
+    "border-top-style": independentBorder ? borderTopStyle : borderStyle,
+    "border-left-style": independentBorder ? borderLeftStyle : borderStyle,
+    "border-bottom-style": independentBorder ? borderBottomStyle : borderStyle,
+    "border-right-style": independentBorder ? borderRightStyle : borderStyle,
+
+    "border-top-left-radius": independentBorder ? borderTopLeftRadius : borderRadius,
+    "border-top-right-radius": independentBorder ? borderTopRightRadius : borderRadius,
+    "border-bottom-left-radius": independentBorder ? borderBottomLeftRadius : borderRadius,
+    "border-bottom-right-radius": independentBorder ? borderBottomRightRadius : borderRadius,
+
+    "border-top-color": independentBorder ? borderTopColor : borderColor,
+    "border-left-color": independentBorder ? borderLeftColor : borderColor,
+    "border-bottom-color": independentBorder ? borderBottomColor : borderColor,
+    "border-right-color": independentBorder ? borderRightColor : borderColor,
+
+    "border-top-width": independentBorder ? borderTopWidth : borderWidth,
+    "border-left-width": independentBorder ? borderLeftWidth : borderWidth,
+    "border-bottom-width": independentBorder ? borderBottomWidth : borderWidth,
+    "border-right-width": independentBorder ? borderRightWidth : borderWidth,
+  };
+  switch (shadowStyle) {
+    case "none":
+      break;
+    case "inset":
+      styles["box-shadow"] =
+        horizontalOffset +
+        " " +
+        verticalOffset +
+        " " +
+        blurRadius +
+        " " +
+        spreadRadius +
+        " " +
+        boxShadowColor +
+        " inset";
+      break;
+    case "outset":
+      styles["box-shadow"] =
+        horizontalOffset + " " + verticalOffset + " " + blurRadius + " " + spreadRadius + " " + boxShadowColor;
+      break;
+  }
+  return styles;
+};
