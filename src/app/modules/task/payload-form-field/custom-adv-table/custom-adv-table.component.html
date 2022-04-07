@@ -612,8 +612,7 @@
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
                           [placeholder]="col?.metaData?.placeholder"
                           [tooltip]="col?.metaData?.tooltip"
-                          [mode]="col?.metaData?.mode"
-                          [currency]="col?.metaData?.currency"
+                          [mode]="col?.metaData?.mode === 'currency' ? 'decimal' : col?.metaData?.mode"
                           [minFractionDigits]="col?.metaData?.minFractionDigits"
                           [maxFractionDigits]="col?.metaData?.maxFractionDigits"
                           [isRequired]="col?.validators?.required"
@@ -688,7 +687,7 @@
                           [allowLabelWrapping]="col?.metaData?.allowLabelWrapping"
                           [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
                           [showErrorMsg]="col?.metaData?.showErrorMessage"
-                          [prefixText]="col?.metaData?.prefixText"
+                          [prefixText]="col?.metaData?.prefixText || col?.metaData?.currency"
                           [suffixText]="col?.metaData?.suffixText"
                           [showClearButton]="col?.metaData?.showClearButton"
                           [step]="col?.metaData?.step"
@@ -716,7 +715,9 @@
                             )
                           "
                         >
-                          {{ col?.value?.value }}
+                          {{
+                            col.metaData?.currency ? col.metaData.currency + " " + col?.value?.value : col?.value?.value
+                          }}
                         </ng-container>
                         <finlevit-lib-textarea
                           *ngIf="
