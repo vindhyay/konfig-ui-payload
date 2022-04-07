@@ -38,7 +38,7 @@ export const getErrorMessages = (errors: any, label: any) => {
         errorMessages.push(`Expected atleast value ${errors[error].min} but got ${errors[error].actual}`);
         break;
       case "max":
-        errorMessages.push(`Expected atleast value ${errors[error].max} but got ${errors[error].actual}`);
+        errorMessages.push(`Expected atmost value ${errors[error].max} but got ${errors[error].actual}`);
         break;
     }
   });

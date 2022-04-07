@@ -79,6 +79,12 @@
         }"
         #tableBody
       >
+        <app-loader [loading]="isLoading"></app-loader>
+        <ng-container
+          *ngIf="!isLoading && !(tableFilters?.filtersEnabled ? filteredTableData.length : tableData.length)"
+        >
+          <div class="no-data-container"></div>
+        </ng-container>
         <ng-container
           *ngFor="
             let rowData of (tableFilters?.filtersEnabled ? filteredTableData : tableData)
@@ -117,7 +123,7 @@
                   flex: (columns[colIndex]?.width || 100) + ' 0 auto'
                 }"
                 *ngFor="let col of rowData; let colIndex = index"
-                (dblclick)="onColEdit($event, col, rowIndex, rowData)"
+                (dblclick)="isColumnEdit && onColEdit($event, col, rowIndex, rowData)"
               >
                 <div
                   [ngClass]="{ 'cell-container': true }"
@@ -274,8 +280,9 @@
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
                           [placeholder]="col?.metaData?.placeholder || 'select'"
                           [isDisabled]="false"
+                          [isSmall]="true"
                           [isRequired]="col?.validators?.required"
-                          [options]="col?.metaData?.options"
+                          [options]="columns[colIndex]?.metaData?.options"
                           [optionLabel]="
                             col?.metaData?.isLabelAndValue || col?.metaData?.optionType === 'dataresource'
                               ? col?.metaData?.optionLabel
@@ -605,13 +612,13 @@
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
                           [placeholder]="col?.metaData?.placeholder"
                           [tooltip]="col?.metaData?.tooltip"
-                          [mode]="col?.metaData?.mode"
-                          [currency]="col?.metaData?.currency"
+                          [mode]="col?.metaData?.mode === 'currency' ? 'decimal' : col?.metaData?.mode"
                           [minFractionDigits]="col?.metaData?.minFractionDigits"
                           [maxFractionDigits]="col?.metaData?.maxFractionDigits"
                           [isRequired]="col?.validators?.required"
                           [maxLength]="col?.validators?.maxLength"
                           [showMaxCharLimit]="col?.validators?.maxLength"
+                          [useGrouping]="col?.metaData?.thousandsSeparator"
                           [style.--input-color]="col?.metaData?.styleProperties?.properties?.textColor"
                           [style.--input-text-align]="col?.metaData?.styleProperties?.properties?.textHorizontalAlign"
                           [style.--input-background-color]="col?.metaData?.styleProperties?.properties?.backgroundColor"
@@ -680,7 +687,7 @@
                           [allowLabelWrapping]="col?.metaData?.allowLabelWrapping"
                           [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
                           [showErrorMsg]="col?.metaData?.showErrorMessage"
-                          [prefixText]="col?.metaData?.prefixText"
+                          [prefixText]="col?.metaData?.prefixText || col?.metaData?.currency"
                           [suffixText]="col?.metaData?.suffixText"
                           [showClearButton]="col?.metaData?.showClearButton"
                           [step]="col?.metaData?.step"
@@ -708,7 +715,9 @@
                             )
                           "
                         >
-                          {{ col?.value?.value }}
+                          {{
+                            col.metaData?.currency ? col.metaData.currency + " " + col?.value?.value : col?.value?.value
+                          }}
                         </ng-container>
                         <finlevit-lib-textarea
                           *ngIf="
@@ -860,7 +869,6 @@
                           [style.--input-selected-border-color]="
                             col?.metaData?.styleProperties?.properties?.selectedBorderColor
                           "
-                          [style.--input-flex-direction]="col?.metaData?.styleProperties?.properties?.radioAlign"
                           [style.--input-color]="col?.metaData?.styleProperties?.properties?.textColor"
                           [style.--input-text-align]="col?.metaData?.styleProperties?.properties?.textHorizontalAlign"
                           [style.--input-background-color]="col?.metaData?.styleProperties?.properties?.backgroundColor"
@@ -879,6 +887,74 @@
                           [style.--input-label-width]="col?.metaData?.styleProperties?.properties?.labelWidth + '%'"
                           [style.--input-radiobutton-size]="col?.metaData?.styleProperties?.properties?.radiobuttonSize"
                           [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
+                          [style.--input-option-tile-height]="
+                          col?.metaData?.styleProperties?.properties?.optionTileHeight
+                        "
+                        [style.--input-option-tile-width]="
+                          col?.metaData?.styleProperties?.properties?.optionTileWidth
+                        "
+                        [style.--input-option-tile-backgroundColor]="
+                          col?.metaData?.styleProperties?.properties?.optionTileBackgroundColor
+                        "
+                        [horizontalContentAlignment]="
+                          col?.metaData?.styleProperties?.properties?.horizontalOptionAlignment
+                        "
+                        [verticalContentAlignment]="
+                          col?.metaData?.styleProperties?.properties?.verticalOptionAlignment
+                        "
+                        [style.--input-option-label-margin]="
+                          col?.metaData?.styleProperties?.properties?.labelTextMargin
+                        "
+                        [buttonType]="
+                          col?.metaData?.styleProperties?.properties?.buttonType
+                            ? col?.metaData?.styleProperties?.properties?.buttonType
+                            : 'radio'
+                        "
+                        [independentBorders]="col?.metaData?.styleProperties?.properties?.independentBorder"
+                        [style.--input-border-width]="col?.metaData?.styleProperties?.properties?.borderWidth"
+                        [style.--input-border-color]="col?.metaData?.styleProperties?.properties?.borderColor"
+                        [style.--input-border]="col?.metaData?.styleProperties?.properties?.borderStyle"
+                        [style.--input-border-radius]="col?.metaData?.styleProperties?.properties?.borderRadius"
+                        [style.--input-border-top]="col?.metaData?.styleProperties?.properties?.borderTopStyle"
+                        [style.--input-border-radius-top-left]="
+                          col?.metaData?.styleProperties?.properties?.borderTopLeftRadius
+                        "
+                        [style.--input-border-top-color]="col?.metaData?.styleProperties?.properties?.borderTopColor"
+                        [style.--input-border-top-width]="col?.metaData?.styleProperties?.properties?.borderTopWidth"
+                        [style.--input-border-right]="col?.metaData?.styleProperties?.properties?.borderRightStyle"
+                        [style.--input-border-radius-top-right]="
+                          col?.metaData?.styleProperties?.properties?.borderTopRightRadius
+                        "
+                        [style.--input-border-right-color]="
+                          col?.metaData?.styleProperties?.properties?.borderRightColor
+                        "
+                        [style.--input-border-right-width]="
+                          col?.metaData?.styleProperties?.properties?.borderRightWidth
+                        "
+                        [style.--input-border-bottom]="col?.metaData?.styleProperties?.properties?.borderBottomStyle"
+                        [style.--input-border-radius-bottom-right]="
+                          col?.metaData?.styleProperties?.properties?.borderBottomRightRadius
+                        "
+                        [style.--input-border-bottom-color]="
+                          col?.metaData?.styleProperties?.properties?.borderBottomColor
+                        "
+                        [style.--input-border-bottom-width]="
+                          col?.metaData?.styleProperties?.properties?.borderBottomWidth
+                        "
+                        [style.--input-border-left]="col?.metaData?.styleProperties?.properties?.borderLeftStyle"
+                        [style.--input-border-radius-bottom-left]="
+                          col?.metaData?.styleProperties?.properties?.borderBottomLeftRadius
+                        "
+                        [style.--input-border-left-color]="
+                          col?.metaData?.styleProperties?.properties?.borderLeftColor
+                        "
+                        [style.--input-border-left-width]="
+                          col?.metaData?.styleProperties?.properties?.borderLeftWidth
+                        "
+                        [style.--input-option-tile-margin]="
+                          col?.metaData?.styleProperties?.properties.optionTileMargin
+                        "
+                        [buttonAlignment]="col?.metaData?.styleProperties?.properties.radioAlign"
                           [error]="
                             rowErrors[rowIndex] && rowErrors[rowIndex][col?.metaData?.widgetId]
                               ? rowErrors[rowIndex][col?.metaData?.widgetId]['error']
@@ -902,7 +978,11 @@
                             )
                           "
                         >
-                          {{ col?.value?.value | date }}
+                          {{
+                            col?.metaData?.viewDateFormat
+                              ? (col?.value?.value | customDate: col?.metaData?.viewDateFormat)
+                              : (col?.value?.value | customDate: dateFormat)
+                          }}
                         </ng-container>
                         <finlevit-lib-datepicker
                           *ngIf="
@@ -1046,7 +1126,12 @@
                       <div
                         [ngClass]="{ 'row-actions edit-action-mode': true, disabled: Object.keys(editCells).length }"
                       >
-                        <i class="pi pi-check save-icon" (click)="onRowSave(rowIndex, modifyingData[rowIndex])"></i>
+                        <i
+                          [class]="
+                            saveLoadingRows[rowIndex] ? 'pi pi-spin pi-spinner save-icon' : 'pi pi-check save-icon'
+                          "
+                          (click)="onRowSave(rowIndex, modifyingData[rowIndex])"
+                        ></i>
                         <i
                           class="pi pi-times cancel-icon"
                           (click)="onRowEditCancel(rowIndex, modifyingData[rowIndex])"
@@ -1068,14 +1153,20 @@
                     <ng-container *ngIf="!editRows[rowIndex] && !newRows[rowIndex]">
                       <div [ngClass]="{ 'row-actions': true, disabled: Object.keys(editCells).length }">
                         <span class="edit-action" *ngIf="actions?.editRow" (click)="onEdit(rowIndex, rowData)">
-                          <i class="pi pi-pencil"></i>
+                          <i class="pi pi-pencil edit-icon"></i>
                         </span>
                         <span
                           class="delete-action"
                           *ngIf="actions?.deleteRow"
                           (click)="onDelete(rowIndex, modifyingData[rowIndex])"
                         >
-                          <i class="pi pi-trash delete-icon"></i>
+                          <i
+                            [class]="
+                              deleteLoadingRows[rowIndex]
+                                ? 'pi pi-spin pi-spinner delete-icon'
+                                : 'pi pi-trash delete-icon'
+                            "
+                          ></i>
                         </span>
                       </div>
                     </ng-container>
@@ -1226,3 +1317,10 @@
     </div>
   </div>
 </div>
+<p-confirmDialog
+  acceptButtonStyleClass="acceptBtn"
+  rejectButtonStyleClass="rejectBtn"
+  styleClass="table-confirm-dialog"
+  header="Delete Confirmation"
+  icon="pi pi-exclamation-triangle"
+></p-confirmDialog>

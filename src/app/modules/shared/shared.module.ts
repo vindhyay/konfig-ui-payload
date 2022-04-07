@@ -26,6 +26,8 @@ import { BtnIconComponent } from "./btn-icon/btn-icon.component";
 import { BtnDangerComponent } from "./btn-danger/btn-danger.component";
 import { LoaderComponent } from "./loader/loader.component";
 import { FilterPipe } from "src/app/pipes/filter.pipe";
+import { CustomDatePipe } from "../../pipes/custom-date.pipe";
+import { ConfirmDialogModule } from "primeng/confirmdialog";
 
 @NgModule({
   declarations: [
@@ -43,7 +45,8 @@ import { FilterPipe } from "src/app/pipes/filter.pipe";
     BtnIconComponent,
     BtnDangerComponent,
     LoaderComponent,
-    FilterPipe
+    FilterPipe,
+    CustomDatePipe,
   ],
   imports: [
     CommonModule,
@@ -87,7 +90,9 @@ import { FilterPipe } from "src/app/pipes/filter.pipe";
     BtnIconComponent,
     BtnDangerComponent,
     LoaderComponent,
-    FilterPipe
+    FilterPipe,
+    CustomDatePipe,
+    ConfirmDialogModule,
   ],
 })
 export class SharedModule {}

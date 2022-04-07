@@ -164,6 +164,8 @@ export class AppConfigService {
       getScreenDataURL: ACCOUNT_WORKFLOW_BASE_URL + "/transaction",
       //MultipleClickActionSubmit
       submitMultipleAction: ACCOUNT_WORKFLOW_BASE_URL + "/transaction/click-trigger",
+      // Update row API
+      updateTableRowDataURL: ACCOUNT_WORKFLOW_BASE_URL + "/transaction/advance-table-action",
     };
   }
 }

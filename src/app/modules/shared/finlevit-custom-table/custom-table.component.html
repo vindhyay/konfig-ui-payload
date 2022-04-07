@@ -281,7 +281,7 @@
                   flex: (col?.width || 100) + ' 0 auto'
                 }"
                 *ngFor="let col of columns"
-                (dblclick)="!col?.metaData?.readOnly ? onColEdit($event, col, rowIndex, rowData) : null"
+                (dblclick)="!col?.metaData?.readOnly && isColumnEdit ? onColEdit($event, col, rowIndex, rowData) : null"
               >
                 <div
                   [ngClass]="{ 'cell-container': true }"
@@ -602,13 +602,13 @@
                             <finlevit-number
                               [placeholder]="col?.metaData?.placeholder"
                               [tooltip]="col?.metaData?.tooltip"
-                              [mode]="col?.metaData?.mode"
-                              [currency]="col?.metaData?.currency"
+                              [mode]="col?.metaData?.mode === 'currency' ? 'decimal' : col?.metaData?.mode"
                               [minFractionDigits]="col?.metaData?.minFractionDigits"
                               [maxFractionDigits]="col?.metaData?.maxFractionDigits"
                               [isRequired]="col?.validators?.required"
                               [maxLength]="col?.validators?.maxLength"
                               [showMaxCharLimit]="col?.validators?.maxLength"
+                              [useGrouping]="col?.metaData?.thousandsSeparator"
                               [style.--input-color]="col?.metaData?.styleProperties?.properties?.textColor"
                               [style.--input-text-align]="
                                 col?.metaData?.styleProperties?.properties?.textHorizontalAlign
@@ -694,7 +694,7 @@
                               [independentBorders]="col?.metaData?.styleProperties?.properties?.independentBorder"
                               [allowLabelWrapping]="col?.metaData?.allowLabelWrapping"
                               [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
-                              [prefixText]="col?.metaData?.prefixText"
+                              [prefixText]="col.metaData.prefixText || col?.metaData?.currency"
                               [suffixText]="col?.metaData?.suffixText"
                               [showClearButton]="col?.metaData?.showClearButton"
                               [step]="col?.metaData?.step"
@@ -719,7 +719,6 @@
                               "
                             ></finlevit-number>
                           </ng-container>
-
                           <ng-container
                             *ngIf="
                               !(
@@ -739,7 +738,11 @@
                               {{
                                 col?.metaData?.isFormulaField
                                   ? calculateCellValue(col, rowIndex)
-                                  : (rowData[col.columnId] | number)
+                                  : col.metaData?.currency
+                                  ? col.metaData.currency + " " + rowData[col.columnId]
+                                  : col.metaData?.thousandsSeparator
+                                  ? (rowData[col.columnId] | number)
+                                  : rowData[col.columnId]
                               }}
                             </ng-template>
                           </ng-container>
@@ -886,9 +889,23 @@
                               [ngTemplateOutletContext]="{ row: rowData, column: col }"
                             ></ng-container>
                             <ng-template #generic>
-                              {{ rowData[col.columnId] | date }}
+                              {{
+                                col?.metaData?.viewDateFormat
+                                  ? (rowData[col.columnId] | customDate: col?.metaData?.viewDateFormat)
+                                  : (rowData[col.columnId] | customDate: dateFormat)
+                              }}
                             </ng-template>
                           </ng-container>
+                        </div>
+                        <div class="pl-1" *ngSwitchDefault>
+                          <ng-container
+                            *ngIf="customTemplates && customTemplates[col?.columnId]; else generic"
+                            [ngTemplateOutlet]="customTemplates[col?.columnId]"
+                            [ngTemplateOutletContext]="{ row: rowData, column: col }"
+                          ></ng-container>
+                          <ng-template #generic>
+                            {{ rowData[col?.columnId] }}
+                          </ng-template>
                         </div>
                       </ng-container>
                     </ng-container>
