@@ -519,6 +519,9 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
         let expression = "";
         columnFormula.forEach((field) => {
           if (field?.resourceType === resourceType.PAYLOAD_FIELD) {
+            if (this.tableData[rowIndex][field.columnId] === null) {
+              this.tableData[rowIndex][field.columnId] = undefined;
+            }
             expression = expression + " " + this.tableData[rowIndex][field.columnId];
           }
           if (field?.resourceType === resourceType.BRACKET) {
@@ -528,8 +531,16 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
             expression = expression + " " + field?.expression;
           }
         });
-        if (eval(expression) === Infinity) {
+        let evaluate;
+        try {
+          evaluate = eval(expression);
+        } catch (e) {
+          console.log(e);
+        }
+        if (evaluate === Infinity) {
           cellValue = "∞";
+        } else if (isNaN(evaluate)) {
+          cellValue = undefined;
         } else {
           cellValue = eval(expression) || null;
         }

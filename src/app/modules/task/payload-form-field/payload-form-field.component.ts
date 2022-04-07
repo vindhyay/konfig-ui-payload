@@ -308,12 +308,18 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
               expression = expression + " " + field?.expression;
             }
           });
-          if (eval(expression) === Infinity) {
+          let evaluate;
+          try {
+            evaluate = eval(expression);
+          } catch (e) {
+            console.log(e);
+          }
+          if (evaluate === Infinity) {
             formulaValue = "∞";
-          } else if (isNaN(eval(expression))) {
+          } else if (isNaN(evaluate)) {
             formulaValue = undefined;
           } else {
-            formulaValue = eval(expression);
+            formulaValue = eval(expression) || null;
           }
         } else {
           formulaValue = values[0]?.value?.value || null;

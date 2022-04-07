@@ -526,8 +526,13 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
         columnFormula.forEach((field) => {
           if (field?.resourceType === resourceType.PAYLOAD_FIELD) {
             this.tableData[rowIndex].forEach((row) => {
-              if (row.metaData.widgetId === field.metaData.widgetId && row.value.value) {
-                expression = expression + " " + row.value.value;
+              if (row.metaData.widgetId === field.metaData.widgetId) {
+                if (row.value.value === null) {
+                  row.value.value = undefined;
+                }
+                if (row?.value?.value) {
+                  expression = expression + " " + row.value.value;
+                }
               }
             });
           }
@@ -538,8 +543,16 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
             expression = expression + " " + field?.expression;
           }
         });
-        if (eval(expression) === Infinity) {
+        let evaluate;
+        try {
+          evaluate = eval(expression);
+        } catch (e) {
+          console.log(e);
+        }
+        if (evaluate === Infinity) {
           cellValue = "∞";
+        } else if (isNaN(evaluate)) {
+          cellValue = undefined;
         } else {
           cellValue = eval(expression) || null;
         }
