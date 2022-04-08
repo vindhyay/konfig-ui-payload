@@ -769,16 +769,16 @@
         [style.--button-border-left-width]="item?.metaData?.styleProperties?.properties?.borderLeftWidth"
         [independentBorders]="item?.metaData?.styleProperties?.properties?.independentBorder"
         [variant]="item?.metaData?.styleProperties?.properties?.variant"
-        [style.--action-bg-color]="
-          item?.metaData?.styleProperties?.properties?.actionBgColor ||
+        [style.--hover-bg-color]="
+          item?.metaData?.styleProperties?.properties?.hoverBgColor ||
           item?.metaData?.styleProperties?.properties?.backgroundColor
         "
-        [style.--action-border-color]="
-          item?.metaData?.styleProperties?.properties?.actionBorderColor ||
+        [style.--hover-border-color]="
+          item?.metaData?.styleProperties?.properties?.hoverBorderColor ||
           item?.metaData?.styleProperties?.properties?.borderColor
         "
-        [style.--action-lable-color]="
-          item?.metaData?.styleProperties?.properties?.actionLableColor ||
+        [style.--hover-lable-color]="
+          item?.metaData?.styleProperties?.properties?.hoverLableColor ||
           item?.metaData?.styleProperties?.properties?.labelColor
         "
         [style.--button-background-color]="item?.metaData?.styleProperties?.properties?.backgroundColor"
