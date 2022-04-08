@@ -769,6 +769,19 @@
         [style.--button-border-left-width]="item?.metaData?.styleProperties?.properties?.borderLeftWidth"
         [independentBorders]="item?.metaData?.styleProperties?.properties?.independentBorder"
         [variant]="item?.metaData?.styleProperties?.properties?.variant"
+        [style.--action-bg-color]="
+          item?.metaData?.styleProperties?.properties?.actionBgColor ||
+          item?.metaData?.styleProperties?.properties?.backgroundColor
+        "
+        [style.--action-border-color]="
+          item?.metaData?.styleProperties?.properties?.actionBorderColor ||
+          item?.metaData?.styleProperties?.properties?.borderColor
+        "
+        [style.--action-lable-color]="
+          item?.metaData?.styleProperties?.properties?.actionLableColor ||
+          item?.metaData?.styleProperties?.properties?.labelColor
+        "
+        [style.--button-background-color]="item?.metaData?.styleProperties?.properties?.backgroundColor"
       ></finlevit-button>
     </div>
   </ng-container>
@@ -1075,13 +1088,19 @@
         [style.--input-label-width]="item?.metaData?.styleProperties?.properties?.labelWidth + '%'"
         [style.--input-radiobutton-size]="item?.metaData?.styleProperties?.properties?.radiobuttonSize"
         [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
-        [style.--input-option-tile-height]= "item?.metaData?.styleProperties?.properties?.optionTileHeight"
+        [style.--input-option-tile-height]="item?.metaData?.styleProperties?.properties?.optionTileHeight"
         [style.--input-option-tile-width]="item?.metaData?.styleProperties?.properties?.optionTileWidth"
-        [style.--input-option-tile-backgroundColor]="item?.metaData?.styleProperties?.properties?.optionTileBackgroundColor"
+        [style.--input-option-tile-backgroundColor]="
+          item?.metaData?.styleProperties?.properties?.optionTileBackgroundColor
+        "
         [horizontalContentAlignment]="item?.metaData?.styleProperties?.properties?.horizontalOptionAlignment"
         [verticalContentAlignment]="item?.metaData?.styleProperties?.properties?.verticalOptionAlignment"
         [style.--input-option-label-margin]="item?.metaData?.styleProperties?.properties?.labelTextMargin"
-        [buttonType]="item?.metaData?.styleProperties?.properties?.buttonType ? item?.metaData?.styleProperties?.properties?.buttonType :'radio'"
+        [buttonType]="
+          item?.metaData?.styleProperties?.properties?.buttonType
+            ? item?.metaData?.styleProperties?.properties?.buttonType
+            : 'radio'
+        "
         [independentBorders]="item?.metaData?.styleProperties?.properties?.independentBorder"
         [style.--input-border-width]="item?.metaData?.styleProperties?.properties?.borderWidth"
         [style.--input-border-color]="item?.metaData?.styleProperties?.properties?.borderColor"
@@ -1096,7 +1115,9 @@
         [style.--input-border-right-color]="item?.metaData?.styleProperties?.properties?.borderRightColor"
         [style.--input-border-right-width]="item?.metaData?.styleProperties?.properties?.borderRightWidth"
         [style.--input-border-bottom]="item?.metaData?.styleProperties?.properties?.borderBottomStyle"
-        [style.--input-border-radius-bottom-right]="item?.metaData?.styleProperties?.properties?.borderBottomRightRadius"
+        [style.--input-border-radius-bottom-right]="
+          item?.metaData?.styleProperties?.properties?.borderBottomRightRadius
+        "
         [style.--input-border-bottom-color]="item?.metaData?.styleProperties?.properties?.borderBottomColor"
         [style.--input-border-bottom-width]="item?.metaData?.styleProperties?.properties?.borderBottomWidth"
         [style.--input-border-left]="item?.metaData?.styleProperties?.properties?.borderLeftStyle"
