@@ -227,7 +227,12 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
   };
 
   optionChange($event, data) {
-    this.editorService.onOptionChange({ event: $event, data });
+    const metaData = this.item.metaData;
+    if (!!metaData["onChangeConfigs"] && metaData["onChangeConfigs"]?.length) {
+      this.editorService.onOptionChange({ event: $event, data });
+    } else if (metaData?.businessRuleIds?.length) {
+      this.editorService.onRuleTrigger({ event: $event, data });
+    }
     this.onChange($event);
   }
 
