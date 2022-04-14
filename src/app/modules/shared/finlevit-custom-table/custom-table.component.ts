@@ -60,6 +60,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
       this.updateRowsLimit();
     }
   }
+  @Input() isColumnEdit: boolean = false;
   @Input()
   set tableData(data) {
     this._tableData = data;
@@ -69,7 +70,6 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
   get tableData() {
     return this._tableData;
   }
-  @Input() isColumnEdit: boolean = false;
   constructor(private cdr: ChangeDetectorRef) {}
   Object = Object;
   CellAlignTypes = CELL_ALIGNMENTS_TYPES;
@@ -152,6 +152,24 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
   @ViewChild("tableBody", { static: false }) tableBody: ElementRef;
   @ViewChild("tableFilters", { static: false }) tableFilters: CustomTableFiltersComponent;
   @ViewChild("pagination", { static: false }) tablePagination: PaginationDirective;
+
+  isCellEditMode(col, rowIndex) {
+    return (
+      !col?.metaData?.readOnly &&
+      (this.editRows[rowIndex] ||
+        this.newRows[rowIndex] ||
+        (this.editCells[rowIndex] && this.editCells[rowIndex].hasOwnProperty(col?.columnId)))
+    );
+  }
+  isRowEditMode(rowIndex) {
+    return this.editRows[rowIndex];
+  }
+  isNewRowEditMode(rowIndex) {
+    return this.newRows[rowIndex];
+  }
+  get isEditRowExists() {
+    return Object.keys(this.editRows)?.length || Object.keys(this.newRows)?.length;
+  }
 
   isAllSelected() {
     const numSelected = this.selection.selected.length;

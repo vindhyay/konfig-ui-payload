@@ -95,6 +95,14 @@
     color: var(--body-cell-color);
     overflow: auto;
     font-family: var(--body-cell-font-family);
+    &.edit-row-exists {
+      .f-tr-group {
+        &:not(.edit-row) {
+          opacity: 0.5;
+          pointer-events: none;
+        }
+      }
+    }
   }
   .f-table .f-tbody .f-tr-group {
     display: flex;

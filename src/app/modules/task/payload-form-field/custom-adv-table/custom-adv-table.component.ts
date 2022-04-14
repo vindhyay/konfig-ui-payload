@@ -142,6 +142,24 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
   @ViewChild("pagination", { static: false }) tablePagination: PaginationDirective;
   constructor(private confirmationService: ConfirmationService) {}
 
+  isCellEditMode(col, rowIndex) {
+    return (
+      !col?.metaData?.readOnly &&
+      (this.editRows[rowIndex] ||
+        this.newRows[rowIndex] ||
+        (this.editCells[rowIndex] && this.editCells[rowIndex].hasOwnProperty(col?.metaData?.widgetId)))
+    );
+  }
+  isRowEditMode(rowIndex) {
+    return this.editRows[rowIndex];
+  }
+  isNewRowEditMode(rowIndex) {
+    return this.newRows[rowIndex];
+  }
+  get isEditRowExists() {
+    return Object.keys(this.editRows)?.length || Object.keys(this.newRows)?.length;
+  }
+
   ngOnInit(): void {
     this.tableId = getUniqueId("table");
   }

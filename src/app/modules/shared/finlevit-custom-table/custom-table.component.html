@@ -199,7 +199,7 @@
         </div>
       </div>
       <div
-        class="f-tbody"
+        [ngClass]="{ 'f-tbody': true, 'edit-row-exists': isEditRowExists }"
         [ngStyle]="{
           'min-width': getMinWidth()
         }"
@@ -235,7 +235,10 @@
           ></ng-container>
         </ng-container>
         <ng-template #bodyRow let-rowData let-rowIndex="rowIndex">
-          <div class="f-tr-group" (click)="onRowClick.emit(rowData)">
+          <div
+            [ngClass]="{ 'f-tr-group': true, 'edit-row': isRowEditMode(rowIndex) || isNewRowEditMode(rowIndex) }"
+            (click)="onRowClick.emit(rowData)"
+          >
             <div
               class="f-tr"
               [ngStyle]="{
@@ -301,14 +304,7 @@
                     <ng-container [ngSwitch]="col.colType">
                       <ng-container>
                         <div class="pl-1" *ngSwitchCase="TextInput">
-                          <ng-container
-                            *ngIf="
-                              !col?.metaData?.readOnly &&
-                              (editRows[rowIndex] ||
-                                newRows[rowIndex] ||
-                                (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.columnId)))
-                            "
-                          >
+                          <ng-container *ngIf="isCellEditMode(col, rowIndex)">
                             <finlevit-text
                               [leftIcon]="col?.metaData?.leftIcon"
                               [rightIcon]="col?.metaData?.rightIcon"
@@ -423,16 +419,7 @@
                               "
                             ></finlevit-text>
                           </ng-container>
-                          <ng-container
-                            *ngIf="
-                              !(
-                                !col?.metaData?.readOnly &&
-                                (editRows[rowIndex] ||
-                                  newRows[rowIndex] ||
-                                  (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.columnId)))
-                              )
-                            "
-                          >
+                          <ng-container *ngIf="!isCellEditMode(col, rowIndex)">
                             <ng-container
                               *ngIf="customTemplates && customTemplates[col?.columnId]; else generic"
                               [ngTemplateOutlet]="customTemplates[col?.columnId]"
@@ -448,14 +435,7 @@
                           </ng-container>
                         </div>
                         <div class="pl-1" *ngSwitchCase="TextArea">
-                          <ng-container
-                            *ngIf="
-                              !col?.metaData?.readOnly &&
-                              (editRows[rowIndex] ||
-                                newRows[rowIndex] ||
-                                (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.columnId)))
-                            "
-                          >
+                          <ng-container *ngIf="isCellEditMode(col, rowIndex)">
                             <finlevit-lib-textarea
                               [autoResize]="col?.metaData?.autoResize"
                               [rows]="col?.metaData?.rowsCount"
@@ -565,17 +545,7 @@
                               "
                             ></finlevit-lib-textarea>
                           </ng-container>
-
-                          <ng-container
-                            *ngIf="
-                              !(
-                                !col?.metaData?.readOnly &&
-                                (editRows[rowIndex] ||
-                                  newRows[rowIndex] ||
-                                  (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.columnId)))
-                              )
-                            "
-                          >
+                          <ng-container *ngIf="!isCellEditMode(col, rowIndex)">
                             <ng-container
                               *ngIf="customTemplates && customTemplates[col?.columnId]; else generic"
                               [ngTemplateOutlet]="customTemplates[col?.columnId]"
@@ -591,14 +561,7 @@
                           </ng-container>
                         </div>
                         <div class="pl-1" *ngSwitchCase="Number">
-                          <ng-container
-                            *ngIf="
-                              !col?.metaData?.readOnly &&
-                              (editRows[rowIndex] ||
-                                newRows[rowIndex] ||
-                                (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.columnId)))
-                            "
-                          >
+                          <ng-container *ngIf="isCellEditMode(col, rowIndex)">
                             <finlevit-number
                               [placeholder]="col?.metaData?.placeholder"
                               [tooltip]="col?.metaData?.tooltip"
@@ -719,16 +682,7 @@
                               "
                             ></finlevit-number>
                           </ng-container>
-                          <ng-container
-                            *ngIf="
-                              !(
-                                !col?.metaData?.readOnly &&
-                                (editRows[rowIndex] ||
-                                  newRows[rowIndex] ||
-                                  (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.columnId)))
-                              )
-                            "
-                          >
+                          <ng-container *ngIf="!isCellEditMode(col, rowIndex)">
                             <ng-container
                               *ngIf="customTemplates && customTemplates[col?.columnId]; else generic"
                               [ngTemplateOutlet]="customTemplates[col?.columnId]"
@@ -748,14 +702,7 @@
                           </ng-container>
                         </div>
                         <div class="pl-1" *ngSwitchCase="DatePicker">
-                          <ng-container
-                            *ngIf="
-                              !col?.metaData?.readOnly &&
-                              (editRows[rowIndex] ||
-                                newRows[rowIndex] ||
-                                (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.columnId)))
-                            "
-                          >
+                          <ng-container *ngIf="isCellEditMode(col, rowIndex)">
                             <finlevit-lib-datepicker
                               [isRequired]="col?.validators?.required"
                               [tooltip]="col?.metaData?.tooltip"
@@ -873,16 +820,7 @@
                               "
                             ></finlevit-lib-datepicker>
                           </ng-container>
-                          <ng-container
-                            *ngIf="
-                              !(
-                                !col?.metaData?.readOnly &&
-                                (editRows[rowIndex] ||
-                                  newRows[rowIndex] ||
-                                  (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.columnId)))
-                              )
-                            "
-                          >
+                          <ng-container *ngIf="!isCellEditMode(col, rowIndex)">
                             <ng-container
                               *ngIf="customTemplates && customTemplates[col?.columnId]; else generic"
                               [ngTemplateOutlet]="customTemplates[col?.columnId]"
@@ -935,7 +873,7 @@
                       center: actions.alignment === CellAlignTypes.CENTER
                     }"
                   >
-                    <ng-container *ngIf="editRows[rowIndex]">
+                    <ng-container *ngIf="isRowEditMode(rowIndex)">
                       <div
                         [ngClass]="{ 'row-actions edit-action-mode': true, disabled: Object.keys(editCells).length }"
                       >
@@ -950,7 +888,7 @@
                         ></i>
                       </div>
                     </ng-container>
-                    <ng-container *ngIf="!editRows[rowIndex] && newRows[rowIndex]">
+                    <ng-container *ngIf="!isRowEditMode(rowIndex) && isNewRowEditMode(rowIndex)">
                       <div [ngClass]="{ 'row-actions new-action-mode': true, disabled: Object.keys(editCells).length }">
                         <i
                           *ngIf="actions?.editRow"
@@ -963,7 +901,7 @@
                         ></i>
                       </div>
                     </ng-container>
-                    <ng-container *ngIf="!editRows[rowIndex] && !newRows[rowIndex]">
+                    <ng-container *ngIf="!isRowEditMode(rowIndex) && !isNewRowEditMode(rowIndex)">
                       <div [ngClass]="{ 'row-actions': true, disabled: Object.keys(editCells).length }">
                         <span class="edit-action" *ngIf="actions?.editRow" (click)="onEdit($event, rowIndex, rowData)">
                           <i class="pi pi-pencil"></i>

@@ -73,7 +73,7 @@
         </div>
       </div>
       <div
-        class="f-tbody"
+        [ngClass]="{ 'f-tbody': true, 'edit-row-exists': isEditRowExists }"
         [ngStyle]="{
           'min-width': getMinWidth()
         }"
@@ -109,7 +109,10 @@
           ></ng-container>
         </ng-container>
         <ng-template #bodyRow let-rowData let-rowIndex="rowIndex">
-          <div class="f-tr-group" (click)="onRowClick.emit(rowData)">
+          <div
+            [ngClass]="{ 'f-tr-group': true, 'edit-row': isRowEditMode(rowIndex) || isNewRowEditMode(rowIndex) }"
+            (click)="onRowClick.emit(rowData)"
+          >
             <div
               class="f-tr"
               [ngStyle]="{
@@ -143,24 +146,12 @@
                     <ng-container [ngSwitch]="col?.metaData?.widgetType">
                       <div class="pl-1" *ngSwitchCase="TextInput">
                         <ng-container
-                          *ngIf="
-                            !(
-                              !col?.metaData?.readOnly &&
-                              (editRows[rowIndex] ||
-                                newRows[rowIndex] ||
-                                (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.metaData?.widgetId)))
-                            )
-                          "
+                          *ngIf="!isCellEditMode(col, rowIndex)"
                         >
                           {{ col?.metaData?.isFormulaField ? calculateCellValue(col, rowIndex) : col?.value?.value }}
                         </ng-container>
                         <finlevit-text
-                          *ngIf="
-                            !col?.metaData?.readOnly &&
-                            (editRows[rowIndex] ||
-                              newRows[rowIndex] ||
-                              (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.metaData?.widgetId)))
-                          "
+                          *ngIf="isCellEditMode(col, rowIndex)"
                           [(ngModel)]="
                             col?.metaData?.isFormulaField
                               ? calculateCellValue(col, rowIndex)
@@ -257,25 +248,11 @@
                         ></finlevit-text>
                       </div>
                       <div class="pl-1" *ngSwitchCase="Dropdown">
-                        <ng-container
-                          *ngIf="
-                            !(
-                              !col?.metaData?.readOnly &&
-                              (editRows[rowIndex] ||
-                                newRows[rowIndex] ||
-                                (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.metaData?.widgetId)))
-                            )
-                          "
-                        >
+                        <ng-container *ngIf="!isCellEditMode(col, rowIndex)">
                           {{ col?.value?.value }}
                         </ng-container>
                         <finlevit-lib-select
-                          *ngIf="
-                            !col?.metaData?.readOnly &&
-                            (editRows[rowIndex] ||
-                              newRows[rowIndex] ||
-                              (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.metaData?.widgetId)))
-                          "
+                          *ngIf="isCellEditMode(col, rowIndex)"
                           [(ngModel)]="modifyingData[rowIndex][col.metaData.widgetId]"
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
                           [placeholder]="col?.metaData?.placeholder || 'select'"
@@ -375,25 +352,11 @@
                         ></finlevit-lib-select>
                       </div>
                       <div class="pl-1" *ngSwitchCase="Email">
-                        <ng-container
-                          *ngIf="
-                            !(
-                              !col?.metaData?.readOnly &&
-                              (editRows[rowIndex] ||
-                                newRows[rowIndex] ||
-                                (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.metaData?.widgetId)))
-                            )
-                          "
-                        >
+                        <ng-container *ngIf="!isCellEditMode(col, rowIndex)">
                           {{ col?.value?.value }}
                         </ng-container>
                         <finlevit-text
-                          *ngIf="
-                            !col?.metaData?.readOnly &&
-                            (editRows[rowIndex] ||
-                              newRows[rowIndex] ||
-                              (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.metaData?.widgetId)))
-                          "
+                          *ngIf="isCellEditMode(col, rowIndex)"
                           [(ngModel)]="modifyingData[rowIndex][col.metaData.widgetId]"
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
                           [isSmall]="true"
@@ -489,25 +452,11 @@
                         ></finlevit-text>
                       </div>
                       <div class="pl-1 adv-checkbox" *ngSwitchCase="Checkbox">
-                        <ng-container
-                          *ngIf="
-                            !(
-                              !col?.metaData?.readOnly &&
-                              (editRows[rowIndex] ||
-                                newRows[rowIndex] ||
-                                (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.metaData?.widgetId)))
-                            )
-                          "
-                        >
+                        <ng-container *ngIf="!isCellEditMode(col, rowIndex)">
                           {{ col?.value?.value ? "True" : "False" }}
                         </ng-container>
                         <finlevit-lib-checkbox
-                          *ngIf="
-                            !col?.metaData?.readOnly &&
-                            (editRows[rowIndex] ||
-                              newRows[rowIndex] ||
-                              (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.metaData?.widgetId)))
-                          "
+                          *ngIf="isCellEditMode(col, rowIndex)"
                           [(ngModel)]="modifyingData[rowIndex][col.metaData.widgetId]"
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
                           [isRequired]="col?.validators?.required"
@@ -549,25 +498,11 @@
                         ></finlevit-lib-checkbox>
                       </div>
                       <div class="pl-1" *ngSwitchCase="Image">
-                        <ng-container
-                          *ngIf="
-                            !(
-                              !col?.metaData?.readOnly &&
-                              (editRows[rowIndex] ||
-                                newRows[rowIndex] ||
-                                (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.metaData?.widgetId)))
-                            )
-                          "
-                        >
+                        <ng-container *ngIf="!isCellEditMode(col, rowIndex)">
                           <img height="100px" width="100%" [src]="col?.value?.value" alt="cell-image" />
                         </ng-container>
                         <finlevit-lib-textarea
-                          *ngIf="
-                            !col?.metaData?.readOnly &&
-                            (editRows[rowIndex] ||
-                              newRows[rowIndex] ||
-                              (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.metaData?.widgetId)))
-                          "
+                          *ngIf="isCellEditMode(col, rowIndex)"
                           [(ngModel)]="modifyingData[rowIndex][col.metaData.widgetId]"
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
                           [isSmall]="true"
@@ -586,24 +521,12 @@
                       </div>
                       <div class="pl-1" *ngSwitchCase="Number">
                         <ng-container
-                          *ngIf="
-                            !(
-                              !col?.metaData?.readOnly &&
-                              (editRows[rowIndex] ||
-                                newRows[rowIndex] ||
-                                (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.metaData?.widgetId)))
-                            )
-                          "
+                          *ngIf="!isCellEditMode(col, rowIndex)"
                         >
                           {{ col?.metaData?.isFormulaField ? calculateCellValue(col, rowIndex) : col?.value?.value }}
                         </ng-container>
                         <finlevit-number
-                          *ngIf="
-                            !col?.metaData?.readOnly &&
-                            (editRows[rowIndex] ||
-                              newRows[rowIndex] ||
-                              (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.metaData?.widgetId)))
-                          "
+                          *ngIf="isCellEditMode(col, rowIndex)"
                           [(ngModel)]="
                             col?.metaData?.isFormulaField
                               ? calculateCellValue(col, rowIndex)
@@ -705,27 +628,13 @@
                         ></finlevit-number>
                       </div>
                       <div class="pl-1" *ngSwitchCase="TextArea">
-                        <ng-container
-                          *ngIf="
-                            !(
-                              !col?.metaData?.readOnly &&
-                              (editRows[rowIndex] ||
-                                newRows[rowIndex] ||
-                                (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.metaData?.widgetId)))
-                            )
-                          "
-                        >
+                        <ng-container *ngIf="!isCellEditMode(col, rowIndex)">
                           {{
                             col.metaData?.currency ? col.metaData.currency + " " + col?.value?.value : col?.value?.value
                           }}
                         </ng-container>
                         <finlevit-lib-textarea
-                          *ngIf="
-                            !col?.metaData?.readOnly &&
-                            (editRows[rowIndex] ||
-                              newRows[rowIndex] ||
-                              (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.metaData?.widgetId)))
-                          "
+                          *ngIf="isCellEditMode(col, rowIndex)"
                           [(ngModel)]="modifyingData[rowIndex][col.metaData.widgetId]"
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
                           [autoResize]="col?.metaData?.autoResize"
@@ -817,25 +726,11 @@
                         ></finlevit-lib-textarea>
                       </div>
                       <div class="pl-1" *ngSwitchCase="RadioGroup">
-                        <ng-container
-                          *ngIf="
-                            !(
-                              !col?.metaData?.readOnly &&
-                              (editRows[rowIndex] ||
-                                newRows[rowIndex] ||
-                                (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.metaData?.widgetId)))
-                            )
-                          "
-                        >
+                        <ng-container *ngIf="!isCellEditMode(col, rowIndex)">
                           {{ col?.value?.value }}
                         </ng-container>
                         <finlevit-radio-group
-                          *ngIf="
-                            !col?.metaData?.readOnly &&
-                            (editRows[rowIndex] ||
-                              newRows[rowIndex] ||
-                              (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.metaData?.widgetId)))
-                          "
+                          *ngIf="isCellEditMode(col, rowIndex)"
                           [(ngModel)]="modifyingData[rowIndex][col.metaData.widgetId]"
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
                           [isRequired]="col?.validators?.required"
@@ -969,14 +864,7 @@
                       </div>
                       <div class="pl-1" *ngSwitchCase="DatePicker">
                         <ng-container
-                          *ngIf="
-                            !(
-                              !col?.metaData?.readOnly &&
-                              (editRows[rowIndex] ||
-                                newRows[rowIndex] ||
-                                (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.metaData?.widgetId)))
-                            )
-                          "
+                          *ngIf="!isCellEditMode(col, rowIndex)"
                         >
                           {{
                             col?.metaData?.viewDateFormat
@@ -985,12 +873,7 @@
                           }}
                         </ng-container>
                         <finlevit-lib-datepicker
-                          *ngIf="
-                            !col?.metaData?.readOnly &&
-                            (editRows[rowIndex] ||
-                              newRows[rowIndex] ||
-                              (editCells[rowIndex] && editCells[rowIndex].hasOwnProperty(col?.metaData?.widgetId)))
-                          "
+                          *ngIf="isCellEditMode(col, rowIndex)"
                           [(ngModel)]="modifyingData[rowIndex][col.metaData.widgetId]"
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
                           [isRequired]="col?.validators?.required"
