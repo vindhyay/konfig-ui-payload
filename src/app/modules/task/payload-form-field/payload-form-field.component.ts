@@ -1,8 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from "@angular/core";
-import { FormControl } from "@angular/forms";
 import { FieldData } from "../model/field-data.model";
 import { BaseWidget, Column, TableMetaData, WidgetTypes } from "../model/create-form.models";
-import { DeepCopy, getErrorMessages, getFieldFromFields, getValidators, parseApiResponse } from "../../../utils";
+import { DeepCopy, getFieldFromFields, parseApiResponse, validateFields } from "../../../utils";
 import { AuthService } from "../../auth/services/auth.service";
 import { EditorService } from "../editor.service";
 import * as moment from "moment";
@@ -259,16 +258,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
     }
   }
   validateField($event: any, field: any) {
-    const { validators = {}, label = "" } = field;
-    const tempFormControl = new FormControl($event, getValidators(validators));
-    if (tempFormControl.valid) {
-      field.value.value = $event;
-      field.error = false;
-      field.errorMessage = "";
-    } else {
-      field.error = true;
-      field.errorMessage = getErrorMessages(tempFormControl.errors, label);
-    }
+    validateFields([field]);
   }
   calculateFormulaValue(item): any {
     let formulaValue;

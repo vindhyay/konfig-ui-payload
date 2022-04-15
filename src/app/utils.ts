@@ -63,13 +63,21 @@ export const validateFields = (fields: any[]) => {
         errorFields = errorFields.concat(errorFieldsData);
       }
     } else if (field) {
-      const tempFormControl = new FormControl(field?.value?.value, getValidators(field?.validators || {}));
+      let value = field?.value?.value;
+      // For validation purpose convert to format but keep real value in field as it is
+      if (field?.metaData?.widgetType === WidgetTypes.PhonenumberInput) {
+        value = toPhoneFormat(field?.value?.value);
+      }
+      if (field?.metaData?.widgetType === WidgetTypes.SSNInput) {
+        value = toSSNFormat(field?.value?.value);
+      }
+      const tempFormControl = new FormControl(value, getValidators(field?.validators || {}));
       if (tempFormControl.valid || field?.rows === 0 || field?.metaData?.isHidden) {
         field.error = false;
-        field.errorMsg = "";
+        field.errorMessage = "";
       } else {
         field.error = true;
-        field.errorMsg = getErrorMessages(
+        field.errorMessage = getErrorMessages(
           tempFormControl.errors,
           field?.label || field?.displayName || field?.widgetName
         )[0];
@@ -296,4 +304,21 @@ export const getBorderStyle = (style) => {
       break;
   }
   return styles;
+};
+
+export const toPhoneFormat = (number = "") => {
+  let phoneNumber = ("" + number).replace(/\D/g, "");
+  let match = phoneNumber.match(/^(\d{3})(\d{3})(\d{4})$/);
+  if (match) {
+    return match[1] + "-" + match[2] + "-" + match[3];
+  }
+  return number;
+};
+export const toSSNFormat = (ssn = "") => {
+  let phoneNumber = ("" + ssn).replace(/\D/g, "");
+  let match = phoneNumber.match(/^(\d{3})(\d{2})(\d{4})$/);
+  if (match) {
+    return match[1] + "-" + match[2] + "-" + match[3];
+  }
+  return ssn;
 };
