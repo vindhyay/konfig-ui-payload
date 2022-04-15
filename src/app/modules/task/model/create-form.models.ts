@@ -245,6 +245,7 @@ export class MetaData {
   readOnly?: boolean;
   isEnable?: boolean;
   styleProperties: any;
+  businessRuleIds: any;
   constructor(data) {
     const {
       widgetId,
@@ -265,6 +266,7 @@ export class MetaData {
       conditions,
       errorMessage = "",
       readOnly = false,
+      businessRuleIds = [],
     } = data;
     this.widgetId = widgetId || getUniqueId("widget");
     this.widgetType = widgetType;
@@ -284,6 +286,7 @@ export class MetaData {
     this.conditions = conditions;
     this.errorMessage = errorMessage;
     this.readOnly = readOnly;
+    this.businessRuleIds = businessRuleIds;
   }
 }
 export class SubColumn {

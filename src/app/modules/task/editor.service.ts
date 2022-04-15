@@ -200,7 +200,7 @@ export class EditorService extends BaseService {
     this.triggerButtonActionEvents(triggerData);
   }
 
-  triggerButtonActionEvents(triggerData: { triggerId: string; data: any; uiActions: any[] }) {
+  triggerButtonActionEvents(triggerData: { triggerId: string; data: any; uiActions: any[]; businessRuleIds?: [] }) {
     const {
       transactionId = "",
       screenId = "",
@@ -211,6 +211,7 @@ export class EditorService extends BaseService {
       data: { metaData: { toastMsg = "", onClickConfigs = [] } = {} },
       triggerId,
       uiActions,
+      businessRuleIds = [],
     } = triggerData;
     if (!appId) {
       this.notificationService.error("Application not found", "Failed to submit");
@@ -222,10 +223,14 @@ export class EditorService extends BaseService {
       (result) => {
         const { data, error } = parseApiResponse(result);
         if (data && !error) {
-          this.submitMultipleAction(data?.transactionId, {
-            triggerId,
-            screenId,
-          }).subscribe(
+          this.submitMultipleAction(
+            data?.transactionId,
+            {
+              triggerId,
+              screenId,
+            },
+            { businessRuleIds }
+          ).subscribe(
             (result) => {
               this.hideLoader();
               const { data, error } = parseApiResponse(result);
@@ -290,13 +295,14 @@ export class EditorService extends BaseService {
       data: {
         isUnique = false,
         value: { value = null },
-        metaData: { onChangeConfigs = [] } = {},
+        metaData: { onChangeConfigs = [], businessRuleIds = [] } = {},
         id,
       },
     } = $event;
     const formFields = this.getFormFields();
     if (isUnique) {
       this.uniqueFieldChange({ id, value });
+      this.onRuleTrigger($event);
       return;
     }
     if (onChangeConfigs?.length) {
@@ -304,9 +310,32 @@ export class EditorService extends BaseService {
       if (type === ButtonActions.populate) {
         let error = this.validatePopulateParams(onChangeConfigs[0], formFields);
         if (!error) {
-          this.triggerButtonActionEvents({ triggerId: id, data: $event?.data, uiActions: [] });
+          this.triggerButtonActionEvents({
+            triggerId: id,
+            data: $event?.data,
+            uiActions: [],
+            businessRuleIds: businessRuleIds,
+          });
         }
       }
+    }
+  }
+
+  onRuleTrigger($event) {
+    const {
+      data: {
+        value: { value = null },
+        metaData: { businessRuleIds = [] } = {},
+        id,
+      },
+    } = $event;
+    if (businessRuleIds?.length) {
+      this.triggerButtonActionEvents({
+        triggerId: id,
+        data: $event?.data,
+        uiActions: [],
+        businessRuleIds: businessRuleIds,
+      });
     }
   }
 
@@ -479,9 +508,9 @@ export class EditorService extends BaseService {
     return this.getData(url, params);
   };
   // submit Action
-  submitMultipleAction = (transactionId, params): Observable<any> => {
+  submitMultipleAction = (transactionId, params, data = {}): Observable<any> => {
     const url = `${this.config.getApiUrls().submitMultipleAction}/${transactionId}`;
-    return this.postData(url, {}, params);
+    return this.postData(url, data, params);
   };
   // Create Transaction
   createTransaction = (params, payload): Observable<any> => {
