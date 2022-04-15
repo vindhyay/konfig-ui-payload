@@ -89,11 +89,10 @@ export class ssnInputFieldComponent implements OnInit {
     this.onValueChange.emit($event);
   }
   optionChange($event: any) {
-    console.log("iam here");
-    // setTimeout(() => {
-    //   this._type_mask = this.metaData.showMask;
-    //   this.changeIcon(this.metaData);
-    //   this.onBlurChange.emit($event);
-    // }, 0);
+    setTimeout(() => {
+      this._type_mask = this.metaData.showMask;
+      this.changeIcon(this.metaData);
+      this.onBlurChange.emit($event);
+    }, 0);
   }
 }
