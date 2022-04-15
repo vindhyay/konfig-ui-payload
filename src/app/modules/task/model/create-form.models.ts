@@ -1555,7 +1555,6 @@ export class BaseWidget {
   isPrePopulated: boolean;
   status: boolean;
   error?: boolean;
-  errorMsg?: string;
   errorMessage?: string;
   children: BaseWidget[];
   validators: Validators;

@@ -28,6 +28,8 @@ import { LoaderComponent } from "./loader/loader.component";
 import { FilterPipe } from "src/app/pipes/filter.pipe";
 import { CustomDatePipe } from "../../pipes/custom-date.pipe";
 import { ConfirmDialogModule } from "primeng/confirmdialog";
+import { ToSSNFormatPipe } from "../../pipes/to-ssn-format.pipe";
+import { ToPhoneFormatPipe } from "../../pipes/to-phone-format.pipe";
 
 @NgModule({
   declarations: [
@@ -47,6 +49,8 @@ import { ConfirmDialogModule } from "primeng/confirmdialog";
     LoaderComponent,
     FilterPipe,
     CustomDatePipe,
+    ToSSNFormatPipe,
+    ToPhoneFormatPipe,
   ],
   imports: [
     CommonModule,
@@ -93,6 +97,8 @@ import { ConfirmDialogModule } from "primeng/confirmdialog";
     FilterPipe,
     CustomDatePipe,
     ConfirmDialogModule,
+    ToSSNFormatPipe,
+    ToPhoneFormatPipe,
   ],
 })
 export class SharedModule {}
