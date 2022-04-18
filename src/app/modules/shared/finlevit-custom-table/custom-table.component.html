@@ -657,7 +657,7 @@
                               [independentBorders]="col?.metaData?.styleProperties?.properties?.independentBorder"
                               [allowLabelWrapping]="col?.metaData?.allowLabelWrapping"
                               [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
-                              [prefixText]="col.metaData.prefixText || col?.metaData?.currency"
+                              [prefixText]="col.metaData.prefixText || col?.metaData?.currency?.currencySymbol"
                               [suffixText]="col?.metaData?.suffixText"
                               [showClearButton]="col?.metaData?.showClearButton"
                               [step]="col?.metaData?.step"
@@ -693,7 +693,11 @@
                                 col?.metaData?.isFormulaField
                                   ? calculateCellValue(col, rowIndex)
                                   : col.metaData?.currency
-                                  ? col.metaData.currency + " " + rowData[col.columnId]
+                                  ? col.metaData.currency?.currencySymbol +
+                                    " " +
+                                    (col.metaData?.thousandsSeparator
+                                      ? (rowData[col.columnId] | number)
+                                      : rowData[col.columnId])
                                   : col.metaData?.thousandsSeparator
                                   ? (rowData[col.columnId] | number)
                                   : rowData[col.columnId]
