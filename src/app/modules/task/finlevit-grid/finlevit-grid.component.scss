@@ -96,6 +96,9 @@
     text-align: center;
     font-family: Arial, Helvetica, sans-serif;
   }
+  gridster-item.button-container, gridster-item.card-container, gridster-item.tab-container{
+    overflow: visible;
+  }
 }
 .dndDraggingSource {
   display: none !important;

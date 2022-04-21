@@ -783,6 +783,7 @@
         "
         [style.--button-background-color]="item?.metaData?.styleProperties?.properties?.backgroundColor"
         [actionType]="item?.metaData?.styleProperties?.properties?.actionType"
+        [boxShadow]="item?.metaData?.styleProperties | getBorderShadowFilter: { filter: 'shadow_string' }"
       ></finlevit-button>
     </div>
   </ng-container>
@@ -1266,6 +1267,7 @@
       [style.--label-font-size]="item?.metaData?.styleProperties?.properties?.fontSize"
       [style.--active-text-color]="item?.metaData?.styleProperties?.properties?.activetextColor"
       [style.--active-border-color]="item?.metaData?.styleProperties?.properties?.activeBorderColor"
+      [containerStyle]="item?.metaData?.styleProperties | getBorderShadowFilter: { filter: 'all' }"
     >
     </app-tab-container>
   </ng-container>
