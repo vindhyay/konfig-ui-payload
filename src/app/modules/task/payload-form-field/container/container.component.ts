@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import { BaseWidget, ContainerActions, ContainerMetaData } from "../../model/create-form.models";
 import { EditorService } from "../../editor.service";
 
@@ -32,40 +32,6 @@ export class ContainerComponent implements OnInit {
 
   get metaData(): ContainerMetaData {
     return this.item.metaData as ContainerMetaData;
-  }
-
-  getGlobalShadow() {
-    if (this.metaData && this.metaData?.styleProperties && !Object.keys(this.metaData.styleProperties).length) {
-      return {};
-    }
-    const styleProperties = this.metaData?.styleProperties?.properties;
-    if (!styleProperties) {
-      return {};
-    }
-    const { shadowStyle, horizontalOffset, verticalOffset, blurRadius, spreadRadius, boxShadowColor } = styleProperties;
-    const styles = {};
-    switch (shadowStyle) {
-      case "none":
-        break;
-      case "inset":
-        styles["box-shadow"] =
-          horizontalOffset +
-          " " +
-          verticalOffset +
-          " " +
-          blurRadius +
-          " " +
-          spreadRadius +
-          " " +
-          boxShadowColor +
-          " inset";
-        break;
-      case "outset":
-        styles["box-shadow"] =
-          horizontalOffset + " " + verticalOffset + " " + blurRadius + " " + spreadRadius + " " + boxShadowColor;
-        break;
-    }
-    return styles;
   }
 
   getGlobalTitleStyle() {
