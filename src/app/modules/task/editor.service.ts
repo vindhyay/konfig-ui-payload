@@ -52,6 +52,9 @@ export class EditorService extends BaseService {
   private transactionDetails = new BehaviorSubject(null);
   public transactionDetails$ = this.transactionDetails.asObservable();
 
+  private conditionDetails = new BehaviorSubject(null);
+  public conditionDetails$ = this.conditionDetails.asObservable();
+
   private formFields = new BehaviorSubject(null);
   public formFields$ = this.formFields.asObservable();
 
@@ -60,6 +63,13 @@ export class EditorService extends BaseService {
   }
   public getTransactionDetails() {
     return this.transactionDetails.getValue();
+  }
+
+  public setConditionDetails(conditionDetails: any) {
+    this.conditionDetails.next(conditionDetails);
+  }
+  public getConditionDetails(): any {
+    return this.conditionDetails.getValue();
   }
 
   public setFormFields(fields: any) {
@@ -348,7 +358,7 @@ export class EditorService extends BaseService {
         for (let condition of conditions) {
           let condMatched = false;
           condition.rules.forEach((rule, index) => {
-            const field = getFieldFromFields(allFields, rule?.field?.value);
+            const field = getFieldFromFields(allFields, rule?.field?.fieldId);
             const fieldValue = field?.value?.value;
             let result = this.conditionValidation(rule, fieldValue);
             condMatched =
@@ -364,7 +374,7 @@ export class EditorService extends BaseService {
         const showFields = result?.showFields || [];
         const hideFields = result?.hideFields || [];
         showFields.forEach((showField) => {
-          const showFieldRef = getFieldFromFields(allFields, showField?.value);
+          const showFieldRef = getFieldFromFields(allFields, showField?.fieldId);
           if (showFieldRef) {
             showFieldRef.rows = showFieldRef.metaData?.defaultRows;
             showFieldRef.minItemRows = showFieldRef.metaData?.defaultMinItemRows;
@@ -376,7 +386,7 @@ export class EditorService extends BaseService {
           }
         });
         hideFields.forEach((hideField) => {
-          const hideFieldRef = getFieldFromFields(allFields, hideField?.value);
+          const hideFieldRef = getFieldFromFields(allFields, hideField?.fieldId);
           if (hideFieldRef && !hideFieldRef.metaData.hidden) {
             hideFieldRef.rows = hideFieldRef?.metaData?.hideRows || 0;
             hideFieldRef.minItemRows = hideFieldRef?.metaData?.hideRows || 0;
@@ -701,5 +711,8 @@ export class EditorService extends BaseService {
     const currField = getFieldFromFields(payloadFields, item?.id);
     currField.value.value = formulaValue;
     return formulaValue;
+  }
+  getCoditions(ifConditionsIds: any): any {
+    return this.getConditionDetails()?.filter((item: any) => ifConditionsIds.includes(item?.id)) || [];
   }
 }
