@@ -322,6 +322,6 @@ export const toSSNFormat = (ssn = "") => {
   }
   return ssn;
 };
-export const scrollToTop = () => {
-  window.scrollTo({ top: 0, behavior: "smooth" });
+export const scrollTo = (x = 0, y = 0) => {
+  window.scrollTo(x, y);
 };

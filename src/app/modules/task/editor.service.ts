@@ -9,7 +9,7 @@ import {
   parseApiResponse,
   getFieldFromFields,
   validateFields,
-  scrollToTop,
+  scrollTo,
 } from "../../utils";
 import { NotificationService } from "../../services/notification.service";
 import { AuthService } from "../auth/services/auth.service";
@@ -236,10 +236,6 @@ export class EditorService extends BaseService {
           ).subscribe(
             (result) => {
               this.hideLoader();
-              //On page change scroll to top
-              if (isNext || isPrev) {
-                scrollToTop();
-              }
               const { data, error } = parseApiResponse(result);
               if (data && !error) {
                 if (toastMsg) {
@@ -252,6 +248,10 @@ export class EditorService extends BaseService {
                   );
                 this.setTransactionDetails(data);
                 this.triggerUIActions(uiActions);
+                //On page change scroll to top
+                if (isNext || isPrev) {
+                  scrollTo();
+                }
               } else {
                 this.notificationService.error(error.errorMessage, "Error");
               }
