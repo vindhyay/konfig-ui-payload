@@ -80,6 +80,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
           if (transactionDetails && !error) {
             this.editorService.setTransactionDetails(transactionDetails);
             this.styleConfig = transactionDetails?.styleConfig;
+            this.editorService.setConditionDetails(transactionDetails?.conditionRules);
           } else {
             this.notificationService.error(error.errorMessage);
           }

@@ -53,6 +53,9 @@ export class EditorService extends BaseService {
   private transactionDetails = new BehaviorSubject(null);
   public transactionDetails$ = this.transactionDetails.asObservable();
 
+  private conditionDetails = new BehaviorSubject(null);
+  public conditionDetails$ = this.conditionDetails.asObservable();
+
   private formFields = new BehaviorSubject(null);
   public formFields$ = this.formFields.asObservable();
 
@@ -61,6 +64,13 @@ export class EditorService extends BaseService {
   }
   public getTransactionDetails() {
     return this.transactionDetails.getValue();
+  }
+
+  public setConditionDetails(conditionDetails: any) {
+    this.conditionDetails.next(conditionDetails);
+  }
+  public getConditionDetails(): any {
+    return this.conditionDetails.getValue();
   }
 
   public setFormFields(fields: any) {
@@ -351,27 +361,31 @@ export class EditorService extends BaseService {
     conditionsArray.forEach((element) => {
       let result = null;
       let conditions = element?.ifConditions;
+      const isShowError = element?.type === "ShowError";
       if (!!conditions)
         for (let condition of conditions) {
           let condMatched = false;
           condition.rules.forEach((rule, index) => {
-            const field = getFieldFromFields(allFields, rule?.field?.value);
+            const field = getFieldFromFields(allFields, rule?.field?.fieldId);
             const fieldValue = field?.value?.value;
-            let result = this.conditionValidation(rule, fieldValue);
+            // let result = this.conditionValidation(rule, fieldValue);
+            const targetField = isShowError ? getFieldFromFields(allFields, rule?.targetField?.fieldId) : null;
+            let result = this.conditionValidation(rule, fieldValue, targetField);
             condMatched =
               index === 0 ? result : rule.condition === "and" ? condMatched && result : condMatched || result;
           });
           if (condMatched) {
-            result = condition.mappingField;
+            // result = condition.mappingField;
+            result = { ...condition.mappingField };
             console.log("Success", result);
             break;
           }
         }
-      if (result) {
+      if (result && !result.messageType) {
         const showFields = result?.showFields || [];
         const hideFields = result?.hideFields || [];
         showFields.forEach((showField) => {
-          const showFieldRef = getFieldFromFields(allFields, showField?.value);
+          const showFieldRef = getFieldFromFields(allFields, showField?.fieldId);
           if (showFieldRef) {
             showFieldRef.rows = showFieldRef.metaData?.defaultRows;
             showFieldRef.minItemRows = showFieldRef.metaData?.defaultMinItemRows;
@@ -383,7 +397,7 @@ export class EditorService extends BaseService {
           }
         });
         hideFields.forEach((hideField) => {
-          const hideFieldRef = getFieldFromFields(allFields, hideField?.value);
+          const hideFieldRef = getFieldFromFields(allFields, hideField?.fieldId);
           if (hideFieldRef && !hideFieldRef.metaData.hidden) {
             hideFieldRef.rows = hideFieldRef?.metaData?.hideRows || 0;
             hideFieldRef.minItemRows = hideFieldRef?.metaData?.hideRows || 0;
@@ -393,13 +407,41 @@ export class EditorService extends BaseService {
           }
         });
         this.setContainerHeight(allFields);
+      } else if (result && result.messageType) {
+        const showMessageFieldRef = result?.targetField?.fieldId
+          ? getFieldFromFields(allFields, result.targetField.fieldId)
+          : null;
+        switch (result.messageType) {
+          case "fieldError":
+            if (showMessageFieldRef) {
+              showMessageFieldRef.errorMessage = result.message;
+              showMessageFieldRef.error = true;
+            }
+            break;
+          case "pageError":
+            if (showMessageFieldRef) {
+              showMessageFieldRef.error = true;
+            }
+            this.notificationService.error(result.message, null, { disableTimeOut: true });
+            break;
+          case "pageWarning":
+            this.notificationService.info(result.message);
+            break;
+        }
       }
     });
   }
-  conditionValidation = (rule, fieldValue): boolean => {
+  conditionValidation = (rule, fieldValue, targetField = null): boolean => {
     let result = false;
     let ruleArray = [];
     let testCondition = false;
+    if (rule?.fnsName) {
+      rule.value = this.getFormulaValue(
+        targetField ? targetField?.value?.value : fieldValue,
+        rule.fnsName,
+        rule?.factorValue
+      );
+    }
     switch (rule.operator) {
       case "includes":
         ruleArray = rule?.value?.split(",");
@@ -708,5 +750,92 @@ export class EditorService extends BaseService {
     const currField = getFieldFromFields(payloadFields, item?.id);
     currField.value.value = formulaValue;
     return formulaValue;
+  }
+  getCoditions(ifConditionsIds: any): any {
+    return this.getConditionDetails()?.filter((item: any) => ifConditionsIds.includes(item?.id)) || [];
+  }
+  calcDate(date1, date2) {
+    var diff = Math.floor(date1.getTime() - date2.getTime());
+    var day = 1000 * 60 * 60 * 24;
+    var days = Math.floor(diff / day);
+    var months = Math.floor(days / 31);
+    var years = Math.floor(months / 12);
+    return { days: days, months: months, years: years };
+  }
+  addMonths(dateValue, factor = 0) {
+    const dateObj = new Date(dateValue);
+    dateObj.setMonth(dateObj.getMonth() + factor);
+    return dateObj;
+  }
+  trim(stringToTrim) {
+    return stringToTrim.replace(/^\s+|\s+$/g, "");
+  }
+  ltrim(stringToTrim) {
+    return stringToTrim.replace(/^\s+/, "");
+  }
+  rtrim(stringToTrim) {
+    return stringToTrim.replace(/\s+$/, "");
+  }
+  getFormulaValue(targetFieldValue, fnsName, factor = 0) {
+    if (!targetFieldValue) {
+      return null;
+    }
+    const value = targetFieldValue;
+    switch (fnsName) {
+      case "getValue":
+        return value;
+      case "getNoYear":
+        return this.calcDate(new Date(), new Date(value)).years;
+      case "getNoDays":
+        return this.calcDate(new Date(), new Date(value)).days;
+      case "getNoMonths":
+        return this.calcDate(new Date(), new Date(value)).months;
+      case "YEARDIFF":
+        return this.calcDate(new Date(factor), new Date(value)).years;
+      case "DATEDIFF":
+        return this.calcDate(new Date(factor), new Date(value)).days;
+      case "MONTHDIFF":
+        return this.calcDate(new Date(factor), new Date(value)).months;
+      case "ADDMONTHS":
+        return this.addMonths(value, factor);
+      case "WEEKDAY":
+        return new Date().getDay();
+      case "strLength":
+        return value?.length;
+      case "toLowerCase":
+        return value?.toLowerCase();
+      case "toUpperCase":
+        return value?.toUpperCase();
+      case "toString":
+        return value?.toString();
+      case "LTRIM":
+        return this.ltrim(value);
+      case "RTRIM":
+        return this.rtrim(value);
+      case "TRIM":
+        return this.trim(value);
+      case "toNumber":
+        return Number(value);
+      case "ABS":
+        return Math.abs(value);
+      case "CEILING":
+        return Math.ceil(value);
+      case "EXP":
+        return Math.exp(value);
+      case "FLOOR":
+        return Math.floor(value);
+      case "LOG":
+        return Math.log(value);
+      case "MOD":
+        return Math.log(value % factor);
+      case "POWER":
+        return Math.pow(value, factor);
+      case "ROUND":
+        return Math.round(value);
+      case "SQRT":
+        return Math.sqrt(value);
+      case "TRUNC":
+        return Math.trunc(value);
+    }
   }
 }

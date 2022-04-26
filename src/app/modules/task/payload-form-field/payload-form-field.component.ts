@@ -250,11 +250,14 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
     this.editorService.setContainerHeight(this.editorService.getFormFields());
   }
   onChange($event) {
-    const ifConditions = this.item.metaData.conditions;
-    if (ifConditions?.length) {
-      this.editorService.checkCondition(ifConditions);
-    } else if (ifConditions && !ifConditions?.length) {
-      this.editorService.checkCondition([{ ...ifConditions }]);
+    const ifConditionsIds = this.item.metaData?.conditionRuleIds;
+    if (ifConditionsIds?.length) {
+      const ifConditions = this.editorService.getCoditions(ifConditionsIds);
+      if (ifConditions?.length) {
+        this.editorService.checkCondition(ifConditions);
+      } else if (ifConditions && !ifConditions?.length) {
+        this.editorService.checkCondition([{ ...ifConditions }]);
+      }
     }
   }
   validateField($event: any, field: any) {
