@@ -690,25 +690,9 @@
                             ></ng-container>
                             <ng-template #generic>
                               {{
-                                col.metaData?.currency
-                                  ? col.metaData.currency?.currencySymbol +
-                                    " " +
-                                    (col.metaData?.thousandsSeparator
-                                      ? ((col?.metaData?.isFormulaField
-                                          ? calculateCellValue(col, rowIndex)
-                                          : rowData[col.columnId]
-                                        ) | number)
-                                      : col?.metaData?.isFormulaField
-                                      ? calculateCellValue(col, rowIndex)
-                                      : rowData[col.columnId])
-                                  : col.metaData?.thousandsSeparator
-                                  ? ((col?.metaData?.isFormulaField
-                                      ? calculateCellValue(col, rowIndex)
-                                      : rowData[col.columnId]
-                                    ) | number)
-                                  : col?.metaData?.isFormulaField
-                                  ? calculateCellValue(col, rowIndex)
-                                  : rowData[col.columnId]
+                                col?.metaData?.thousandsSeparator
+                                  ? (calculateCellValue(col, rowIndex) | number)
+                                  : calculateCellValue(col, rowIndex)
                               }}
                             </ng-template>
                           </ng-container>
