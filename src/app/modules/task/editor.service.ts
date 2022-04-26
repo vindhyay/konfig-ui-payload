@@ -9,6 +9,7 @@ import {
   parseApiResponse,
   getFieldFromFields,
   validateFields,
+  scrollToTop,
 } from "../../utils";
 import { NotificationService } from "../../services/notification.service";
 import { AuthService } from "../auth/services/auth.service";
@@ -218,6 +219,8 @@ export class EditorService extends BaseService {
       return;
     }
     const isSubmit = onClickConfigs?.filter((item) => item.action === ButtonActions.submit)?.length > 0;
+    const isNext = onClickConfigs?.filter((item) => item.action === ButtonActions.next)?.length > 0;
+    const isPrev = onClickConfigs?.filter((item) => item.action === ButtonActions.previous)?.length > 0;
     this.showLoader(triggerData?.data?.id);
     this.saveTransaction({ transactionId, screenId }, formFields).subscribe(
       (result) => {
@@ -233,6 +236,10 @@ export class EditorService extends BaseService {
           ).subscribe(
             (result) => {
               this.hideLoader();
+              //On page change scroll to top
+              if (isNext || isPrev) {
+                scrollToTop();
+              }
               const { data, error } = parseApiResponse(result);
               if (data && !error) {
                 if (toastMsg) {
