@@ -435,12 +435,28 @@ export class EditorService extends BaseService {
     let result = false;
     let ruleArray = [];
     let testCondition = false;
+    if (!fieldValue) {
+      return false;
+    }
     if (rule?.fnsName) {
-      rule.value = this.getFormulaValue(
+      const calcValue = this.getFormulaValue(
         targetField ? targetField?.value?.value : fieldValue,
         rule.fnsName,
         rule?.factorValue
       );
+      if (rule?.fnsName === "TODAY") {
+        rule.value = calcValue;
+        fieldValue = new Date(fieldValue);
+        fieldValue.setHours(0, 0, 0, 0);
+      } else if (!!targetField && targetField?.value?.value) {
+        rule.value = calcValue;
+      } else {
+        fieldValue = calcValue;
+      }
+    }
+    if (rule.field.dataType === "string") {
+      fieldValue = this.convertCase(fieldValue);
+      rule.value = this.convertCase(rule.value);
     }
     switch (rule.operator) {
       case "includes":
@@ -510,6 +526,9 @@ export class EditorService extends BaseService {
         break;
     }
     return result;
+  };
+  convertCase = (stringValue): string => {
+    return stringValue.toLowerCase();
   };
   isGreaterThan = (fieldValue: number, value: number): boolean => {
     return fieldValue > value;
@@ -799,7 +818,11 @@ export class EditorService extends BaseService {
       case "ADDMONTHS":
         return this.addMonths(value, factor);
       case "WEEKDAY":
-        return new Date().getDay();
+        return new Date(value).getDay();
+      case "TODAY":
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        return today;
       case "strLength":
         return value?.length;
       case "toLowerCase":
