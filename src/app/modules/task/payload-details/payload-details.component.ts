@@ -32,6 +32,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
   styleConfig: IStyleConfig = {} as IStyleConfig;
   sessionFields = {};
   ngOnInit(): void {
+    this.editorService.setTransactionDetails({});
     this.currentUser = this.authService.getCurrentUser();
     this.activatedRoute.queryParamMap.subscribe((queryParams: any) => {
       this.sessionFields = Object.keys(queryParams.params).length
