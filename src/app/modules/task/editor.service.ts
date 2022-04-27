@@ -781,10 +781,15 @@ export class EditorService extends BaseService {
     var years = Math.floor(months / 12);
     return { days: days, months: months, years: years };
   }
-  addMonths(dateValue, factor = 0) {
-    const dateObj = new Date(dateValue);
-    dateObj.setMonth(dateObj.getMonth() + factor);
-    return dateObj;
+  addMonths(dateValue, months = 0) {
+    const result = new Date(dateValue);
+    result.setMonth(result.getMonth() + Number(months));
+    return result;
+  }
+  addDays(date, days) {
+    var result = new Date(date);
+    result.setDate(result.getDate() + parseInt(days));
+    return result;
   }
   trim(stringToTrim) {
     return stringToTrim.replace(/^\s+|\s+$/g, "");
@@ -815,8 +820,12 @@ export class EditorService extends BaseService {
         return this.calcDate(new Date(factor), new Date(value)).days;
       case "MONTHDIFF":
         return this.calcDate(new Date(factor), new Date(value)).months;
+      case "DATEVALUE":
+        return new Date(value).toDateString();
       case "ADDMONTHS":
         return this.addMonths(value, factor);
+      case "ADDDAYS":
+        return this.addDays(value, factor);
       case "WEEKDAY":
         return new Date(value).getDay();
       case "TODAY":
