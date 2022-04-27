@@ -273,13 +273,6 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
       });
     }
     let firstField = formula.find((field) => field?.resourceType === resourceType.PAYLOAD_FIELD);
-    formulaValue = this.formulaCalculation(firstField, formula);
-    item.value.value = formulaValue;
-    return formulaValue;
-  }
-
-  formulaCalculation(firstField, formula) {
-    let formulaValue;
     switch (firstField?.dataType) {
       case "number":
         let expression = "";
@@ -433,6 +426,8 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
         }
         return formulaValue;
     }
+    item.value.value = formulaValue;
+    return formulaValue;
   }
 
   checkHeight(child?) {
