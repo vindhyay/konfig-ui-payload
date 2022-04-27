@@ -108,7 +108,6 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
   @Input() showDelete = true;
   @Output() edit = new EventEmitter();
   private _payloadFields: any;
-  formulaValue;
   get payloadFields(): any {
     return this._payloadFields;
   }
