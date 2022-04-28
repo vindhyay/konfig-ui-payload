@@ -693,7 +693,13 @@
                             <ng-template #generic>
                               {{
                                 col?.metaData?.thousandsSeparator
-                                  ? (calculateCellValue(col, rowIndex) | number)
+                                  ? col?.metaData?.currency
+                                    ? col?.metaData.currency?.currencySymbol +
+                                      " " +
+                                      (calculateCellValue(col, rowIndex) | number)
+                                    : (calculateCellValue(col, rowIndex) | number)
+                                  : col?.metaData?.currency
+                                  ? col?.metaData.currency?.currencySymbol + " " + calculateCellValue(col, rowIndex)
                                   : calculateCellValue(col, rowIndex)
                               }}
                             </ng-template>
