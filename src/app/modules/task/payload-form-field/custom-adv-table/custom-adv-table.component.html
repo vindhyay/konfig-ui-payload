@@ -520,15 +520,9 @@
                       <div class="pl-1" *ngSwitchCase="Number">
                         <ng-container *ngIf="!isCellEditMode(col, rowIndex)">
                           {{
-                            col?.metaData?.isFormulaField
-                              ? calculateCellValue(col, rowIndex)
-                              : col.metaData?.currency
-                              ? col.metaData.currency?.currencySymbol +
-                                " " +
-                                (col.metaData?.thousandsSeparator ? (col?.value?.value | number) : col?.value?.value)
-                              : col.metaData?.thousandsSeparator
-                              ? (col?.value?.value | number)
-                              : col?.value?.value
+                            col?.metaData?.thousandsSeparator
+                              ? (calculateCellValue(col, rowIndex) | number)
+                              : calculateCellValue(col, rowIndex)
                           }}
                         </ng-container>
                         <finlevit-number
