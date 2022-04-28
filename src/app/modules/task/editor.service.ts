@@ -379,6 +379,19 @@ export class EditorService extends BaseService {
             result = { ...condition.mappingField };
             console.log("Success", result);
             break;
+          } else if (isShowError && condition?.mappingField?.targetField) {
+            const removeErrorObj = getFieldFromFields(allFields, condition?.mappingField?.targetField?.fieldId);
+            if (
+              removeErrorObj &&
+              removeErrorObj?.error &&
+              ((condition?.mappingField?.messageType === "fieldError" &&
+                removeErrorObj.errorMessage == condition?.mappingField?.message) ||
+                removeErrorObj.errorMessage?.length === 0)
+            ) {
+              removeErrorObj.error = false;
+              removeErrorObj.errorMessage = "";
+              console.log(removeErrorObj, condition?.mappingField);
+            }
           }
         }
       if (result && !result.messageType) {
