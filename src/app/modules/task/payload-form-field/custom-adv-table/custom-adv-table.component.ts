@@ -576,11 +576,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
       }
       return cellValue;
     } else {
-      if (col?.metaData?.currency) {
-        return col?.metaData.currency?.currencySymbol + " " + col?.value?.value;
-      } else {
-        return col?.value?.value;
-      }
+      return col?.value?.value;
     }
   }
 

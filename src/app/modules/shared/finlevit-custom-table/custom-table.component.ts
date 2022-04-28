@@ -558,11 +558,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
       }
       return cellValue;
     } else {
-      if (col?.metaData?.currency) {
-        return col?.metaData.currency?.currencySymbol + " " + col?.value?.value;
-      } else {
-        return col?.value?.value;
-      }
+      return this.tableData[rowIndex][col?.columnId];
     }
   }
 
