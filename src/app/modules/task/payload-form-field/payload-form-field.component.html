@@ -573,6 +573,8 @@
         [isRequired]="item?.validators?.required"
         (onBlur)="optionChange($event, item)"
         [useGrouping]="item?.metaData?.thousandsSeparator"
+        [rightIcon]="item?.metaData?.rightIcon"
+        [leftIcon]="item?.metaData?.leftIcon"
         [style.--input-adornment-background-color]="item?.metaData?.adornmentBackgroundColor"
         [style.--input-border-width]="item?.metaData?.styleProperties?.properties?.borderWidth"
         [style.--input-label-font-size]="item?.metaData?.styleProperties?.properties?.labelFontSize"
@@ -648,6 +650,8 @@
         [isRequired]="item?.validators?.required"
         (onBlur)="optionChange($event, item)"
         [useGrouping]="item?.metaData?.thousandsSeparator"
+        [rightIcon]="item?.metaData?.rightIcon"
+        [leftIcon]="item?.metaData?.leftIcon"
         [style.--input-adornment-background-color]="item?.metaData?.adornmentBackgroundColor"
         [style.--input-border-width]="item?.metaData?.styleProperties?.properties?.borderWidth"
         [style.--input-label-font-size]="item?.metaData?.styleProperties?.properties?.labelFontSize"
@@ -732,8 +736,8 @@
     <div class="input-container button-input" [ngStyle]="{ width: '100%' }">
       <finlevit-button
         [isDisabled]="item?.metaData?.isEnable === false || readonlyMode || disable"
-        [icon]="loading ? 'pi pi-spin pi-spinner' : item?.metaData?.icon"
-        [iconPos]="item?.metaData?.iconPos"
+        [leftIcon]="loading ? 'pi pi-spin pi-spinner' : item?.metaData?.leftIcon"
+        [rightIcon]="item?.metaData?.rightIcon"
         [label]="item?.label"
         (btnClick)="btnClick($event, item)"
         [type]="item?.metaData?.type"
