@@ -548,13 +548,10 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
                 row.value.value = cellValue;
               }
             });
-            if (col?.metaData?.currency) {
-              cellValue = col?.metaData?.currency?.currencySymbol + " " + cellValue;
-            }
           }
           return cellValue;
         case "string":
-          if (rowIndex) {
+          if (rowIndex > -1) {
             cellValue = this.calculateStringFormula(col, rowIndex, columnFormula);
             this.tableData[rowIndex].forEach((row) => {
               if (row?.metaData?.widgetId === col?.metaData?.widgetId) {
@@ -564,7 +561,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
           }
           return cellValue;
         case "date":
-          if (rowIndex) {
+          if (rowIndex > -1) {
             cellValue = this.calculateDateFormula(col, rowIndex, columnFormula);
             this.tableData[rowIndex]?.forEach((row) => {
               if (row?.metaData?.widgetId === col?.metaData?.widgetId) {

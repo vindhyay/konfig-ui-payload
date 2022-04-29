@@ -537,23 +537,20 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
         case "number":
           if (rowIndex > -1) {
             cellValue = this.calculateNumberFormula(col, rowIndex, columnFormula);
-          }
-          this.tableData[rowIndex][col?.columnId] = cellValue;
-          if (col?.metaData?.currency) {
-            cellValue = col?.metaData?.currency?.currencySymbol + " " + cellValue;
+            this.tableData[rowIndex][col?.columnId] = cellValue;
           }
           return cellValue;
         case "string":
           if (rowIndex > -1) {
             cellValue = this.calculateStringFormula(col, rowIndex, columnFormula);
+            this.tableData[rowIndex][col?.columnId] = cellValue;
           }
-          this.tableData[rowIndex][col?.columnId] = cellValue;
           return cellValue;
         case "date":
           if (rowIndex > -1) {
             cellValue = this.calculateDateFormula(col, rowIndex, columnFormula);
+            this.tableData[rowIndex][col?.columnId] = cellValue;
           }
-          this.tableData[rowIndex][col?.columnId] = cellValue;
           return cellValue;
       }
       return cellValue;
