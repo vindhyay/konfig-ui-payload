@@ -69,6 +69,9 @@ export class ssnInputFieldComponent implements OnInit {
     if (!this.metaData.rightIcon) {
       this.metaData.rightIcon = this.metaData.showIcon ? this.metaData.showIcon : null;
     }
+    if (this.item.value?.value) {
+      this.changeIcon(this.metaData);
+    }
   }
 
   onRightIconClick(metaData: any) {
