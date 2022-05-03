@@ -1,8 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from "@angular/core";
-import { FormControl } from "@angular/forms";
 import { FieldData } from "../model/field-data.model";
 import { BaseWidget, Column, TableMetaData, WidgetTypes } from "../model/create-form.models";
-import { DeepCopy, getErrorMessages, getFieldFromFields, getValidators, parseApiResponse } from "../../../utils";
+import { DeepCopy, getFieldFromFields, parseApiResponse, validateFields } from "../../../utils";
 import { AuthService } from "../../auth/services/auth.service";
 import { EditorService } from "../editor.service";
 import * as moment from "moment";
@@ -109,7 +108,6 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
   @Input() showDelete = true;
   @Output() edit = new EventEmitter();
   private _payloadFields: any;
-  formulaValue;
   get payloadFields(): any {
     return this._payloadFields;
   }
@@ -227,7 +225,12 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
   };
 
   optionChange($event, data) {
-    this.editorService.onOptionChange({ event: $event, data });
+    const metaData = this.item.metaData;
+    if (!!metaData["onChangeConfigs"] && metaData["onChangeConfigs"]?.length) {
+      this.editorService.onOptionChange({ event: $event, data });
+    } else if (metaData?.businessRuleIds?.length) {
+      this.editorService.onRuleTrigger({ event: $event, data });
+    }
     this.onChange($event);
   }
 
@@ -246,24 +249,18 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
     this.editorService.setContainerHeight(this.editorService.getFormFields());
   }
   onChange($event) {
-    const ifConditions = this.item.metaData.conditions;
-    if (ifConditions?.length) {
-      this.editorService.checkCondition(ifConditions);
-    } else if (ifConditions && !ifConditions?.length) {
-      this.editorService.checkCondition([{ ...ifConditions }]);
+    const ifConditionsIds = this.item.metaData?.conditionRuleIds;
+    if (ifConditionsIds?.length) {
+      const ifConditions = this.editorService.getCoditions(ifConditionsIds);
+      if (ifConditions?.length) {
+        this.editorService.checkCondition(ifConditions);
+      } else if (ifConditions && !ifConditions?.length) {
+        this.editorService.checkCondition([{ ...ifConditions }]);
+      }
     }
   }
   validateField($event: any, field: any) {
-    const { validators = {}, label = "" } = field;
-    const tempFormControl = new FormControl($event, getValidators(validators));
-    if (tempFormControl.valid) {
-      field.value.value = $event;
-      field.error = false;
-      field.errorMessage = "";
-    } else {
-      field.error = true;
-      field.errorMessage = getErrorMessages(tempFormControl.errors, label);
-    }
+    validateFields([field]);
   }
   calculateFormulaValue(item): any {
     let formulaValue;
@@ -278,13 +275,6 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
       });
     }
     let firstField = formula.find((field) => field?.resourceType === resourceType.PAYLOAD_FIELD);
-    formulaValue = this.formulaCalculation(firstField, formula);
-    item.value.value = formulaValue;
-    return formulaValue;
-  }
-
-  formulaCalculation(firstField, formula) {
-    let formulaValue;
     switch (firstField?.dataType) {
       case "number":
         let expression = "";
@@ -438,6 +428,8 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
         }
         return formulaValue;
     }
+    item.value.value = formulaValue;
+    return formulaValue;
   }
 
   checkHeight(child?) {

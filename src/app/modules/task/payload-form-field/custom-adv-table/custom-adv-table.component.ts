@@ -142,6 +142,24 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
   @ViewChild("pagination", { static: false }) tablePagination: PaginationDirective;
   constructor(private confirmationService: ConfirmationService) {}
 
+  isCellEditMode(col, rowIndex) {
+    return (
+      !col?.metaData?.readOnly &&
+      (this.editRows[rowIndex] ||
+        this.newRows[rowIndex] ||
+        (this.editCells[rowIndex] && this.editCells[rowIndex].hasOwnProperty(col?.metaData?.widgetId)))
+    );
+  }
+  isRowEditMode(rowIndex) {
+    return this.editRows[rowIndex];
+  }
+  isNewRowEditMode(rowIndex) {
+    return this.newRows[rowIndex];
+  }
+  get isEditRowExists() {
+    return Object.keys(this.editRows)?.length || Object.keys(this.newRows)?.length;
+  }
+
   ngOnInit(): void {
     this.tableId = getUniqueId("table");
   }
@@ -517,109 +535,139 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
   }
 
   calculateCellValue(col, rowIndex) {
-    let cellValue = "";
-    let columnFormula = col?.metaData?.formula;
-    let firstColumn = columnFormula?.find((column) => column?.resourceType === resourceType.PAYLOAD_FIELD);
-    switch (firstColumn?.type) {
-      case "number":
-        let expression = "";
-        columnFormula.forEach((field) => {
-          if (field?.resourceType === resourceType.PAYLOAD_FIELD) {
+    if (col?.metaData?.isFormulaField) {
+      let cellValue = "";
+      let columnFormula = col?.metaData?.formula;
+      let firstColumn = columnFormula?.find((column) => column?.resourceType === resourceType.PAYLOAD_FIELD);
+      switch (firstColumn?.type) {
+        case "number":
+          if (rowIndex > -1) {
+            cellValue = this.calculateNumberFormula(col, rowIndex, columnFormula);
             this.tableData[rowIndex].forEach((row) => {
-              if (row.metaData.widgetId === field.metaData.widgetId) {
-                if (row.value.value === null) {
-                  row.value.value = undefined;
-                }
-                if (row?.value?.value) {
-                  expression = expression + " " + row.value.value;
-                }
+              if (row?.metaData?.widgetId === col?.metaData?.widgetId) {
+                row.value.value = cellValue;
               }
             });
           }
-          if (field?.resourceType === resourceType.BRACKET) {
-            expression = expression + " " + field?.displayName;
-          }
-          if (field?.resourceType === resourceType.FUNCTION && String(expression).length > 0) {
-            expression = expression + " " + field?.expression;
-          }
-        });
-        let evaluate;
-        try {
-          evaluate = eval(expression);
-        } catch (e) {
-          console.log(e);
-        }
-        if (evaluate === Infinity) {
-          cellValue = "∞";
-        } else if (isNaN(evaluate)) {
-          cellValue = undefined;
-        } else {
-          cellValue = eval(expression) || null;
-        }
-        this.tableData[rowIndex].forEach((row) => {
-          if (row.metaData.widgetId === col.metaData.widgetId) {
-            row.value.value = cellValue;
-          }
-        });
-        return cellValue;
-      case "string":
-        columnFormula.forEach((field) => {
-          if (field?.resourceType === resourceType.PAYLOAD_FIELD) {
+          return cellValue;
+        case "string":
+          if (rowIndex > -1) {
+            cellValue = this.calculateStringFormula(col, rowIndex, columnFormula);
             this.tableData[rowIndex].forEach((row) => {
-              if (row.metaData.widgetId === field.metaData.widgetId && row.value.value) {
-                cellValue = cellValue + row.value.value;
+              if (row?.metaData?.widgetId === col?.metaData?.widgetId) {
+                row.value.value = cellValue;
               }
             });
           }
-          if (field?.resourceType === resourceType.FUNCTION) {
-            if (field?.separateBy && cellValue) {
-              cellValue = cellValue + field.separateBy;
-            }
+          return cellValue;
+        case "date":
+          if (rowIndex > -1) {
+            cellValue = this.calculateDateFormula(col, rowIndex, columnFormula);
+            this.tableData[rowIndex]?.forEach((row) => {
+              if (row?.metaData?.widgetId === col?.metaData?.widgetId) {
+                row.value.value = cellValue;
+              }
+            });
           }
-        });
+          return cellValue;
+      }
+      return cellValue;
+    } else {
+      return col?.value?.value;
+    }
+  }
+
+  calculateNumberFormula(col, rowIndex, columnFormula) {
+    let expression = "";
+    let cellValue;
+    columnFormula.forEach((field) => {
+      if (field?.resourceType === resourceType.PAYLOAD_FIELD) {
         this.tableData[rowIndex].forEach((row) => {
-          if (row.metaData.widgetId === col.metaData.widgetId) {
-            row.value.value = cellValue;
+          if (row?.metaData?.widgetId === field?.metaData?.widgetId) {
+            if (row?.value?.value === null) {
+              row.value.value = undefined;
+            }
+            if (row?.value?.value) {
+              expression = expression + " " + row.value.value;
+            }
           }
         });
-        return cellValue;
-      case "date":
-        const dateFunc = columnFormula.filter((field) => {
-          return field?.resourceType === resourceType.FUNCTION;
-        });
-        let date1;
-        let date2;
-        const dateIndex = columnFormula.indexOf(dateFunc[0]);
-        if (columnFormula[dateIndex - 1].displayName === "Current Date") {
-          date1 = new Date();
-        } else {
-          this.tableData[rowIndex].forEach((row) => {
-            if (row.metaData.widgetId === columnFormula[dateIndex - 1].metaData.widgetId && row.value.value) {
-              date1 = moment.utc(row.value.value).toDate();
-            }
-          });
-        }
-        if (columnFormula[dateIndex + 1]?.displayName === "Current Date") {
-          date2 = new Date();
-        } else {
-          this.tableData[rowIndex].forEach((row) => {
-            if (row.metaData.widgetId === columnFormula[dateIndex + 1].metaData.widgetId && row.value.value) {
-              date2 = moment.utc(row.value.value).toDate();
-            }
-          });
-        }
-        let d = moment(date2);
-        let years = d.diff(date1, "years");
-        d.add(-years, "years");
-        if (years) {
-          cellValue = years + "";
-        }
+      }
+      if (field?.resourceType === resourceType.BRACKET) {
+        expression = expression + " " + field?.displayName;
+      }
+      if (field?.resourceType === resourceType.FUNCTION && String(expression).length > 0) {
+        expression = expression + " " + field?.expression;
+      }
+    });
+    let evaluate;
+    try {
+      evaluate = eval(expression);
+    } catch (e) {
+      console.log(e);
+    }
+    if (evaluate === Infinity) {
+      cellValue = "∞";
+    } else if (isNaN(evaluate)) {
+      cellValue = undefined;
+    } else {
+      cellValue = eval(expression) || null;
+    }
+    return cellValue;
+  }
+
+  calculateStringFormula(col, rowIndex, columnFormula) {
+    let cellValue;
+    columnFormula?.forEach((field) => {
+      if (field?.resourceType === resourceType.PAYLOAD_FIELD) {
         this.tableData[rowIndex].forEach((row) => {
-          if (row.metaData.widgetId === col.metaData.widgetId) {
-            row.value.value = cellValue;
+          if (row?.metaData?.widgetId === field?.metaData?.widgetId && row?.value?.value) {
+            cellValue = cellValue + row.value.value;
           }
         });
-        return cellValue;
+      }
+      if (field?.resourceType === resourceType.FUNCTION) {
+        if (field?.separateBy && cellValue) {
+          cellValue = cellValue + field.separateBy;
+        }
+      }
+    });
+    return cellValue;
+  }
+
+  calculateDateFormula(col, rowIndex, columnFormula) {
+    let cellValue;
+    const dateFunc = columnFormula.filter((field) => {
+      return field?.resourceType === resourceType.FUNCTION;
+    });
+    let date1;
+    let date2;
+    const dateIndex = columnFormula?.indexOf(dateFunc[0]);
+    if (dateIndex > -1) {
+      if (columnFormula[dateIndex - 1]?.displayName === "Current Date") {
+        date1 = new Date();
+      } else {
+        this.tableData[rowIndex]?.forEach((row) => {
+          if (row?.metaData?.widgetId === columnFormula[dateIndex - 1]?.metaData?.widgetId && row?.value?.value) {
+            date1 = moment.utc(row.value.value).toDate();
+          }
+        });
+      }
+      if (columnFormula[dateIndex + 1]?.displayName === "Current Date") {
+        date2 = new Date();
+      } else {
+        this.tableData[rowIndex]?.forEach((row) => {
+          if (row?.metaData?.widgetId === columnFormula[dateIndex + 1]?.metaData?.widgetId && row?.value?.value) {
+            date2 = moment.utc(row.value.value).toDate();
+          }
+        });
+      }
+      let d = moment(date2);
+      let years = d.diff(date1, "years");
+      d.add(-years, "years");
+      if (years) {
+        cellValue = years + "";
+      }
     }
     return cellValue;
   }

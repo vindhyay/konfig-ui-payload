@@ -32,6 +32,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
   styleConfig: IStyleConfig = {} as IStyleConfig;
   sessionFields = {};
   ngOnInit(): void {
+    this.editorService.setTransactionDetails({});
     this.currentUser = this.authService.getCurrentUser();
     this.activatedRoute.queryParamMap.subscribe((queryParams: any) => {
       this.sessionFields = Object.keys(queryParams.params).length
@@ -80,6 +81,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
           if (transactionDetails && !error) {
             this.editorService.setTransactionDetails(transactionDetails);
             this.styleConfig = transactionDetails?.styleConfig;
+            this.editorService.setConditionDetails(transactionDetails?.conditionRules);
           } else {
             this.notificationService.error(error.errorMessage);
           }

@@ -40,7 +40,7 @@ export class CheckboxGroupComponent implements OnInit {
   @Input() showErrorMessage: boolean;
   @Input() labelAlignment: string;
   @Input() checkboxSize: string;
-  @Input() optionPaddingBottom: string
+  @Input() optionPaddingBottom: string;
   @Input() columns: number;
   constructor(private editorService: EditorService) {}
   get metaData(): MetaData {
@@ -53,6 +53,9 @@ export class CheckboxGroupComponent implements OnInit {
       this.editorService.checkCondition(ifConditions);
     } else if (ifConditions && !ifConditions?.length) {
       this.editorService.checkCondition([{ ...ifConditions }]);
+    }
+    if (this.item?.metaData?.businessRuleIds?.length) {
+      this.editorService.onRuleTrigger({ event: $event, data: this.item });
     }
   }
 }

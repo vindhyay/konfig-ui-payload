@@ -35,13 +35,13 @@
       [ngClass]="{
         'card-container': item?.metaData?.widgetType === Container,
         'text-container': item?.metaData?.widgetType === Text,
+        'tab-container': item?.metaData?.widgetType === TabContainer,
         'header-container': item?.metaData?.widgetType === Header,
         'footer-container': item?.metaData?.widgetType === Footer,
         'button-container': item?.metaData?.widgetType === Button,
         'error-container': item?.metaData?.widgetType === ErrorContainer
       }"
       [item]="item"
-      [ngStyle]="getGlobalStyles(item, i)"
     >
       <app-payload-form-field
         [options]="item?.metaData?.options"

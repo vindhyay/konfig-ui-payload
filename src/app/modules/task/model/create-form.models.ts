@@ -245,6 +245,8 @@ export class MetaData {
   readOnly?: boolean;
   isEnable?: boolean;
   styleProperties: any;
+  businessRuleIds: any;
+  conditionRuleIds?: any;
   constructor(data) {
     const {
       widgetId,
@@ -265,6 +267,8 @@ export class MetaData {
       conditions,
       errorMessage = "",
       readOnly = false,
+      businessRuleIds = [],
+      conditionRuleIds = [],
     } = data;
     this.widgetId = widgetId || getUniqueId("widget");
     this.widgetType = widgetType;
@@ -284,6 +288,8 @@ export class MetaData {
     this.conditions = conditions;
     this.errorMessage = errorMessage;
     this.readOnly = readOnly;
+    this.businessRuleIds = businessRuleIds;
+    this.conditionRuleIds = conditionRuleIds;
   }
 }
 export class SubColumn {
@@ -936,22 +942,22 @@ export class PhonenumberInputMetaData extends MetaData {
 }
 
 export class ButtonMetaData extends MetaData {
-  icon: string;
-  iconPos: string;
+  leftIcon: string;
+  rightIcon: string;
   type: ButtonTypes;
   variant: ButtonVariants;
   clickAction: ButtonActions;
   constructor(data) {
     super(data);
     const {
-      icon = "",
-      iconPos = "left",
+      leftIcon = "",
+      rightIcon = "",
       type = ButtonTypes.primary,
       variant = ButtonVariants.raisedButton,
       clickAction = ButtonActions.none,
     } = data;
-    this.icon = icon;
-    this.iconPos = iconPos;
+    this.leftIcon = leftIcon;
+    this.rightIcon = rightIcon;
     this.type = type;
     this.variant = variant;
     this.clickAction = clickAction;
@@ -1008,6 +1014,8 @@ export class DatePickerMetaData extends MetaData {
 export class NumberMetaData extends MetaData {
   prefix: string;
   suffix: string;
+  leftIcon: string;
+  rightIcon: string;
   mode: string;
   currency: string;
   minFractionDigits: number;
@@ -1032,6 +1040,8 @@ export class NumberMetaData extends MetaData {
     const {
       prefix = "",
       suffix = "",
+      leftIcon = "",
+      rightIcon = "",
       mode,
       currency,
       minFractionDigits,
@@ -1054,6 +1064,8 @@ export class NumberMetaData extends MetaData {
     } = data;
     this.prefix = prefix;
     this.suffix = suffix;
+    this.leftIcon = leftIcon;
+    this.rightIcon = rightIcon;
     this.mode = mode;
     this.currency = currency;
     this.minFractionDigits = minFractionDigits;
@@ -1375,14 +1387,14 @@ export class ContainerHeader {
 
 export class ModalMetaData extends MetaData {
   title: string;
-  icon: string;
+  leftIcon: string;
+  rightIcon: string;
   height: string;
   width: string;
   color: string;
   bgColor: string;
   footerbgColor: string;
   button: ContainerHeader;
-  iconPos: string;
   type: ButtonTypes;
   variant: ButtonVariants;
   textStyle: string;
@@ -1396,13 +1408,13 @@ export class ModalMetaData extends MetaData {
     super(data);
     const {
       title = "",
-      icon = "",
+      leftIcon = "",
+      rightIcon = "",
       height = "400px",
       width = "500px",
       color = "#000000",
       bgColor = "#ffffff",
       button = {},
-      iconPos = "left",
       type = ButtonTypes.primary,
       variant = ButtonVariants.raisedButton,
       textStyle = TextStyles.BODY1,
@@ -1415,13 +1427,13 @@ export class ModalMetaData extends MetaData {
       styleProperties = {},
     } = data;
     this.title = title;
-    this.icon = icon;
+    this.leftIcon = leftIcon;
+    this.rightIcon = rightIcon;
     this.height = height;
     this.width = width;
     this.color = color;
     this.bgColor = bgColor;
     this.button = new ContainerHeader(button);
-    this.iconPos = iconPos;
     this.type = type;
     this.variant = variant;
     this.fontStyle = fontStyle;
@@ -1555,7 +1567,6 @@ export class BaseWidget {
   isPrePopulated: boolean;
   status: boolean;
   error?: boolean;
-  errorMsg?: string;
   errorMessage?: string;
   children: BaseWidget[];
   validators: Validators;

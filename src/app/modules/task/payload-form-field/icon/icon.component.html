@@ -6,12 +6,12 @@
   }"
 >
   <span
-    class="material-icons"
+    [ngClass]="item?.metaData?.icon?.type"
     [ngStyle]="{
       'font-size': item?.metaData?.fontSize,
-      color: item?.metaData?.color
+      color: item?.metaData?.icon?.color
     }"
   >
-    {{ item?.metaData?.iconType }}
+    {{ item?.metaData?.icon?.value }}
   </span>
 </div>

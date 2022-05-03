@@ -36,7 +36,11 @@
             'box-pattern': metaData.indicatorPattern === 'square'
           }"
         >
-          <i [class]="child.metaData.icon"></i>
+          <finlevit-icon-preview
+            [style.--icon-color]="child?.metaData?.icon?.color"
+            class="d-flex"
+            [icon]="child?.metaData?.icon"
+          ></finlevit-icon-preview>
         </div>
         <div class="step-label">
           <p
