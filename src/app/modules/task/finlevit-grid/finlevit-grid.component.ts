@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from "@angular/core";
+import { Component, EventEmitter, Input, NgZone, OnDestroy, OnInit, Output, ViewChild } from "@angular/core";
 import {
   CompactType,
   DisplayGrid,
@@ -12,6 +12,7 @@ import { ActivatedRoute } from "@angular/router";
 import { EditorService } from "../editor.service";
 import { NotificationService } from "../../../services/notification.service";
 import { BaseComponent } from "../../shared/base/base.component";
+import { AddressDetails } from "src/app/utils";
 
 @Component({
   selector: "finlevit-grid",
@@ -45,12 +46,18 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
   constructor(
     private editorService: EditorService,
     private notificationService: NotificationService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private zone: NgZone
   ) {
     super();
   }
 
   ngOnInit() {
+    this.subscribe(this.notificationService.addressAutoCompleteChanged$, (addressDetails) => {
+      this.zone.run(() => {
+        this.fillAddressDetails(addressDetails);
+      });
+    });
     if (this.parent && this.parent.metaData && this.parent.metaData.widgetType === WidgetTypes.Container) {
       this.globalStyle = this.parent?.metaData["styleProperties"]
         ? this.parent?.metaData["styleProperties"]["properties"]
@@ -306,5 +313,23 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
       style["cursor"] = "pointer";
     }
     return style;
+  }
+
+  fillAddressDetails(addressDetails) {
+    let widget = addressDetails.widget;
+    let widgetIds = widget?.metaData?.linkedWidetIds;
+    let address: AddressDetails = addressDetails.address;
+    if (address) {
+      widget.value.value = address?.streetNumber + " " + address.streetName;
+      if (widgetIds) {
+        Object.keys(widgetIds).forEach((element) => {
+          let widget: BaseWidget = this.items.find((item) => item?.metaData?.widgetId == widgetIds[element]);
+
+          if (element != "addressLine2" && widget) {
+            widget.value.value = address[element];
+          }
+        });
+      }
+    }
   }
 }
