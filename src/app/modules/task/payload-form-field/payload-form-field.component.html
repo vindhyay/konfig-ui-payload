@@ -369,6 +369,7 @@
         (onValueChange)="validateField($event, item)"
         (onBlurChange)="optionChange($event, item)"
         [item]="item"
+        [value]="item.value.value"
         [textColor]="item?.metaData?.styleProperties?.properties?.textColor"
         [textHorizontalAlign]="item?.metaData?.styleProperties?.properties?.textHorizontalAlign"
         [backgroundColor]="item?.metaData?.styleProperties?.properties?.backgroundColor"

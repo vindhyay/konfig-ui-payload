@@ -35,10 +35,10 @@ export const getErrorMessages = (errors: any, label: any) => {
         );
         break;
       case "min":
-        errorMessages.push(`Expected atleast value ${errors[error].min} but got ${errors[error].actual}`);
+        errorMessages.push(`Please enter any value greater than  ${errors[error].min}`);
         break;
       case "max":
-        errorMessages.push(`Expected atmost value ${errors[error].max} but got ${errors[error].actual}`);
+        errorMessages.push(`Please enter any value less than ${errors[error].max}`);
         break;
     }
   });
@@ -56,11 +56,11 @@ export const validateFields = (fields: any[]) => {
   let result = true;
   let errorFields = [];
   fields.forEach((field: any) => {
-    if (field.error) {
-      result = false;
-      errorFields.push(field);
-      return true;
-    }
+    // if (field.error) {
+    //   result = false;
+    //   errorFields.push(field);
+    //   return true;
+    // }
     if (field?.children && field?.children?.length) {
       const { result: validationStatus, errorFields: errorFieldsData } = validateFields(field.children);
       if (!validationStatus) {
