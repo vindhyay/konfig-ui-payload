@@ -461,11 +461,14 @@ export class EditorService extends BaseService {
         rule.value = calcValue;
         fieldValue = new Date(fieldValue);
         fieldValue.setHours(0, 0, 0, 0);
-      } else if (!!targetField && targetField?.value?.value) {
+      } else if (!!targetField) {
         rule.value = calcValue;
       } else {
         fieldValue = calcValue;
       }
+    }
+    if (!rule.value) {
+      return false;
     }
     if (rule.field.dataType === "string") {
       fieldValue = this.convertCase(fieldValue);
