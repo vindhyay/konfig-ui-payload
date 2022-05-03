@@ -35,10 +35,10 @@ export const getErrorMessages = (errors: any, label: any) => {
         );
         break;
       case "min":
-        errorMessages.push(`Expected atleast value ${errors[error].min} but got ${errors[error].actual}`);
+        errorMessages.push(`Please enter the any value greater than  ${errors[error].min}`);
         break;
       case "max":
-        errorMessages.push(`Expected atmost value ${errors[error].max} but got ${errors[error].actual}`);
+        errorMessages.push(`Please enter the any value less than ${errors[error].max}`);
         break;
     }
   });
