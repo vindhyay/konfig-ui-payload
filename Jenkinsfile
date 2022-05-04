@@ -71,7 +71,7 @@ environment {
       stage('Publish'){
          when {
     expression {
-        return env.BRANCH_NAME == 'dev-mongo';
+        return env.BRANCH_NAME == 'staging';
         }
     }
          steps {
@@ -82,7 +82,7 @@ environment {
 		stage('Deploy to Dev'){
 			when {
 			expression {
-			return env.BRANCH_NAME == 'dev-mongo';
+			return env.BRANCH_NAME == 'staging';
 			}
 			}
         steps{
