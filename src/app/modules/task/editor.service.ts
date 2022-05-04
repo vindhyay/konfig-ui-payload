@@ -198,7 +198,7 @@ export class EditorService extends BaseService {
       onClickConfigs.length &&
       (onClickConfigs[0].action === ButtonActions.submit || onClickConfigs[0].action === ButtonActions.next);
     if (isValidationRequired) {
-      const { result, errorFields } = validateFields(formFields);
+      const { result, errorFields } = validateFields(formFields, true);
       if (!result) {
         let errorMsg = "Failed to validate: ";
         if (errorFields.length) {
