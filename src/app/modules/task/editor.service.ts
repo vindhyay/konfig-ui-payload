@@ -448,7 +448,7 @@ export class EditorService extends BaseService {
     let result = false;
     let ruleArray = [];
     let testCondition = false;
-    if (!fieldValue) {
+    if (fieldValue === undefined || fieldValue === null) {
       return false;
     }
     if (rule?.fnsName) {
@@ -467,7 +467,7 @@ export class EditorService extends BaseService {
         fieldValue = calcValue;
       }
     }
-    if (!rule.value) {
+    if (rule.value === undefined || rule.value === null) {
       return false;
     }
     if (rule.field.dataType === "string") {
