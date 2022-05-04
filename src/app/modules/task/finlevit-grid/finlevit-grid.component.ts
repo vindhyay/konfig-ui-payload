@@ -319,6 +319,8 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
     let widget = addressDetails.widget;
     let widgetIds = widget?.metaData?.linkedWidetIds;
     let address: AddressDetails = addressDetails.address;
+    let businessRuleIds = [];
+    let ifConditionsIds = [];
     if (address) {
       widget.value.value = address?.streetNumber + " " + address.streetName;
       if (widgetIds) {
@@ -327,8 +329,25 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
 
           if (element != "addressLine2" && widget) {
             widget.value.value = address[element];
+            if (widget.metaData?.businessRuleIds) {
+              businessRuleIds.push(...widget.metaData?.businessRuleIds);
+            }
+            if (widget.metaData?.conditionRuleIds) {
+              ifConditionsIds.push(...widget.metaData?.conditionRuleIds);
+            }
           }
         });
+      }
+
+      let addressWidget: BaseWidget = JSON.parse(JSON.stringify(widget));
+      addressWidget.metaData.businessRuleIds = businessRuleIds;
+      this.editorService.onRuleTrigger({ event: addressDetails, data: addressWidget });
+
+      if (ifConditionsIds?.length) {
+        const ifConditions = this.editorService.getCoditions(ifConditionsIds);
+        if (ifConditions && !ifConditions?.length) {
+          this.editorService.checkCondition([{ ...ifConditions }]);
+        }
       }
     }
   }
