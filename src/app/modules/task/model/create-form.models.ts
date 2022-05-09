@@ -48,6 +48,7 @@ export enum ButtonActions {
   previousStep = "previousStep",
   closeModals = "closeModals",
   openModals = "openModals",
+  externalLink = "externalLink",
 }
 
 export enum PayloadType {

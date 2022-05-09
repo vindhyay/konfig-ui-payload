@@ -9,6 +9,7 @@ export const UI_ACTIONS = [
   ButtonActions.previousStep,
   ButtonActions.openModals,
   ButtonActions.closeModals,
+  ButtonActions.externalLink,
 ];
 
 const uid = new ShortUniqueId();

@@ -1288,7 +1288,7 @@
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Icon">
     <div class="input-container">
-      <app-icon [item]="item"></app-icon>
+      <app-icon [item]="item" (click)="btnClick($event, item)"></app-icon>
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Avatar">
@@ -1311,7 +1311,7 @@
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Container">
     <div class="input-container">
-      <app-container [item]="item"></app-container>
+      <app-container [item]="item" (click)="btnClick($event, item)"></app-container>
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Header || item?.metaData?.widgetType === Footer">
