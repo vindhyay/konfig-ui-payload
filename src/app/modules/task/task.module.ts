@@ -28,6 +28,7 @@ import { AvatarComponent } from "./payload-form-field/avatar/avatar.component";
 import { TooltipModule } from "primeng/tooltip";
 import { AvatarModule } from "primeng/avatar";
 import { AppTabContainerComponent } from "./payload-form-field/tab-container/tab-container.component";
+import { GetBorderShadowFilter } from "src/app/pipes/shadow-border.pipe";
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { AppTabContainerComponent } from "./payload-form-field/tab-container/tab
     ImageComponent,
     AvatarComponent,
     AppTabContainerComponent,
+    GetBorderShadowFilter,
   ],
   imports: [CommonModule, GridsterModule, SharedModule, ExtendedModule, TooltipModule, AvatarModule],
   providers: [AuthService],

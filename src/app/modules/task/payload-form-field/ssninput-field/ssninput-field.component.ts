@@ -65,9 +65,18 @@ export class ssnInputFieldComponent implements OnInit {
   get metaData(): SSNInputMetaData {
     return this.item.metaData as SSNInputMetaData;
   }
+
+  @Input() set value(value: any) {
+    if (value && this._type_mask === this.metaData.showMask) {
+      this.changeIcon(this.metaData);
+    }
+  }
   ngOnInit(): void {
     if (!this.metaData.rightIcon) {
       this.metaData.rightIcon = this.metaData.showIcon ? this.metaData.showIcon : null;
+    }
+    if (this.item.value?.value && this._type_mask === this.metaData.showMask) {
+      this.changeIcon(this.metaData);
     }
   }
 

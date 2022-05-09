@@ -369,6 +369,7 @@
         (onValueChange)="validateField($event, item)"
         (onBlurChange)="optionChange($event, item)"
         [item]="item"
+        [value]="item.value.value"
         [textColor]="item?.metaData?.styleProperties?.properties?.textColor"
         [textHorizontalAlign]="item?.metaData?.styleProperties?.properties?.textHorizontalAlign"
         [backgroundColor]="item?.metaData?.styleProperties?.properties?.backgroundColor"
@@ -573,6 +574,8 @@
         [isRequired]="item?.validators?.required"
         (onBlur)="optionChange($event, item)"
         [useGrouping]="item?.metaData?.thousandsSeparator"
+        [rightIcon]="item?.metaData?.rightIcon"
+        [leftIcon]="item?.metaData?.leftIcon"
         [style.--input-adornment-background-color]="item?.metaData?.adornmentBackgroundColor"
         [style.--input-border-width]="item?.metaData?.styleProperties?.properties?.borderWidth"
         [style.--input-label-font-size]="item?.metaData?.styleProperties?.properties?.labelFontSize"
@@ -600,13 +603,12 @@
         [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
         [errorMsg]="item?.errorMessage || item?.metaData?.errorMessage"
         [showErrorMsg]="item?.errorMessage || item?.metaData?.showErrorMessage"
-        [prefixText]="item?.metaData?.prefixText"
+        [prefixText]="item?.metaData?.prefixText || item?.metaData?.currency?.currencySymbol"
         [suffixText]="item?.metaData?.suffixText"
         [showClearButton]="item?.metaData?.showClearButton"
         [step]="item?.metaData?.step"
         [showButtons]="item?.metaData?.showStepperButtons"
-        [mode]="item?.metaData?.mode"
-        [currency]="item?.metaData?.currency"
+        [mode]="item?.metaData?.mode === 'currency' ? 'decimal' : item?.metaData?.mode"
         [minFractionDigits]="item?.metaData?.minFractionDigits"
         [maxFractionDigits]="item?.metaData?.maxFractionDigits"
         [maxLength]="item?.validators?.maxLength"
@@ -648,8 +650,9 @@
         [label]="item?.label"
         [isRequired]="item?.validators?.required"
         (onBlur)="optionChange($event, item)"
-        [currency]="item?.metaData?.currency"
         [useGrouping]="item?.metaData?.thousandsSeparator"
+        [rightIcon]="item?.metaData?.rightIcon"
+        [leftIcon]="item?.metaData?.leftIcon"
         [style.--input-adornment-background-color]="item?.metaData?.adornmentBackgroundColor"
         [style.--input-border-width]="item?.metaData?.styleProperties?.properties?.borderWidth"
         [style.--input-label-font-size]="item?.metaData?.styleProperties?.properties?.labelFontSize"
@@ -677,7 +680,7 @@
         [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
         [errorMsg]="item?.errorMessage || item?.metaData?.errorMessage"
         [showErrorMsg]="item?.errorMessage || item?.metaData?.showErrorMessage"
-        [prefixText]="item?.metaData?.prefixText"
+        [prefixText]="item?.metaData?.prefixText || item?.metaData?.currency?.currencySymbol"
         [suffixText]="item?.metaData?.suffixText"
         [showClearButton]="item?.metaData?.showClearButton"
         [step]="item?.metaData?.step"
@@ -734,8 +737,8 @@
     <div class="input-container button-input" [ngStyle]="{ width: '100%' }">
       <finlevit-button
         [isDisabled]="item?.metaData?.isEnable === false || readonlyMode || disable"
-        [icon]="loading ? 'pi pi-spin pi-spinner' : item?.metaData?.icon"
-        [iconPos]="item?.metaData?.iconPos"
+        [leftIcon]="loading ? 'pi pi-spin pi-spinner' : item?.metaData?.leftIcon"
+        [rightIcon]="item?.metaData?.rightIcon"
         [label]="item?.label"
         (btnClick)="btnClick($event, item)"
         [type]="item?.metaData?.type"
@@ -771,6 +774,21 @@
         [style.--button-border-left-width]="item?.metaData?.styleProperties?.properties?.borderLeftWidth"
         [independentBorders]="item?.metaData?.styleProperties?.properties?.independentBorder"
         [variant]="item?.metaData?.styleProperties?.properties?.variant"
+        [style.--hover-bg-color]="
+          item?.metaData?.styleProperties?.properties?.hoverBgColor ||
+          item?.metaData?.styleProperties?.properties?.backgroundColor
+        "
+        [style.--hover-border-color]="
+          item?.metaData?.styleProperties?.properties?.hoverBorderColor ||
+          item?.metaData?.styleProperties?.properties?.borderColor
+        "
+        [style.--hover-lable-color]="
+          item?.metaData?.styleProperties?.properties?.hoverLableColor ||
+          item?.metaData?.styleProperties?.properties?.labelColor
+        "
+        [style.--button-background-color]="item?.metaData?.styleProperties?.properties?.backgroundColor"
+        [actionType]="item?.metaData?.styleProperties?.properties?.actionType"
+        [boxShadow]="item?.metaData?.styleProperties | getBorderShadowFilter: { filter: 'shadow_string' }"
       ></finlevit-button>
     </div>
   </ng-container>
@@ -885,6 +903,11 @@
         [verticalBorder]="item?.metaData?.verticalBorder"
         [isDisabled]="readonlyMode || disable"
         (onBtnClick)="btnClick(null, $event)"
+        [isColumnEdit]="true"
+        [rowEditConfigure]="item?.metaData?.rowEditConfigure"
+        [rowDeleteConfigure]="item?.metaData?.rowDeleteConfigure"
+        [onRowEdit]="onRowEdit"
+        [onRowDelete]="onRowDelete"
       ></finlevit-custom-adv-table>
     </div>
   </ng-container>
@@ -899,7 +922,7 @@
         [isRequired]="item?.validators?.required"
         [label]="item?.label"
         [(ngModel)]="item.value.value"
-        (ngModelChange)="validateField($event, item); onChange($event)"
+        (ngModelChange)="validateField($event, item); optionChange($event, item)"
         [style.--input-label-font-weight]="item?.metaData?.styleProperties?.properties?.labelFontWeight"
         [style.--input-label-font-style]="item?.metaData?.styleProperties?.properties?.labelStyle"
         [style.--input-label-text-decoration]="item?.metaData?.styleProperties?.properties?.labelTextDecoration"
@@ -1034,7 +1057,7 @@
         [optionLabel]="item?.metaData?.isLabelAndValue ? item?.metaData?.optionLabel : 'name'"
         [optionValue]="item?.metaData?.isLabelAndValue ? item?.metaData?.optionValue : 'name'"
         [(ngModel)]="item.value.value"
-        (ngModelChange)="validateField($event, item); onChange($event)"
+        (ngModelChange)="validateField($event, item); optionChange($event, item)"
         [error]="isError(item)"
         [alignOptions]="item?.metaData?.alignOptions"
         [columns]="item?.metaData?.columns"
@@ -1053,7 +1076,6 @@
         [style.--input-unselected-border-color]="item?.metaData?.styleProperties?.properties?.unselectedBorderColor"
         [style.--input-selected-background-color]="item?.metaData?.styleProperties?.properties?.selectedBackgroundColor"
         [style.--input-selected-border-color]="item?.metaData?.styleProperties?.properties?.selectedBorderColor"
-        [style.--input-flex-direction]="item?.metaData?.styleProperties?.properties?.radioAlign"
         [style.--input-color]="item?.metaData?.styleProperties?.properties?.textColor"
         [style.--input-text-align]="item?.metaData?.styleProperties?.properties?.textHorizontalAlign"
         [style.--input-background-color]="item?.metaData?.styleProperties?.properties?.backgroundColor"
@@ -1073,6 +1095,44 @@
         [style.--input-label-width]="item?.metaData?.styleProperties?.properties?.labelWidth + '%'"
         [style.--input-radiobutton-size]="item?.metaData?.styleProperties?.properties?.radiobuttonSize"
         [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
+        [style.--input-option-tile-height]="item?.metaData?.styleProperties?.properties?.optionTileHeight"
+        [style.--input-option-tile-width]="item?.metaData?.styleProperties?.properties?.optionTileWidth"
+        [style.--input-option-tile-backgroundColor]="
+          item?.metaData?.styleProperties?.properties?.optionTileBackgroundColor
+        "
+        [horizontalContentAlignment]="item?.metaData?.styleProperties?.properties?.horizontalOptionAlignment"
+        [verticalContentAlignment]="item?.metaData?.styleProperties?.properties?.verticalOptionAlignment"
+        [style.--input-option-label-margin]="item?.metaData?.styleProperties?.properties?.labelTextMargin"
+        [buttonType]="
+          item?.metaData?.styleProperties?.properties?.buttonType
+            ? item?.metaData?.styleProperties?.properties?.buttonType
+            : 'radio'
+        "
+        [independentBorders]="item?.metaData?.styleProperties?.properties?.independentBorder"
+        [style.--input-border-width]="item?.metaData?.styleProperties?.properties?.borderWidth"
+        [style.--input-border-color]="item?.metaData?.styleProperties?.properties?.borderColor"
+        [style.--input-border]="item?.metaData?.styleProperties?.properties?.borderStyle"
+        [style.--input-border-radius]="item?.metaData?.styleProperties?.properties?.borderRadius"
+        [style.--input-border-top]="item?.metaData?.styleProperties?.properties?.borderTopStyle"
+        [style.--input-border-radius-top-left]="item?.metaData?.styleProperties?.properties?.borderTopLeftRadius"
+        [style.--input-border-top-color]="item?.metaData?.styleProperties?.properties?.borderTopColor"
+        [style.--input-border-top-width]="item?.metaData?.styleProperties?.properties?.borderTopWidth"
+        [style.--input-border-right]="item?.metaData?.styleProperties?.properties?.borderRightStyle"
+        [style.--input-border-radius-top-right]="item?.metaData?.styleProperties?.properties?.borderTopRightRadius"
+        [style.--input-border-right-color]="item?.metaData?.styleProperties?.properties?.borderRightColor"
+        [style.--input-border-right-width]="item?.metaData?.styleProperties?.properties?.borderRightWidth"
+        [style.--input-border-bottom]="item?.metaData?.styleProperties?.properties?.borderBottomStyle"
+        [style.--input-border-radius-bottom-right]="
+          item?.metaData?.styleProperties?.properties?.borderBottomRightRadius
+        "
+        [style.--input-border-bottom-color]="item?.metaData?.styleProperties?.properties?.borderBottomColor"
+        [style.--input-border-bottom-width]="item?.metaData?.styleProperties?.properties?.borderBottomWidth"
+        [style.--input-border-left]="item?.metaData?.styleProperties?.properties?.borderLeftStyle"
+        [style.--input-border-radius-bottom-left]="item?.metaData?.styleProperties?.properties?.borderBottomLeftRadius"
+        [style.--input-border-left-color]="item?.metaData?.styleProperties?.properties?.borderLeftColor"
+        [style.--input-border-left-width]="item?.metaData?.styleProperties?.properties?.borderLeftWidth"
+        [style.--input-option-tile-margin]="item?.metaData?.styleProperties?.properties.optionTileMargin"
+        [buttonAlignment]="item?.metaData?.styleProperties?.properties.radioAlign"
       ></finlevit-radio-group>
     </div>
   </ng-container>
@@ -1081,7 +1141,7 @@
       <finlevit-lib-datepicker
         [isDisabled]="readonlyMode || disable"
         [label]="item?.label"
-        [errorMsg]="item?.errorMessage || item?.errorMsg"
+        [errorMsg]="item?.errorMessage"
         [error]="isError(item)"
         [isRequired]="item?.validators?.required"
         [tooltip]="item?.metaData?.tooltip"
@@ -1091,7 +1151,7 @@
         [minDate]="item?.validators?.minDate"
         [maxDate]="item?.validators?.maxDate"
         [(ngModel)]="item.value.value"
-        (ngModelChange)="validateField($event, item); onChange($event)"
+        (ngModelChange)="validateField($event, item); optionChange($event, item)"
         [yearNavigator]="true"
         [monthNavigator]="true"
         [style.--input-color]="item?.metaData?.styleProperties?.properties?.textColor"
@@ -1212,6 +1272,7 @@
       [style.--label-font-size]="item?.metaData?.styleProperties?.properties?.fontSize"
       [style.--active-text-color]="item?.metaData?.styleProperties?.properties?.activetextColor"
       [style.--active-border-color]="item?.metaData?.styleProperties?.properties?.activeBorderColor"
+      [containerStyle]="item?.metaData?.styleProperties | getBorderShadowFilter: { filter: 'all' }"
     >
     </app-tab-container>
   </ng-container>

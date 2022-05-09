@@ -1,11 +1,19 @@
-<div class="tab-container style-tab-container" [ngStyle]="containerBodyStyle">
+<div class="tab-container style-tab-container" [ngStyle]="containerStyle">
   <p-tabView [activeIndex]="tabActiveIndex" (onChange)="onTabChange($event)">
     <ng-container *ngFor="let child of item.children; let i = index">
       <p-tabPanel *ngIf="!child?.metaData?.isHidden" [header]="child.label">
         <ng-template pTemplate="header">
-          <em [class]="child?.metaData?.icon" class="p-pr-1 mr-2"></em>
+          <finlevit-icon-preview
+            [style.--icon-color]="child?.metaData?.icon?.color"
+            class="p-pr-1 mr-2 d-flex"
+            [icon]="child?.metaData?.icon"
+          ></finlevit-icon-preview>
           <span>{{ child.label }}</span>
-          <em [class]="child?.metaData?.suffixIcon" class="p-pr-1 ml-2"></em>
+          <finlevit-icon-preview
+            [style.--icon-color]="child?.metaData?.icon?.color"
+            class="p-pr-1 ml-2 d-flex"
+            [icon]="child?.metaData?.suffixIcon"
+          ></finlevit-icon-preview>
         </ng-template>
         <div
           [ngClass]="{

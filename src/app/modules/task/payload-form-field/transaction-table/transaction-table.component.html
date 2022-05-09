@@ -46,6 +46,7 @@
     [verticalBorder]="item?.metaData?.verticalBorder"
     (onRowClick)="onRowClick($event)"
     (onPageChange)="onPageChange($event)"
+    [isColumnEdit]="true"
   ></finlevit-custom-table>
 </div>
 <app-loader [loading]="loading"></app-loader>

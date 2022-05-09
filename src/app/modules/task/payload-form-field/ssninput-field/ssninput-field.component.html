@@ -1,12 +1,12 @@
-<finlevit-text
+<finlevit-mask-text
   [isDisabled]="isDisabled"
   [leftIcon]="item?.metaData?.leftIcon"
   [rightIcon]="item?.metaData?.rightIcon"
-  [error]="item?.error == true"
+  [error]="item?.error === true"
   [tooltip]="item?.metaData?.tooltip"
   [placeholder]="item?.metaData?.placeholder"
-  [(ngModel)]="item.value.value"
-  (ngModelChange)="validateField($event)"
+  [ngModel]="item.value.value | toSSNFormat"
+  (ngModelChange)="item.value.value = $event; validateField($event)"
   [isRequired]="item?.validators?.required"
   [label]="item?.label"
   (onBlur)="optionChange($event)"
@@ -62,4 +62,4 @@
   [labelPos]="labelPosition"
   [errorMsg]="errorMessage"
   [showErrorMsg]="showErrorMessage"
-></finlevit-text>
+></finlevit-mask-text>

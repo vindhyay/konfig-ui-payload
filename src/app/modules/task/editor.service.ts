@@ -9,6 +9,7 @@ import {
   parseApiResponse,
   getFieldFromFields,
   validateFields,
+  scrollTo,
 } from "../../utils";
 import { NotificationService } from "../../services/notification.service";
 import { AuthService } from "../auth/services/auth.service";
@@ -19,6 +20,7 @@ import { AppConfigService } from "../../app-config-providers/app-config.service"
 import { resourceType } from "./payload-form-field/payload-form-field.component";
 import * as moment from "moment";
 import { LoaderService } from "../../services/loader.service";
+import { isNull } from "lodash";
 
 @Injectable({
   providedIn: "root",
@@ -51,6 +53,9 @@ export class EditorService extends BaseService {
   private transactionDetails = new BehaviorSubject(null);
   public transactionDetails$ = this.transactionDetails.asObservable();
 
+  private conditionDetails = new BehaviorSubject(null);
+  public conditionDetails$ = this.conditionDetails.asObservable();
+
   private formFields = new BehaviorSubject(null);
   public formFields$ = this.formFields.asObservable();
 
@@ -59,6 +64,13 @@ export class EditorService extends BaseService {
   }
   public getTransactionDetails() {
     return this.transactionDetails.getValue();
+  }
+
+  public setConditionDetails(conditionDetails: any) {
+    this.conditionDetails.next(conditionDetails);
+  }
+  public getConditionDetails(): any {
+    return this.conditionDetails.getValue();
   }
 
   public setFormFields(fields: any) {
@@ -186,7 +198,7 @@ export class EditorService extends BaseService {
       onClickConfigs.length &&
       (onClickConfigs[0].action === ButtonActions.submit || onClickConfigs[0].action === ButtonActions.next);
     if (isValidationRequired) {
-      const { result, errorFields } = validateFields(formFields);
+      const { result, errorFields } = validateFields(formFields, true);
       if (!result) {
         let errorMsg = "Failed to validate: ";
         if (errorFields.length) {
@@ -199,7 +211,7 @@ export class EditorService extends BaseService {
     this.triggerButtonActionEvents(triggerData);
   }
 
-  triggerButtonActionEvents(triggerData: { triggerId: string; data: any; uiActions: any[] }) {
+  triggerButtonActionEvents(triggerData: { triggerId: string; data: any; uiActions: any[]; businessRuleIds?: [] }) {
     const {
       transactionId = "",
       screenId = "",
@@ -210,21 +222,28 @@ export class EditorService extends BaseService {
       data: { metaData: { toastMsg = "", onClickConfigs = [] } = {} },
       triggerId,
       uiActions,
+      businessRuleIds = [],
     } = triggerData;
     if (!appId) {
       this.notificationService.error("Application not found", "Failed to submit");
       return;
     }
     const isSubmit = onClickConfigs?.filter((item) => item.action === ButtonActions.submit)?.length > 0;
+    const isNext = onClickConfigs?.filter((item) => item.action === ButtonActions.next)?.length > 0;
+    const isPrev = onClickConfigs?.filter((item) => item.action === ButtonActions.previous)?.length > 0;
     this.showLoader(triggerData?.data?.id);
     this.saveTransaction({ transactionId, screenId }, formFields).subscribe(
       (result) => {
         const { data, error } = parseApiResponse(result);
         if (data && !error) {
-          this.submitMultipleAction(data?.transactionId, {
-            triggerId,
-            screenId,
-          }).subscribe(
+          this.submitMultipleAction(
+            data?.transactionId,
+            {
+              triggerId,
+              screenId,
+            },
+            { businessRuleIds }
+          ).subscribe(
             (result) => {
               this.hideLoader();
               const { data, error } = parseApiResponse(result);
@@ -239,6 +258,10 @@ export class EditorService extends BaseService {
                   );
                 this.setTransactionDetails(data);
                 this.triggerUIActions(uiActions);
+                //On page change scroll to top
+                if (isNext || isPrev) {
+                  scrollTo();
+                }
               } else {
                 this.notificationService.error(error.errorMessage, "Error");
               }
@@ -289,13 +312,14 @@ export class EditorService extends BaseService {
       data: {
         isUnique = false,
         value: { value = null },
-        metaData: { onChangeConfigs = [] } = {},
+        metaData: { onChangeConfigs = [], businessRuleIds = [] } = {},
         id,
       },
     } = $event;
     const formFields = this.getFormFields();
     if (isUnique) {
       this.uniqueFieldChange({ id, value });
+      this.onRuleTrigger($event);
       return;
     }
     if (onChangeConfigs?.length) {
@@ -303,9 +327,32 @@ export class EditorService extends BaseService {
       if (type === ButtonActions.populate) {
         let error = this.validatePopulateParams(onChangeConfigs[0], formFields);
         if (!error) {
-          this.triggerButtonActionEvents({ triggerId: id, data: $event?.data, uiActions: [] });
+          this.triggerButtonActionEvents({
+            triggerId: id,
+            data: $event?.data,
+            uiActions: [],
+            businessRuleIds: businessRuleIds,
+          });
         }
       }
+    }
+  }
+
+  onRuleTrigger($event) {
+    const {
+      data: {
+        value: { value = null },
+        metaData: { businessRuleIds = [] } = {},
+        id,
+      },
+    } = $event;
+    if (businessRuleIds?.length) {
+      this.triggerButtonActionEvents({
+        triggerId: id,
+        data: $event?.data,
+        uiActions: [],
+        businessRuleIds: businessRuleIds,
+      });
     }
   }
 
@@ -314,27 +361,44 @@ export class EditorService extends BaseService {
     conditionsArray.forEach((element) => {
       let result = null;
       let conditions = element?.ifConditions;
+      const isShowError = element?.type === "ShowError";
       if (!!conditions)
         for (let condition of conditions) {
           let condMatched = false;
           condition.rules.forEach((rule, index) => {
-            const field = getFieldFromFields(allFields, rule?.field?.value);
+            const field = getFieldFromFields(allFields, rule?.field?.fieldId);
             const fieldValue = field?.value?.value;
-            let result = this.conditionValidation(rule, fieldValue);
+            // let result = this.conditionValidation(rule, fieldValue);
+            const targetField = isShowError ? getFieldFromFields(allFields, rule?.targetField?.fieldId) : null;
+            let result = this.conditionValidation(rule, fieldValue, targetField);
             condMatched =
               index === 0 ? result : rule.condition === "and" ? condMatched && result : condMatched || result;
           });
           if (condMatched) {
-            result = condition.mappingField;
+            // result = condition.mappingField;
+            result = { ...condition.mappingField };
             console.log("Success", result);
             break;
+          } else if (isShowError && condition?.mappingField?.targetField) {
+            const removeErrorObj = getFieldFromFields(allFields, condition?.mappingField?.targetField?.fieldId);
+            if (
+              removeErrorObj &&
+              removeErrorObj?.error &&
+              ((condition?.mappingField?.messageType === "fieldError" &&
+                removeErrorObj.errorMessage == condition?.mappingField?.message) ||
+                removeErrorObj.errorMessage?.length === 0)
+            ) {
+              removeErrorObj.error = false;
+              removeErrorObj.errorMessage = "";
+              console.log(removeErrorObj, condition?.mappingField);
+            }
           }
         }
-      if (result) {
+      if (result && !result.messageType) {
         const showFields = result?.showFields || [];
         const hideFields = result?.hideFields || [];
         showFields.forEach((showField) => {
-          const showFieldRef = getFieldFromFields(allFields, showField?.value);
+          const showFieldRef = getFieldFromFields(allFields, showField?.fieldId);
           if (showFieldRef) {
             showFieldRef.rows = showFieldRef.metaData?.defaultRows;
             showFieldRef.minItemRows = showFieldRef.metaData?.defaultMinItemRows;
@@ -346,7 +410,7 @@ export class EditorService extends BaseService {
           }
         });
         hideFields.forEach((hideField) => {
-          const hideFieldRef = getFieldFromFields(allFields, hideField?.value);
+          const hideFieldRef = getFieldFromFields(allFields, hideField?.fieldId);
           if (hideFieldRef && !hideFieldRef.metaData.hidden) {
             hideFieldRef.rows = hideFieldRef?.metaData?.hideRows || 0;
             hideFieldRef.minItemRows = hideFieldRef?.metaData?.hideRows || 0;
@@ -356,13 +420,60 @@ export class EditorService extends BaseService {
           }
         });
         this.setContainerHeight(allFields);
+      } else if (result && result.messageType) {
+        const showMessageFieldRef = result?.targetField?.fieldId
+          ? getFieldFromFields(allFields, result.targetField.fieldId)
+          : null;
+        switch (result.messageType) {
+          case "fieldError":
+            if (showMessageFieldRef) {
+              showMessageFieldRef.errorMessage = result.message;
+              showMessageFieldRef.error = true;
+            }
+            break;
+          case "pageError":
+            if (showMessageFieldRef) {
+              showMessageFieldRef.error = true;
+            }
+            this.notificationService.error(result.message, null, { disableTimeOut: true });
+            break;
+          case "pageWarning":
+            this.notificationService.info(result.message);
+            break;
+        }
       }
     });
   }
-  conditionValidation = (rule, fieldValue): boolean => {
+  conditionValidation = (rule, fieldValue, targetField = null): boolean => {
     let result = false;
     let ruleArray = [];
     let testCondition = false;
+    if (fieldValue === undefined || fieldValue === null) {
+      return false;
+    }
+    if (rule?.fnsName) {
+      const calcValue = this.getFormulaValue(
+        targetField ? targetField?.value?.value : fieldValue,
+        rule.fnsName,
+        rule?.factorValue
+      );
+      if (rule?.fnsName === "TODAY") {
+        rule.value = calcValue;
+        fieldValue = new Date(fieldValue);
+        fieldValue.setHours(0, 0, 0, 0);
+      } else if (!!targetField) {
+        rule.value = calcValue;
+      } else {
+        fieldValue = calcValue;
+      }
+    }
+    if (rule.value === undefined || rule.value === null) {
+      return false;
+    }
+    if (rule.field.dataType === "string") {
+      fieldValue = this.convertCase(fieldValue);
+      rule.value = this.convertCase(rule.value);
+    }
     switch (rule.operator) {
       case "includes":
         ruleArray = rule?.value?.split(",");
@@ -420,17 +531,20 @@ export class EditorService extends BaseService {
         result = !!fieldValue && this.isLessThanEqual(String(fieldValue).length, rule.value);
         break;
       case "notEquals":
-        if (String(fieldValue) !== String(rule.value)) {
+        if ((isNull(fieldValue) && String(rule.value) === "None") || String(fieldValue) !== String(rule.value)) {
           result = true;
         }
         break;
       default:
-        if (String(fieldValue) == String(rule.value)) {
+        if ((isNull(fieldValue) && String(rule.value) === "None") || String(fieldValue) == String(rule.value)) {
           result = true;
         }
         break;
     }
     return result;
+  };
+  convertCase = (stringValue): string => {
+    return stringValue.toLowerCase();
   };
   isGreaterThan = (fieldValue: number, value: number): boolean => {
     return fieldValue > value;
@@ -478,9 +592,9 @@ export class EditorService extends BaseService {
     return this.getData(url, params);
   };
   // submit Action
-  submitMultipleAction = (transactionId, params): Observable<any> => {
+  submitMultipleAction = (transactionId, params, data = {}): Observable<any> => {
     const url = `${this.config.getApiUrls().submitMultipleAction}/${transactionId}`;
-    return this.postData(url, {}, params);
+    return this.postData(url, data, params);
   };
   // Create Transaction
   createTransaction = (params, payload): Observable<any> => {
@@ -491,6 +605,12 @@ export class EditorService extends BaseService {
   fetchTransactionDetails = (transactionDbId: any): Observable<any> => {
     const url = `${this.config.getApiUrls().getTransactionURL}/${transactionDbId}`;
     return this.getData(url);
+  };
+
+  // update table row
+  updateTableRowData = (payload, params): Observable<any> => {
+    const url = `${this.config.getApiUrls().updateTableRowDataURL}`;
+    return this.putData(url, payload, params);
   };
 
   //Updating hidden field values based on formula --- work around
@@ -665,5 +785,105 @@ export class EditorService extends BaseService {
     const currField = getFieldFromFields(payloadFields, item?.id);
     currField.value.value = formulaValue;
     return formulaValue;
+  }
+  getCoditions(ifConditionsIds: any): any {
+    return this.getConditionDetails()?.filter((item: any) => ifConditionsIds.includes(item?.id)) || [];
+  }
+  calcDate(date1, date2) {
+    var diff = Math.floor(date1.getTime() - date2.getTime());
+    var day = 1000 * 60 * 60 * 24;
+    var days = Math.floor(diff / day);
+    var months = Math.floor(days / 31);
+    var years = Math.floor(months / 12);
+    return { days: days, months: months, years: years };
+  }
+  addMonths(dateValue, months = 0) {
+    const result = new Date(dateValue);
+    result.setMonth(result.getMonth() + Number(months));
+    return result;
+  }
+  addDays(date, days) {
+    var result = new Date(date);
+    result.setDate(result.getDate() + parseInt(days));
+    return result;
+  }
+  trim(stringToTrim) {
+    return stringToTrim.replace(/^\s+|\s+$/g, "");
+  }
+  ltrim(stringToTrim) {
+    return stringToTrim.replace(/^\s+/, "");
+  }
+  rtrim(stringToTrim) {
+    return stringToTrim.replace(/\s+$/, "");
+  }
+  getFormulaValue(targetFieldValue, fnsName, factor = 0) {
+    if (!targetFieldValue) {
+      return null;
+    }
+    const value = targetFieldValue;
+    switch (fnsName) {
+      case "getValue":
+        return value;
+      case "getNoYear":
+        return this.calcDate(new Date(), new Date(value)).years;
+      case "getNoDays":
+        return this.calcDate(new Date(), new Date(value)).days;
+      case "getNoMonths":
+        return this.calcDate(new Date(), new Date(value)).months;
+      case "YEARDIFF":
+        return this.calcDate(new Date(factor), new Date(value)).years;
+      case "DATEDIFF":
+        return this.calcDate(new Date(factor), new Date(value)).days;
+      case "MONTHDIFF":
+        return this.calcDate(new Date(factor), new Date(value)).months;
+      case "DATEVALUE":
+        return new Date(value).toDateString();
+      case "ADDMONTHS":
+        return this.addMonths(value, factor);
+      case "ADDDAYS":
+        return this.addDays(value, factor);
+      case "WEEKDAY":
+        return new Date(value).getDay();
+      case "TODAY":
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        return today;
+      case "strLength":
+        return value?.length;
+      case "toLowerCase":
+        return value?.toLowerCase();
+      case "toUpperCase":
+        return value?.toUpperCase();
+      case "toString":
+        return value?.toString();
+      case "LTRIM":
+        return this.ltrim(value);
+      case "RTRIM":
+        return this.rtrim(value);
+      case "TRIM":
+        return this.trim(value);
+      case "toNumber":
+        return Number(value);
+      case "ABS":
+        return Math.abs(value);
+      case "CEILING":
+        return Math.ceil(value);
+      case "EXP":
+        return Math.exp(value);
+      case "FLOOR":
+        return Math.floor(value);
+      case "LOG":
+        return Math.log(value);
+      case "MOD":
+        return Math.log(value % factor);
+      case "POWER":
+        return Math.pow(value, factor);
+      case "ROUND":
+        return Math.round(value);
+      case "SQRT":
+        return Math.sqrt(value);
+      case "TRUNC":
+        return Math.trunc(value);
+    }
   }
 }

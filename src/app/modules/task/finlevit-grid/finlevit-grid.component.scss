@@ -1,4 +1,6 @@
 :host {
+  --canvas-color: #f4f4f4;
+
   height: 100%;
   .toolbar {
     display: flex;
@@ -15,7 +17,7 @@
     display: flex;
     height: 100%;
     flex-direction: column;
-    background: #f4f4f4;
+    background: var(--canvas-color);
   }
   gridster-item {
     &.display-border {
@@ -94,6 +96,9 @@
     text-align: center;
     font-family: Arial, Helvetica, sans-serif;
   }
+  gridster-item.button-container, gridster-item.card-container, gridster-item.tab-container{
+    overflow: visible;
+  }
 }
 .dndDraggingSource {
   display: none !important;
@@ -101,9 +106,9 @@
 .card-container {
   height: 100%;
   border: 1px solid #dddddd;
-  background: #ffffff;
   padding: 0;
-  box-shadow: 0 12px 16px 0 rgb(51 62 72 / 10%);
+  // background: #ffffff;
+  // box-shadow: 0 12px 16px 0 rgb(51 62 72 / 10%);
   gridster {
     background: #ffffff;
   }

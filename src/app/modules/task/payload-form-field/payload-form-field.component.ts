@@ -1,13 +1,13 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from "@angular/core";
-import { FormControl } from "@angular/forms";
 import { FieldData } from "../model/field-data.model";
 import { BaseWidget, Column, TableMetaData, WidgetTypes } from "../model/create-form.models";
-import { getErrorMessages, getFieldFromFields, getValidators } from "../../../utils";
+import { DeepCopy, getFieldFromFields, parseApiResponse, validateFields } from "../../../utils";
 import { AuthService } from "../../auth/services/auth.service";
 import { EditorService } from "../editor.service";
 import * as moment from "moment";
 import { LoaderService } from "../../../services/loader.service";
 import { BaseComponent } from "../../shared/base/base.component";
+import { NotificationService } from "../../../services/notification.service";
 
 @Component({
   selector: "app-payload-form-field",
@@ -56,7 +56,8 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
   constructor(
     private authService: AuthService,
     private editorService: EditorService,
-    private loaderService: LoaderService
+    private loaderService: LoaderService,
+    private notificationService: NotificationService
   ) {
     super();
   }
@@ -168,18 +169,6 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
   }
   editMode: boolean = false;
 
-  validateField($event: any, field: any) {
-    const { validators = {}, label = "" } = field;
-    const tempFormControl = new FormControl($event, getValidators(validators));
-    if (tempFormControl.valid) {
-      field.value.value = $event;
-      field.error = false;
-      field.errorMsg = "";
-    } else {
-      field.error = true;
-      field.errorMsg = getErrorMessages(tempFormControl.errors, label);
-    }
-  }
   btnClick($event, data) {
     if (this.emitButtonEvent) {
       this.onBtnClick.emit({ event: $event, data });
@@ -187,8 +176,61 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
       this.editorService.onBtnClick({ event: $event, data });
     }
   }
+  onRowEdit = (data) => {
+    return new Promise((resolve, reject) => {
+      const params = { action: "update" };
+      const payload = DeepCopy.copy(this.item);
+      payload.children = [data];
+      this.editorService.updateTableRowData(payload, params).subscribe(
+        (result) => {
+          const { data, error } = parseApiResponse(result);
+          if (data && !error) {
+            this.item.children = data?.children;
+            resolve(result);
+          } else {
+            this.notificationService.error("Failed to update row", "Error");
+            reject(error);
+          }
+        },
+        (error) => {
+          this.notificationService.error("Failed to update row", "Error");
+          reject(error);
+        }
+      );
+    });
+  };
+
+  onRowDelete = (data) => {
+    return new Promise((resolve, reject) => {
+      const params = { action: "delete" };
+      const payload = DeepCopy.copy(this.item);
+      payload.children = [data];
+      this.editorService.updateTableRowData(payload, params).subscribe(
+        (result) => {
+          const { data, error } = parseApiResponse(result);
+          if (data && !error) {
+            this.item.children = data?.children;
+            resolve(result);
+          } else {
+            this.notificationService.error("Failed to delete row", "Error");
+            reject(error);
+          }
+        },
+        (error) => {
+          this.notificationService.error("Failed to delete row", "Error");
+          reject(error);
+        }
+      );
+    });
+  };
+
   optionChange($event, data) {
-    this.editorService.onOptionChange({ event: $event, data });
+    const metaData = this.item.metaData;
+    if (!!metaData["onChangeConfigs"] && metaData["onChangeConfigs"]?.length) {
+      this.editorService.onOptionChange({ event: $event, data });
+    } else if (metaData?.businessRuleIds?.length) {
+      this.editorService.onRuleTrigger({ event: $event, data });
+    }
     this.onChange($event);
   }
 
@@ -207,15 +249,21 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
     this.editorService.setContainerHeight(this.editorService.getFormFields());
   }
   onChange($event) {
-    const ifConditions = this.item.metaData.conditions;
-    if (ifConditions?.length) {
-      this.editorService.checkCondition(ifConditions);
-    } else if (ifConditions && !ifConditions?.length) {
-      this.editorService.checkCondition([{ ...ifConditions }]);
+    const ifConditionsIds = this.item.metaData?.conditionRuleIds;
+    if (ifConditionsIds?.length) {
+      const ifConditions = this.editorService.getCoditions(ifConditionsIds);
+      if (ifConditions?.length) {
+        this.editorService.checkCondition(ifConditions);
+      } else if (ifConditions && !ifConditions?.length) {
+        this.editorService.checkCondition([{ ...ifConditions }]);
+      }
     }
   }
+  validateField($event: any, field: any) {
+    validateFields([field]);
+  }
   calculateFormulaValue(item): any {
-    let formulaValue = "";
+    let formulaValue;
     let formula = [];
     if (item?.metaData?.formula?.length > 0) {
       item?.metaData?.formula.forEach((field) => {
@@ -238,6 +286,9 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
         if (values.length > 0) {
           formula.forEach((field) => {
             if (field?.resourceType === resourceType.PAYLOAD_FIELD) {
+              if (field?.value?.value === null) {
+                field.value.value = undefined;
+              }
               expression = expression + " " + field?.value?.value;
             }
             if (field?.resourceType === resourceType.BRACKET) {
@@ -247,17 +298,25 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
               expression = expression + " " + field?.expression;
             }
           });
-          if (eval(expression) === Infinity) {
+          let evaluate;
+          try {
+            evaluate = eval(expression);
+          } catch (e) {
+            console.log(e);
+          }
+          if (evaluate === Infinity) {
             formulaValue = "∞";
+          } else if (isNaN(evaluate)) {
+            formulaValue = undefined;
           } else {
-            formulaValue = eval(expression);
+            formulaValue = eval(expression) || null;
           }
         } else {
           formulaValue = values[0]?.value?.value || null;
         }
-        item.value.value = formulaValue;
         return formulaValue;
       case "string":
+        formulaValue = "";
         formula.forEach((field) => {
           if (field?.resourceType === resourceType.PAYLOAD_FIELD) {
             if (field?.value?.value) {
@@ -270,7 +329,6 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
             }
           }
         });
-        item.value.value = formulaValue;
         return formulaValue;
       case "date":
         const dateFunc = formula.filter((field) => {
@@ -301,7 +359,6 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
         let days = d.diff(date1, "days");
         if (years) {
           formulaValue = years + "";
-          item.value.value = formulaValue;
         }
         return formulaValue;
       case "array":
@@ -369,11 +426,9 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
             }
             break;
         }
-        item.value.value = formulaValue;
         return formulaValue;
     }
-    const currField = getFieldFromFields(this.payloadFields, item?.id);
-    currField.value.value = formulaValue;
+    item.value.value = formulaValue;
     return formulaValue;
   }
 

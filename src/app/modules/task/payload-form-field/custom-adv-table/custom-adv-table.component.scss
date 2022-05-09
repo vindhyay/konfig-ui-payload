@@ -9,7 +9,6 @@
   --body-cell-padding: 11px;
   --header-cell-font-family: Muli, Raleway, Montserrat, "Open Sans", sans-serif;
 
-
   --paginator-background-color: #ededed;
   --paginator-color: #6a6a6a;
   --paginator-font-family: Muli, Raleway, Montserrat, "Open Sans", sans-serif;
@@ -79,6 +78,14 @@
     color: var(--body-cell-color);
     overflow: auto;
     font-family: var(--body-cell-font-family);
+    &.edit-row-exists {
+      .f-tr-group {
+        &:not(.edit-row) {
+          opacity: 0.5;
+          pointer-events: none;
+        }
+      }
+    }
   }
   .f-table .f-tbody .f-tr-group {
     display: flex;
@@ -90,7 +97,7 @@
     padding: 10px 10px;
     position: relative;
     border-right: 1px solid var(--table-header-right-border-color);
-    &:last-of-type{
+    &:last-of-type {
       border-right: none !important;
     }
     cursor: pointer;
@@ -164,31 +171,35 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    .row-actions{
+    .row-actions {
       width: 100%;
     }
     .edit-action {
       margin: 0 0.5rem;
     }
-    .edit-action-mode,
-    .new-action-mode {
-      .save-icon {
-        color: #0dd60d;
-        margin: 0 0.5rem;
-      }
-      .cancel-icon {
-        color: #d41111;
-        margin: 0 0.5rem;
-      }
-      .delete-icon {
-        color: #d41111;
-      }
-    }
     .delete-action {
       margin: 0 0.5rem;
       .delete-icon {
+        cursor: pointer;
         color: #d41111;
       }
+    }
+    .edit-icon {
+      cursor: pointer;
+    }
+    .save-icon {
+      color: #0dd60d;
+      cursor: pointer;
+      margin: 0 0.5rem;
+    }
+    .cancel-icon {
+      cursor: pointer;
+      color: #d41111;
+      margin: 0 0.5rem;
+    }
+    .delete-icon {
+      cursor: pointer;
+      color: #d41111;
     }
   }
   .pagination-bottom {
@@ -249,7 +260,7 @@
       align-items: center;
       justify-content: space-around;
       display: none;
-      &.show-pagination{
+      &.show-pagination {
         display: flex;
       }
     }
@@ -282,7 +293,7 @@
         }
       }
     }
-    &.table-footer{
+    &.table-footer {
       display: flex;
     }
   }
@@ -294,10 +305,30 @@
       box-shadow: none;
     }
   }
-  .hide-footer-cell-actions{
+  .hide-footer-cell-actions {
     display: flex;
     padding: 4px 12px;
     color: var(--paginator-color);
     background-color: var(--paginator-background-color);
   }
+  .no-data-container {
+    background-image: url("/assets/images/nodata-found.png");
+    height: 100%;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+}
+::ng-deep {
+  //Table confirm dialog footer buttons start
+  .p-dialog .p-dialog-footer .rejectBtn {
+    width: 80px;
+    color: #d41111;
+    background: transparent;
+    border: 1px solid #d41111;
+  }
+  .p-dialog .p-dialog-footer .acceptBtn {
+    width: 80px;
+  }
+  //Table confirm dialog footer buttons end
 }
