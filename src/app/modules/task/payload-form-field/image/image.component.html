@@ -1,6 +1,9 @@
 <div
-  class="image-container"
   *ngIf="metaData?.source === 'Remote'"
+  [ngClass]="{
+    'image-container': true,
+    'cursor-pointer': item?.metaData?.onClickConfigs?.length
+  }"
   [style.justify-content]="metaData?.position === 'Contain' ? metaData?.horizontalAlign : 'center'"
 >
   <img

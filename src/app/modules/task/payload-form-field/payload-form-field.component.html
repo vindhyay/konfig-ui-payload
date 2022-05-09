@@ -801,7 +801,7 @@
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Image">
-    <app-image [item]="item"></app-image>
+    <app-image [item]="item" (click)="btnClick($event, item)"></app-image>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Table">
     <div
