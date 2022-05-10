@@ -52,15 +52,15 @@ export const parseApiResponse = (result: result): result => {
   const error = result.error;
   return { data, error };
 };
-export const validateFields = (fields: any[]) => {
+export const validateFields = (fields: any[], isPageSubmit = false) => {
   let result = true;
   let errorFields = [];
   fields.forEach((field: any) => {
-    // if (field.error) {
-    //   result = false;
-    //   errorFields.push(field);
-    //   return true;
-    // }
+    if (field.error && isPageSubmit) {
+      result = false;
+      errorFields.push(field);
+      return true;
+    }
     if (field?.children && field?.children?.length) {
       const { result: validationStatus, errorFields: errorFieldsData } = validateFields(field.children);
       if (!validationStatus) {

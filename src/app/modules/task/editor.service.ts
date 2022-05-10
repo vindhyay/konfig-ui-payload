@@ -198,7 +198,7 @@ export class EditorService extends BaseService {
       onClickConfigs.length &&
       (onClickConfigs[0].action === ButtonActions.submit || onClickConfigs[0].action === ButtonActions.next);
     if (isValidationRequired) {
-      const { result, errorFields } = validateFields(formFields);
+      const { result, errorFields } = validateFields(formFields, true);
       if (!result) {
         let errorMsg = "Failed to validate: ";
         if (errorFields.length) {
@@ -448,7 +448,7 @@ export class EditorService extends BaseService {
     let result = false;
     let ruleArray = [];
     let testCondition = false;
-    if (!fieldValue) {
+    if (fieldValue === undefined || fieldValue === null) {
       return false;
     }
     if (rule?.fnsName) {
@@ -461,11 +461,14 @@ export class EditorService extends BaseService {
         rule.value = calcValue;
         fieldValue = new Date(fieldValue);
         fieldValue.setHours(0, 0, 0, 0);
-      } else if (!!targetField && targetField?.value?.value) {
+      } else if (!!targetField) {
         rule.value = calcValue;
       } else {
         fieldValue = calcValue;
       }
+    }
+    if (rule.value === undefined || rule.value === null) {
+      return false;
     }
     if (rule.field.dataType === "string") {
       fieldValue = this.convertCase(fieldValue);
