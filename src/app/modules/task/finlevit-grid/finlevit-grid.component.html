@@ -39,7 +39,8 @@
         'header-container': item?.metaData?.widgetType === Header,
         'footer-container': item?.metaData?.widgetType === Footer,
         'button-container': item?.metaData?.widgetType === Button,
-        'error-container': item?.metaData?.widgetType === ErrorContainer
+        'error-container': item?.metaData?.widgetType === ErrorContainer,
+        'display-none': !item?.rows
       }"
       [item]="item"
     >
