@@ -774,21 +774,107 @@
         [style.--button-border-left-width]="item?.metaData?.styleProperties?.properties?.borderLeftWidth"
         [independentBorders]="item?.metaData?.styleProperties?.properties?.independentBorder"
         [variant]="item?.metaData?.styleProperties?.properties?.variant"
+        [style.--button-background-color]="item?.metaData?.styleProperties?.properties?.backgroundColor"
+        [boxShadow]="item?.metaData?.styleProperties | getBorderShadowFilter: { filter: 'shadow_string' }"
+        [isPress]="item?.metaData?.styleProperties?.properties?.press?.isActionEnabled"
+        [isHover]="item?.metaData?.styleProperties?.properties?.hover?.isActionEnabled"
+        [isFocus]="item?.metaData?.styleProperties?.properties?.focus?.isActionEnabled"
         [style.--hover-bg-color]="
-          item?.metaData?.styleProperties?.properties?.hoverBgColor ||
+          item?.metaData?.styleProperties?.properties?.hover?.actionBgColor ||
           item?.metaData?.styleProperties?.properties?.backgroundColor
         "
         [style.--hover-border-color]="
-          item?.metaData?.styleProperties?.properties?.hoverBorderColor ||
+          item?.metaData?.styleProperties?.properties?.hover?.actionBorderColor ||
           item?.metaData?.styleProperties?.properties?.borderColor
         "
         [style.--hover-lable-color]="
-          item?.metaData?.styleProperties?.properties?.hoverLableColor ||
+          item?.metaData?.styleProperties?.properties?.hover?.actionLableColor ||
           item?.metaData?.styleProperties?.properties?.labelColor
         "
-        [style.--button-background-color]="item?.metaData?.styleProperties?.properties?.backgroundColor"
-        [actionType]="item?.metaData?.styleProperties?.properties?.actionType"
-        [boxShadow]="item?.metaData?.styleProperties | getBorderShadowFilter: { filter: 'shadow_string' }"
+        [style.--hover-label-font-family]="
+          item?.metaData?.styleProperties?.properties?.hover?.actiontextFontStyle ||
+          item?.metaData?.styleProperties?.properties?.labelFontStyle
+        "
+        [style.--hover-label-font-size]="
+          item?.metaData?.styleProperties?.properties?.hover?.actionFontSize ||
+          item?.metaData?.styleProperties?.properties?.labelFontSize
+        "
+        [style.--hover-label-font-style]="
+          item?.metaData?.styleProperties?.properties?.hover?.actionFontStyle ||
+          item?.metaData?.styleProperties?.properties?.fontStyle
+        "
+        [style.--hover-label-text-decoration]="
+          item?.metaData?.styleProperties?.properties?.hover?.actionTextDecoration ||
+          item?.metaData?.styleProperties?.properties?.textDecoration
+        "
+        [style.--hover-label-font-weight]="
+          item?.metaData?.styleProperties?.properties?.hover?.actionFontWeight ||
+          item?.metaData?.styleProperties?.properties?.fontWeight
+        "
+        [style.--focus-bg-color]="
+          item?.metaData?.styleProperties?.properties?.focus?.actionBgColor ||
+          item?.metaData?.styleProperties?.properties?.backgroundColor
+        "
+        [style.--focus-border-color]="
+          item?.metaData?.styleProperties?.properties?.focus?.actionBorderColor ||
+          item?.metaData?.styleProperties?.properties?.borderColor
+        "
+        [style.--focus-lable-color]="
+          item?.metaData?.styleProperties?.properties?.focus?.actionLableColor ||
+          item?.metaData?.styleProperties?.properties?.labelColor
+        "
+        [style.--focus-label-font-family]="
+          item?.metaData?.styleProperties?.properties?.actiontextFontStyle ||
+          item?.metaData?.styleProperties?.properties?.labelFontStyle
+        "
+        [style.--focus-label-font-size]="
+          item?.metaData?.styleProperties?.properties?.focus?.actionFontSize ||
+          item?.metaData?.styleProperties?.properties?.labelFontSize
+        "
+        [style.--focus-label-font-style]="
+          item?.metaData?.styleProperties?.properties?.focus?.actionFontStyle ||
+          item?.metaData?.styleProperties?.properties?.fontStyle
+        "
+        [style.--focus-label-text-decoration]="
+          item?.metaData?.styleProperties?.properties?.focus?.actionTextDecoration ||
+          item?.metaData?.styleProperties?.properties?.textDecoration
+        "
+        [style.--focus-label-font-weight]="
+          item?.metaData?.styleProperties?.properties?.focus?.actionFontWeight ||
+          item?.metaData?.styleProperties?.properties?.fontWeight
+        "
+        [style.--press-bg-color]="
+          item?.metaData?.styleProperties?.properties?.press?.actionBgColor ||
+          item?.metaData?.styleProperties?.properties?.backgroundColor
+        "
+        [style.--press-border-color]="
+          item?.metaData?.styleProperties?.properties?.press?.actionBorderColor ||
+          item?.metaData?.styleProperties?.properties?.borderColor
+        "
+        [style.--press-lable-color]="
+          item?.metaData?.styleProperties?.properties?.actionLableColor ||
+          item?.metaData?.styleProperties?.properties?.labelColor
+        "
+        [style.--press-label-font-family]="
+          item?.metaData?.styleProperties?.properties?.press?.actiontextFontStyle ||
+          item?.metaData?.styleProperties?.properties?.labelFontStyle
+        "
+        [style.--press-label-font-size]="
+          item?.metaData?.styleProperties?.properties?.press?.actionFontSize ||
+          item?.metaData?.styleProperties?.properties?.labelFontSize
+        "
+        [style.--press-label-font-style]="
+          item?.metaData?.styleProperties?.properties?.press?.actionFontStyle ||
+          item?.metaData?.styleProperties?.properties?.fontStyle
+        "
+        [style.--press-label-text-decoration]="
+          item?.metaData?.styleProperties?.properties?.press?.actionTextDecoration ||
+          item?.metaData?.styleProperties?.properties?.textDecoration
+        "
+        [style.--press-label-font-weight]="
+          item?.metaData?.styleProperties?.properties?.press?.actionFontWeight ||
+          item?.metaData?.styleProperties?.properties?.fontWeight
+        "
       ></finlevit-button>
     </div>
   </ng-container>
