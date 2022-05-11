@@ -329,10 +329,10 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
 
           if (element != "addressLine2" && widget) {
             widget.value.value = address[element];
-            if (widget.metaData?.businessRuleIds) {
+            if (widget.metaData?.businessRuleIds?.length) {
               businessRuleIds.push(...widget.metaData?.businessRuleIds);
             }
-            if (widget.metaData?.conditionRuleIds) {
+            if (widget.metaData?.conditionRuleIds?.length) {
               ifConditionsIds.push(...widget.metaData?.conditionRuleIds);
             }
           }
@@ -345,7 +345,7 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
 
       if (ifConditionsIds?.length) {
         const ifConditions = this.editorService.getCoditions(ifConditionsIds);
-        if (ifConditions && !ifConditions?.length) {
+        if (ifConditions && ifConditions?.length) {
           this.editorService.checkCondition([{ ...ifConditions }]);
         }
       }
