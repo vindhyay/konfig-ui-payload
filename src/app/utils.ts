@@ -330,3 +330,29 @@ export const toSSNFormat = (ssn = "") => {
 export const scrollTo = (x = 0, y = 0) => {
   window.scrollTo(x, y);
 };
+
+export interface AddressDetails {
+  placeID: string;
+  name?: string;
+  icon?: string;
+  displayAddress?: string;
+  postalCode?: number;
+  streetNumber?: number;
+  streetName?: string;
+  sublocality?: string;
+  postalCodeSuffix?: number;
+  locality?: {
+    name?: string;
+    value?: string;
+  };
+  state?: {
+    name?: string;
+    value?: string;
+  };
+  country?: {
+    name?: string;
+    value?: string;
+  };
+  vicinity?: string;
+  url?: string;
+}
