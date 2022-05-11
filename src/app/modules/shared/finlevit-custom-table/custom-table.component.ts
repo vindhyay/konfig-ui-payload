@@ -20,7 +20,7 @@ import {
   TableActions,
   WidgetTypes,
 } from "../../task/model/create-form.models";
-import { getUniqueId, scrollToBottom, superClone } from "../../../utils";
+import { conditionValidation, getUniqueId, scrollToBottom, superClone } from "../../../utils";
 import { CustomTableFiltersComponent } from "./table-utils/custom-table-filters/custom-table-filters.component";
 import { PaginationDirective } from "./table-utils/pagination.directive";
 import { SelectionModel } from "@angular/cdk/collections";
@@ -489,25 +489,25 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
     });
   }
 
-  handleSearch(searchColumns) {
+  handleSearch({ searchColumns, filtersLogic }) {
     const rules = this.getRulesFromFilterColumns(searchColumns);
     if (rules && rules.length) {
       this.filteredTableData = this.tableData.filter((rowData) => {
         let condMatched = true;
-        for (let i = 0; i < rules.length; i++) {
+        let filtersLogicCopy = JSON.parse(JSON.stringify(filtersLogic));
+        for (let i: any = 0; i < rules.length; i++) {
           const rule = rules[i];
           const fieldValue = rowData[rule?.fieldId];
-          let result = false;
-          if (rule.condition === "notEquals") {
-            if (String(fieldValue) !== String(rule.value)) {
-              result = true;
-            }
-          } else {
-            if (String(fieldValue) === String(rule.value)) {
-              result = true;
-            }
-          }
+          let result = conditionValidation(rule, fieldValue);
           condMatched = i === 0 ? result : rule.operator === "AND" ? condMatched && result : condMatched || result;
+          filtersLogicCopy = filtersLogicCopy.replace(new RegExp(i + 1, "g"), result);
+        }
+        if (filtersLogicCopy) {
+          try {
+            condMatched = eval(filtersLogicCopy);
+          } catch (error) {
+            console.log("error", error);
+          }
         }
         return condMatched;
       });
