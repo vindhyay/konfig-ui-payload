@@ -30,6 +30,7 @@ import { CustomDatePipe } from "../../pipes/custom-date.pipe";
 import { ConfirmDialogModule } from "primeng/confirmdialog";
 import { ToSSNFormatPipe } from "../../pipes/to-ssn-format.pipe";
 import { ToPhoneFormatPipe } from "../../pipes/to-phone-format.pipe";
+import { AddressAutocompleteDirective } from "./address-autocomplete.directive";
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { ToPhoneFormatPipe } from "../../pipes/to-phone-format.pipe";
     CustomDatePipe,
     ToSSNFormatPipe,
     ToPhoneFormatPipe,
+    AddressAutocompleteDirective,
   ],
   imports: [
     CommonModule,
@@ -99,6 +101,7 @@ import { ToPhoneFormatPipe } from "../../pipes/to-phone-format.pipe";
     ConfirmDialogModule,
     ToSSNFormatPipe,
     ToPhoneFormatPipe,
+    AddressAutocompleteDirective,
   ],
 })
 export class SharedModule {}

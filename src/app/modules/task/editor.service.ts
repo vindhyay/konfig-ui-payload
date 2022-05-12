@@ -448,7 +448,7 @@ export class EditorService extends BaseService {
     let result = false;
     let ruleArray = [];
     let testCondition = false;
-    if (fieldValue === undefined || fieldValue === null) {
+    if ((fieldValue === undefined || fieldValue === null) && rule.operator != "isNull") {
       return false;
     }
     if (rule?.fnsName) {
@@ -471,8 +471,8 @@ export class EditorService extends BaseService {
       return false;
     }
     if (rule.field.dataType === "string") {
-      fieldValue = this.convertCase(fieldValue);
-      rule.value = this.convertCase(rule.value);
+      fieldValue = this.rulesConditionEvaluation.convertCase(fieldValue);
+      rule.value = this.rulesConditionEvaluation.convertCase(rule?.value);
     }
     switch (rule.operator) {
       case "includes":
@@ -501,16 +501,16 @@ export class EditorService extends BaseService {
         }
         break;
       case "greaterThan":
-        result = this.isGreaterThan(fieldValue, rule.value);
+        result = this.rulesConditionEvaluation.isGreaterThan(fieldValue, rule.value);
         break;
       case "greaterthanEquals":
-        result = this.isGreaterThanEqual(fieldValue, rule.value);
+        result = this.rulesConditionEvaluation.isGreaterThanEqual(fieldValue, rule.value);
         break;
       case "lessthan":
-        result = this.isLessThan(fieldValue, rule.value);
+        result = this.rulesConditionEvaluation.isLessThan(fieldValue, rule.value);
         break;
       case "lessthanEquals":
-        result = this.isLessThanEqual(fieldValue, rule.value);
+        result = this.rulesConditionEvaluation.isLessThanEqual(fieldValue, rule.value);
         break;
       case "equalsIgnoreCase":
         result = String(fieldValue).toLowerCase() == String(rule.value).toLowerCase();
@@ -519,44 +519,30 @@ export class EditorService extends BaseService {
         result = !!fieldValue && String(fieldValue).length == rule.value;
         break;
       case "lengthGreater":
-        result = !!fieldValue && this.isGreaterThan(String(fieldValue).length, rule.value);
+        result = !!fieldValue && this.rulesConditionEvaluation.isGreaterThan(String(fieldValue).length, rule.value);
         break;
       case "lengthLess":
-        result = !!fieldValue && this.isLessThan(String(fieldValue).length, rule.value);
+        result = !!fieldValue && this.rulesConditionEvaluation.isLessThan(String(fieldValue).length, rule.value);
         break;
       case "lengthGreaterAndEquals":
-        result = !!fieldValue && this.isGreaterThanEqual(String(fieldValue).length, rule.value);
+        result =
+          !!fieldValue && this.rulesConditionEvaluation.isGreaterThanEqual(String(fieldValue).length, rule.value);
         break;
       case "lengthLessAndEquals":
-        result = !!fieldValue && this.isLessThanEqual(String(fieldValue).length, rule.value);
+        result = !!fieldValue && this.rulesConditionEvaluation.isLessThanEqual(String(fieldValue).length, rule.value);
         break;
       case "notEquals":
-        if ((isNull(fieldValue) && String(rule.value) === "None") || String(fieldValue) !== String(rule.value)) {
+        if ((isNull(fieldValue) && String(rule.value) === "none") || String(fieldValue) !== String(rule.value)) {
           result = true;
         }
         break;
       default:
-        if ((isNull(fieldValue) && String(rule.value) === "None") || String(fieldValue) == String(rule.value)) {
+        if ((isNull(fieldValue) && String(rule.value) === "none") || String(fieldValue) == String(rule.value)) {
           result = true;
         }
         break;
     }
     return result;
-  };
-  convertCase = (stringValue): string => {
-    return stringValue.toLowerCase();
-  };
-  isGreaterThan = (fieldValue: number, value: number): boolean => {
-    return fieldValue > value;
-  };
-  isGreaterThanEqual = (fieldValue: number, value: number): boolean => {
-    return fieldValue >= value;
-  };
-  isLessThan = (fieldValue: number, value: number): boolean => {
-    return fieldValue < value;
-  };
-  isLessThanEqual = (fieldValue: number, value: number): boolean => {
-    return fieldValue <= value;
   };
   getDataListValues = (payload): Observable<any> => {
     const url = `${this.config.getApiUrls().getDataListValuesURL}`;
@@ -886,4 +872,21 @@ export class EditorService extends BaseService {
         return Math.trunc(value);
     }
   }
+  rulesConditionEvaluation = {
+    convertCase: (stringValue): string => {
+      return stringValue ? stringValue?.toLowerCase() : isNull(stringValue) ? stringValue : "";
+    },
+    isGreaterThan: (fieldValue: number, value: number): boolean => {
+      return fieldValue > value;
+    },
+    isGreaterThanEqual: (fieldValue: number, value: number): boolean => {
+      return fieldValue >= value;
+    },
+    isLessThan: (fieldValue: number, value: number): boolean => {
+      return fieldValue < value;
+    },
+    isLessThanEqual: (fieldValue: number, value: number): boolean => {
+      return fieldValue <= value;
+    },
+  };
 }

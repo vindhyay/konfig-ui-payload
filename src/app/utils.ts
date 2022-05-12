@@ -479,3 +479,29 @@ export const conditionValidation = (rule, fieldValue): boolean => {
   }
   return result;
 };
+
+export interface AddressDetails {
+  placeID: string;
+  name?: string;
+  icon?: string;
+  displayAddress?: string;
+  postalCode?: number;
+  streetNumber?: number;
+  streetName?: string;
+  sublocality?: string;
+  postalCodeSuffix?: number;
+  locality?: {
+    name?: string;
+    value?: string;
+  };
+  state?: {
+    name?: string;
+    value?: string;
+  };
+  country?: {
+    name?: string;
+    value?: string;
+  };
+  vicinity?: string;
+  url?: string;
+}
