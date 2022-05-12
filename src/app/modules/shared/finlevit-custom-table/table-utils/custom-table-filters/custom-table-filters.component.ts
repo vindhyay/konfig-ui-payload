@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from "@angu
 import { FormArray, FormBuilder, Validators } from "@angular/forms";
 import { CustomDropdownComponent } from "../../../custom-dropdown.component";
 import { Column, WidgetTypes } from "../../../../task/model/create-form.models";
+import { conditions } from "src/app/utils";
 
 @Component({
   selector: "app-custom-table-filters",
@@ -32,8 +33,11 @@ export class CustomTableFiltersComponent implements OnInit {
   RadioGroup: WidgetTypes = WidgetTypes.RadioGroup;
   Upload: WidgetTypes = WidgetTypes.Upload;
 
+  readonlyMode = false;
   filtersEnabled = false;
   advSearchForm: FormArray = this.fb.array([]);
+  filtersLogic = "";
+  filtersLogicError = "";
 
   ngOnInit() {
     this.addSearchField();
@@ -41,53 +45,7 @@ export class CustomTableFiltersComponent implements OnInit {
       { name: "AND", id: "AND" },
       { name: "OR", id: "OR" },
     ];
-    this.conditions = {
-      STRING: [
-        // { name: 'Starts with', id: 'startsWith' },
-        // { name: 'Ends with', id: 'endsWith' },
-        // { name: 'Contains', id: 'contains' },
-        { name: "Equals", id: "equals" },
-        // { name: 'Equals Ignore Case', id: 'equalsIgnoreCase' },
-        { name: "Not equals", id: "notEquals" },
-        // { name: 'Length equals', id: 'lengthEquals' },
-        // { name: 'Length greater', id: 'lengthGreater' },
-        // { name: 'Length less', id: 'lengthLess' },
-        // { name: 'Length greater and equals', id: 'lengthGreaterAndEquals' },
-        // { name: 'Length less and equals', id: 'lengthLessAndEquals' }
-      ],
-      BOOLEAN: [
-        { name: "Equals", id: "equals" },
-        { name: "Not equals", id: "notEquals" },
-      ],
-      DATE: [
-        // { name: 'Greater than', id: 'greaterThan' },
-        // { name: 'Greater than equals', id: 'greaterthanEquals' },
-        // { name: 'Less than', id: 'lessthan' },
-        // { name: 'Less than equals', id: 'lessthanEquals' },
-        { name: "Equals", id: "equals" },
-        { name: "Not equals", id: "notEquals" },
-      ],
-      TIMESTAMP: [
-        // { name: 'Greater than', id: 'greaterThan' },
-        // { name: 'Greater than equals', id: 'greaterthanEquals' },
-        // { name: 'Less than', id: 'lessthan' },
-        // { name: 'Less than equals', id: 'lessthanEquals' },
-        { name: "Equals", id: "equals" },
-        { name: "Not equals", id: "notEquals" },
-      ],
-      NUMBER: [
-        // { name: 'Greater than', id: 'greaterThan' },
-        // { name: 'Greater than equals', id: 'greaterthanEquals' },
-        // { name: 'Less than', id: 'lessthan' },
-        // { name: 'Less than equals', id: 'lessthanEquals' },
-        { name: "Equals", id: "equals" },
-        { name: "Not equals", id: "notEquals" },
-      ],
-      DEFAULT: [
-        { name: "Equals", id: "equals" },
-        { name: "Not Equals", id: "notEquals" },
-      ],
-    };
+    this.conditions = conditions;
   }
 
   addSearchField() {
@@ -112,11 +70,11 @@ export class CustomTableFiltersComponent implements OnInit {
   }
   onSearch() {
     this.advSearchForm.markAllAsTouched();
-    if (this.advSearchForm.valid) {
+    if (this.advSearchForm.valid && !this.filtersLogicError) {
       const searchColumns: Array<any> = this.advSearchForm.value;
       this.filtersCount = searchColumns.length;
       this.filtersEnabled = true;
-      this.search.emit(searchColumns);
+      this.search.emit({ searchColumns, filtersLogic: this.filtersLogic });
       this.hideDropdown();
     }
   }
@@ -126,5 +84,30 @@ export class CustomTableFiltersComponent implements OnInit {
     this.hideDropdown();
     this.advSearchForm.clear();
     this.addSearchField();
+  }
+
+  onConditionChange($event, condition) {
+    if ($event === "isNull") {
+      condition.controls.value.setValue("None");
+    } else if (condition.controls.value.value == "None") {
+      condition.controls.value.setValue("");
+    }
+  }
+
+  onFilterLogicChange($event) {
+    this.filtersLogicError = "";
+  }
+
+  validateFilter() {
+    const numbers: any = this.filtersLogic.match(/[\d\.]+/g) || [];
+    if (Math.min(...numbers) > 0 && Math.max(...numbers) <= this.advSearchForm.controls.length) {
+      try {
+        eval(this.filtersLogic);
+      } catch (error) {
+        this.filtersLogicError = "Please enter valid filter";
+      }
+    } else {
+      this.filtersLogicError = "Rule number should be between 1-" + this.advSearchForm.controls.length;
+    }
   }
 }
