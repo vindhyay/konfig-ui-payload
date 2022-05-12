@@ -63,7 +63,7 @@ export const validateFields = (fields: any[], isPageSubmit = false) => {
       return true;
     }
     if (field?.children && field?.children?.length) {
-      const { result: validationStatus, errorFields: errorFieldsData } = validateFields(field.children);
+      const { result: validationStatus, errorFields: errorFieldsData } = validateFields(field.children, isPageSubmit);
       if (!validationStatus) {
         result = false;
         errorFields = errorFields.concat(errorFieldsData);
