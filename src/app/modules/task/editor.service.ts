@@ -385,8 +385,9 @@ export class EditorService extends BaseService {
               removeErrorObj &&
               removeErrorObj?.error &&
               ((condition?.mappingField?.messageType === "fieldError" &&
-                removeErrorObj.errorMessage == condition?.mappingField?.message) ||
-                removeErrorObj.errorMessage?.length === 0)
+                removeErrorObj?.errorMessage == condition?.mappingField?.message) ||
+                (condition?.mappingField?.messageType === "pageError" && !removeErrorObj?.errorMessage) ||
+                removeErrorObj?.errorMessage?.length === 0)
             ) {
               removeErrorObj.error = false;
               removeErrorObj.errorMessage = "";
