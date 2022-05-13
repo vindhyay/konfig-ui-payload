@@ -279,6 +279,7 @@ export class EditorService extends BaseService {
       },
       (error) => {
         this.hideLoader();
+        this.notificationService.error(error?.error?.error?.errorMessage);
       }
     );
   }
