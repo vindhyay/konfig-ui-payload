@@ -179,6 +179,7 @@ export enum WidgetTypes {
   Spacer = "Spacer",
   Icon = "Icon",
   Avatar = "Avatar",
+  Address = "Address",
 }
 class Validators {
   required: boolean;
@@ -1512,6 +1513,66 @@ export class IconMetaData extends MetaData {
   }
 }
 
+export class AddressMetaData extends MetaData {
+  mask: string;
+  icon: string;
+  placeholder: string;
+  tooltip: string;
+  leftIcon: string;
+  rightIcon: string;
+  isFormulaField: boolean;
+  formula = [];
+  errorMessage: string;
+  showErrorMessage: boolean;
+  styleProperties: { id: ""; properties: any };
+  adornmentBackgroundColor: string;
+  allowLabelWrapping: boolean;
+  showClearButton: boolean;
+  prefixText: string;
+  suffixText: string;
+  showFieldDependencyConfig: boolean;
+  links: {};
+  constructor(data) {
+    super(data);
+    const {
+      mask = "",
+      icon = "",
+      tooltip = "",
+      placeholder = "",
+      leftIcon = "",
+      rightIcon = "",
+      isFormulaField,
+      formula,
+      errorMessage = "",
+      showErrorMessage = true,
+      styleProperties = {},
+      allowLabelWrapping = false,
+      showClearButton = false,
+      adornmentBackgroundColor = "#ffffff",
+      prefixText = "",
+      suffixText = "",
+      showFieldDependencyConfig = false,
+      links = {},
+    } = data;
+    this.mask = mask;
+    this.icon = icon;
+    this.tooltip = tooltip;
+    this.placeholder = placeholder;
+    this.leftIcon = leftIcon;
+    this.rightIcon = rightIcon;
+    this.isFormulaField = isFormulaField;
+    this.formula = formula;
+    this.errorMessage = errorMessage;
+    this.showErrorMessage = showErrorMessage;
+    this.styleProperties = styleProperties;
+    this.adornmentBackgroundColor = adornmentBackgroundColor;
+    this.allowLabelWrapping = allowLabelWrapping;
+    this.showClearButton = showClearButton;
+    this.prefixText = prefixText;
+    this.suffixText = suffixText;
+    this.showFieldDependencyConfig = showFieldDependencyConfig;
+  }
+}
 export class BaseWidget {
   id: any;
   cols: number;
@@ -1557,7 +1618,8 @@ export class BaseWidget {
     | StepperContainerMetaData
     | DividerMetaData
     | SpacerMetaData
-    | AvatarMetaData;
+    | AvatarMetaData
+    | AddressMetaData;
   name: string;
   displayName: string;
   label: string;
@@ -1679,6 +1741,9 @@ export class BaseWidget {
           break;
         case WidgetTypes.Icon:
           this.metaData = new IconMetaData(data);
+          break;
+        case WidgetTypes.Address:
+          this.metaData = new AddressMetaData(data);
           break;
         default:
           this.metaData = null;
