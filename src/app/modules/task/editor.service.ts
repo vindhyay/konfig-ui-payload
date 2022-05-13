@@ -279,6 +279,7 @@ export class EditorService extends BaseService {
       },
       (error) => {
         this.hideLoader();
+        this.notificationService.error(error?.error?.error?.errorMessage);
       }
     );
   }
@@ -294,6 +295,9 @@ export class EditorService extends BaseService {
         }
         if (item.action === ButtonActions.closeModals) {
           this.setClosedModals(item.fields);
+        }
+        if (item.action === ButtonActions.externalLink) {
+          window.open(item.externalLink, "_blank");
         }
       });
     }

@@ -171,6 +171,10 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
   editMode: boolean = false;
 
   btnClick($event, data) {
+    $event.stopPropagation();
+    if (this.readonlyMode || this.disable) {
+      return;
+    }
     if (this.emitButtonEvent) {
       this.onBtnClick.emit({ event: $event, data });
     } else {
