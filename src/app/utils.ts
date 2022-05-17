@@ -339,14 +339,13 @@ export const conditions = {
     { name: "Ends with", id: "endsWith" },
     { name: "Contains", id: "contains" },
     { name: "Equals", id: "equals" },
-    { name: "Equals Ignore Case", id: "equalsIgnoreCase" },
     { name: "Not equals", id: "notEquals" },
     { name: "Not Includes", id: "notIncludes" },
     { name: "Length equals", id: "lengthEquals" },
     { name: "Length greater", id: "lengthGreater" },
     { name: "Length less", id: "lengthLess" },
-    { name: "Length greater and equals", id: "lengthGreaterAndEquals" },
-    { name: "Length less and equals", id: "lengthLessAndEquals" },
+    { name: "Length greater or equals", id: "lengthGreaterAndEquals" },
+    { name: "Length less or equals", id: "lengthLessAndEquals" },
     { name: "is Empty", id: "isNull" },
   ],
   ARRAY: [
@@ -398,6 +397,9 @@ export const rulesConditionEvaluation = {
   isLessThanEqual: (fieldValue: number, value: number): boolean => {
     return fieldValue <= value;
   },
+  contains: (fieldValue: string, value: string): boolean => {
+    return fieldValue.includes(value);
+  },
 };
 
 export const conditionValidation = (rule, fieldValue): boolean => {
@@ -433,6 +435,9 @@ export const conditionValidation = (rule, fieldValue): boolean => {
       if (!(fieldValue || []).includes(rule.value)) {
         result = true;
       }
+      break;
+    case "contains":
+      result = rulesConditionEvaluation.contains(fieldValue, rule.value);
       break;
     case "greaterThan":
       result = rulesConditionEvaluation.isGreaterThan(fieldValue, rule.value);
