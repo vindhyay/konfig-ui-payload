@@ -70,7 +70,7 @@
             ></finlevit-text>
           </ng-container>
         </ng-container>
-        <div (click)="removeSearchField(i)" *ngIf="i && !readonlyMode">
+        <div (click)="removeSearchField(i)" *ngIf="advSearchForm.controls.length > 1 && !readonlyMode">
           <span class="material-icons clear-icon"> clear </span>
         </div>
         <div (click)="addSearchField()" *ngIf="!readonlyMode">
@@ -89,7 +89,9 @@
         [errorMsg]="filtersLogicError"
         (onBlur)="validateFilter()"
       ></finlevit-text>
-      <div class="help-text">Ex: (1 && 2) && 2</div>
+      <div class="help-text">
+        <div><span>Note: Special characters ( & | allowed</span> - <span>Ex: (1 && 2) && 2</span></div>
+      </div>
     </div>
     <div class="d-flex justify-content-center m-2 filter-actions">
       <div class="m-2">

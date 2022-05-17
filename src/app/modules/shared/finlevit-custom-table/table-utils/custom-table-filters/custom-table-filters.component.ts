@@ -38,6 +38,7 @@ export class CustomTableFiltersComponent implements OnInit {
   advSearchForm: FormArray = this.fb.array([]);
   filtersLogic = "";
   filtersLogicError = "";
+  filtersPattern = new RegExp(/^[0-9 & ()|]*$/gm);
 
   ngOnInit() {
     this.addSearchField();
@@ -53,6 +54,9 @@ export class CustomTableFiltersComponent implements OnInit {
   }
   removeSearchField(index) {
     this.advSearchForm.removeAt(index);
+    if (this.advSearchForm?.controls?.length === 1) {
+      this.filtersLogic = "";
+    }
   }
   createSearchField() {
     return this.fb.group({
@@ -80,6 +84,7 @@ export class CustomTableFiltersComponent implements OnInit {
   }
   clearSearch() {
     this.filtersEnabled = false;
+    this.filtersLogic = "";
     this.search.emit(null);
     this.hideDropdown();
     this.advSearchForm.clear();
@@ -99,6 +104,10 @@ export class CustomTableFiltersComponent implements OnInit {
   }
 
   validateFilter() {
+    if (!new RegExp(this.filtersPattern).test(this.filtersLogic)) {
+      this.filtersLogicError = "Filter contain invalid characters";
+      return;
+    }
     const numbers: any = this.filtersLogic.match(/[\d\.]+/g) || [];
     if (Math.min(...numbers) > 0 && Math.max(...numbers) <= this.advSearchForm.controls.length) {
       try {
