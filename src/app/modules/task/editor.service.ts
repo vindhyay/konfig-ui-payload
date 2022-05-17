@@ -521,20 +521,19 @@ export class EditorService extends BaseService {
         result = String(fieldValue).toLowerCase() == String(rule.value).toLowerCase();
         break;
       case "lengthEquals":
-        result = !!fieldValue && String(fieldValue).length == rule.value;
+        result = String(fieldValue).length == rule.value;
         break;
       case "lengthGreater":
-        result = !!fieldValue && this.rulesConditionEvaluation.isGreaterThan(String(fieldValue).length, rule.value);
+        result = this.rulesConditionEvaluation.isGreaterThan(String(fieldValue).length, rule.value);
         break;
       case "lengthLess":
-        result = !!fieldValue && this.rulesConditionEvaluation.isLessThan(String(fieldValue).length, rule.value);
+        result = this.rulesConditionEvaluation.isLessThan(String(fieldValue).length, rule.value);
         break;
       case "lengthGreaterAndEquals":
-        result =
-          !!fieldValue && this.rulesConditionEvaluation.isGreaterThanEqual(String(fieldValue).length, rule.value);
+        result = this.rulesConditionEvaluation.isGreaterThanEqual(String(fieldValue).length, rule.value);
         break;
       case "lengthLessAndEquals":
-        result = !!fieldValue && this.rulesConditionEvaluation.isLessThanEqual(String(fieldValue).length, rule.value);
+        result = this.rulesConditionEvaluation.isLessThanEqual(String(fieldValue).length, rule.value);
         break;
       case "notEquals":
         if ((isNull(fieldValue) && String(rule.value) === "none") || String(fieldValue) !== String(rule.value)) {
