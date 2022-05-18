@@ -56,6 +56,7 @@ export class CustomTableFiltersComponent implements OnInit {
     this.advSearchForm.removeAt(index);
     if (this.advSearchForm?.controls?.length === 1) {
       this.filtersLogic = "";
+      this.filtersLogicError = "";
     }
   }
   createSearchField() {
@@ -85,6 +86,7 @@ export class CustomTableFiltersComponent implements OnInit {
   clearSearch() {
     this.filtersEnabled = false;
     this.filtersLogic = "";
+    this.filtersLogicError = "";
     this.search.emit(null);
     this.hideDropdown();
     this.advSearchForm.clear();
