@@ -323,6 +323,13 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
     let ifConditionsIds = [];
     if (address) {
       widget.value.value = address?.streetNumber + " " + address.streetName;
+
+      if (widget.metaData?.businessRuleIds?.length) {
+        businessRuleIds.push(...widget.metaData?.businessRuleIds);
+      }
+      if (widget.metaData?.conditionRuleIds?.length) {
+        ifConditionsIds.push(...widget.metaData?.conditionRuleIds);
+      }
       if (widgetIds) {
         Object.keys(widgetIds).forEach((element) => {
           let widget: BaseWidget = this.items.find((item) => item?.metaData?.widgetId == widgetIds[element]);
@@ -338,6 +345,7 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
           }
         });
       }
+      console.log(ifConditionsIds);
 
       let addressWidget: BaseWidget = JSON.parse(JSON.stringify(widget));
       addressWidget.metaData.businessRuleIds = businessRuleIds;
@@ -345,8 +353,8 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
 
       if (ifConditionsIds?.length) {
         const ifConditions = this.editorService.getCoditions(ifConditionsIds);
-        if (ifConditions && ifConditions?.length) {
-          this.editorService.checkCondition([{ ...ifConditions }]);
+        if (ifConditions?.length) {
+          this.editorService.checkCondition(ifConditions);
         }
       }
     }
