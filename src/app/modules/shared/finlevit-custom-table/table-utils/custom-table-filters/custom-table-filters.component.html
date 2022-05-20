@@ -7,16 +7,7 @@
   <div class="search-container">
     <ng-container *ngFor="let control of advSearchForm.controls; index as i">
       <div class="search-row" [formGroup]="control">
-        <finlevit-lib-select
-          class="m-2"
-          [isSmall]="true"
-          *ngIf="i"
-          placeholder="Select Operator"
-          [options]="operators"
-          optionLabel="name"
-          optionValue="id"
-          formControlName="operator"
-        ></finlevit-lib-select>
+        <div class="rule-number">{{ i + 1 }})</div>
         <finlevit-lib-select
           [isRequired]="true"
           [optionLabel]="'label'"
@@ -25,6 +16,7 @@
           placeholder="Select Column"
           [options]="columns"
           formControlName="field"
+          [isDisabled]="readonlyMode"
         ></finlevit-lib-select>
         <finlevit-lib-select
           [isRequired]="true"
@@ -35,40 +27,72 @@
           placeholder="Select Condition"
           [options]="conditions[(control?.value?.field?.type || '').toUpperCase() || 'DEFAULT']"
           formControlName="condition"
+          [isDisabled]="readonlyMode"
+          (ngModelChange)="onConditionChange($event, control)"
         ></finlevit-lib-select>
-        <ng-container [ngSwitch]="control?.value?.field?.colType">
-          <finlevit-lib-datepicker
-            class="m-2"
-            [isSmall]="true"
-            *ngSwitchCase="DatePicker"
-            [placeholder]="control?.value?.field?.label || 'Enter Value'"
-            formControlName="value"
-          ></finlevit-lib-datepicker>
-          <finlevit-number
-            class="m-2"
-            *ngSwitchCase="Number"
-            [isSmall]="true"
-            [placeholder]="control?.value?.field?.label || 'Enter Value'"
-            formControlName="value"
-          >
-          </finlevit-number>
+        <ng-container *ngIf="control.value.condition === 'isNull'">
           <finlevit-text
             class="m-2"
-            *ngSwitchDefault
             type="text"
             [isSmall]="true"
             [placeholder]="control?.value?.field?.label || 'Enter Value'"
             formControlName="value"
+            [isDisabled]="true"
           ></finlevit-text>
         </ng-container>
-        <div (click)="removeSearchField(i)" *ngIf="i">
+        <ng-container *ngIf="control.value.condition !== 'isNull'">
+          <ng-container [ngSwitch]="control?.value?.field?.colType">
+            <finlevit-lib-datepicker
+              class="m-2"
+              [isSmall]="true"
+              *ngSwitchCase="DatePicker"
+              [placeholder]="control?.value?.field?.label || 'Enter Value'"
+              formControlName="value"
+              [isDisabled]="readonlyMode"
+            ></finlevit-lib-datepicker>
+            <finlevit-number
+              class="m-2"
+              *ngSwitchCase="Number"
+              [isSmall]="true"
+              [placeholder]="control?.value?.field?.label || 'Enter Value'"
+              formControlName="value"
+              [isDisabled]="readonlyMode"
+            >
+            </finlevit-number>
+            <finlevit-text
+              class="m-2"
+              *ngSwitchDefault
+              type="text"
+              [isSmall]="true"
+              [placeholder]="control?.value?.field?.label || 'Enter Value'"
+              formControlName="value"
+              [isDisabled]="readonlyMode"
+            ></finlevit-text>
+          </ng-container>
+        </ng-container>
+        <div (click)="removeSearchField(i)" *ngIf="advSearchForm.controls.length > 1 && !readonlyMode">
           <span class="material-icons clear-icon"> clear </span>
         </div>
-        <div (click)="addSearchField()">
+        <div (click)="addSearchField()" *ngIf="!readonlyMode">
           <span class="material-icons add-icon"> add </span>
         </div>
       </div>
     </ng-container>
+    <div *ngIf="advSearchForm.controls.length > 1">
+      <finlevit-text
+        label="Apply Filters"
+        type="text"
+        [(ngModel)]="filtersLogic"
+        (ngModelChange)="onFilterLogicChange($event)"
+        [isSmall]="true"
+        [error]="filtersLogicError"
+        [errorMsg]="filtersLogicError"
+        (onBlur)="validateFilter()"
+      ></finlevit-text>
+      <div class="help-text">
+        <div><span>Note: Special characters ( & | allowed</span> - <span>Ex: (1 && 2) && 2</span></div>
+      </div>
+    </div>
     <div class="d-flex justify-content-center m-2 filter-actions">
       <div class="m-2">
         <app-btn-primary label="Search" [style.--button-label-font-size]="12" (btnClick)="onSearch()" [isSmall]="true">

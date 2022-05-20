@@ -343,3 +343,32 @@
   width: 100%
 }
 // modal footer button css end
+//Dropdown options based on size
+.input-small-options {
+  .p-dropdown-item {
+    font-size: 0.75rem;
+    padding: 0.5rem 0.75rem !important;
+    line-height: normal;
+  }
+}
+.input-medium-options {
+  .p-dropdown-item {
+    font-size: 0.9rem;
+    padding: 0.65rem 0.75rem !important;
+    line-height: normal;
+  }
+}
+.input-large-options {
+  .p-dropdown-item {
+    font-size: 1.2rem;
+    padding: 0.75rem 0.75rem !important;
+    line-height: normal;
+  }
+}
+
+// Split Button set styles
+.p-buttonset .p-button:not(:last-child) {
+  &.split-btn {
+    border-right: 1px solid #dee2e6;
+  }
+}

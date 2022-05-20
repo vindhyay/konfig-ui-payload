@@ -774,21 +774,107 @@
         [style.--button-border-left-width]="item?.metaData?.styleProperties?.properties?.borderLeftWidth"
         [independentBorders]="item?.metaData?.styleProperties?.properties?.independentBorder"
         [variant]="item?.metaData?.styleProperties?.properties?.variant"
+        [style.--button-background-color]="item?.metaData?.styleProperties?.properties?.backgroundColor"
+        [boxShadow]="item?.metaData?.styleProperties | getBorderShadowFilter: { filter: 'shadow_string' }"
+        [isPress]="item?.metaData?.styleProperties?.properties?.press?.isActionEnabled"
+        [isHover]="item?.metaData?.styleProperties?.properties?.hover?.isActionEnabled"
+        [isFocus]="item?.metaData?.styleProperties?.properties?.focus?.isActionEnabled"
         [style.--hover-bg-color]="
-          item?.metaData?.styleProperties?.properties?.hoverBgColor ||
+          item?.metaData?.styleProperties?.properties?.hover?.actionBgColor ||
           item?.metaData?.styleProperties?.properties?.backgroundColor
         "
         [style.--hover-border-color]="
-          item?.metaData?.styleProperties?.properties?.hoverBorderColor ||
+          item?.metaData?.styleProperties?.properties?.hover?.actionBorderColor ||
           item?.metaData?.styleProperties?.properties?.borderColor
         "
         [style.--hover-lable-color]="
-          item?.metaData?.styleProperties?.properties?.hoverLableColor ||
+          item?.metaData?.styleProperties?.properties?.hover?.actionLableColor ||
           item?.metaData?.styleProperties?.properties?.labelColor
         "
-        [style.--button-background-color]="item?.metaData?.styleProperties?.properties?.backgroundColor"
-        [actionType]="item?.metaData?.styleProperties?.properties?.actionType"
-        [boxShadow]="item?.metaData?.styleProperties | getBorderShadowFilter: { filter: 'shadow_string' }"
+        [style.--hover-label-font-family]="
+          item?.metaData?.styleProperties?.properties?.hover?.actiontextFontStyle ||
+          item?.metaData?.styleProperties?.properties?.labelFontStyle
+        "
+        [style.--hover-label-font-size]="
+          item?.metaData?.styleProperties?.properties?.hover?.actionFontSize ||
+          item?.metaData?.styleProperties?.properties?.labelFontSize
+        "
+        [style.--hover-label-font-style]="
+          item?.metaData?.styleProperties?.properties?.hover?.actionFontStyle ||
+          item?.metaData?.styleProperties?.properties?.fontStyle
+        "
+        [style.--hover-label-text-decoration]="
+          item?.metaData?.styleProperties?.properties?.hover?.actionTextDecoration ||
+          item?.metaData?.styleProperties?.properties?.textDecoration
+        "
+        [style.--hover-label-font-weight]="
+          item?.metaData?.styleProperties?.properties?.hover?.actionFontWeight ||
+          item?.metaData?.styleProperties?.properties?.fontWeight
+        "
+        [style.--focus-bg-color]="
+          item?.metaData?.styleProperties?.properties?.focus?.actionBgColor ||
+          item?.metaData?.styleProperties?.properties?.backgroundColor
+        "
+        [style.--focus-border-color]="
+          item?.metaData?.styleProperties?.properties?.focus?.actionBorderColor ||
+          item?.metaData?.styleProperties?.properties?.borderColor
+        "
+        [style.--focus-lable-color]="
+          item?.metaData?.styleProperties?.properties?.focus?.actionLableColor ||
+          item?.metaData?.styleProperties?.properties?.labelColor
+        "
+        [style.--focus-label-font-family]="
+          item?.metaData?.styleProperties?.properties?.actiontextFontStyle ||
+          item?.metaData?.styleProperties?.properties?.labelFontStyle
+        "
+        [style.--focus-label-font-size]="
+          item?.metaData?.styleProperties?.properties?.focus?.actionFontSize ||
+          item?.metaData?.styleProperties?.properties?.labelFontSize
+        "
+        [style.--focus-label-font-style]="
+          item?.metaData?.styleProperties?.properties?.focus?.actionFontStyle ||
+          item?.metaData?.styleProperties?.properties?.fontStyle
+        "
+        [style.--focus-label-text-decoration]="
+          item?.metaData?.styleProperties?.properties?.focus?.actionTextDecoration ||
+          item?.metaData?.styleProperties?.properties?.textDecoration
+        "
+        [style.--focus-label-font-weight]="
+          item?.metaData?.styleProperties?.properties?.focus?.actionFontWeight ||
+          item?.metaData?.styleProperties?.properties?.fontWeight
+        "
+        [style.--press-bg-color]="
+          item?.metaData?.styleProperties?.properties?.press?.actionBgColor ||
+          item?.metaData?.styleProperties?.properties?.backgroundColor
+        "
+        [style.--press-border-color]="
+          item?.metaData?.styleProperties?.properties?.press?.actionBorderColor ||
+          item?.metaData?.styleProperties?.properties?.borderColor
+        "
+        [style.--press-lable-color]="
+          item?.metaData?.styleProperties?.properties?.actionLableColor ||
+          item?.metaData?.styleProperties?.properties?.labelColor
+        "
+        [style.--press-label-font-family]="
+          item?.metaData?.styleProperties?.properties?.press?.actiontextFontStyle ||
+          item?.metaData?.styleProperties?.properties?.labelFontStyle
+        "
+        [style.--press-label-font-size]="
+          item?.metaData?.styleProperties?.properties?.press?.actionFontSize ||
+          item?.metaData?.styleProperties?.properties?.labelFontSize
+        "
+        [style.--press-label-font-style]="
+          item?.metaData?.styleProperties?.properties?.press?.actionFontStyle ||
+          item?.metaData?.styleProperties?.properties?.fontStyle
+        "
+        [style.--press-label-text-decoration]="
+          item?.metaData?.styleProperties?.properties?.press?.actionTextDecoration ||
+          item?.metaData?.styleProperties?.properties?.textDecoration
+        "
+        [style.--press-label-font-weight]="
+          item?.metaData?.styleProperties?.properties?.press?.actionFontWeight ||
+          item?.metaData?.styleProperties?.properties?.fontWeight
+        "
       ></finlevit-button>
     </div>
   </ng-container>
@@ -801,7 +887,7 @@
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Image">
-    <app-image [item]="item"></app-image>
+    <app-image [item]="item" (click)="btnClick($event, item)"></app-image>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Table">
     <div
@@ -1288,7 +1374,7 @@
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Icon">
     <div class="input-container">
-      <app-icon [item]="item"></app-icon>
+      <app-icon [item]="item" (click)="btnClick($event, item)"></app-icon>
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Avatar">
@@ -1311,7 +1397,7 @@
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Container">
     <div class="input-container">
-      <app-container [item]="item"></app-container>
+      <app-container [item]="item" (click)="btnClick($event, item)"></app-container>
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Header || item?.metaData?.widgetType === Footer">
@@ -1345,6 +1431,78 @@
         >{{ item?.metaData?.title }}
       </div>
       <finlevit-grid [parent]="item" [items]="item.children"></finlevit-grid>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="item?.metaData?.widgetType === Address">
+    <div class="input-container">
+      <finlevit-text
+        addressAutocomplete
+        (onAutocompleteSelected)="onAutocompleteSelected($event)"
+        [leftIcon]="item?.metaData?.leftIcon"
+        [rightIcon]="item?.metaData?.rightIcon"
+        [tooltip]="item?.metaData?.tooltip"
+        [placeholder]="item?.metaData?.placeholder"
+        [isRequired]="item?.validators?.required"
+        [label]="item?.label"
+        [showMaxCharLimit]="item?.validators?.maxLength"
+        [maxCharLimit]="item?.validators?.maxLength"
+        [isDisabled]="item?.metaData?.readOnly"
+        [style.--input-color]="item?.metaData?.styleProperties?.properties?.textColor"
+        [style.--input-text-align]="item?.metaData?.styleProperties?.properties?.textHorizontalAlign"
+        [style.--input-background-color]="item?.metaData?.styleProperties?.properties?.backgroundColor"
+        [style.--input-border-color]="item?.metaData?.styleProperties?.properties?.borderColor"
+        [style.--input-font-family]="item?.metaData?.styleProperties?.properties?.textFontStyle"
+        [style.--input-border]="item?.metaData?.styleProperties?.properties?.borderStyle"
+        [style.--input-border-radius]="item?.metaData?.styleProperties?.properties?.borderRadius"
+        [style.--input-font-size]="item?.metaData?.styleProperties?.properties?.fontSize"
+        [style.--input-word-spacing]="item?.metaData?.styleProperties?.properties?.wordSpacing"
+        [style.--input-letter-spacing]="item?.metaData?.styleProperties?.properties?.letterSpacing"
+        [style.--input-line-spacing]="item?.metaData?.styleProperties?.properties?.lineSpacing"
+        [style.--input-font-weight]="item?.metaData?.styleProperties?.properties?.fontWeight"
+        [style.--input-font-style]="item?.metaData?.styleProperties?.properties?.fontStyle"
+        [style.--input-text-decoration]="item?.metaData?.styleProperties?.properties?.textDecoration"
+        [style.--input-label-color]="item?.metaData?.styleProperties?.properties?.labelColor"
+        [style.--input-label-font-family]="item?.metaData?.styleProperties?.properties?.labelFontStyle"
+        [style.--input-label-align]="item?.metaData?.styleProperties?.properties?.labelAlignment"
+        [style.--input-label-font-weight]="item?.metaData?.styleProperties?.properties?.labelFontWeight"
+        [style.--input-label-font-style]="item?.metaData?.styleProperties?.properties?.labelStyle"
+        [style.--input-label-text-decoration]="item?.metaData?.styleProperties?.properties?.labelTextDecoration"
+        [style.--input-adornment-background-color]="item?.metaData?.adornmentBackgroundColor"
+        [style.--input-border-width]="item?.metaData?.styleProperties?.properties?.borderWidth"
+        [style.--input-label-font-size]="item?.metaData?.styleProperties?.properties?.labelFontSize"
+        [style.--input-label-width]="item?.metaData?.styleProperties?.properties?.labelWidth + '%'"
+        [style.--input-border-top]="item?.metaData?.styleProperties?.properties?.borderTopStyle"
+        [style.--input-border-radius-top-left]="item?.metaData?.styleProperties?.properties?.borderTopLeftRadius"
+        [style.--input-border-top-color]="item?.metaData?.styleProperties?.properties?.borderTopColor"
+        [style.--input-border-top-width]="item?.metaData?.styleProperties?.properties?.borderTopWidth"
+        [style.--input-border-right]="item?.metaData?.styleProperties?.properties?.borderRightStyle"
+        [style.--input-border-radius-top-right]="item?.metaData?.styleProperties?.properties?.borderTopRightRadius"
+        [style.--input-border-right-color]="item?.metaData?.styleProperties?.properties?.borderRightColor"
+        [style.--input-border-right-width]="item?.metaData?.styleProperties?.properties?.borderRightWidth"
+        [style.--input-border-bottom]="item?.metaData?.styleProperties?.properties?.borderBottomStyle"
+        [style.--input-border-radius-bottom-right]="
+          item?.metaData?.styleProperties?.properties?.borderBottomRightRadius
+        "
+        [style.--input-border-bottom-color]="item?.metaData?.styleProperties?.properties?.borderBottomColor"
+        [style.--input-border-bottom-width]="item?.metaData?.styleProperties?.properties?.borderBottomWidth"
+        [style.--input-border-left]="item?.metaData?.styleProperties?.properties?.borderLeftStyle"
+        [style.--input-border-radius-bottom-left]="item?.metaData?.styleProperties?.properties?.borderBottomLeftRadius"
+        [style.--input-border-left-color]="item?.metaData?.styleProperties?.properties?.borderLeftColor"
+        [style.--input-border-left-width]="item?.metaData?.styleProperties?.properties?.borderLeftWidth"
+        [style.--input-label-margin-bottom]="item?.metaData?.styleProperties?.properties?.labelmarginBottom"
+        [style.--input-label-margin-top]="item?.metaData?.styleProperties?.properties?.labelmarginTop"
+        [style.--input-label-margin-left]="item?.metaData?.styleProperties?.properties?.labelmarginLeft"
+        [style.--input-label-margin-right]="item?.metaData?.styleProperties?.properties?.labelmarginRight"
+        [independentBorders]="item?.metaData?.styleProperties?.properties?.independentBorder"
+        [allowLabelWrapping]="item?.metaData?.allowLabelWrapping"
+        [showClearButton]="item?.metaData?.showClearButton"
+        [prefixText]="item?.metaData?.prefixText"
+        [suffixText]="item?.metaData?.suffixText"
+        [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
+        [errorMsg]="item?.metaData?.errorMessage"
+        [showErrorMsg]="item?.metaData?.showErrorMessage"
+        [(ngModel)]="item?.value.value"
+      ></finlevit-text>
     </div>
   </ng-container>
 </div>

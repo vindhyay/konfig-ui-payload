@@ -2,6 +2,7 @@ import ShortUniqueId from "short-unique-id";
 import { result } from "./state/model/api-response";
 import { FormControl, Validators } from "@angular/forms";
 import { ButtonActions, WidgetTypes } from "./modules/task/model/create-form.models";
+import { isNull } from "lodash";
 
 export const UI_ACTIONS = [
   ButtonActions.logout,
@@ -9,6 +10,7 @@ export const UI_ACTIONS = [
   ButtonActions.previousStep,
   ButtonActions.openModals,
   ButtonActions.closeModals,
+  ButtonActions.externalLink,
 ];
 
 const uid = new ShortUniqueId();
@@ -62,7 +64,7 @@ export const validateFields = (fields: any[], isPageSubmit = false) => {
       return true;
     }
     if (field?.children && field?.children?.length) {
-      const { result: validationStatus, errorFields: errorFieldsData } = validateFields(field.children);
+      const { result: validationStatus, errorFields: errorFieldsData } = validateFields(field.children, isPageSubmit);
       if (!validationStatus) {
         result = false;
         errorFields = errorFields.concat(errorFieldsData);
@@ -330,3 +332,182 @@ export const toSSNFormat = (ssn = "") => {
 export const scrollTo = (x = 0, y = 0) => {
   window.scrollTo(x, y);
 };
+
+export const conditions = {
+  STRING: [
+    { name: "Starts with", id: "startsWith" },
+    { name: "Ends with", id: "endsWith" },
+    { name: "Contains", id: "contains" },
+    { name: "Equals", id: "equals" },
+    { name: "Not equals", id: "notEquals" },
+    { name: "Not Includes", id: "notIncludes" },
+    { name: "Length equals", id: "lengthEquals" },
+    { name: "Length greater", id: "lengthGreater" },
+    { name: "Length less", id: "lengthLess" },
+    { name: "Length greater or equals", id: "lengthGreaterAndEquals" },
+    { name: "Length less or equals", id: "lengthLessAndEquals" },
+    { name: "is Empty", id: "isNull" },
+  ],
+  ARRAY: [
+    { name: "Includes", id: "includes" },
+    { name: "Not Includes", id: "notIncludes" },
+    { name: "Excludes", id: "excludes" },
+  ],
+  BOOLEAN: [
+    { name: "Equals", id: "equals" },
+    { name: "Not equals", id: "notEquals" },
+  ],
+  NUMBER: [
+    { name: "Greater than", id: "greaterThan" },
+    { name: "Greater than equals", id: "greaterthanEquals" },
+    { name: "Less than", id: "lessthan" },
+    { name: "Less than equals", id: "lessthanEquals" },
+    { name: "Equals", id: "equals" },
+    { name: "Not equals", id: "notEquals" },
+    { name: "is Empty", id: "isNull" },
+  ],
+  DATE: [
+    { name: "Greater than", id: "greaterThan" },
+    { name: "Greater than equals", id: "greaterthanEquals" },
+    { name: "Less than", id: "lessthan" },
+    { name: "Less than equals", id: "lessthanEquals" },
+    { name: "Equals", id: "equals" },
+    { name: "Not equals", id: "notEquals" },
+    { name: "Is Empty", id: "isNull" },
+  ],
+  DEFAULT: [
+    { name: "Equals", id: "equals" },
+    { name: "Not Equals", id: "notEquals" },
+  ],
+};
+
+export const rulesConditionEvaluation = {
+  convertCase: (stringValue): string => {
+    return stringValue ? stringValue?.toLowerCase() : "";
+  },
+  isGreaterThan: (fieldValue: number, value: number): boolean => {
+    return fieldValue > value;
+  },
+  isGreaterThanEqual: (fieldValue: number, value: number): boolean => {
+    return fieldValue >= value;
+  },
+  isLessThan: (fieldValue: number, value: number): boolean => {
+    return fieldValue < value;
+  },
+  isLessThanEqual: (fieldValue: number, value: number): boolean => {
+    return fieldValue <= value;
+  },
+  contains: (fieldValue: string, value: string): boolean => {
+    return fieldValue.includes(value);
+  },
+};
+
+export const conditionValidation = (rule, fieldValue): boolean => {
+  let result = false;
+  let ruleArray = [];
+  let testCondition = false;
+  if (rule?.dataType === "string") {
+    fieldValue = rulesConditionEvaluation.convertCase(fieldValue);
+    rule.value = rulesConditionEvaluation.convertCase(rule?.value);
+  }
+  switch (rule?.condition) {
+    case "includes":
+      ruleArray = rule?.value?.split(",");
+      testCondition = ruleArray.every((r) => (fieldValue || []).includes(r));
+      if (testCondition) {
+        result = true;
+      }
+      break;
+    case "startsWith":
+      result = String(fieldValue).startsWith(String(rule.value));
+      break;
+    case "endsWith":
+      result = String(fieldValue).endsWith(String(rule.value));
+      break;
+    case "notIncludes":
+      ruleArray = rule?.value?.split(",");
+      testCondition = ruleArray.some((r) => (fieldValue || []).includes(r));
+      if (!testCondition) {
+        result = true;
+      }
+      break;
+    case "excludes":
+      if (!(fieldValue || []).includes(rule.value)) {
+        result = true;
+      }
+      break;
+    case "contains":
+      result = rulesConditionEvaluation.contains(fieldValue, rule.value);
+      break;
+    case "greaterThan":
+      result = rulesConditionEvaluation.isGreaterThan(fieldValue, rule.value);
+      break;
+    case "greaterthanEquals":
+      result = rulesConditionEvaluation.isGreaterThanEqual(fieldValue, rule.value);
+      break;
+    case "lessthan":
+      result = rulesConditionEvaluation.isLessThan(fieldValue, rule.value);
+      break;
+    case "lessthanEquals":
+      result = rulesConditionEvaluation.isLessThanEqual(fieldValue, rule.value);
+      break;
+    case "equalsIgnoreCase":
+      result = String(fieldValue).toLowerCase() == String(rule.value).toLowerCase();
+      break;
+    case "lengthEquals":
+      result = !!fieldValue && String(fieldValue).length == rule.value;
+      break;
+    case "lengthGreater":
+      result = !!fieldValue && rulesConditionEvaluation.isGreaterThan(String(fieldValue).length, rule.value);
+      break;
+    case "lengthLess":
+      result = !!fieldValue && rulesConditionEvaluation.isLessThan(String(fieldValue).length, rule.value);
+      break;
+    case "lengthGreaterAndEquals":
+      result = !!fieldValue && rulesConditionEvaluation.isGreaterThanEqual(String(fieldValue).length, rule.value);
+      break;
+    case "lengthLessAndEquals":
+      result = !!fieldValue && rulesConditionEvaluation.isLessThanEqual(String(fieldValue).length, rule.value);
+      break;
+    case "notEquals":
+      if ((isNull(fieldValue) && String(rule.value) === "none") || String(fieldValue) !== String(rule.value)) {
+        result = true;
+      }
+      break;
+    default:
+      if (
+        ((isNull(fieldValue) || fieldValue === "") && String(rule.value) === "none") ||
+        String(fieldValue) == String(rule.value)
+      ) {
+        result = true;
+      }
+      break;
+  }
+  return result;
+};
+
+export interface AddressDetails {
+  placeID: string;
+  name?: string;
+  icon?: string;
+  displayAddress?: string;
+  postalCode?: number;
+  streetNumber?: number;
+  streetName?: string;
+  sublocality?: string;
+  postalCodeSuffix?: number;
+  locality?: {
+    name?: string;
+    value?: string;
+  };
+  state?: {
+    name?: string;
+    value?: string;
+  };
+  country?: {
+    name?: string;
+    value?: string;
+  };
+  vicinity?: string;
+  url?: string;
+}

@@ -8,25 +8,7 @@ import { EditorService } from "../../editor.service";
   styleUrls: ["./container.component.scss"],
 })
 export class ContainerComponent implements OnInit {
-  constructor(private editorService: EditorService) {}
-
   @Input() item: BaseWidget = {} as BaseWidget;
-
-  actionBtnClick($event, data) {
-    if (!this.metaData || !this.metaData.onClickConfigs || !this.metaData.onClickConfigs[0].action) {
-      return;
-    }
-    if (
-      this.metaData.onClickConfigs[0].action === ContainerActions.next ||
-      this.metaData.onClickConfigs[0].action === ContainerActions.previous
-    ) {
-      $event.stopPropagation();
-      this.editorService.onBtnClick({ event: $event, data });
-    } else if (this.metaData.onClickConfigs[0].action === ContainerActions.externalLink) {
-      $event.stopPropagation();
-      window.open(this.metaData.externalLink, "_blank");
-    }
-  }
 
   ngOnInit() {}
 

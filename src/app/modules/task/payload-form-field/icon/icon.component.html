@@ -2,7 +2,8 @@
   class="icon-container"
   [ngStyle]="{
     'justify-content': item?.metaData?.horizontalPosition,
-    'align-items': item?.metaData?.verticalPosition
+    'align-items': item?.metaData?.verticalPosition,
+    cursor: item?.metaData?.onClickConfigs?.length ? 'pointer' : ''
   }"
 >
   <span
