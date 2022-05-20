@@ -1,15 +1,13 @@
 <div
   *ngIf="metaData?.source === 'Remote'"
-  [ngClass]="{
-    'image-container': true,
-    'cursor-pointer': item?.metaData?.onClickConfigs?.length
-  }"
+  [ngClass]="{ 'image-container': true }"
   [style.justify-content]="metaData?.position === 'Contain' ? metaData?.horizontalAlign : 'center'"
 >
   <img
     *ngIf="metaData?.url"
     [src]="metaData?.url"
     alt="{{ metaData?.altText }}"
+    [ngClass]="{ 'cursor-pointer': item?.metaData?.onClickConfigs?.length }"
     [style.width]="metaData?.position === 'Cover' || metaData?.shorterEdge === 'width' ? '100%' : ''"
     [style.height]="metaData?.position === 'Cover' || metaData?.shorterEdge === 'height' ? '100%' : ''"
     [ngStyle]="
@@ -55,6 +53,7 @@
     alt="{{ metaData?.altText }}"
     [style.width]="metaData?.position === 'Cover' || metaData?.shorterEdge === 'width' ? '100%' : ''"
     [style.height]="metaData?.position === 'Cover' || metaData?.shorterEdge === 'height' ? '100%' : ''"
+    [ngClass]="{ 'cursor-pointer': item?.metaData?.onClickConfigs?.length }"
     [ngStyle]="
       metaData?.styleProperties?.properties?.independentBorder
         ? {
