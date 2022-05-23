@@ -345,7 +345,6 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
           }
         });
       }
-      console.log(ifConditionsIds);
 
       let addressWidget: BaseWidget = JSON.parse(JSON.stringify(widget));
       addressWidget.metaData.businessRuleIds = businessRuleIds;
