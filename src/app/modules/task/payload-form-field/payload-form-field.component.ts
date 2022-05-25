@@ -297,9 +297,6 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
         if (values.length > 0) {
           formula.forEach((field) => {
             if (field?.resourceType === resourceType.PAYLOAD_FIELD) {
-              if (field?.value?.value === null) {
-                field.value.value = undefined;
-              }
               expression = expression + " " + field?.value?.value;
             }
             if (field?.resourceType === resourceType.BRACKET) {
@@ -309,6 +306,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
               expression = expression + " " + field?.expression;
             }
           });
+          console.log(expression)
           let evaluate;
           try {
             evaluate = eval(expression);
@@ -318,13 +316,14 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
           if (evaluate === Infinity) {
             formulaValue = "∞";
           } else if (isNaN(evaluate)) {
-            formulaValue = undefined;
+            formulaValue = null;
           } else {
             formulaValue = eval(expression) || null;
           }
         } else {
           formulaValue = values[0]?.value?.value || null;
         }
+        item.value.value = formulaValue;
         return formulaValue;
       case "string":
         formulaValue = "";
@@ -340,6 +339,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
             }
           }
         });
+        item.value.value = formulaValue;
         return formulaValue;
       case "date":
         const dateFunc = formula.filter((field) => {
@@ -371,6 +371,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
         if (years) {
           formulaValue = years + "";
         }
+        item.value.value = formulaValue;
         return formulaValue;
       case "array":
         switch (firstField.metaData.widgetType) {
@@ -437,6 +438,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
             }
             break;
         }
+        item.value.value = formulaValue;
         return formulaValue;
     }
     item.value.value = formulaValue;
