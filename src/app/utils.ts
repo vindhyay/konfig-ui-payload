@@ -84,10 +84,9 @@ export const validateFields = (fields: any[], isPageSubmit = false) => {
         field.errorMessage = "";
       } else {
         field.error = true;
-        field.errorMessage = getErrorMessages(
-          tempFormControl.errors,
-          field?.label || field?.displayName || field?.widgetName
-        )[0];
+        field.errorMessage =
+          field?.metaData?.errorMessage ||
+          getErrorMessages(tempFormControl.errors, field?.label || field?.displayName || field?.widgetName)[0];
         errorFields.push(field);
         result = false;
       }
