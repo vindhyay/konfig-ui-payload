@@ -259,6 +259,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
     this.editorService.widgetChange.next(item);
     this.editorService.setContainerHeight(this.editorService.getFormFields());
   }
+
   onChange($event) {
     const ifConditionsIds = this.item.metaData?.conditionRuleIds;
     if (ifConditionsIds?.length) {
@@ -270,16 +271,27 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
       }
     }
   }
+
   validateField($event: any, field: any) {
     validateFields([field]);
+    this.payloadFields.forEach((fld) => {
+      if (fld?.metaData?.isFormulaField) {
+        fld?.metaData?.formula.forEach((formulaField) => {
+          if (formulaField?.id === field?.id) {
+            this.calculateFormulaValue(fld, this.payloadFields);
+          }
+        });
+      }
+    });
   }
-  calculateFormulaValue(item): any {
+
+  calculateFormulaValue(item, payloadFields): any {
     let formulaValue;
     let formula = [];
     if (item?.metaData?.formula?.length > 0) {
       item?.metaData?.formula.forEach((field) => {
         if (field?.resourceType === resourceType.PAYLOAD_FIELD) {
-          formula.push(getFieldFromFields(this.payloadFields, field?.id));
+          formula.push(getFieldFromFields(payloadFields, field?.id));
         } else {
           formula.push(field);
         }
@@ -306,7 +318,6 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
               expression = expression + " " + field?.expression;
             }
           });
-          console.log(expression)
           let evaluate;
           try {
             evaluate = eval(expression);
@@ -316,7 +327,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
           if (evaluate === Infinity) {
             formulaValue = "∞";
           } else if (isNaN(evaluate)) {
-            formulaValue = null;
+            formulaValue = undefined;
           } else {
             formulaValue = eval(expression) || null;
           }
@@ -441,8 +452,6 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
         item.value.value = formulaValue;
         return formulaValue;
     }
-    item.value.value = formulaValue;
-    return formulaValue;
   }
 
   checkHeight(child?) {
