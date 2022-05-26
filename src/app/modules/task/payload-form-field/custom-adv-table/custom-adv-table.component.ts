@@ -98,6 +98,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
   set tableData(data) {
     this._tableData = data;
     this.filteredTableData = data;
+    this.tableFilters?.onSearch();
     this.updateRowsLimit();
   }
   get tableData() {
@@ -500,6 +501,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
   }
 
   handleSearch({ searchColumns, filtersLogic }) {
+    this.currentPage = 1;
     const rules = this.getRulesFromFilterColumns(searchColumns);
     if (rules && rules.length) {
       this.filteredTableData = this.tableData.filter((rowData: BaseWidget[]) => {
