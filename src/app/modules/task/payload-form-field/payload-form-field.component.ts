@@ -235,7 +235,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
     } else if (metaData?.businessRuleIds?.length) {
       this.editorService.onRuleTrigger({ event: $event, data });
     }
-    if ((this.item.metaData.widgetType = WidgetTypes.Address)) {
+    if (this.item.metaData.widgetType == WidgetTypes.Address) {
       this.onAddressClick($event);
     }
     this.onChange($event);
