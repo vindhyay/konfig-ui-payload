@@ -276,16 +276,33 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
     validateFields([field]);
   }
 
-  calculateFormulaValue(field){
+  visitedFields = [];
+
+  calculateFormulaValue(field, callingFirst) {
+    if (callingFirst) {
+      this.visitedFields = [];
+    }
+    this.visitedFields.push(field);
     this.payloadFields.forEach((fld) => {
       if (fld?.metaData?.isFormulaField) {
-        fld?.metaData?.formula.forEach((formulaField) => {
-          if (formulaField?.id === field?.id) {
-            this.computeFormula(fld, this.payloadFields);
+        let fieldUsedInFormula = fld?.metaData?.formula.find((formulaField) => formulaField?.id === field?.id);
+        if (fieldUsedInFormula) {
+          this.computeFormula(fld, this.payloadFields);
+          if (fld?.metaData?.usedInFormula && !this.checkVisitedField(fld)) {
+            this.calculateFormulaValue(fld, false);
           }
-        });
+        }
       }
     });
+  }
+
+  checkVisitedField(field): boolean {
+    if (this.visitedFields.indexOf(field) < 0) {
+      return false;
+    }
+    if (this.visitedFields.indexOf(field) > -1) {
+      return true;
+    }
   }
 
   computeFormula(item, payloadFields): any {
