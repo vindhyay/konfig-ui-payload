@@ -108,6 +108,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
   @Input() viewMode = false;
   @Input() showDelete = true;
   @Output() edit = new EventEmitter();
+  allAvailableFields = [];
   private _payloadFields: any;
   get payloadFields(): any {
     return this._payloadFields;
@@ -159,6 +160,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
     this.subscribe(this.editorService.loaderField$, (fieldId) => {
       this.loading = fieldId === this.item?.id;
     });
+    this.getAllAvailableFields(this.payloadFields);
   }
 
   ngAfterViewInit() {
@@ -283,7 +285,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
       this.visitedFields = [];
     }
     this.visitedFields.push(field);
-    this.payloadFields.forEach((fld) => {
+    this.allAvailableFields.forEach((fld) => {
       if (fld?.metaData?.isFormulaField) {
         let fieldUsedInFormula = fld?.metaData?.formula.find((formulaField) => formulaField?.id === field?.id);
         if (fieldUsedInFormula) {
@@ -292,6 +294,15 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
             this.calculateFormulaValue(fld, false);
           }
         }
+      }
+    });
+  }
+
+  getAllAvailableFields(fields) {
+    fields.forEach((field) => {
+      this.allAvailableFields.push(field);
+      if (field.children && field.children.length) {
+        this.getAllAvailableFields(field.children);
       }
     });
   }
