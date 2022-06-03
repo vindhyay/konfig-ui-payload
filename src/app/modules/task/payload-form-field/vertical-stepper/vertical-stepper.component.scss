@@ -35,6 +35,8 @@
   --input-border-left-width: var(--input-border-width);
   --input-border-left-color: var(--input-border-color);
   --input-border-radius-bottom-left: var(--input-border-radius);
+  --indicator-bg-color: #058d05;
+  --indicator-icon-color: #fff;
 }
 .stepper-container {
   width: 100%;
@@ -238,7 +240,7 @@ li .indicator {
   background: white;
   z-index: 1;
   transition: border 1s ease-in-out;
-  &>i {
+  & > finlevit-icon-preview{
     visibility: hidden;
     opacity: 0;
     transition: opacity .5s ease-in-out;
@@ -251,11 +253,10 @@ li.selected .indicator {
 
 
 li.completed .indicator {
-  background: #058d05;
-  border: 1px solid #058d05;
+  background: var(--indicator-bg-color);
+  border: 1px solid var(--indicator-bg-color);
 
-  &>i {
-    color: white;
+  & > finlevit-icon-preview {
     opacity: 1;
     visibility: visible;
   }
