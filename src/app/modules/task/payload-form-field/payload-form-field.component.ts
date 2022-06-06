@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from "@angular/core";
 import { FieldData } from "../model/field-data.model";
 import { BaseWidget, Column, TableMetaData, WidgetTypes } from "../model/create-form.models";
-import { DeepCopy, getFieldFromFields, parseApiResponse, validateFields } from "../../../utils";
+import { AddressDetails, DeepCopy, getFieldFromFields, parseApiResponse, validateFields } from "../../../utils";
 import { AuthService } from "../../auth/services/auth.service";
 import { EditorService } from "../editor.service";
 import * as moment from "moment";
@@ -47,6 +47,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
   Spacer: WidgetTypes = WidgetTypes.Spacer;
   Icon: WidgetTypes = WidgetTypes.Icon;
   Avatar: WidgetTypes = WidgetTypes.Avatar;
+  Address: WidgetTypes = WidgetTypes.Address;
 
   transactionStatus = null;
   hide = false;
@@ -170,6 +171,10 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
   editMode: boolean = false;
 
   btnClick($event, data) {
+    $event.stopPropagation();
+    if (this.readonlyMode || this.disable) {
+      return;
+    }
     if (this.emitButtonEvent) {
       this.onBtnClick.emit({ event: $event, data });
     } else {
@@ -436,6 +441,28 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
     if (child.children?.length) {
       this.editorService.setAdjustableHeight(child?.children, ".nested-grid-container");
     }
+  }
+
+  onAutocompleteSelected($event: AddressDetails) {
+    let streetNumber = $event?.streetNumber ? $event?.streetNumber : "";
+    let streetName = $event?.streetName ? $event?.streetName : "";
+    let locality = $event.locality?.value ? $event.locality?.value : "";
+    let state = $event.state?.value ? $event.state?.value : "";
+    let postalCode = $event?.postalCode ? $event?.postalCode : "";
+
+    let address = {
+      streetNumber: streetNumber,
+      streetName: streetName,
+      locality: locality,
+      state: state,
+      postalCode: postalCode,
+    };
+    let details = {
+      widget: this.item,
+      address: address,
+    };
+
+    this.notificationService.addressAutoComplete.next(details);
   }
 }
 

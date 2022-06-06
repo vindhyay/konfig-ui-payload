@@ -1065,8 +1065,10 @@
         </div>
       </div>
       <div
-        class="table-actions"
-        *ngIf="!Object.keys(newRows).length && !Object.keys(editRows).length && !Object.keys(editCells).length"
+        [ngClass]="{
+          'table-actions': true,
+          'd-none': !(!Object.keys(newRows).length && !Object.keys(editRows).length && !Object.keys(editCells).length)
+        }"
       >
         <app-custom-table-filters
           *ngIf="filter"
@@ -1074,7 +1076,9 @@
           [columns]="columns"
           (search)="handleSearch($event)"
         ></app-custom-table-filters>
-        <button *ngIf="addRows" class="footer-btn" (click)="addRow()"><i class="pi pi-plus"></i></button>
+        <button *ngIf="addRows && !tableFilters?.filtersEnabled" class="footer-btn" (click)="addRow()">
+          <i class="pi pi-plus"></i>
+        </button>
       </div>
     </div>
   </div>

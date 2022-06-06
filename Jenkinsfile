@@ -38,21 +38,21 @@ environment {
             //echo "Npm Packages has been installed"
          }
       }
-      stage('Sonarqube Analysis') {
-        environment {
-        scannerHome = tool 'SonarQube'
-         }
-        steps {
-         echo"Analysing the Code base in SonarQube"
-         withSonarQubeEnv('sonar') {
-         sh "${scannerHome}/bin/sonar-scanner"
-        }
-        sleep(30)
-        timeout(time: 10, unit: 'MINUTES') {
-            waitForQualityGate abortPipeline: true
-        }
-    }
-}
+//       stage('Sonarqube Analysis') {
+//         environment {
+//         scannerHome = tool 'SonarQube'
+//          }
+//         steps {
+//          echo"Analysing the Code base in SonarQube"
+//          withSonarQubeEnv('sonar') {
+//          sh "${scannerHome}/bin/sonar-scanner"
+//         }
+//         sleep(30)
+//         timeout(time: 10, unit: 'MINUTES') {
+//             waitForQualityGate abortPipeline: true
+//         }
+//     }
+// }
       stage('Build Docker Image'){
          steps {
 //		     echo "Running ${VERSION} on ${env.JENKINS_URL}"
