@@ -490,6 +490,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   handleSearch({ searchColumns, filtersLogic }) {
+    this.currentPage = 1;
     const rules = this.getRulesFromFilterColumns(searchColumns);
     if (rules && rules.length) {
       this.filteredTableData = this.tableData.filter((rowData) => {
