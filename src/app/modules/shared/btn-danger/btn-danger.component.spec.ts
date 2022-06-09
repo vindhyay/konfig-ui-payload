@@ -1,16 +1,15 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { BtnDangerComponent } from './btn-danger.component';
+import { BtnDangerComponent } from "./btn-danger.component";
 
-describe('BtnDangerComponent', () => {
+describe("BtnDangerComponent", () => {
   let component: BtnDangerComponent;
   let fixture: ComponentFixture<BtnDangerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ BtnDangerComponent ]
-    })
-    .compileComponents();
+      declarations: [BtnDangerComponent]
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('BtnDangerComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

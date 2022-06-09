@@ -1,4 +1,9 @@
-<div class="tab-container style-tab-container" [ngStyle]="containerStyle">
+<div
+  class="tab-container style-tab-container"
+  applyStyle
+  [filterStyles]="['borderStyles', 'boxShadowStyles']"
+  [styleProperties]="this.item?.metaData?.styleProperties?.properties"
+>
   <p-tabView [activeIndex]="tabActiveIndex" (onChange)="onTabChange($event)">
     <ng-container *ngFor="let child of item.children; let i = index">
       <p-tabPanel *ngIf="!child?.metaData?.isHidden" [header]="child.label">

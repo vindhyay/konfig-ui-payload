@@ -31,11 +31,13 @@ import { ConfirmDialogModule } from "primeng/confirmdialog";
 import { ToSSNFormatPipe } from "../../pipes/to-ssn-format.pipe";
 import { ToPhoneFormatPipe } from "../../pipes/to-phone-format.pipe";
 import { AddressAutocompleteDirective } from "./address-autocomplete.directive";
+import { BtnCommonComponent } from "./btn-common/btn-common.component";
 
 @NgModule({
   declarations: [
     BaseComponent,
     BtnPrimaryComponent,
+    BtnCommonComponent,
     PageNotFoundComponent,
     CustomDropdownComponent,
     CustomTableComponent,
@@ -102,6 +104,7 @@ import { AddressAutocompleteDirective } from "./address-autocomplete.directive";
     ToSSNFormatPipe,
     ToPhoneFormatPipe,
     AddressAutocompleteDirective,
+    BtnCommonComponent,
   ],
 })
 export class SharedModule {}
