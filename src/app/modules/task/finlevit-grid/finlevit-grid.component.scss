@@ -100,7 +100,8 @@
     overflow: visible;
   }
   gridster-item.display-none{
-    display: none !important;
+    opacity: 0;
+    visibility: hidden !important;
   }
 }
 .dndDraggingSource {

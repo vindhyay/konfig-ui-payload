@@ -3,6 +3,8 @@ import { result } from "./state/model/api-response";
 import { FormControl, Validators } from "@angular/forms";
 import { ButtonActions, WidgetTypes } from "./modules/task/model/create-form.models";
 import { isNull } from "lodash";
+import * as moment from "moment";
+import {resourceType} from "./modules/task/payload-form-field/payload-form-field.component";
 
 export const UI_ACTIONS = [
   ButtonActions.logout,
@@ -71,6 +73,7 @@ export const validateFields = (fields: any[], isPageSubmit = false) => {
       }
     } else if (field) {
       let value = field?.value?.value;
+
       // For validation purpose convert to format but keep real value in field as it is
       if (field?.metaData?.widgetType === WidgetTypes.PhonenumberInput) {
         value = toPhoneFormat(field?.value?.value);
