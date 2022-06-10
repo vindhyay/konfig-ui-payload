@@ -384,8 +384,9 @@
       [metaData]="item?.metaData"
       [headerContent]="item?.metaData?.headerContent"
       applyStyleVariables
-      styleType="table"
+      styleType="stepper"
       [styleProperties]="item?.metaData?.styleProperties?.properties"
+      [indicatorIconColor]="item?.metaData?.styleProperties?.properties?.indicatorIconColor"
     >
     </app-vertical-stepper>
   </ng-container>

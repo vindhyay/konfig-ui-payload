@@ -12,6 +12,7 @@ export class VerticalStepperComponent implements OnInit {
   @Input() children = [];
   @Input() headerContent = [];
   @Input() metaData: StepperContainerMetaData;
+  @Input() indicatorIconColor = "#fff";
   reviewData = [];
   completedSteps = {};
   @ViewChild("contentConatiner", { read: ElementRef }) contentConatiner: ElementRef;
