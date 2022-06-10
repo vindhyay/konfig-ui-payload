@@ -3,16 +3,13 @@ import { Component, EventEmitter, Input, Output } from "@angular/core";
 @Component({
   selector: "app-btn-primary",
   templateUrl: "./btn-primary.component.html",
-  styleUrls: [],
+  styleUrls: []
 })
 export class BtnPrimaryComponent {
-  @Input() disabled: boolean | null = false;
-  @Input() class: string = "";
-  @Input() routerLink: string | undefined;
+  @Input() isDisabled: boolean = false;
   @Input() label: string;
-  @Input() isSmall = false;
-  @Input() isLarge = false;
-  @Input() icon: string;
-  @Input() type = "button";
+  @Input() size : 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xlg' = 'sm';
+  @Input() roleType = "button";
+  @Input() icon = "";
   @Output() btnClick = new EventEmitter();
 }

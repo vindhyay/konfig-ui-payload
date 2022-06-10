@@ -1,15 +1,8 @@
 <finlevit-button
-  [bgColor]="'#3F51B4'"
-  [borderColor]="'#3F51B4'"
   (btnClick)="btnClick.emit()"
-  [isDisabled]="disabled"
+  [isDisabled]="isDisabled"
   [label]="label"
-  [isSmall]="isSmall"
-  [isLarge]="isLarge"
+  [size]="size"
+  [roleType]="roleType"
   [leftIcon]="icon"
-  [variant]="'roundedButton'"
-  [style.--button-label-font-family]="'Muli,Raleway,Open sans'"
-  [style.--button-min-width]="'70px'"
-  [style.--button-hover-brightness]="'90%'"
-  [inputType]="type"
 ></finlevit-button>
