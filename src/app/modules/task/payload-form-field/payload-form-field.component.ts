@@ -129,6 +129,12 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
       if (value) {
         this._payloadFields = value.uiPayload;
         this.transactionStatus = value?.transactionStatus || null;
+        this.getAllAvailableFields(this.payloadFields);
+        this.allAvailableFields.forEach(field => {
+          if(field?.value?.value && field?.metaData?.usedInFormula){
+            this.calculateFormulaValue(this.item, true)
+          }
+        })
         const { id = "" } = this.authService.getAgentRole() || {};
         if (this.item.permissions && this.item?.permissions[id]) {
           this.hide = this.item?.permissions[id].hide
@@ -160,7 +166,6 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
     this.subscribe(this.editorService.loaderField$, (fieldId) => {
       this.loading = fieldId === this.item?.id;
     });
-    this.getAllAvailableFields(this.payloadFields);
   }
 
   ngAfterViewInit() {
@@ -287,7 +292,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
     this.visitedFields.push(field);
     this.allAvailableFields.forEach((fld) => {
       if (fld?.metaData?.isFormulaField) {
-        let fieldUsedInFormula = fld?.metaData?.formula.find((formulaField) => formulaField?.id === field?.id);
+        let fieldUsedInFormula = fld?.metaData?.formula.find((formulaField) => formulaField?.metaData?.widgetId === field?.metaData?.widgetId);
         if (fieldUsedInFormula) {
           this.computeFormula(fld, this.payloadFields);
           if (fld?.metaData?.usedInFormula && !this.checkVisitedField(fld)) {
