@@ -453,7 +453,11 @@ export class EditorService extends BaseService {
     let result = false;
     let ruleArray = [];
     let testCondition = false;
-    if ((fieldValue === undefined || fieldValue === null) && rule.operator != "isNull") {
+    if (
+      (fieldValue === undefined || fieldValue === null) &&
+      rule.operator != "isNull" &&
+      rule.operator != "isNotNull"
+    ) {
       return false;
     }
     if (rule?.fnsName) {
@@ -537,6 +541,11 @@ export class EditorService extends BaseService {
         break;
       case "notEquals":
         if ((isNull(fieldValue) && String(rule.value) === "none") || String(fieldValue) !== String(rule.value)) {
+          result = true;
+        }
+        break;
+      case "isNotNull":
+        if (!isNull(fieldValue) && String(rule.value) === "none") {
           result = true;
         }
         break;
@@ -733,7 +742,7 @@ export class EditorService extends BaseService {
     },
   };
 
-  calculateFormulaValue(item, payloadFields){
+  calculateFormulaValue(item, payloadFields) {
     let formulaValue;
     let formula = [];
     if (item?.metaData?.formula?.length > 0) {
@@ -766,7 +775,7 @@ export class EditorService extends BaseService {
               expression = expression + " " + field?.expression;
             }
           });
-          console.log(expression)
+          console.log(expression);
           let evaluate;
           try {
             evaluate = eval(expression);
@@ -865,8 +874,8 @@ export class EditorService extends BaseService {
           case WidgetTypes.AdvTable:
             const advTableValues = [];
             if (
-                formula[1]?.column?.metaData?.widgetType === "Number" ||
-                formula[1]?.column?.metaData?.widgetType === "number"
+              formula[1]?.column?.metaData?.widgetType === "Number" ||
+              formula[1]?.column?.metaData?.widgetType === "number"
             ) {
               if (formula[0]?.children?.length > 0) {
                 formula[0]?.children?.forEach((value) => {
@@ -902,5 +911,4 @@ export class EditorService extends BaseService {
         return formulaValue;
     }
   }
-
 }
