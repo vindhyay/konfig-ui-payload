@@ -108,6 +108,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
   @Input() viewMode = false;
   @Input() showDelete = true;
   @Output() edit = new EventEmitter();
+  allAvailableFields = [];
   private _payloadFields: any;
   get payloadFields(): any {
     return this._payloadFields;
@@ -159,6 +160,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
     this.subscribe(this.editorService.loaderField$, (fieldId) => {
       this.loading = fieldId === this.item?.id;
     });
+    this.getAllAvailableFields(this.payloadFields);
   }
 
   ngAfterViewInit() {
@@ -259,6 +261,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
     this.editorService.widgetChange.next(item);
     this.editorService.setContainerHeight(this.editorService.getFormFields());
   }
+
   onChange($event) {
     const ifConditionsIds = this.item.metaData?.conditionRuleIds;
     if (ifConditionsIds?.length) {
@@ -270,16 +273,56 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
       }
     }
   }
+
   validateField($event: any, field: any) {
     validateFields([field]);
   }
-  calculateFormulaValue(item): any {
+
+  visitedFields = [];
+
+  calculateFormulaValue(field, callingFirst) {
+    if (callingFirst) {
+      this.visitedFields = [];
+    }
+    this.visitedFields.push(field);
+    this.allAvailableFields.forEach((fld) => {
+      if (fld?.metaData?.isFormulaField) {
+        let fieldUsedInFormula = fld?.metaData?.formula.find((formulaField) => formulaField?.id === field?.id);
+        if (fieldUsedInFormula) {
+          this.computeFormula(fld, this.payloadFields);
+          if (fld?.metaData?.usedInFormula && !this.checkVisitedField(fld)) {
+            this.calculateFormulaValue(fld, false);
+          }
+        }
+      }
+    });
+  }
+
+  getAllAvailableFields(fields) {
+    fields.forEach((field) => {
+      this.allAvailableFields.push(field);
+      if (field.children && field.children.length) {
+        this.getAllAvailableFields(field.children);
+      }
+    });
+  }
+
+  checkVisitedField(field): boolean {
+    if (this.visitedFields.indexOf(field) < 0) {
+      return false;
+    }
+    if (this.visitedFields.indexOf(field) > -1) {
+      return true;
+    }
+  }
+
+  computeFormula(item, payloadFields): any {
     let formulaValue;
     let formula = [];
     if (item?.metaData?.formula?.length > 0) {
       item?.metaData?.formula.forEach((field) => {
         if (field?.resourceType === resourceType.PAYLOAD_FIELD) {
-          formula.push(getFieldFromFields(this.payloadFields, field?.id));
+          formula.push(getFieldFromFields(payloadFields, field?.id));
         } else {
           formula.push(field);
         }
@@ -297,9 +340,6 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
         if (values.length > 0) {
           formula.forEach((field) => {
             if (field?.resourceType === resourceType.PAYLOAD_FIELD) {
-              if (field?.value?.value === null) {
-                field.value.value = undefined;
-              }
               expression = expression + " " + field?.value?.value;
             }
             if (field?.resourceType === resourceType.BRACKET) {
@@ -325,6 +365,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
         } else {
           formulaValue = values[0]?.value?.value || null;
         }
+        item.value.value = formulaValue;
         return formulaValue;
       case "string":
         formulaValue = "";
@@ -340,6 +381,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
             }
           }
         });
+        item.value.value = formulaValue;
         return formulaValue;
       case "date":
         const dateFunc = formula.filter((field) => {
@@ -371,6 +413,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
         if (years) {
           formulaValue = years + "";
         }
+        item.value.value = formulaValue;
         return formulaValue;
       case "array":
         switch (firstField.metaData.widgetType) {
@@ -437,10 +480,9 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
             }
             break;
         }
+        item.value.value = formulaValue;
         return formulaValue;
     }
-    item.value.value = formulaValue;
-    return formulaValue;
   }
 
   checkHeight(child?) {
