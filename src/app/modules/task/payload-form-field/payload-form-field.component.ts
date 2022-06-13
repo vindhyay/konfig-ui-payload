@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from "@angular/core";
+import { Component, EventEmitter, Input, NgZone, OnDestroy, OnInit, Output } from "@angular/core";
 import { FieldData } from "../model/field-data.model";
 import { BaseWidget, Column, TableMetaData, WidgetTypes } from "../model/create-form.models";
 import { AddressDetails, DeepCopy, getFieldFromFields, parseApiResponse, validateFields } from "../../../utils";
@@ -58,7 +58,8 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
     private authService: AuthService,
     private editorService: EditorService,
     private loaderService: LoaderService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private zone: NgZone
   ) {
     super();
   }
@@ -129,6 +130,12 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
       if (value) {
         this._payloadFields = value.uiPayload;
         this.transactionStatus = value?.transactionStatus || null;
+        this.getAllAvailableFields(this.payloadFields);
+        this.allAvailableFields.forEach((field) => {
+          if (field?.value?.value && field?.metaData?.usedInFormula) {
+            this.calculateFormulaValue(this.item, true);
+          }
+        });
         const { id = "" } = this.authService.getAgentRole() || {};
         if (this.item.permissions && this.item?.permissions[id]) {
           this.hide = this.item?.permissions[id].hide
@@ -160,7 +167,6 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
     this.subscribe(this.editorService.loaderField$, (fieldId) => {
       this.loading = fieldId === this.item?.id;
     });
-    this.getAllAvailableFields(this.payloadFields);
   }
 
   ngAfterViewInit() {
@@ -237,14 +243,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
     } else if (metaData?.businessRuleIds?.length) {
       this.editorService.onRuleTrigger({ event: $event, data });
     }
-    if (this.item.metaData.widgetType == WidgetTypes.Address) {
-      this.onAddressClick($event);
-    }
     this.onChange($event);
-  }
-
-  onAddressClick($event) {
-    this.item.value.value = this.item.value.value + " ";
   }
 
   onCollapse(status, item) {
@@ -287,7 +286,9 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
     this.visitedFields.push(field);
     this.allAvailableFields.forEach((fld) => {
       if (fld?.metaData?.isFormulaField) {
-        let fieldUsedInFormula = fld?.metaData?.formula.find((formulaField) => formulaField?.id === field?.id);
+        let fieldUsedInFormula = fld?.metaData?.formula.find(
+          (formulaField) => formulaField?.metaData?.widgetId === field?.metaData?.widgetId
+        );
         if (fieldUsedInFormula) {
           this.computeFormula(fld, this.payloadFields);
           if (fld?.metaData?.usedInFormula && !this.checkVisitedField(fld)) {
@@ -322,7 +323,10 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
     if (item?.metaData?.formula?.length > 0) {
       item?.metaData?.formula.forEach((field) => {
         if (field?.resourceType === resourceType.PAYLOAD_FIELD) {
-          formula.push(getFieldFromFields(payloadFields, field?.id));
+          let formulaField = this.allAvailableFields.find(
+            (fld) => fld?.metaData?.widgetId === field?.metaData?.widgetId
+          );
+          formula.push(getFieldFromFields(payloadFields, formulaField?.id));
         } else {
           formula.push(field);
         }
@@ -509,7 +513,9 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
       widget: this.item,
       address: address,
     };
-
+    this.zone.run(() => {
+      this.item.value.value = "";
+    });
     this.notificationService.addressAutoComplete.next(details);
   }
 }

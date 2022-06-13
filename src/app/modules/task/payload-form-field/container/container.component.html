@@ -4,9 +4,17 @@
     'empty-child': !item.children.length,
     'cursor-pointer': item?.metaData?.onClickConfigs?.length
   }"
-  [ngStyle]="this.metaData?.styleProperties | getBorderShadowFilter: { filter: 'all' }"
+  applyStyle
+  [filterStyles]="['borderStyles', 'boxShadowStyles']"
+  [styleProperties]="this.metaData?.styleProperties?.properties"
 >
-  <div *ngIf="item?.metaData?.title" class="container-title" [ngStyle]="getGlobalTitleStyle()">
+  <div
+    *ngIf="item?.metaData?.title"
+    class="container-title"
+    applyStyle
+    [filterStyles]="['titleStyles']"
+    [styleProperties]="this.metaData?.styleProperties?.properties"
+  >
     <i
       *ngIf="item?.metaData?.header?.icon"
       [class]="item?.metaData?.header?.icon"

@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from "@angular/core";
+import { Component, ElementRef, Input, OnInit, ViewChild } from "@angular/core";
 import { getAllFromFields, eligibileReviewField, validateFields } from "src/app/utils";
 import { StepperContainerMetaData } from "../../model/create-form.models";
 import { EditorService } from "../../editor.service";
@@ -12,6 +12,7 @@ export class VerticalStepperComponent implements OnInit {
   @Input() children = [];
   @Input() headerContent = [];
   @Input() metaData: StepperContainerMetaData;
+  @Input() indicatorIconColor = "#fff";
   reviewData = [];
   completedSteps = {};
   @ViewChild("contentConatiner", { read: ElementRef }) contentConatiner: ElementRef;
@@ -78,7 +79,7 @@ export class VerticalStepperComponent implements OnInit {
   onNextClick($event) {
     let index = this.selectedIndex;
     const child = this.children[index];
-    const { result: validate } = validateFields(child.children);
+    const { result: validate } = validateFields(child.children, true);
     if (validate) {
       this.completedSteps[child?.metaData?.widgetId] = true;
       index += 1;

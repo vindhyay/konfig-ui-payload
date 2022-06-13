@@ -1,23 +1,24 @@
 import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 
-import { BtnPrimaryComponent } from "./btn-primary.component";
+import { BtnCommonComponent } from "./btn-common.component";
 import { SharedModule } from "../../shared.module";
+import { RouterTestingModule } from "@angular/router/testing";
 
-describe("BtnPrimaryComponent", () => {
-  let component: BtnPrimaryComponent;
-  let fixture: ComponentFixture<BtnPrimaryComponent>;
+describe("BtnCommonComponent", () => {
+  let component: BtnCommonComponent;
+  let fixture: ComponentFixture<BtnCommonComponent>;
 
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [SharedModule],
+        imports: [RouterTestingModule, SharedModule],
         declarations: []
       }).compileComponents();
     })
   );
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BtnPrimaryComponent);
+    fixture = TestBed.createComponent(BtnCommonComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
