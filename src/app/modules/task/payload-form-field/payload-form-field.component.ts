@@ -501,9 +501,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
     let locality = $event.locality?.value ? $event.locality?.value : "";
     let state = $event.state?.value ? $event.state?.value : "";
     let postalCode = $event?.postalCode ? $event?.postalCode : "";
-    this.zone.run(() => {
-      this.item.value.value = "";
-    });
+
     let address = {
       streetNumber: streetNumber,
       streetName: streetName,
@@ -515,7 +513,9 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
       widget: this.item,
       address: address,
     };
-
+    this.zone.run(() => {
+      this.item.value.value = "";
+    });
     this.notificationService.addressAutoComplete.next(details);
   }
 }
