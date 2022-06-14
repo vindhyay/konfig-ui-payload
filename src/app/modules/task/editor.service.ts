@@ -449,6 +449,25 @@ export class EditorService extends BaseService {
       }
     });
   }
+  onPopulate_TriggerCondition = (fields: any[]) => {
+    let result = true;
+    let errorFields = [];
+    fields.forEach((field: any) => {
+      if (field?.children && field?.children?.length) {
+        this.onPopulate_TriggerCondition(field.children);
+      } else if (field) {
+        const ifConditionsIds = field.metaData?.conditionRuleIds;
+        if (ifConditionsIds?.length) {
+          const ifConditions = this.getCoditions(ifConditionsIds);
+          if (ifConditions?.length) {
+            this.checkCondition(ifConditions);
+          } else if (ifConditions && !ifConditions?.length) {
+            this.checkCondition([{ ...ifConditions }]);
+          }
+        }
+      }
+    });
+  };
   conditionValidation = (rule, fieldValue, targetField = null): boolean => {
     let result = false;
     let ruleArray = [];
