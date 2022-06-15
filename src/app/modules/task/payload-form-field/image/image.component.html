@@ -1,6 +1,6 @@
 <div
+  class="image-container"
   *ngIf="metaData?.source === 'Remote'"
-  [ngClass]="{ 'image-container': true }"
   [style.justify-content]="metaData?.position === 'Contain' ? metaData?.horizontalAlign : 'center'"
 >
   <img
@@ -10,35 +10,10 @@
     [ngClass]="{ 'cursor-pointer': item?.metaData?.onClickConfigs?.length }"
     [style.width]="metaData?.position === 'Cover' || metaData?.shorterEdge === 'width' ? '100%' : ''"
     [style.height]="metaData?.position === 'Cover' || metaData?.shorterEdge === 'height' ? '100%' : ''"
-    [ngStyle]="
-      metaData?.styleProperties?.properties?.independentBorder
-        ? {
-            'aspect-ratio': metaData?.position === 'Contain' ? 'inherit' : '',
-            borderTopStyle: metaData?.styleProperties?.properties?.borderTopStyle,
-            borderTopWidth: metaData?.styleProperties?.properties?.borderTopWidth,
-            borderTopColor: metaData?.styleProperties?.properties?.borderTopColor,
-            borderTopRightRadius: metaData?.styleProperties?.properties?.borderTopRightRadius,
-            borderLeftStyle: metaData?.styleProperties?.properties?.borderLeftStyle,
-            borderLeftWidth: metaData?.styleProperties?.properties?.borderLeftWidth,
-            borderLeftColor: metaData?.styleProperties?.properties?.borderLeftColor,
-            borderTopLeftRadius: metaData?.styleProperties?.properties?.borderTopLeftRadius,
-            borderBottomStyle: metaData?.styleProperties?.properties?.borderBottomStyle,
-            borderBottomWidth: metaData?.styleProperties?.properties?.borderBottomWidth,
-            borderBottomColor: metaData?.styleProperties?.properties?.borderBottomColor,
-            borderBottomLeftRadius: metaData?.styleProperties?.properties?.borderBottomLeftRadius,
-            borderRightStyle: metaData?.styleProperties?.properties?.borderRightStyle,
-            borderRightWidth: metaData?.styleProperties?.properties?.borderRightWidth,
-            borderRightColor: metaData?.styleProperties?.properties?.borderRightColor,
-            borderBottomRightRadius: metaData?.styleProperties?.properties?.borderBottomRightRadius
-          }
-        : {
-            'aspect-ratio': metaData?.position === 'Contain' ? 'inherit' : '',
-            borderStyle: metaData?.styleProperties?.properties?.borderStyle,
-            borderWidth: metaData?.styleProperties?.properties?.borderWidth,
-            borderColor: metaData?.styleProperties?.properties?.borderColor,
-            borderRadius: metaData?.styleProperties?.properties?.borderRadius
-          }
-    "
+    [style.aspect-ratio]="metaData?.position === 'Contain' ? 'inherit' : ''"
+    applyStyle
+    [filterStyles]="['borderStyles', 'boxShadowStyles']"
+    [styleProperties]="this.item?.metaData?.styleProperties?.properties"
   />
 </div>
 <div
@@ -51,37 +26,12 @@
     [src]="getImageUrl + '/' + metaData?.remoteKey"
     crossorigin="use-credentials"
     alt="{{ metaData?.altText }}"
+    [ngClass]="{ 'cursor-pointer': item?.metaData?.onClickConfigs?.length }"
     [style.width]="metaData?.position === 'Cover' || metaData?.shorterEdge === 'width' ? '100%' : ''"
     [style.height]="metaData?.position === 'Cover' || metaData?.shorterEdge === 'height' ? '100%' : ''"
-    [ngClass]="{ 'cursor-pointer': item?.metaData?.onClickConfigs?.length }"
-    [ngStyle]="
-      metaData?.styleProperties?.properties?.independentBorder
-        ? {
-            'aspect-ratio': metaData?.position === 'Contain' ? 'inherit' : '',
-            borderTopStyle: metaData?.styleProperties?.properties?.borderTopStyle,
-            borderTopWidth: metaData?.styleProperties?.properties?.borderTopWidth,
-            borderTopColor: metaData?.styleProperties?.properties?.borderTopColor,
-            borderTopRightRadius: metaData?.styleProperties?.properties?.borderTopRightRadius,
-            borderLeftStyle: metaData?.styleProperties?.properties?.borderLeftStyle,
-            borderLeftWidth: metaData?.styleProperties?.properties?.borderLeftWidth,
-            borderLeftColor: metaData?.styleProperties?.properties?.borderLeftColor,
-            borderTopLeftRadius: metaData?.styleProperties?.properties?.borderTopLeftRadius,
-            borderBottomStyle: metaData?.styleProperties?.properties?.borderBottomStyle,
-            borderBottomWidth: metaData?.styleProperties?.properties?.borderBottomWidth,
-            borderBottomColor: metaData?.styleProperties?.properties?.borderBottomColor,
-            borderBottomLeftRadius: metaData?.styleProperties?.properties?.borderBottomLeftRadius,
-            borderRightStyle: metaData?.styleProperties?.properties?.borderRightStyle,
-            borderRightWidth: metaData?.styleProperties?.properties?.borderRightWidth,
-            borderRightColor: metaData?.styleProperties?.properties?.borderRightColor,
-            borderBottomRightRadius: metaData?.styleProperties?.properties?.borderBottomRightRadius
-          }
-        : {
-            'aspect-ratio': metaData?.position === 'Contain' ? 'inherit' : '',
-            borderStyle: metaData?.styleProperties?.properties?.borderStyle,
-            borderWidth: metaData?.styleProperties?.properties?.borderWidth,
-            borderColor: metaData?.styleProperties?.properties?.borderColor,
-            borderRadius: metaData?.styleProperties?.properties?.borderRadius
-          }
-    "
+    [style.aspect-ratio]="metaData?.position === 'Contain' ? 'inherit' : ''"
+    applyStyle
+    [filterStyles]="['borderStyles', 'boxShadowStyles']"
+    [styleProperties]="this.item?.metaData?.styleProperties?.properties"
   />
 </div>

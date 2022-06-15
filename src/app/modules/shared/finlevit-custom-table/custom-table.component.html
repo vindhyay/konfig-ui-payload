@@ -306,6 +306,9 @@
                         <div class="pl-1" *ngSwitchCase="TextInput">
                           <ng-container *ngIf="isCellEditMode(col, rowIndex)">
                             <finlevit-text
+                              applyStyleVariables
+                              styleType="input"
+                              [styleProperties]="col?.metaData?.styleProperties?.properties"
                               [leftIcon]="col?.metaData?.leftIcon"
                               [rightIcon]="col?.metaData?.rightIcon"
                               [tooltip]="col?.metaData?.tooltip"
@@ -318,89 +321,6 @@
                               "
                               (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col.columnId)"
                               [isSmall]="true"
-                              [style.--input-color]="col?.metaData?.styleProperties?.properties?.textColor"
-                              [style.--input-text-align]="
-                                col?.metaData?.styleProperties?.properties?.textHorizontalAlign
-                              "
-                              [style.--input-background-color]="
-                                col?.metaData?.styleProperties?.properties?.backgroundColor
-                              "
-                              [style.--input-border-color]="col?.metaData?.styleProperties?.properties?.borderColor"
-                              [style.--input-font-family]="col?.metaData?.styleProperties?.properties?.textFontStyle"
-                              [style.--input-border]="col?.metaData?.styleProperties?.properties?.borderStyle"
-                              [style.--input-border-radius]="col?.metaData?.styleProperties?.properties?.borderRadius"
-                              [style.--input-font-size]="col?.metaData?.styleProperties?.properties?.fontSize"
-                              [style.--input-word-spacing]="col?.metaData?.styleProperties?.properties?.wordSpacing"
-                              [style.--input-letter-spacing]="col?.metaData?.styleProperties?.properties?.letterSpacing"
-                              [style.--input-line-spacing]="col?.metaData?.styleProperties?.properties?.lineSpacing"
-                              [style.--input-font-weight]="col?.metaData?.styleProperties?.properties?.fontWeight"
-                              [style.--input-font-style]="col?.metaData?.styleProperties?.properties?.fontStyle"
-                              [style.--input-text-decoration]="
-                                col?.metaData?.styleProperties?.properties?.textDecoration
-                              "
-                              [style.--input-label-color]="col?.metaData?.styleProperties?.properties?.labelColor"
-                              [style.--input-label-font-family]="
-                                col?.metaData?.styleProperties?.properties?.labelFontStyle
-                              "
-                              [style.--input-label-align]="col?.metaData?.styleProperties?.properties?.labelAlignment"
-                              [style.--input-label-font-weight]="
-                                col?.metaData?.styleProperties?.properties?.labelFontWeight
-                              "
-                              [style.--input-label-font-style]="col?.metaData?.styleProperties?.properties?.labelStyle"
-                              [style.--input-label-text-decoration]="
-                                col?.metaData?.styleProperties?.properties?.labelTextDecoration
-                              "
-                              [style.--input-adornment-background-color]="col?.metaData?.adornmentBackgroundColor"
-                              [style.--input-border-width]="col?.metaData?.styleProperties?.properties?.borderWidth"
-                              [style.--input-label-font-size]="
-                                col?.metaData?.styleProperties?.properties?.labelFontSize
-                              "
-                              [style.--input-label-width]="col?.metaData?.styleProperties?.properties?.labelWidth + '%'"
-                              [style.--input-border-top]="col?.metaData?.styleProperties?.properties?.borderTopStyle"
-                              [style.--input-border-radius-top-left]="
-                                col?.metaData?.styleProperties?.properties?.borderTopLeftRadius
-                              "
-                              [style.--input-border-top-color]="
-                                col?.metaData?.styleProperties?.properties?.borderTopColor
-                              "
-                              [style.--input-border-top-width]="
-                                col?.metaData?.styleProperties?.properties?.borderTopWidth
-                              "
-                              [style.--input-border-right]="
-                                col?.metaData?.styleProperties?.properties?.borderRightStyle
-                              "
-                              [style.--input-border-radius-top-right]="
-                                col?.metaData?.styleProperties?.properties?.borderTopRightRadius
-                              "
-                              [style.--input-border-right-color]="
-                                col?.metaData?.styleProperties?.properties?.borderRightColor
-                              "
-                              [style.--input-border-right-width]="
-                                col?.metaData?.styleProperties?.properties?.borderRightWidth
-                              "
-                              [style.--input-border-bottom]="
-                                col?.metaData?.styleProperties?.properties?.borderBottomStyle
-                              "
-                              [style.--input-border-radius-bottom-right]="
-                                col?.metaData?.styleProperties?.properties?.borderBottomRightRadius
-                              "
-                              [style.--input-border-bottom-color]="
-                                col?.metaData?.styleProperties?.properties?.borderBottomColor
-                              "
-                              [style.--input-border-bottom-width]="
-                                col?.metaData?.styleProperties?.properties?.borderBottomWidth
-                              "
-                              [style.--input-border-left]="col?.metaData?.styleProperties?.properties?.borderLeftStyle"
-                              [style.--input-border-radius-bottom-left]="
-                                col?.metaData?.styleProperties?.properties?.borderBottomLeftRadius
-                              "
-                              [style.--input-border-left-color]="
-                                col?.metaData?.styleProperties?.properties?.borderLeftColor
-                              "
-                              [style.--input-border-left-width]="
-                                col?.metaData?.styleProperties?.properties?.borderLeftWidth
-                              "
-                              [independentBorders]="col?.metaData?.styleProperties?.properties?.independentBorder"
                               [allowLabelWrapping]="col?.metaData?.allowLabelWrapping"
                               [showClearButton]="col?.metaData?.showClearButton"
                               [prefixText]="col?.metaData?.prefixText"
@@ -437,96 +357,14 @@
                         <div class="pl-1" *ngSwitchCase="TextArea">
                           <ng-container *ngIf="isCellEditMode(col, rowIndex)">
                             <finlevit-lib-textarea
+                              applyStyleVariables
+                              styleType="input"
+                              [styleProperties]="col?.metaData?.styleProperties?.properties"
                               [autoResize]="col?.metaData?.autoResize"
                               [rows]="col?.metaData?.rowsCount"
                               [tooltip]="col?.metaData?.tooltip"
                               [placeholder]="col?.metaData?.placeholder"
                               [isRequired]="col?.validators?.required"
-                              [style.--input-color]="col?.metaData?.styleProperties?.properties?.textColor"
-                              [style.--input-text-align]="
-                                col?.metaData?.styleProperties?.properties?.textHorizontalAlign
-                              "
-                              [style.--input-background-color]="
-                                col?.metaData?.styleProperties?.properties?.backgroundColor
-                              "
-                              [style.--input-border-color]="col?.metaData?.styleProperties?.properties?.borderColor"
-                              [style.--input-font-family]="col?.metaData?.styleProperties?.properties?.textFontStyle"
-                              [style.--input-border]="col?.metaData?.styleProperties?.properties?.borderStyle"
-                              [style.--input-border-radius]="col?.metaData?.styleProperties?.properties?.borderRadius"
-                              [style.--input-font-size]="col?.metaData?.styleProperties?.properties?.fontSize"
-                              [style.--input-word-spacing]="col?.metaData?.styleProperties?.properties?.wordSpacing"
-                              [style.--input-letter-spacing]="col?.metaData?.styleProperties?.properties?.letterSpacing"
-                              [style.--input-line-spacing]="col?.metaData?.styleProperties?.properties?.lineSpacing"
-                              [style.--input-font-weight]="col?.metaData?.styleProperties?.properties?.fontWeight"
-                              [style.--input-font-style]="col?.metaData?.styleProperties?.properties?.fontStyle"
-                              [style.--input-text-decoration]="
-                                col?.metaData?.styleProperties?.properties?.textDecoration
-                              "
-                              [style.--input-label-color]="col?.metaData?.styleProperties?.properties?.labelColor"
-                              [style.--input-label-font-family]="
-                                col?.metaData?.styleProperties?.properties?.labelFontStyle
-                              "
-                              [style.--input-label-align]="col?.metaData?.styleProperties?.properties?.labelAlignment"
-                              [style.--input-label-font-weight]="
-                                col?.metaData?.styleProperties?.properties?.labelFontWeight
-                              "
-                              [style.--input-label-font-style]="col?.metaData?.styleProperties?.properties?.labelStyle"
-                              [style.--input-label-text-decoration]="
-                                col?.metaData?.styleProperties?.properties?.labelTextDecoration
-                              "
-                              [style.--input-adornment-background-color]="
-                                col?.metaData?.styleProperties?.properties?.adornmentBackgroundColor
-                              "
-                              [style.--input-border-width]="col?.metaData?.styleProperties?.properties?.borderWidth"
-                              [style.--input-label-font-size]="
-                                col?.metaData?.styleProperties?.properties?.labelFontSize
-                              "
-                              [style.--input-label-width]="col?.metaData?.styleProperties?.properties?.labelWidth + '%'"
-                              [style.--input-border-top]="col?.metaData?.styleProperties?.properties?.borderTopStyle"
-                              [style.--input-border-radius-top-left]="
-                                col?.metaData?.styleProperties?.properties?.borderTopLeftRadius
-                              "
-                              [style.--input-border-top-color]="
-                                col?.metaData?.styleProperties?.properties?.borderTopColor
-                              "
-                              [style.--input-border-top-width]="
-                                col?.metaData?.styleProperties?.properties?.borderTopWidth
-                              "
-                              [style.--input-border-right]="
-                                col?.metaData?.styleProperties?.properties?.borderRightStyle
-                              "
-                              [style.--input-border-radius-top-right]="
-                                col?.metaData?.styleProperties?.properties?.borderTopRightRadius
-                              "
-                              [style.--input-border-right-color]="
-                                col?.metaData?.styleProperties?.properties?.borderRightColor
-                              "
-                              [style.--input-border-right-width]="
-                                col?.metaData?.styleProperties?.properties?.borderRightWidth
-                              "
-                              [style.--input-border-bottom]="
-                                col?.metaData?.styleProperties?.properties?.borderBottomStyle
-                              "
-                              [style.--input-border-radius-bottom-right]="
-                                col?.metaData?.styleProperties?.properties?.borderBottomRightRadius
-                              "
-                              [style.--input-border-bottom-color]="
-                                col?.metaData?.styleProperties?.properties?.borderBottomColor
-                              "
-                              [style.--input-border-bottom-width]="
-                                col?.metaData?.styleProperties?.properties?.borderBottomWidth
-                              "
-                              [style.--input-border-left]="col?.metaData?.styleProperties?.properties?.borderLeftStyle"
-                              [style.--input-border-radius-bottom-left]="
-                                col?.metaData?.styleProperties?.properties?.borderBottomLeftRadius
-                              "
-                              [style.--input-border-left-color]="
-                                col?.metaData?.styleProperties?.properties?.borderLeftColor
-                              "
-                              [style.--input-border-left-width]="
-                                col?.metaData?.styleProperties?.properties?.borderLeftWidth
-                              "
-                              [independentBorders]="col?.metaData?.styleProperties?.properties?.independentBorder"
                               [allowLabelWrapping]="col?.metaData?.styleProperties?.properties?.allowLabelWrapping"
                               [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
                               [(ngModel)]="modifyingData[rowIndex][col.columnId]"
@@ -563,6 +401,9 @@
                         <div class="pl-1" *ngSwitchCase="Number">
                           <ng-container *ngIf="isCellEditMode(col, rowIndex)">
                             <finlevit-number
+                              applyStyleVariables
+                              styleType="input"
+                              [styleProperties]="col?.metaData?.styleProperties?.properties"
                               [placeholder]="col?.metaData?.placeholder"
                               [tooltip]="col?.metaData?.tooltip"
                               [mode]="col?.metaData?.mode === 'currency' ? 'decimal' : col?.metaData?.mode"
@@ -574,89 +415,6 @@
                               [useGrouping]="col?.metaData?.thousandsSeparator"
                               [rightIcon]="col?.metaData?.rightIcon"
                               [leftIcon]="col?.metaData?.leftIcon"
-                              [style.--input-color]="col?.metaData?.styleProperties?.properties?.textColor"
-                              [style.--input-text-align]="
-                                col?.metaData?.styleProperties?.properties?.textHorizontalAlign
-                              "
-                              [style.--input-background-color]="
-                                col?.metaData?.styleProperties?.properties?.backgroundColor
-                              "
-                              [style.--input-border-color]="col?.metaData?.styleProperties?.properties?.borderColor"
-                              [style.--input-font-family]="col?.metaData?.styleProperties?.properties?.textFontStyle"
-                              [style.--input-border]="col?.metaData?.styleProperties?.properties?.borderStyle"
-                              [style.--input-border-radius]="col?.metaData?.styleProperties?.properties?.borderRadius"
-                              [style.--input-font-size]="col?.metaData?.styleProperties?.properties?.fontSize"
-                              [style.--input-word-spacing]="col?.metaData?.styleProperties?.properties?.wordSpacing"
-                              [style.--input-letter-spacing]="col?.metaData?.styleProperties?.properties?.letterSpacing"
-                              [style.--input-line-spacing]="col?.metaData?.styleProperties?.properties?.lineSpacing"
-                              [style.--input-font-weight]="col?.metaData?.styleProperties?.properties?.fontWeight"
-                              [style.--input-font-style]="col?.metaData?.styleProperties?.properties?.fontStyle"
-                              [style.--input-text-decoration]="
-                                col?.metaData?.styleProperties?.properties?.textDecoration
-                              "
-                              [style.--input-label-color]="col?.metaData?.styleProperties?.properties?.labelColor"
-                              [style.--input-label-font-family]="
-                                col?.metaData?.styleProperties?.properties?.labelFontStyle
-                              "
-                              [style.--input-label-align]="col?.metaData?.styleProperties?.properties?.labelAlignment"
-                              [style.--input-label-font-weight]="
-                                col?.metaData?.styleProperties?.properties?.labelFontWeight
-                              "
-                              [style.--input-label-font-style]="col?.metaData?.styleProperties?.properties?.labelStyle"
-                              [style.--input-label-text-decoration]="
-                                col?.metaData?.styleProperties?.properties?.labelTextDecoration
-                              "
-                              [style.--input-adornment-background-color]="col?.metaData?.adornmentBackgroundColor"
-                              [style.--input-border-width]="col?.metaData?.styleProperties?.properties?.borderWidth"
-                              [style.--input-label-font-size]="
-                                col?.metaData?.styleProperties?.properties?.labelFontSize
-                              "
-                              [style.--input-label-width]="col?.metaData?.styleProperties?.properties?.labelWidth + '%'"
-                              [style.--input-border-top]="col?.metaData?.styleProperties?.properties?.borderTopStyle"
-                              [style.--input-border-radius-top-left]="
-                                col?.metaData?.styleProperties?.properties?.borderTopLeftRadius
-                              "
-                              [style.--input-border-top-color]="
-                                col?.metaData?.styleProperties?.properties?.borderTopColor
-                              "
-                              [style.--input-border-top-width]="
-                                col?.metaData?.styleProperties?.properties?.borderTopWidth
-                              "
-                              [style.--input-border-right]="
-                                col?.metaData?.styleProperties?.properties?.borderRightStyle
-                              "
-                              [style.--input-border-radius-top-right]="
-                                col?.metaData?.styleProperties?.properties?.borderTopRightRadius
-                              "
-                              [style.--input-border-right-color]="
-                                col?.metaData?.styleProperties?.properties?.borderRightColor
-                              "
-                              [style.--input-border-right-width]="
-                                col?.metaData?.styleProperties?.properties?.borderRightWidth
-                              "
-                              [style.--input-border-bottom]="
-                                col?.metaData?.styleProperties?.properties?.borderBottomStyle
-                              "
-                              [style.--input-border-radius-bottom-right]="
-                                col?.metaData?.styleProperties?.properties?.borderBottomRightRadius
-                              "
-                              [style.--input-border-bottom-color]="
-                                col?.metaData?.styleProperties?.properties?.borderBottomColor
-                              "
-                              [style.--input-border-bottom-width]="
-                                col?.metaData?.styleProperties?.properties?.borderBottomWidth
-                              "
-                              [style.--input-border-left]="col?.metaData?.styleProperties?.properties?.borderLeftStyle"
-                              [style.--input-border-radius-bottom-left]="
-                                col?.metaData?.styleProperties?.properties?.borderBottomLeftRadius
-                              "
-                              [style.--input-border-left-color]="
-                                col?.metaData?.styleProperties?.properties?.borderLeftColor
-                              "
-                              [style.--input-border-left-width]="
-                                col?.metaData?.styleProperties?.properties?.borderLeftWidth
-                              "
-                              [independentBorders]="col?.metaData?.styleProperties?.properties?.independentBorder"
                               [allowLabelWrapping]="col?.metaData?.allowLabelWrapping"
                               [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
                               [prefixText]="col.metaData.prefixText || col?.metaData?.currency?.currencySymbol"
@@ -708,6 +466,9 @@
                         <div class="pl-1" *ngSwitchCase="DatePicker">
                           <ng-container *ngIf="isCellEditMode(col, rowIndex)">
                             <finlevit-lib-datepicker
+                              applyStyleVariables
+                              styleType="input"
+                              [styleProperties]="col?.metaData?.styleProperties?.properties"
                               [isRequired]="col?.validators?.required"
                               [tooltip]="col?.metaData?.tooltip"
                               [placeholder]="col?.metaData?.placeholder"
@@ -715,96 +476,11 @@
                               [returnDateFormat]="col?.metaData?.returnDateFormat"
                               [yearNavigator]="true"
                               [monthNavigator]="true"
-                              [style.--input-color]="col?.metaData?.styleProperties?.properties?.textColor"
-                              [style.--input-text-align]="
-                                col?.metaData?.styleProperties?.properties?.textHorizontalAlign
-                              "
-                              [style.--input-background-color]="
-                                col?.metaData?.styleProperties?.properties?.backgroundColor
-                              "
-                              [style.--input-border-color]="col?.metaData?.styleProperties?.properties?.borderColor"
-                              [style.--input-font-family]="col?.metaData?.styleProperties?.properties?.textFontStyle"
-                              [style.--input-border]="col?.metaData?.styleProperties?.properties?.borderStyle"
-                              [style.--input-border-radius]="col?.metaData?.styleProperties?.properties?.borderRadius"
-                              [style.--input-font-size]="col?.metaData?.styleProperties?.properties?.fontSize"
-                              [style.--input-word-spacing]="col?.metaData?.styleProperties?.properties?.wordSpacing"
-                              [style.--input-letter-spacing]="col?.metaData?.styleProperties?.properties?.letterSpacing"
-                              [style.--input-line-spacing]="col?.metaData?.styleProperties?.properties?.lineSpacing"
-                              [style.--input-font-weight]="col?.metaData?.styleProperties?.properties?.fontWeight"
-                              [style.--input-font-style]="col?.metaData?.styleProperties?.properties?.fontStyle"
-                              [style.--input-text-decoration]="
-                                col?.metaData?.styleProperties?.properties?.textDecoration
-                              "
-                              [style.--input-label-color]="col?.metaData?.styleProperties?.properties?.labelColor"
-                              [style.--input-label-font-family]="
-                                col?.metaData?.styleProperties?.properties?.labelFontStyle
-                              "
-                              [style.--input-label-align]="col?.metaData?.styleProperties?.properties?.labelAlignment"
-                              [style.--input-label-font-weight]="
-                                col?.metaData?.styleProperties?.properties?.labelFontWeight
-                              "
-                              [style.--input-label-font-style]="col?.metaData?.styleProperties?.properties?.labelStyle"
-                              [style.--input-label-text-decoration]="
-                                col?.metaData?.styleProperties?.properties?.labelTextDecoration
-                              "
                               [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
                               [showTime]="col?.metaData?.showTime"
                               [hourFormat]="col?.metaData?.hourFormat"
                               [stepMinute]="col?.metaData?.stepMinute"
                               [stepHour]="col?.metaData?.stepHour"
-                              [style.--input-adornment-background-color]="
-                                col?.metaData?.styleProperties?.properties?.adornmentBackgroundColor
-                              "
-                              [style.--input-border-width]="col?.metaData?.styleProperties?.properties?.borderWidth"
-                              [style.--input-label-font-size]="
-                                col?.metaData?.styleProperties?.properties?.labelFontSize
-                              "
-                              [style.--input-label-width]="col?.metaData?.styleProperties?.properties?.labelWidth + '%'"
-                              [style.--input-border-top]="col?.metaData?.styleProperties?.properties?.borderTopStyle"
-                              [style.--input-border-radius-top-left]="
-                                col?.metaData?.styleProperties?.properties?.borderTopLeftRadius
-                              "
-                              [style.--input-border-top-color]="
-                                col?.metaData?.styleProperties?.properties?.borderTopColor
-                              "
-                              [style.--input-border-top-width]="
-                                col?.metaData?.styleProperties?.properties?.borderTopWidth
-                              "
-                              [style.--input-border-right]="
-                                col?.metaData?.styleProperties?.properties?.borderRightStyle
-                              "
-                              [style.--input-border-radius-top-right]="
-                                col?.metaData?.styleProperties?.properties?.borderTopRightRadius
-                              "
-                              [style.--input-border-right-color]="
-                                col?.metaData?.styleProperties?.properties?.borderRightColor
-                              "
-                              [style.--input-border-right-width]="
-                                col?.metaData?.styleProperties?.properties?.borderRightWidth
-                              "
-                              [style.--input-border-bottom]="
-                                col?.metaData?.styleProperties?.properties?.borderBottomStyle
-                              "
-                              [style.--input-border-radius-bottom-right]="
-                                col?.metaData?.styleProperties?.properties?.borderBottomRightRadius
-                              "
-                              [style.--input-border-bottom-color]="
-                                col?.metaData?.styleProperties?.properties?.borderBottomColor
-                              "
-                              [style.--input-border-bottom-width]="
-                                col?.metaData?.styleProperties?.properties?.borderBottomWidth
-                              "
-                              [style.--input-border-left]="col?.metaData?.styleProperties?.properties?.borderLeftStyle"
-                              [style.--input-border-radius-bottom-left]="
-                                col?.metaData?.styleProperties?.properties?.borderBottomLeftRadius
-                              "
-                              [style.--input-border-left-color]="
-                                col?.metaData?.styleProperties?.properties?.borderLeftColor
-                              "
-                              [style.--input-border-left-width]="
-                                col?.metaData?.styleProperties?.properties?.borderLeftWidth
-                              "
-                              [independentBorders]="col?.metaData?.styleProperties?.properties?.independentBorder"
                               [allowLabelWrapping]="col?.metaData?.styleProperties?.properties?.allowLabelWrapping"
                               [(ngModel)]="modifyingData[rowIndex][col.columnId]"
                               (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col.columnId)"
@@ -931,7 +607,7 @@
       <ng-container *ngTemplateOutlet="cellEditActions"></ng-container>
     </div>
     <div [ngClass]="{ '-pagination': true, 'table-footer': !hideFooter }">
-      <div class="-left d-flex">
+      <div class="-left d-flex" style="height: 1.5rem">
         <div class="table-results-counter" *ngIf="!Object.keys(editCells).length; else cellEditActions">
           <ng-container *ngIf="pagination?.totalRecords && isPaginationEnabled; else zeroRecordsResult">
             Showing {{ pagination?.start }} - {{ pagination?.end }} of {{ pagination?.totalRecords }}
@@ -942,75 +618,23 @@
           <div class="ml-2 mr-2">
             <finlevit-button
               label="Save"
-              [bgColor]="saveBtnProperties?.properties?.backgroundColor"
-              [borderColor]="saveBtnProperties?.properties?.borderColor"
-              [style.--button-border]="saveBtnProperties?.properties?.borderStyle"
-              [style.--button-border-radius]="saveBtnProperties?.properties?.borderRadius"
-              [style.--button-label-font-weight]="saveBtnProperties?.properties?.fontWeight"
-              [style.--button-label-font-style]="saveBtnProperties?.properties?.fontStyle"
-              [style.--button-label-text-decoration]="saveBtnProperties?.properties?.textDecoration"
-              [color]="saveBtnProperties?.properties?.labelColor"
-              [style.--button-label-font-family]="saveBtnProperties?.properties?.labelFontStyle"
-              [style.--button-label-align]="saveBtnProperties?.properties?.labelAlignment"
-              [style.--button-border-width]="saveBtnProperties?.properties?.borderWidth"
-              [style.--button-label-font-size]="saveBtnProperties?.properties?.labelFontSize"
-              [style.--button-border-top]="saveBtnProperties?.properties?.borderTopStyle"
-              [style.--button-border-radius-top-left]="saveBtnProperties?.properties?.borderTopLeftRadius"
-              [borderTopColor]="saveBtnProperties?.properties?.borderTopColor"
-              [style.--button-border-top-width]="saveBtnProperties?.properties?.borderTopWidth"
-              [style.--button-border-right]="saveBtnProperties?.properties?.borderRightStyle"
-              [style.--button-border-radius-top-right]="saveBtnProperties?.properties?.borderTopRightRadius"
-              [borderRightColor]="saveBtnProperties?.properties?.borderRightColor"
-              [style.--button-border-right-width]="saveBtnProperties?.properties?.borderRightWidth"
-              [style.--button-border-bottom]="saveBtnProperties?.properties?.borderBottomStyle"
-              [style.--button-border-radius-bottom-right]="saveBtnProperties?.properties?.borderBottomRightRadius"
-              [borderBottomColor]="saveBtnProperties?.properties?.borderBottomColor"
-              [style.--button-border-bottom-width]="saveBtnProperties?.properties?.borderBottomWidth"
-              [style.--button-border-left]="saveBtnProperties?.properties?.borderLeftStyle"
-              [style.--button-border-radius-bottom-left]="saveBtnProperties?.properties?.borderBottomLeftRadius"
-              [borderLeftColor]="saveBtnProperties?.properties?.borderLeftColor"
-              [style.--button-border-left-width]="saveBtnProperties?.properties?.borderLeftWidth"
-              [independentBorders]="saveBtnProperties?.properties?.independentBorder"
-              [variant]="saveBtnProperties?.properties?.variant"
+              applyStyleVariables
+              styleType="button"
+              variant="custom"
+              isHover="true"
+              [styleProperties]="saveBtnProperties?.properties"
               (btnClick)="onColSave($event)"
-              [isSmall]="true"
             ></finlevit-button>
           </div>
           <div class="ml-2 mr-2">
             <finlevit-button
               label="Cancel"
-              [bgColor]="cancelBtnProperties?.properties?.backgroundColor"
-              [borderColor]="cancelBtnProperties?.properties?.borderColor"
-              [style.--button-border]="cancelBtnProperties?.properties?.borderStyle"
-              [style.--button-border-radius]="cancelBtnProperties?.properties?.borderRadius"
-              [style.--button-label-font-weight]="cancelBtnProperties?.properties?.fontWeight"
-              [style.--button-label-font-style]="cancelBtnProperties?.properties?.fontStyle"
-              [style.--button-label-text-decoration]="cancelBtnProperties?.properties?.textDecoration"
-              [color]="cancelBtnProperties?.properties?.labelColor"
-              [style.--button-label-font-family]="cancelBtnProperties?.properties?.labelFontStyle"
-              [style.--button-label-align]="cancelBtnProperties?.properties?.labelAlignment"
-              [style.--button-border-width]="cancelBtnProperties?.properties?.borderWidth"
-              [style.--button-label-font-size]="cancelBtnProperties?.properties?.labelFontSize"
-              [style.--button-border-top]="cancelBtnProperties?.properties?.borderTopStyle"
-              [style.--button-border-radius-top-left]="cancelBtnProperties?.properties?.borderTopLeftRadius"
-              [borderTopColor]="cancelBtnProperties?.properties?.borderTopColor"
-              [style.--button-border-top-width]="cancelBtnProperties?.properties?.borderTopWidth"
-              [style.--button-border-right]="cancelBtnProperties?.properties?.borderRightStyle"
-              [style.--button-border-radius-top-right]="cancelBtnProperties?.properties?.borderTopRightRadius"
-              [borderRightColor]="cancelBtnProperties?.properties?.borderRightColor"
-              [style.--button-border-right-width]="cancelBtnProperties?.properties?.borderRightWidth"
-              [style.--button-border-bottom]="cancelBtnProperties?.properties?.borderBottomStyle"
-              [style.--button-border-radius-bottom-right]="cancelBtnProperties?.properties?.borderBottomRightRadius"
-              [borderBottomColor]="cancelBtnProperties?.properties?.borderBottomColor"
-              [style.--button-border-bottom-width]="cancelBtnProperties?.properties?.borderBottomWidth"
-              [style.--button-border-left]="cancelBtnProperties?.properties?.borderLeftStyle"
-              [style.--button-border-radius-bottom-left]="cancelBtnProperties?.properties?.borderBottomLeftRadius"
-              [borderLeftColor]="cancelBtnProperties?.properties?.borderLeftColor"
-              [style.--button-border-left-width]="cancelBtnProperties?.properties?.borderLeftWidth"
-              [independentBorders]="cancelBtnProperties?.properties?.independentBorder"
-              [variant]="cancelBtnProperties?.properties?.variant"
+              applyStyleVariables
+              styleType="button"
+              variant="custom"
+              isHover="true"
+              [styleProperties]="cancelBtnProperties?.properties"
               (btnClick)="onColSaveCancel($event)"
-              [isSmall]="true"
             ></finlevit-button>
           </div>
         </ng-template>

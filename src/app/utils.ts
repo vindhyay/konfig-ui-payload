@@ -3,8 +3,6 @@ import { result } from "./state/model/api-response";
 import { FormControl, Validators } from "@angular/forms";
 import { ButtonActions, WidgetTypes } from "./modules/task/model/create-form.models";
 import { isNull } from "lodash";
-import * as moment from "moment";
-import {resourceType} from "./modules/task/payload-form-field/payload-form-field.component";
 
 export const UI_ACTIONS = [
   ButtonActions.logout,
@@ -349,6 +347,7 @@ export const conditions = {
     { name: "Length greater or equals", id: "lengthGreaterAndEquals" },
     { name: "Length less or equals", id: "lengthLessAndEquals" },
     { name: "is Empty", id: "isNull" },
+    { name: "Is Not Empty", id: "isNotNull" },
   ],
   ARRAY: [
     { name: "Includes", id: "includes" },
@@ -367,6 +366,7 @@ export const conditions = {
     { name: "Equals", id: "equals" },
     { name: "Not equals", id: "notEquals" },
     { name: "is Empty", id: "isNull" },
+    { name: "Is Not Empty", id: "isNotNull" },
   ],
   DATE: [
     { name: "Greater than", id: "greaterThan" },
@@ -376,6 +376,7 @@ export const conditions = {
     { name: "Equals", id: "equals" },
     { name: "Not equals", id: "notEquals" },
     { name: "Is Empty", id: "isNull" },
+    { name: "Is Not Empty", id: "isNotNull" },
   ],
   DEFAULT: [
     { name: "Equals", id: "equals" },
@@ -473,6 +474,11 @@ export const conditionValidation = (rule, fieldValue): boolean => {
       break;
     case "notEquals":
       if ((isNull(fieldValue) && String(rule.value) === "none") || String(fieldValue) !== String(rule.value)) {
+        result = true;
+      }
+      break;
+    case "isNotNull":
+      if (!isNull(fieldValue) && String(rule.value) === "none") {
         result = true;
       }
       break;

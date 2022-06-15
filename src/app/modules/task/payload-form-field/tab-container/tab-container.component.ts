@@ -12,9 +12,6 @@ export class AppTabContainerComponent implements OnInit {
 
   tabActiveIndex = 0;
   @Input() item: BaseWidget = null;
-  @Input() metaData: TabContainerMetaData;
-
-  @Input() containerStyle = null;
   ngOnInit() {
     this.tabActiveIndex = this.editorService.activeTabIndexes[this.item.metaData.widgetId];
   }
