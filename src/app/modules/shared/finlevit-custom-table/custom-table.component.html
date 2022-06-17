@@ -24,6 +24,7 @@
             class="f-th"
             [ngStyle]="{
               width: selectableConfig.width + 'px',
+              maxWidth: selectableConfig.width ? selectableConfig.width + 'px' : 'auto',
               flex: selectableConfig.width + ' 0 auto',
               'border-right-style': verticalBorder ? 'solid' : 'none'
             }"
@@ -40,11 +41,12 @@
               ></div>
             </div>
           </div>
-          <ng-container *ngFor="let col of columns">
+          <ng-container *ngFor="let col of columns | customFilter: { filterFn: columnFilterFn }">
             <div
               class="f-th"
               [ngStyle]="{
                 width: (col?.width || 100) + 'px',
+                maxWidth: col?.width ? (col?.width || 100) + 'px': 'auto',
                 flex: (col?.width || 100) + ' 0 auto',
                 'border-right-style': verticalBorder ? 'solid' : 'none'
               }"
@@ -120,6 +122,7 @@
             class="f-th"
             [ngStyle]="{
               width: selectableConfig.width + 'px',
+              maxWidth: selectableConfig.width ? selectableConfig.width + 'px' : 'auto',
               flex: selectableConfig.width + ' 0 auto',
               'border-right-style': verticalBorder ? 'solid' : 'none'
             }"
@@ -146,10 +149,11 @@
             class="f-th"
             [ngStyle]="{
               width: (col?.width || 100) + 'px',
+              maxWidth: col?.width ? (col?.width || 100) + 'px' : 'auto',
               flex: (col?.width || 100) + ' 0 auto',
               'border-right-style': verticalBorder ? 'solid' : 'none'
             }"
-            *ngFor="let col of columns"
+            *ngFor="let col of columns | customFilter: { filterFn: columnFilterFn }"
             [sortEligible]="
               (sort || col?.sortable) &&
               !Object.keys(newRows).length &&
@@ -250,6 +254,7 @@
                 class="f-td"
                 [ngStyle]="{
                   width: selectableConfig.width + 'px',
+                  maxWidth: selectableConfig.width ? selectableConfig.width + 'px' : 'auto',
                   flex: selectableConfig.width + ' 0 auto'
                 }"
               >
@@ -281,9 +286,10 @@
                 class="f-td"
                 [ngStyle]="{
                   width: (col?.width || 100) + 'px',
+                  maxWidth: col?.width ? (col?.width || 100) + 'px' : 'auto',
                   flex: (col?.width || 100) + ' 0 auto'
                 }"
-                *ngFor="let col of columns"
+                *ngFor="let col of columns| customFilter: { filterFn: columnFilterFn }"
                 (dblclick)="!col?.metaData?.readOnly && isColumnEdit ? onColEdit($event, col, rowIndex, rowData) : null"
               >
                 <div
@@ -697,7 +703,7 @@
         <app-custom-table-filters
           *ngIf="filter"
           #tableFilters
-          [columns]="columns"
+          [columns]="columns | customFilter: { filterFn: columnFilterFn }"
           (search)="handleSearch($event)"
         ></app-custom-table-filters>
         <button *ngIf="addRows && !tableFilters?.filtersEnabled" class="footer-btn" (click)="addRow()">

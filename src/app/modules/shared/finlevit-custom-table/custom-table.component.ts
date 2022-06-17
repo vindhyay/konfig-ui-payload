@@ -642,4 +642,10 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
     }
     return cellValue;
   }
+  columnFilterFn = (column: Column) => {
+    if (column?.metaData?.hasOwnProperty("isHidden")) {
+      return !column?.metaData?.isHidden;
+    }
+    return true;
+  };
 }
