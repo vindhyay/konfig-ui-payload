@@ -75,7 +75,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
     });
   }
   get columns() {
-    return this._columns;
+    return this._columns.filter((col) => !col?.metaData?.isHidden);
   }
   isPaginationEnabled = true;
   @Input() sort = false;
