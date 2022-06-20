@@ -1,5 +1,5 @@
 {
   "authBaseUrl": "http://security-service.dev.finlevit.io/ss",
-  "workflowAdminBaseURL": "http://wf-admin-m.dev.finlevit.io/wfAdmin",
-  "accountWorkflowBaseURL": "http://workflow-service.dev.finlevit.io/workflowService"
+  "workflowAdminBaseURL": "http://yao.dev.finlevit.io:8100/wfAdmin",
+  "accountWorkflowBaseURL": "http://yao.dev.finlevit.io:8089/workflowService"
 }

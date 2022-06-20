@@ -16,7 +16,7 @@
   [draggable]="false"
   [resizable]="false"
   [style]="{ height: metaData.height, width: metaData.width, 'flex-grow': 'inherit' }"
-  [styleClass]="item?.metaData?.widgetId + ' activeModal'"
+  [styleClass]="item?.widgetId + ' activeModal'"
   contentStyleClass="field-modal-content"
   [modal]="true"
   [(visible)]="modalStatus"
@@ -44,7 +44,7 @@
     </div>
   </ng-template>
   <div
-    [class]="'modalcontent modal' + item?.metaData?.widgetId"
+    [class]="'modalcontent modal' + item?.widgetId"
     [style]="{
       'background-color': styles?.properties?.contentBackgroundColor
     }"

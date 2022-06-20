@@ -165,7 +165,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
     });
     this.readonlyMode = this.item?.metaData?.readOnly;
     this.subscribe(this.editorService.loaderField$, (fieldId) => {
-      this.loading = fieldId === this.item?.id;
+      this.loading = fieldId === this.item?.widgetId;
     });
   }
 
@@ -287,7 +287,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
     this.allAvailableFields.forEach((fld) => {
       if (fld?.metaData?.isFormulaField) {
         let fieldUsedInFormula = fld?.metaData?.formula.find(
-          (formulaField) => formulaField?.metaData?.widgetId === field?.metaData?.widgetId
+          (formulaField) => formulaField?.widgetId === field?.widgetId
         );
         if (fieldUsedInFormula) {
           this.computeFormula(fld, this.payloadFields);
@@ -323,10 +323,8 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
     if (item?.metaData?.formula?.length > 0) {
       item?.metaData?.formula.forEach((field) => {
         if (field?.resourceType === resourceType.PAYLOAD_FIELD) {
-          let formulaField = this.allAvailableFields.find(
-            (fld) => fld?.metaData?.widgetId === field?.metaData?.widgetId
-          );
-          formula.push(getFieldFromFields(payloadFields, formulaField?.id));
+          let formulaField = this.allAvailableFields.find((fld) => fld?.widgetId === field?.widgetId);
+          formula.push(getFieldFromFields(payloadFields, formulaField?.widgetId));
         } else {
           formula.push(field);
         }

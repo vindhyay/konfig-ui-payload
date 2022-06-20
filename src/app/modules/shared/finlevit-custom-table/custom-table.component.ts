@@ -480,7 +480,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
   getRulesFromFilterColumns(columns) {
     return (columns || []).map((column) => {
       return {
-        fieldId: column?.field?.columnId,
+        widgetId: column?.field?.widgetId,
         condition: column.condition,
         dataType: column?.field?.type,
         operator: column.operator,
@@ -498,7 +498,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
         let filtersLogicCopy = JSON.parse(JSON.stringify(filtersLogic));
         for (let i: any = 0; i < rules.length; i++) {
           const rule = rules[i];
-          const fieldValue = rowData[rule?.fieldId];
+          const fieldValue = rowData[rule?.widgetId];
           let result = conditionValidation(rule, fieldValue);
           condMatched = i === 0 ? result : rule.operator === "AND" ? condMatched && result : condMatched || result;
           filtersLogicCopy = filtersLogicCopy.replace(new RegExp(i + 1, "g"), result);

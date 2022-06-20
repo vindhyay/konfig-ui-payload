@@ -128,7 +128,7 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
       const item = eachItem.item;
       const baseItem = baseGridItem.$item;
       const checkSameItem = (item, baseItem) => {
-        const isSame = item.metaData.widgetId !== baseGridItem.item.metaData.widgetId;
+        const isSame = item.widgetId !== baseGridItem.item.widgetId;
         return isSame;
       };
       const checkIsBottom = (item, baseItem) => {
@@ -160,7 +160,7 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
         // Get only under items
         checkIsSide(item, baseItem) &&
         // Dont get if item found in prev round
-        !this.allEligibleFields.find((prevItem) => prevItem.item.metaData.widgetId === item.metaData.widgetId)
+        !this.allEligibleFields.find((prevItem) => prevItem.item.widgetId === item.widgetId)
       );
     });
     this.allEligibleFields = this.allEligibleFields.concat(eligibleItems);
@@ -171,13 +171,12 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
   checkItemSize(widget) {
     const gridItems = (this.gridsterRef?.grid || []).sort((a, b) => a?.item?.y - b?.item?.y);
     if (widget) {
-      const widgetGridItem = gridItems.find((item) => item?.item?.metaData?.widgetId === widget?.metaData?.widgetId);
+      const widgetGridItem = gridItems.find((item) => item?.item?.widgetId === widget?.widgetId);
       if (!widgetGridItem) {
         return;
       }
       const eligibleItems = this.getEligibleItems(gridItems, widgetGridItem).filter(
-        (thing, index, self) =>
-          index === self.findIndex((t) => t?.item?.metaData?.widgetId === thing?.item?.metaData?.widgetId)
+        (thing, index, self) => index === self.findIndex((t) => t?.item?.widgetId === thing?.item?.widgetId)
       );
       if (
         widget?.metaData?.movement === "DOWN" &&
@@ -332,7 +331,7 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
       }
       if (widgetIds) {
         Object.keys(widgetIds).forEach((element) => {
-          let widget: BaseWidget = this.items.find((item) => item?.metaData?.widgetId == widgetIds[element]);
+          let widget: BaseWidget = this.items.find((item) => item?.widgetId == widgetIds[element]);
 
           if (element != "addressLine2" && widget) {
             widget.value.value = address[element];

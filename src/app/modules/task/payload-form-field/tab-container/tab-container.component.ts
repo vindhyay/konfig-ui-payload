@@ -13,12 +13,12 @@ export class AppTabContainerComponent implements OnInit {
   tabActiveIndex = 0;
   @Input() item: BaseWidget = null;
   ngOnInit() {
-    this.tabActiveIndex = this.editorService.activeTabIndexes[this.item.metaData.widgetId];
+    this.tabActiveIndex = this.editorService.activeTabIndexes[this.item.widgetId];
   }
 
   onTabChange($event) {
     const { index = 0 } = $event;
-    this.editorService.activeTabIndexes[this.item.metaData.widgetId] = index;
+    this.editorService.activeTabIndexes[this.item.widgetId] = index;
     this.tabActiveIndex = index;
     window.dispatchEvent(new Event("resize"));
   }

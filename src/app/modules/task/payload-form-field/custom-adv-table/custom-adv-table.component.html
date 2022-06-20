@@ -31,7 +31,7 @@
             [sortEligible]="
               sort && !Object.keys(newRows).length && !Object.keys(editRows).length && !Object.keys(editCells).length
             "
-            [ref]="col?.metaData?.widgetId"
+            [ref]="col?.widgetId"
             [align]="col?.metaData?.alignment"
             sortHeader
           >
@@ -158,7 +158,7 @@
                           [(ngModel)]="
                             col?.metaData?.isFormulaField
                               ? calculateCellValue(col, rowIndex)
-                              : modifyingData[rowIndex][col.metaData.widgetId]
+                              : modifyingData[rowIndex][col.widgetId]
                           "
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
                           [leftIcon]="col?.metaData?.leftIcon"
@@ -174,13 +174,13 @@
                           [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
                           [showErrorMsg]="col?.metaData?.showErrorMessage"
                           [error]="
-                            rowErrors[rowIndex] && rowErrors[rowIndex][col?.metaData?.widgetId]
-                              ? rowErrors[rowIndex][col?.metaData?.widgetId]['error']
+                            rowErrors[rowIndex] && rowErrors[rowIndex][col?.widgetId]
+                              ? rowErrors[rowIndex][col?.widgetId]['error']
                               : false
                           "
                           [errorMsg]="
-                            rowErrors[rowIndex] && rowErrors[rowIndex][col?.metaData?.widgetId]
-                              ? rowErrors[rowIndex][col?.metaData?.widgetId]['errorMsg']
+                            rowErrors[rowIndex] && rowErrors[rowIndex][col?.widgetId]
+                              ? rowErrors[rowIndex][col?.widgetId]['errorMsg']
                               : false
                           "
                         ></finlevit-text>
@@ -194,7 +194,7 @@
                           applyStyleVariables
                           styleType="input"
                           [styleProperties]="col?.metaData?.styleProperties?.properties"
-                          [(ngModel)]="modifyingData[rowIndex][col.metaData.widgetId]"
+                          [(ngModel)]="modifyingData[rowIndex][col.widgetId]"
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
                           [placeholder]="col?.metaData?.placeholder || 'select'"
                           [isDisabled]="false"
@@ -215,13 +215,13 @@
                           [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
                           [showErrorMsg]="col?.metaData?.showErrorMessage"
                           [error]="
-                            rowErrors[rowIndex] && rowErrors[rowIndex][col?.metaData?.widgetId]
-                              ? rowErrors[rowIndex][col?.metaData?.widgetId]['error']
+                            rowErrors[rowIndex] && rowErrors[rowIndex][col?.widgetId]
+                              ? rowErrors[rowIndex][col?.widgetId]['error']
                               : false
                           "
                           [errorMsg]="
-                            rowErrors[rowIndex] && rowErrors[rowIndex][col?.metaData?.widgetId]
-                              ? rowErrors[rowIndex][col?.metaData?.widgetId]['errorMsg']
+                            rowErrors[rowIndex] && rowErrors[rowIndex][col?.widgetId]
+                              ? rowErrors[rowIndex][col?.widgetId]['errorMsg']
                               : false
                           "
                           [tooltip]="col?.metaData?.tooltip"
@@ -236,18 +236,18 @@
                           applyStyleVariables
                           styleType="input"
                           [styleProperties]="col?.metaData?.styleProperties?.properties"
-                          [(ngModel)]="modifyingData[rowIndex][col.metaData.widgetId]"
+                          [(ngModel)]="modifyingData[rowIndex][col.widgetId]"
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
                           [isSmall]="true"
                           [placeholder]="col?.metaData?.placeholder"
                           [error]="
-                            rowErrors[rowIndex] && rowErrors[rowIndex][col?.metaData?.widgetId]
-                              ? rowErrors[rowIndex][col?.metaData?.widgetId]['error']
+                            rowErrors[rowIndex] && rowErrors[rowIndex][col?.widgetId]
+                              ? rowErrors[rowIndex][col?.widgetId]['error']
                               : false
                           "
                           [errorMsg]="
-                            rowErrors[rowIndex] && rowErrors[rowIndex][col?.metaData?.widgetId]
-                              ? rowErrors[rowIndex][col?.metaData?.widgetId]['errorMsg']
+                            rowErrors[rowIndex] && rowErrors[rowIndex][col?.widgetId]
+                              ? rowErrors[rowIndex][col?.widgetId]['errorMsg']
                               : false
                           "
                           [leftIcon]="col?.metaData?.leftIcon"
@@ -274,18 +274,18 @@
                           applyStyleVariables
                           styleType="checkbox"
                           [styleProperties]="col?.metaData?.styleProperties?.properties"
-                          [(ngModel)]="modifyingData[rowIndex][col.metaData.widgetId]"
+                          [(ngModel)]="modifyingData[rowIndex][col.widgetId]"
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
                           [isRequired]="col?.validators?.required"
                           [tooltip]="col?.metaData?.tooltip"
                           [error]="
-                            rowErrors[rowIndex] && rowErrors[rowIndex][col?.metaData?.widgetId]
-                              ? rowErrors[rowIndex][col?.metaData?.widgetId]['error']
+                            rowErrors[rowIndex] && rowErrors[rowIndex][col?.widgetId]
+                              ? rowErrors[rowIndex][col?.widgetId]['error']
                               : false
                           "
                           [errorMsg]="
-                            rowErrors[rowIndex] && rowErrors[rowIndex][col?.metaData?.widgetId]
-                              ? rowErrors[rowIndex][col?.metaData?.widgetId]['errorMsg']
+                            rowErrors[rowIndex] && rowErrors[rowIndex][col?.widgetId]
+                              ? rowErrors[rowIndex][col?.widgetId]['errorMsg']
                               : false
                           "
                           [showErrorMsg]="col?.metaData?.showErrorMessage"
@@ -297,18 +297,18 @@
                         </ng-container>
                         <finlevit-lib-textarea
                           *ngIf="isCellEditMode(col, rowIndex)"
-                          [(ngModel)]="modifyingData[rowIndex][col.metaData.widgetId]"
+                          [(ngModel)]="modifyingData[rowIndex][col.widgetId]"
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
                           [isSmall]="true"
                           [placeholder]="'Enter image URL'"
                           [error]="
-                            rowErrors[rowIndex] && rowErrors[rowIndex][col?.metaData?.widgetId]
-                              ? rowErrors[rowIndex][col?.metaData?.widgetId]['error']
+                            rowErrors[rowIndex] && rowErrors[rowIndex][col?.widgetId]
+                              ? rowErrors[rowIndex][col?.widgetId]['error']
                               : false
                           "
                           [errorMsg]="
-                            rowErrors[rowIndex] && rowErrors[rowIndex][col?.metaData?.widgetId]
-                              ? rowErrors[rowIndex][col?.metaData?.widgetId]['errorMsg']
+                            rowErrors[rowIndex] && rowErrors[rowIndex][col?.widgetId]
+                              ? rowErrors[rowIndex][col?.widgetId]['errorMsg']
                               : false
                           "
                         ></finlevit-lib-textarea>
@@ -335,7 +335,7 @@
                           [(ngModel)]="
                             col?.metaData?.isFormulaField
                               ? calculateCellValue(col, rowIndex)
-                              : modifyingData[rowIndex][col.metaData.widgetId]
+                              : modifyingData[rowIndex][col.widgetId]
                           "
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
                           [placeholder]="col?.metaData?.placeholder"
@@ -359,13 +359,13 @@
                           [step]="col?.metaData?.step"
                           [showButtons]="col?.metaData?.showStepperButtons"
                           [error]="
-                            rowErrors[rowIndex] && rowErrors[rowIndex][col?.metaData?.widgetId]
-                              ? rowErrors[rowIndex][col?.metaData?.widgetId]['error']
+                            rowErrors[rowIndex] && rowErrors[rowIndex][col?.widgetId]
+                              ? rowErrors[rowIndex][col?.widgetId]['error']
                               : false
                           "
                           [errorMsg]="
-                            rowErrors[rowIndex] && rowErrors[rowIndex][col?.metaData?.widgetId]
-                              ? rowErrors[rowIndex][col?.metaData?.widgetId]['errorMsg']
+                            rowErrors[rowIndex] && rowErrors[rowIndex][col?.widgetId]
+                              ? rowErrors[rowIndex][col?.widgetId]['errorMsg']
                               : false
                           "
                         ></finlevit-number>
@@ -379,7 +379,7 @@
                           applyStyleVariables
                           styleType="input"
                           [styleProperties]="col?.metaData?.styleProperties?.properties"
-                          [(ngModel)]="modifyingData[rowIndex][col.metaData.widgetId]"
+                          [(ngModel)]="modifyingData[rowIndex][col.widgetId]"
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
                           [autoResize]="col?.metaData?.autoResize"
                           [rows]="col?.metaData?.rowsCount"
@@ -391,13 +391,13 @@
                           [showErrorMsg]="col?.metaData?.showErrorMessage"
                           [showCharCount]="col?.metaData?.styleProperties?.properties?.showCharCount"
                           [error]="
-                            rowErrors[rowIndex] && rowErrors[rowIndex][col?.metaData?.widgetId]
-                              ? rowErrors[rowIndex][col?.metaData?.widgetId]['error']
+                            rowErrors[rowIndex] && rowErrors[rowIndex][col?.widgetId]
+                              ? rowErrors[rowIndex][col?.widgetId]['error']
                               : false
                           "
                           [errorMsg]="
-                            rowErrors[rowIndex] && rowErrors[rowIndex][col?.metaData?.widgetId]
-                              ? rowErrors[rowIndex][col?.metaData?.widgetId]['errorMsg']
+                            rowErrors[rowIndex] && rowErrors[rowIndex][col?.widgetId]
+                              ? rowErrors[rowIndex][col?.widgetId]['errorMsg']
                               : false
                           "
                         ></finlevit-lib-textarea>
@@ -411,7 +411,7 @@
                           applyStyleVariables
                           styleType="radioGroup"
                           [styleProperties]="col?.metaData?.styleProperties?.properties"
-                          [(ngModel)]="modifyingData[rowIndex][col.metaData.widgetId]"
+                          [(ngModel)]="modifyingData[rowIndex][col.widgetId]"
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
                           [isRequired]="col?.validators?.required"
                           [items]="col?.metaData?.options"
@@ -436,13 +436,13 @@
                           "
                           [buttonAlignment]="col?.metaData?.styleProperties?.properties.radioAlign"
                           [error]="
-                            rowErrors[rowIndex] && rowErrors[rowIndex][col?.metaData?.widgetId]
-                              ? rowErrors[rowIndex][col?.metaData?.widgetId]['error']
+                            rowErrors[rowIndex] && rowErrors[rowIndex][col?.widgetId]
+                              ? rowErrors[rowIndex][col?.widgetId]['error']
                               : false
                           "
                           [errorMsg]="
-                            rowErrors[rowIndex] && rowErrors[rowIndex][col?.metaData?.widgetId]
-                              ? rowErrors[rowIndex][col?.metaData?.widgetId]['errorMsg']
+                            rowErrors[rowIndex] && rowErrors[rowIndex][col?.widgetId]
+                              ? rowErrors[rowIndex][col?.widgetId]['errorMsg']
                               : false
                           "
                         ></finlevit-radio-group>
@@ -460,7 +460,7 @@
                           applyStyleVariables
                           styleType="input"
                           [styleProperties]="col?.metaData?.styleProperties?.properties"
-                          [(ngModel)]="modifyingData[rowIndex][col.metaData.widgetId]"
+                          [(ngModel)]="modifyingData[rowIndex][col.widgetId]"
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
                           [isRequired]="col?.validators?.required"
                           [tooltip]="col?.metaData?.tooltip"
@@ -479,20 +479,20 @@
                           [stepHour]="col?.metaData?.stepHour"
                           [allowLabelWrapping]="col?.metaData?.styleProperties?.properties?.allowLabelWrapping"
                           [error]="
-                            rowErrors[rowIndex] && rowErrors[rowIndex][col?.metaData?.widgetId]
-                              ? rowErrors[rowIndex][col?.metaData?.widgetId]['error']
+                            rowErrors[rowIndex] && rowErrors[rowIndex][col?.widgetId]
+                              ? rowErrors[rowIndex][col?.widgetId]['error']
                               : false
                           "
                           [errorMsg]="
-                            rowErrors[rowIndex] && rowErrors[rowIndex][col?.metaData?.widgetId]
-                              ? rowErrors[rowIndex][col?.metaData?.widgetId]['errorMsg']
+                            rowErrors[rowIndex] && rowErrors[rowIndex][col?.widgetId]
+                              ? rowErrors[rowIndex][col?.widgetId]['errorMsg']
                               : false
                           "
                         ></finlevit-lib-datepicker>
                       </div>
                       <div class="pl-1" *ngSwitchCase="Modal">
                         <app-modal
-                          [modalId]="col?.metaData?.widgetId + rowIndex"
+                          [modalId]="col?.widgetId + rowIndex"
                           [isDisabled]="isDisabled"
                           [item]="col"
                         ></app-modal>

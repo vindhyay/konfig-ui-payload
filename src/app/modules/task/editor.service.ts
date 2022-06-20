@@ -112,12 +112,12 @@ export class EditorService extends BaseService {
     }
   }
 
-  uniqueFieldChange(uniqueField: { id: string; value: string }) {
+  uniqueFieldChange(uniqueField: { widgetId: string; value: string }) {
     const { transactionId = "", screenId = "" } = this.getTransactionDetails();
     this.uniqueKeyTransaction(transactionId, { uniqueField }, { screenId }).subscribe(
       (result) => {
         const { data, error } = parseApiResponse(result);
-        this.showLoader(uniqueField?.id);
+        this.showLoader(uniqueField?.widgetId);
         if (data) {
           this.setTransactionDetails(data);
         }
@@ -166,7 +166,7 @@ export class EditorService extends BaseService {
     const {
       data: {
         metaData: { onClickConfigs = [] },
-        id,
+        widgetId,
       },
     } = $event;
     // checking if only action and that is NONE
@@ -192,7 +192,7 @@ export class EditorService extends BaseService {
     if (error) {
       return;
     }
-    const triggerData = { triggerId: id, data: $event?.data, uiActions: uiActions };
+    const triggerData = { triggerId: widgetId, data: $event?.data, uiActions: uiActions };
     // If first action either submit or next screen action need to validate fields
     const isValidationRequired =
       onClickConfigs.length &&
@@ -317,12 +317,12 @@ export class EditorService extends BaseService {
         isUnique = false,
         value: { value = null },
         metaData: { onChangeConfigs = [], businessRuleIds = [] } = {},
-        id,
+        widgetId,
       },
     } = $event;
     const formFields = this.getFormFields();
     if (isUnique) {
-      this.uniqueFieldChange({ id, value });
+      this.uniqueFieldChange({ widgetId, value });
       this.onRuleTrigger($event);
       return;
     }
@@ -332,7 +332,7 @@ export class EditorService extends BaseService {
         let error = this.validatePopulateParams(onChangeConfigs[0], formFields);
         if (!error) {
           this.triggerButtonActionEvents({
-            triggerId: id,
+            triggerId: widgetId,
             data: $event?.data,
             uiActions: [],
             businessRuleIds: businessRuleIds,
@@ -347,12 +347,12 @@ export class EditorService extends BaseService {
       data: {
         value: { value = null },
         metaData: { businessRuleIds = [] } = {},
-        id,
+        widgetId,
       },
     } = $event;
     if (businessRuleIds?.length) {
       this.triggerButtonActionEvents({
-        triggerId: id,
+        triggerId: widgetId,
         data: $event?.data,
         uiActions: [],
         businessRuleIds: businessRuleIds,
@@ -370,10 +370,10 @@ export class EditorService extends BaseService {
         for (let condition of conditions) {
           let condMatched = false;
           condition.rules.forEach((rule, index) => {
-            const field = getFieldFromFields(allFields, rule?.field?.fieldId);
+            const field = getFieldFromFields(allFields, rule?.field?.widgetId);
             const fieldValue = field?.value?.value;
             // let result = this.conditionValidation(rule, fieldValue);
-            const targetField = isShowError ? getFieldFromFields(allFields, rule?.targetField?.fieldId) : null;
+            const targetField = isShowError ? getFieldFromFields(allFields, rule?.targetField?.widgetId) : null;
             let result = this.conditionValidation(rule, fieldValue, targetField);
             condMatched =
               index === 0 ? result : rule.condition === "and" ? condMatched && result : condMatched || result;
@@ -384,7 +384,7 @@ export class EditorService extends BaseService {
             console.log("Success", result);
             break;
           } else if (isShowError && condition?.mappingField?.targetField) {
-            const removeErrorObj = getFieldFromFields(allFields, condition?.mappingField?.targetField?.fieldId);
+            const removeErrorObj = getFieldFromFields(allFields, condition?.mappingField?.targetField?.widgetId);
             if (
               removeErrorObj &&
               removeErrorObj?.error &&
@@ -403,7 +403,7 @@ export class EditorService extends BaseService {
         const showFields = result?.showFields || [];
         const hideFields = result?.hideFields || [];
         showFields.forEach((showField) => {
-          const showFieldRef = getFieldFromFields(allFields, showField?.fieldId);
+          const showFieldRef = getFieldFromFields(allFields, showField?.widgetId);
           if (showFieldRef) {
             showFieldRef.rows = showFieldRef.metaData?.defaultRows;
             showFieldRef.minItemRows = showFieldRef.metaData?.defaultMinItemRows;
@@ -415,7 +415,7 @@ export class EditorService extends BaseService {
           }
         });
         hideFields.forEach((hideField) => {
-          const hideFieldRef = getFieldFromFields(allFields, hideField?.fieldId);
+          const hideFieldRef = getFieldFromFields(allFields, hideField?.widgetId);
           if (hideFieldRef && !hideFieldRef.metaData.hidden) {
             hideFieldRef.rows = hideFieldRef?.metaData?.hideRows || 0;
             hideFieldRef.minItemRows = hideFieldRef?.metaData?.hideRows || 0;
@@ -426,8 +426,8 @@ export class EditorService extends BaseService {
         });
         this.setContainerHeight(allFields);
       } else if (result && result.messageType) {
-        const showMessageFieldRef = result?.targetField?.fieldId
-          ? getFieldFromFields(allFields, result.targetField.fieldId)
+        const showMessageFieldRef = result?.targetField?.widgetId
+          ? getFieldFromFields(allFields, result.targetField.widgetId)
           : null;
         switch (result.messageType) {
           case "fieldError":
@@ -644,7 +644,7 @@ export class EditorService extends BaseService {
   }
 
   getCoditions(ifConditionsIds: any): any {
-    return this.getConditionDetails()?.filter((item: any) => ifConditionsIds.includes(item?.id)) || [];
+    return this.getConditionDetails()?.filter((item: any) => ifConditionsIds.includes(item?.widgetId)) || [];
   }
   calcDate(date1, date2) {
     var diff = Math.floor(date1.getTime() - date2.getTime());
@@ -767,7 +767,7 @@ export class EditorService extends BaseService {
     if (item?.metaData?.formula?.length > 0) {
       item?.metaData?.formula.forEach((field) => {
         if (field?.resourceType === resourceType.PAYLOAD_FIELD) {
-          formula.push(getFieldFromFields(payloadFields, field?.id));
+          formula.push(getFieldFromFields(payloadFields, field?.widgetId));
         } else {
           formula.push(field);
         }

@@ -50,8 +50,8 @@ export class TransactionTableComponent extends BaseComponent implements OnInit {
   onPageChange($event) {
     const { page = 1, limit = 10 } = $event || {};
     const { applicationId } = this.editorService.getTransactionDetails();
-    const { id: fieldId } = this.item;
-    const params = { applicationId, fieldId, pageNo: page - 1, recordNo: limit };
+    const { id: widgetId } = this.item;
+    const params = { applicationId, widgetId, pageNo: page - 1, recordNo: limit };
     this.getTransactionTableData(params);
   }
   getTransactionDetails(id) {
