@@ -304,11 +304,11 @@ export class EditorService extends BaseService {
   }
 
   setOpenModals(fields) {
-    this.modalStatus.next(fields.map((field) => ({ id: field, type: ButtonActions.openModals })));
+    this.modalStatus.next(fields.map((field) => ({ widgetId: field, type: ButtonActions.openModals })));
   }
 
   setClosedModals(fields) {
-    this.modalStatus.next(fields.map((field) => ({ id: field, type: ButtonActions.closeModals })));
+    this.modalStatus.next(fields.map((field) => ({ widgetId: field, type: ButtonActions.closeModals })));
   }
 
   onOptionChange($event) {

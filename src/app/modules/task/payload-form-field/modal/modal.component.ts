@@ -62,7 +62,7 @@ export class ModalComponent implements OnInit {
     this.editorService.modalStatus$.subscribe((modalsStatus) => {
       if (modalsStatus && modalsStatus.length) {
         const modalStatus: { id: string; type: ButtonActions } = modalsStatus.find(
-          (modal) => modal.id === this.item.id
+          (modal) => modal.widgetId === this.item.widgetId
         );
         if (modalStatus) {
           this.modalStatus = modalStatus.type === ButtonActions.openModals;
@@ -80,7 +80,7 @@ export class ModalComponent implements OnInit {
   toggleModal() {
     this.modalStatus = !this.modalStatus;
     if (!this.modalStatus) {
-      this.editorService.setClosedModals([this.item.id]);
+      this.editorService.setClosedModals([this.item.widgetId]);
     }
   }
   onShow($event) {
