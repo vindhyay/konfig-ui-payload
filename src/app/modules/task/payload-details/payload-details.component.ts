@@ -61,7 +61,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
             const newFormFields = transactionDetails.uiPayload || [];
             this.recursiveUpdateFieldProperties(this.formFields, newFormFields);
             validateFields(this.formFields);
-            // this.editorService.onPopulate_TriggerCondition(this.formFields);
+            this.editorService.onPopulate_TriggerCondition(this.formFields);
           }
         } else {
           this.formFields = transactionDetails?.uiPayload || [];
