@@ -25,7 +25,7 @@
       <li
         *ngFor="let child of children; let i = index"
         [ngClass]="{
-          completed: selectedIndex > i || completedSteps[child.metaData.widgetId],
+          completed: selectedIndex > i || completedSteps[child.widgetId],
           selected: selectedIndex === i
         }"
         (click)="onSelectIndexChange(i)"

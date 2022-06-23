@@ -104,7 +104,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
 
   recursiveUpdateFieldProperties(formFields = [], newFormFields = []) {
     newFormFields.forEach((newField) => {
-      const findField = getFieldFromFields(formFields, newField.id);
+      const findField = getFieldFromFields(formFields, newField.widgetId);
       if (findField) {
         for (const prop in newField) {
           // value and children are special properties need to handle differently

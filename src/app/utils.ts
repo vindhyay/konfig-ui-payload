@@ -121,14 +121,14 @@ export const getValidators = (validators: any) => {
   });
   return _validators;
 };
-export const getFieldFromFields = (fields, fieldId) => {
+export const getFieldFromFields = (fields, widgetId) => {
   let paramField = null;
   fields.forEach((field) => {
-    if (field?.id === fieldId) {
+    if (field?.widgetId === widgetId) {
       paramField = field;
     }
     if (!paramField && field.children && field.children.length) {
-      const nestedParamField = getFieldFromFields(field.children, fieldId);
+      const nestedParamField = getFieldFromFields(field.children, widgetId);
       paramField = nestedParamField || paramField;
     }
   });
@@ -222,14 +222,14 @@ export class DeepCopy {
     return node;
   }
 }
-export const getValueFromField = (fields, fieldId) => {
+export const getValueFromField = (fields, widgetId) => {
   let paramField = null;
   fields.forEach((field) => {
     if (field.children && field.children.length) {
-      const nestedParamField = getValueFromField(field.children, fieldId);
+      const nestedParamField = getValueFromField(field.children, widgetId);
       paramField = nestedParamField || paramField;
     } else {
-      if (field?.id === fieldId) {
+      if (field?.widgetId === widgetId) {
         paramField = field;
       }
     }
