@@ -644,7 +644,7 @@ export class EditorService extends BaseService {
   }
 
   getCoditions(ifConditionsIds: any): any {
-    return this.getConditionDetails()?.filter((item: any) => ifConditionsIds.includes(item?.widgetId)) || [];
+    return this.getConditionDetails()?.filter((item: any) => ifConditionsIds.includes(item?.id)) || [];
   }
   calcDate(date1, date2) {
     var diff = Math.floor(date1.getTime() - date2.getTime());
