@@ -28,6 +28,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
   applicationId: string | null = "";
   transactionDetails: any = {};
   formFields: any = [];
+  fieldsToValidate: any = [];
   currentUser: UserDataModel | undefined;
   styleConfig: IStyleConfig = {} as IStyleConfig;
   sessionFields = {};
@@ -60,7 +61,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
             // indirectly updating form fields
             const newFormFields = transactionDetails.uiPayload || [];
             this.recursiveUpdateFieldProperties(this.formFields, newFormFields);
-            validateFields(this.formFields);
+            validateFields(this.fieldsToValidate);
             this.editorService.onPopulate_TriggerCondition(this.formFields);
           }
         } else {
@@ -103,6 +104,9 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
   }
 
   recursiveUpdateFieldProperties(formFields = [], newFormFields = []) {
+    console.log("in recursice");
+
+    this.fieldsToValidate = [];
     newFormFields.forEach((newField) => {
       const findField = getFieldFromFields(formFields, newField.widgetId);
       if (findField) {
@@ -119,6 +123,11 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
             findField[prop] = Object(newField[prop] || {}).hasOwnProperty("value")
               ? newField[prop]
               : { id: null, value: null };
+            //In case of data population ,  only when the value populated is changed , we will need to validate
+            //(this will eliminate validationg the untouched fields even when they are required)
+            if (findField[prop] != newField[prop]) {
+              this.fieldsToValidate.push(findField);
+            }
           }
         }
       } else {
