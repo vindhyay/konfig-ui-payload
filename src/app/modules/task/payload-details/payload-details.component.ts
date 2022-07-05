@@ -32,7 +32,6 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
   currentUser: UserDataModel | undefined;
   styleConfig: IStyleConfig = {} as IStyleConfig;
   sessionFields = {};
-  fieldsToValidate: any = [];
   ngOnInit(): void {
     this.editorService.setTransactionDetails({});
     this.currentUser = this.authService.getCurrentUser();
