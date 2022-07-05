@@ -32,6 +32,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
   currentUser: UserDataModel | undefined;
   styleConfig: IStyleConfig = {} as IStyleConfig;
   sessionFields = {};
+  fieldsToValidate: any = [];
   ngOnInit(): void {
     this.editorService.setTransactionDetails({});
     this.currentUser = this.authService.getCurrentUser();
@@ -123,8 +124,6 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
             findField[prop] = Object(newField[prop] || {}).hasOwnProperty("value")
               ? newField[prop]
               : { id: null, value: null };
-            //In case of data population ,  only when the value populated is changed , we will need to validate
-            //(this will eliminate validationg the untouched fields even when they are required)
             if (findField[prop] != newField[prop]) {
               this.fieldsToValidate.push(findField);
             }
