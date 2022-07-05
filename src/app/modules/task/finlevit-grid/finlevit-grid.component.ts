@@ -12,7 +12,7 @@ import { ActivatedRoute } from "@angular/router";
 import { EditorService } from "../editor.service";
 import { NotificationService } from "../../../services/notification.service";
 import { BaseComponent } from "../../shared/base/base.component";
-import { AddressDetails } from "src/app/utils";
+import { AddressDetails, validateFields } from "src/app/utils";
 
 @Component({
   selector: "finlevit-grid",
@@ -315,6 +315,7 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
   }
 
   fillAddressDetails(addressDetails) {
+    let ValidationFields = [];
     let widget = addressDetails.widget;
     let widgetIds = widget?.metaData?.linkedWidetIds;
     let address: AddressDetails = addressDetails.address;
@@ -332,7 +333,7 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
       if (widgetIds) {
         Object.keys(widgetIds).forEach((element) => {
           let widget: BaseWidget = this.items.find((item) => item?.widgetId == widgetIds[element]);
-
+          ValidationFields.push(widget);
           if (element != "addressLine2" && widget) {
             widget.value.value = address[element];
             if (widget.metaData?.businessRuleIds?.length) {
@@ -348,7 +349,8 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
       let addressWidget: BaseWidget = JSON.parse(JSON.stringify(widget));
       addressWidget.metaData.businessRuleIds = businessRuleIds;
       this.editorService.onRuleTrigger({ event: addressDetails, data: addressWidget });
-
+      //we need to validte the fields as we change the value of the field
+      validateFields(ValidationFields);
       if (ifConditionsIds?.length) {
         const ifConditions = this.editorService.getCoditions(ifConditionsIds);
         if (ifConditions?.length) {

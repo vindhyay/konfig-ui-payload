@@ -31,6 +31,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
   currentUser: UserDataModel | undefined;
   styleConfig: IStyleConfig = {} as IStyleConfig;
   sessionFields = {};
+  fieldsToValidate: any = [];
   ngOnInit(): void {
     this.editorService.setTransactionDetails({});
     this.currentUser = this.authService.getCurrentUser();
@@ -60,7 +61,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
             // indirectly updating form fields
             const newFormFields = transactionDetails.uiPayload || [];
             this.recursiveUpdateFieldProperties(this.formFields, newFormFields);
-            validateFields(this.formFields);
+            validateFields(this.fieldsToValidate);
             this.editorService.onPopulate_TriggerCondition(this.formFields);
           }
         } else {
@@ -119,6 +120,9 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
             findField[prop] = Object(newField[prop] || {}).hasOwnProperty("value")
               ? newField[prop]
               : { id: null, value: null };
+            if (findField[prop] != newField[prop]) {
+              this.fieldsToValidate.push(findField);
+            }
           }
         }
       } else {
