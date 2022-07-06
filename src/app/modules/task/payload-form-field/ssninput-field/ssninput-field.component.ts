@@ -45,8 +45,6 @@ export class ssnInputFieldComponent implements OnInit {
     }
   }
   validateField($event: any) {
-    console.log("in validate ");
-
     this._type_mask = this.metaData.hideMask;
     this.changeIcon(this.metaData);
     this.onValueChange.emit($event);

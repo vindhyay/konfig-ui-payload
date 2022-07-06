@@ -104,8 +104,6 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
   }
 
   recursiveUpdateFieldProperties(formFields = [], newFormFields = []) {
-    console.log("in recursice");
-
     this.fieldsToValidate = [];
     newFormFields.forEach((newField) => {
       const findField = getFieldFromFields(formFields, newField.widgetId);
@@ -123,6 +121,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
             findField[prop] = Object(newField[prop] || {}).hasOwnProperty("value")
               ? newField[prop]
               : { id: null, value: null };
+
             if (findField[prop] != newField[prop]) {
               this.fieldsToValidate.push(findField);
             }
