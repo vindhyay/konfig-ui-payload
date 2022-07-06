@@ -368,6 +368,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
           formulaValue = values[0]?.value?.value || null;
         }
         item.value.value = formulaValue;
+        this.editorService.onPopulate_TriggerCondition([item]);
         return formulaValue;
       case "string":
         formulaValue = "";
@@ -384,6 +385,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
           }
         });
         item.value.value = formulaValue;
+        this.editorService.onPopulate_TriggerCondition([item]);
         return formulaValue;
       case "date":
         const dateFunc = formula.filter((field) => {
@@ -416,6 +418,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
           formulaValue = years + "";
         }
         item.value.value = formulaValue;
+        this.editorService.onPopulate_TriggerCondition([item]);
         return formulaValue;
       case "array":
         switch (firstField.metaData.widgetType) {
@@ -482,6 +485,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
             }
             break;
         }
+        this.editorService.onPopulate_TriggerCondition([item]);
         item.value.value = formulaValue;
         return formulaValue;
     }
