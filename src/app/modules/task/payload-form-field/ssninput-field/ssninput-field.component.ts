@@ -27,7 +27,7 @@ export class ssnInputFieldComponent implements OnInit {
     if (!this.metaData.rightIcon) {
       this.metaData.rightIcon = this.metaData.showIcon ? this.metaData.showIcon : null;
     }
-    if (this.item.value?.value && this._type_mask === this.metaData.showMask) {
+    if (this._type_mask === this.metaData.showMask) {
       this.changeIcon(this.metaData);
     }
   }
@@ -45,6 +45,7 @@ export class ssnInputFieldComponent implements OnInit {
     }
   }
   validateField($event: any) {
+    this.item.value.value = $event;
     this._type_mask = this.metaData.hideMask;
     this.changeIcon(this.metaData);
     this.onValueChange.emit($event);

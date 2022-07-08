@@ -6,7 +6,7 @@
   [tooltip]="item?.metaData?.tooltip"
   [placeholder]="item?.metaData?.placeholder"
   [ngModel]="item.value.value | toPhoneFormat"
-  (ngModelChange)="item.value.value = $event; validateField($event)"
+  (ngModelChange)="item.value.value = $event.target.value; validateField($event.target.value)"
   [isRequired]="item?.validators?.required"
   [label]="item?.label"
   (onBlur)="optionChange($event)"
