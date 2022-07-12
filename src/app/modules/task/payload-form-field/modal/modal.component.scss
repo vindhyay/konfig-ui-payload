@@ -1,63 +1,59 @@
 :host ::ng-deep {
-    .p-button {
-      width: 100%;
-      height: 100%;
-    }
-  }
-  ::ng-deep {
-    .activeModal{
-      &>div:first-child{
-        padding: 0 !important;
-      }
-      &>div:nth-child(3){
-        padding: 0 !important;
-      }
-    }
-    .footer-content gridster{
-      border-bottom-right-radius: 4px;
-      border-bottom-left-radius: 4px ;
-    }
-    .field-modal-content{
-      height: 100%;
-      &>div:first-child{
-        height: 100%;
-        overflow-y: scroll;
-      }
-    }
-  }
-  .header-content {
-    background-color: #fff;
-    padding: 1rem;
-    flex: 1;
-    border-top-right-radius: 4px;
-    border-top-left-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .footer-content{
-    border-bottom-right-radius: 4px;
-    border-bottom-left-radius: 4px ;
-  }
-  .stepper-btn-container {
+  .p-button {
     width: 100%;
-    padding: 0 10px;
-    z-index: 100;
-    height: 60px;
-    display: flex;
-    align-items: center;
+    height: 100%;
   }
-  ::ng-deep{ 
-  .stepper-btn-container .p-button{
+}
+::ng-deep {
+  .activeModal {
+    & > div:first-child {
+      padding: 0 !important;
+    }
+    & > div:nth-child(3) {
+      padding: 0 !important;
+    }
+  }
+  .footer-content gridster {
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+  }
+  .field-modal-content {
+    height: 100%;
+    & > div:first-child {
+      height: 100%;
+      overflow-y: scroll;
+    }
+  }
+}
+.header-content {
+  background-color: #fff;
+  padding: 1rem;
+  flex: 1;
+  border-top-right-radius: 4px;
+  border-top-left-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.footer-content {
+  border-bottom-right-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+.stepper-btn-container {
+  width: 100%;
+  padding: 0 10px;
+  z-index: 100;
+  height: 60px;
+  display: flex;
+  align-items: center;
+}
+::ng-deep {
+  .stepper-btn-container .p-button {
     width: 100% !important;
   }
-  .modalcontent{
-    gridster{
-      background: inherit !important;
-    }
-  }
-  .footer-content{
-    gridster{
+
+  .footer-content {
+    gridster {
       background: inherit !important;
     }
   }
