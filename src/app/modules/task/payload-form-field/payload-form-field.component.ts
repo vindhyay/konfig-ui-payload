@@ -1,4 +1,14 @@
-import { Component, EventEmitter, Input, NgZone, OnDestroy, OnInit, Output } from "@angular/core";
+import {
+  Component,
+  EventEmitter,
+  Input,
+  NgZone,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from "@angular/core";
 import { FieldData } from "../model/field-data.model";
 import { BaseWidget, Column, TableMetaData, WidgetTypes } from "../model/create-form.models";
 import { AddressDetails, DeepCopy, getFieldFromFields, parseApiResponse, validateFields } from "../../../utils";
@@ -14,7 +24,7 @@ import { NotificationService } from "../../../services/notification.service";
   templateUrl: "./payload-form-field.component.html",
   styleUrls: ["./payload-form-field.component.scss"],
 })
-export class PayloadFormFieldComponent extends BaseComponent implements OnInit, OnDestroy {
+export class PayloadFormFieldComponent extends BaseComponent implements OnInit, OnDestroy, OnChanges {
   _item: BaseWidget = {} as BaseWidget;
   Text: WidgetTypes = WidgetTypes.Text;
   Table: WidgetTypes = WidgetTypes.Table;
@@ -66,7 +76,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
 
   @Input() emitButtonEvent: boolean = false;
   @Output() onBtnClick = new EventEmitter();
-
+  @Input() value: any = { id: null, value: "" };
   @Input()
   set options(optionsData: any) {
     if (this.item?.metaData?.widgetType === WidgetTypes.Table) {
@@ -169,6 +179,13 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
     });
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!changes.value.firstChange) {
+      if (changes.value.currentValue?.value != changes.value.previousValue?.value) {
+        validateFields([this._item]);
+      }
+    }
+  }
   ngAfterViewInit() {
     // Apply conditions based on default value
     setTimeout(() => {
