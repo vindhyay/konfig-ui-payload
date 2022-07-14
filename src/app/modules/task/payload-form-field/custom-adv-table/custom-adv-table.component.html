@@ -318,7 +318,7 @@
                           {{
                             col?.metaData?.thousandsSeparator
                               ? col?.metaData?.currency
-                                ? (calculateCellValue(col, rowIndex)===undefined? '' : col?.metaData.currency?.currencySymbol +
+                                ? (calculateCellValue(col, rowIndex)===undefined? col?.metaData.currency?.currencySymbol +' 0'  : col?.metaData.currency?.currencySymbol +
                                   " " +
                                   (calculateCellValue(col, rowIndex) | number))
                                 : (calculateCellValue(col, rowIndex) | number)
