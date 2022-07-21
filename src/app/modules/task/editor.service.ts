@@ -142,7 +142,7 @@ export class EditorService extends BaseService {
           error = true;
           const tempFormControl = new FormControl(
             inputValue,
-            getValidators({ ...paramField?.validators, required: true })
+            getValidators({ ...paramField?.validators, required: true }, paramField)
           );
           if (tempFormControl.valid) {
             paramField.error = false;
