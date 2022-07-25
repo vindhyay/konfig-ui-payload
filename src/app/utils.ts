@@ -1,8 +1,9 @@
 import ShortUniqueId from "short-unique-id";
 import { result } from "./state/model/api-response";
-import { FormControl, Validators } from "@angular/forms";
+import { AbstractControl, FormControl, ValidationErrors, ValidatorFn, Validators } from "@angular/forms";
 import { ButtonActions, WidgetTypes } from "./modules/task/model/create-form.models";
 import { isNull } from "lodash";
+import * as moment from "moment";
 
 export const UI_ACTIONS = [
   ButtonActions.logout,
@@ -42,6 +43,13 @@ export const getErrorMessages = (errors: any, label: any) => {
       case "max":
         errorMessages.push(`Please enter any value less than ${errors[error].max}`);
         break;
+      case "minDate":
+        errorMessages.push(` ${errors.minDate}`);
+        break;
+      case "maxDate":
+        console.log(errors.maxDate);
+        errorMessages.push(` ${errors.maxDate}`);
+        break;
     }
   });
   return errorMessages;
@@ -79,7 +87,7 @@ export const validateFields = (fields: any[], isPageSubmit = false) => {
       if (field?.metaData?.widgetType === WidgetTypes.SSNInput) {
         value = toSSNFormat(field?.value?.value);
       }
-      const tempFormControl = new FormControl(value, getValidators(field?.validators || {}));
+      const tempFormControl = new FormControl(value, getValidators(field?.validators || {}, field));
       if (tempFormControl.valid || field?.rows === 0 || field?.metaData?.isHidden) {
         field.error = false;
         field.errorMessage = "";
@@ -95,7 +103,7 @@ export const validateFields = (fields: any[], isPageSubmit = false) => {
   });
   return { result, errorFields };
 };
-export const getValidators = (validators: any) => {
+export const getValidators = (validators: any, field) => {
   const _validators: any = [];
   Object.keys(validators).forEach((validator) => {
     switch (validator) {
@@ -116,6 +124,12 @@ export const getValidators = (validators: any) => {
         break;
       case "required":
         validators[validator] && _validators.push(Validators.required);
+        break;
+      case "minDate":
+        validators[validator] && _validators.push(CustomValidators.dateMinimum(field));
+        break;
+      case "maxDate":
+        validators[validator] && _validators.push(CustomValidators.dateMaximum(field));
         break;
     }
   });
@@ -518,4 +532,42 @@ export interface AddressDetails {
   };
   vicinity?: string;
   url?: string;
+}
+
+export class CustomValidators {
+  static dateMaximum(field: any): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (control.value == null) {
+        return null;
+      }
+      const controlDate = moment(new Date(control.value).toISOString());
+      if (!controlDate.isValid()) {
+        return null;
+      }
+      const validationDate = moment(new Date(field.validators.maxDate).toISOString());
+      return controlDate.isSameOrBefore(validationDate)
+        ? null
+        : {
+            maxDate: `Max date is ${field.validators.minDate}`,
+          };
+    };
+  }
+
+  static dateMinimum(field: any): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (control.value == null) {
+        return null;
+      }
+      const controlDate = moment(new Date(control.value).toISOString());
+      if (!controlDate.isValid()) {
+        return null;
+      }
+      const validationDate = moment(new Date(field.validators.minDate).toISOString());
+      return controlDate.isSameOrAfter(validationDate)
+        ? null
+        : {
+            minDate: `Min date is ${field.validators.minDate}`,
+          };
+    };
+  }
 }
