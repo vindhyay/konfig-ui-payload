@@ -2,7 +2,7 @@
   <ng-container *ngIf="item?.metaData?.widgetType === TextInput">
     <div class="input-container">
       <finlevit-text
-        [isDisabled]="readonlyMode || disable"
+        [isDisabled]="readonlyMode || disable || item?.isMirrorField"
         [leftIcon]="item?.metaData?.leftIcon"
         [rightIcon]="item?.metaData?.rightIcon"
         [error]="isError(item)"
@@ -34,7 +34,7 @@
   <ng-container *ngIf="item?.metaData?.widgetType === Email">
     <div class="input-container">
       <finlevit-text
-        [isDisabled]="readonlyMode || disable"
+        [isDisabled]="readonlyMode || disable || item?.isMirrorField"
         [leftIcon]="item?.metaData?.leftIcon"
         [rightIcon]="item?.metaData?.rightIcon"
         [error]="isError(item)"
@@ -66,7 +66,7 @@
   <ng-container *ngIf="item?.metaData?.widgetType === PasswordInput">
     <div class="input-container">
       <app-password-field
-        [isDisabled]="readonlyMode || disable"
+        [isDisabled]="readonlyMode || disable || item?.isMirrorField"
         (onValueChange)="validateField($event, item)"
         (onBlurChange)="optionChange($event, item)"
         [item]="item"
@@ -77,7 +77,7 @@
   <ng-container *ngIf="item?.metaData?.widgetType === SSNInput">
     <div class="input-container">
       <app-ssninput-field
-        [isDisabled]="readonlyMode || disable"
+        [isDisabled]="readonlyMode || disable || item?.isMirrorField"
         (onValueChange)="validateField($event, item)"
         (onBlurChange)="optionChange($event, item)"
         [item]="item"
@@ -89,7 +89,7 @@
   <ng-container *ngIf="item?.metaData?.widgetType === PhonenumberInput">
     <div class="input-container">
       <app-phonenumber-field
-        [isDisabled]="readonlyMode || disable"
+        [isDisabled]="readonlyMode || disable || item?.isMirrorField"
         (onValueChange)="validateField($event, item)"
         (onBlurChange)="optionChange($event, item)"
         [item]="item"
@@ -100,7 +100,7 @@
   <ng-container *ngIf="item?.metaData?.widgetType === TextArea">
     <div class="input-container">
       <finlevit-lib-textarea
-        [isDisabled]="readonlyMode || disable"
+        [isDisabled]="readonlyMode || disable || item?.isMirrorField"
         [rows]="item?.metaData?.rowsCount"
         [error]="isError(item)"
         [tooltip]="item?.metaData?.tooltip"
@@ -125,7 +125,7 @@
   <ng-container *ngIf="item?.metaData?.widgetType === Number">
     <div class="input-container">
       <finlevit-number
-        [isDisabled]="readonlyMode || disable"
+        [isDisabled]="readonlyMode || disable || item?.isMirrorField"
         [placeholder]="item?.metaData?.placeholder"
         [tooltip]="item?.metaData?.tooltip"
         [error]="isError(item)"
@@ -177,7 +177,7 @@
   <ng-container *ngIf="item?.metaData?.widgetType === Button">
     <div class="input-container button-input" [ngStyle]="{ width: '100%' }">
       <finlevit-button
-        [isDisabled]="item?.metaData?.isEnable === false || readonlyMode || disable"
+        [isDisabled]="item?.metaData?.isEnable === false || readonlyMode || disable || item?.isMirrorField"
         [leftIcon]="loading ? 'pi pi-spin pi-spinner' : item?.metaData?.leftIcon"
         [rightIcon]="item?.metaData?.rightIcon"
         [label]="item?.label"
@@ -197,7 +197,7 @@
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Upload">
     <div class="input-container button-input">
-      <app-upload [item]="item" [isDisabled]="readonlyMode || disable"></app-upload>
+      <app-upload [item]="item" [isDisabled]="readonlyMode || disable || item?.isMirrorField"></app-upload>
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Image">
@@ -256,7 +256,7 @@
         [cancelBtnProperties]="item?.metaData?.cancelBtnProperties"
         [horizontalBorder]="item?.metaData?.horizontalBorder"
         [verticalBorder]="item?.metaData?.verticalBorder"
-        [isDisabled]="readonlyMode || disable"
+        [isDisabled]="readonlyMode || disable || item?.isMirrorField"
         (onBtnClick)="btnClick(null, $event)"
         [isColumnEdit]="true"
         [rowEditConfigure]="item?.metaData?.rowEditConfigure"
@@ -275,7 +275,7 @@
   <ng-container *ngIf="item?.metaData?.widgetType === Checkbox">
     <div class="input-container">
       <finlevit-lib-checkbox
-        [isDisabled]="readonlyMode || disable"
+        [isDisabled]="readonlyMode || disable || item?.isMirrorField"
         [error]="isError(item)"
         [isRequired]="item?.validators?.required"
         [label]="item?.label"
@@ -293,7 +293,7 @@
     <div class="input-container">
       <app-checkbox-group
         [item]="item"
-        [isDisabled]="readonlyMode || disable"
+        [isDisabled]="readonlyMode || disable || item?.isMirrorField"
         [columns]="item?.metaData?.columns"
       ></app-checkbox-group>
     </div>
@@ -302,20 +302,20 @@
     <div class="input-container">
       <app-dropdown-field
         [item]="item"
-        [isDisabled]="readonlyMode || disable"
+        [isDisabled]="readonlyMode || disable || item?.isMirrorField"
         (optionChange)="optionChange($event, item); validateField($event, item); onChange($event)"
       ></app-dropdown-field>
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Modal">
     <div class="input-container">
-      <app-modal [item]="item" [isDisabled]="readonlyMode || disable"></app-modal>
+      <app-modal [item]="item" [isDisabled]="readonlyMode || disable || item?.isMirrorField"></app-modal>
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === RadioGroup">
     <div class="input-container">
       <finlevit-radio-group
-        [isDisabled]="readonlyMode || disable"
+        [isDisabled]="readonlyMode || disable || item?.isMirrorField"
         [isRequired]="item?.validators?.required"
         [items]="item?.metaData?.options"
         [label]="item?.label"
@@ -348,7 +348,7 @@
   <ng-container *ngIf="item?.metaData?.widgetType === DatePicker">
     <div class="input-container">
       <finlevit-lib-datepicker
-        [isDisabled]="readonlyMode || disable"
+        [isDisabled]="readonlyMode || disable || item?.isMirrorField"
         [label]="item?.label"
         [errorMsg]="item?.errorMessage"
         [error]="isError(item)"
@@ -468,7 +468,7 @@
       <finlevit-text
         addressAutocomplete
         (onAutocompleteSelected)="onAutocompleteSelected($event)"
-        [isDisabled]="readonlyMode || disable"
+        [isDisabled]="readonlyMode || disable || item?.isMirrorField"
         [leftIcon]="item?.metaData?.leftIcon"
         [rightIcon]="item?.metaData?.rightIcon"
         [error]="isError(item)"

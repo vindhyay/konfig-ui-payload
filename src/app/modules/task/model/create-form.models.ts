@@ -1590,7 +1590,7 @@ export class BaseWidget {
   defaultRows: number;
   defaultMinItemRows: number;
   defaultMinItemCols: number;
-
+  isMirrorField: boolean;
   isViewOnly: boolean;
   widgetId: string;
   metaData:
