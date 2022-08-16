@@ -16,7 +16,7 @@ agent any
 environment {
    NAME = "finlevit-payload"
    //REPO = "harbor.tabner.us/finlevit"
-   REPO = "10.10.5.17:443/finlevit"
+   REPO = "10.10.5.17:443/konfig"
    DNAME = "finlevit-payload"
 }
   stages {
