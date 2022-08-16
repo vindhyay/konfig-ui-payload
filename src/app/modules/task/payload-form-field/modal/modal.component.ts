@@ -48,7 +48,7 @@ export class ModalComponent implements OnInit {
     const child = this.item.children[index];
     const { result: validate } = validateFields(child.children);
     if (validate) {
-      this.completedSteps[child?.metaData?.widgetId] = true;
+      this.completedSteps[child?.widgetId] = true;
       index += 1;
       if (index > this.item.children.length - 1) {
         index = this.item.children.length - 1;
@@ -62,7 +62,7 @@ export class ModalComponent implements OnInit {
     this.editorService.modalStatus$.subscribe((modalsStatus) => {
       if (modalsStatus && modalsStatus.length) {
         const modalStatus: { id: string; type: ButtonActions } = modalsStatus.find(
-          (modal) => modal.id === this.item.id
+          (modal) => modal.widgetId === this.item.widgetId
         );
         if (modalStatus) {
           this.modalStatus = modalStatus.type === ButtonActions.openModals;
@@ -71,7 +71,7 @@ export class ModalComponent implements OnInit {
     });
     this.styles = this.item?.metaData?.styleProperties;
     if (!this.modalId) {
-      this.modalId = this.item.metaData.widgetId;
+      this.modalId = this.item.widgetId;
     }
     setTimeout(() => {
       this.checkHeight();
@@ -80,7 +80,7 @@ export class ModalComponent implements OnInit {
   toggleModal() {
     this.modalStatus = !this.modalStatus;
     if (!this.modalStatus) {
-      this.editorService.setClosedModals([this.item.id]);
+      this.editorService.setClosedModals([this.item.widgetId]);
     }
   }
   onShow($event) {
@@ -93,7 +93,7 @@ export class ModalComponent implements OnInit {
     if (this.item.children?.length && this.item.children[this.selectedIndex]) {
       this.editorService.setAdjustableHeight(
         this.item.children[this.selectedIndex]?.children,
-        ".modal" + this.item?.metaData?.widgetId
+        ".modal" + this.item?.widgetId
       );
     }
   }

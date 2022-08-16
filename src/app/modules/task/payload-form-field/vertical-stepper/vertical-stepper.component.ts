@@ -81,7 +81,7 @@ export class VerticalStepperComponent implements OnInit {
     const child = this.children[index];
     const { result: validate } = validateFields(child.children, true);
     if (validate) {
-      this.completedSteps[child?.metaData?.widgetId] = true;
+      this.completedSteps[child?.widgetId] = true;
       index += 1;
       if (index > this.children.length - 1) {
         index = this.children.length - 1;

@@ -75,7 +75,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
     });
   }
   get columns() {
-    return this._columns;
+    return this._columns.filter((col) => !col?.metaData?.isHidden);
   }
   isPaginationEnabled = true;
   @Input() sort = false;
@@ -148,7 +148,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
       !col?.metaData?.readOnly &&
       (this.editRows[rowIndex] ||
         this.newRows[rowIndex] ||
-        (this.editCells[rowIndex] && this.editCells[rowIndex].hasOwnProperty(col?.metaData?.widgetId)))
+        (this.editCells[rowIndex] && this.editCells[rowIndex].hasOwnProperty(col?.widgetId)))
     );
   }
   isRowEditMode(rowIndex) {
@@ -231,7 +231,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
     this.editRows[rowIndex] = rowData;
     const currentRow: any = {};
     (rowData || []).forEach((eachColumn) => {
-      currentRow[eachColumn?.metaData?.widgetId] = eachColumn?.value?.value;
+      currentRow[eachColumn?.widgetId] = eachColumn?.value?.value;
     });
     this.modifyingData[rowIndex] = currentRow;
   }
@@ -251,7 +251,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
           if (!eachColumn?.value) {
             eachColumn.value = {};
           }
-          eachColumn.value.value = rowData[eachColumn?.metaData?.widgetId];
+          eachColumn.value.value = rowData[eachColumn?.widgetId];
         });
         this.onRowEdit(updatedRowData)
           .then(() => {
@@ -279,7 +279,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
           if (!eachColumn?.value) {
             eachColumn.value = {};
           }
-          eachColumn.value.value = rowData[eachColumn?.metaData?.widgetId];
+          eachColumn.value.value = rowData[eachColumn?.widgetId];
         });
       }
     }
@@ -287,12 +287,12 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
   onColEdit($event, column: BaseWidget, rowIndex, rowData) {
     const colRowData = {};
     (this.tableData[rowIndex] || []).forEach((eachCol) => {
-      colRowData[eachCol?.metaData?.widgetId] = eachCol?.value?.value || null;
+      colRowData[eachCol?.widgetId] = eachCol?.value?.value || null;
     });
     if (!this.editCells[rowIndex]) {
       this.editCells[rowIndex] = {};
     }
-    this.editCells[rowIndex][column?.metaData?.widgetId] = colRowData[column?.metaData?.widgetId];
+    this.editCells[rowIndex][column?.widgetId] = colRowData[column?.widgetId];
     if (!this.modifyingData[rowIndex]) {
       this.modifyingData[rowIndex] = superClone(colRowData);
     }
@@ -306,7 +306,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
           if (!eachColumn?.value) {
             eachColumn.value = {};
           }
-          eachColumn.value.value = rowData[eachColumn?.metaData?.widgetId];
+          eachColumn.value.value = rowData[eachColumn?.widgetId];
         });
         if (this.newRows[index]) {
           delete this.newRows[index];
@@ -330,26 +330,22 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
   validateRow(index, rowData, columnData: BaseWidget = null) {
     let valid = true;
     this.columns.forEach((eachCol) => {
-      if (
-        columnData &&
-        columnData?.metaData?.widgetId &&
-        columnData?.metaData?.widgetId !== eachCol.metaData.widgetId
-      ) {
+      if (columnData && columnData?.widgetId && columnData?.widgetId !== eachCol.widgetId) {
         return;
       }
-      const columnValue = rowData[eachCol?.metaData?.widgetId];
+      const columnValue = rowData[eachCol?.widgetId];
       const tempFormControl = new FormControl(columnValue, this.getValidators(eachCol.validators) || []);
       if (tempFormControl.valid) {
         if (!this.rowErrors[index]) {
           this.rowErrors[index] = {};
         }
-        this.rowErrors[index][eachCol.metaData.widgetId] = { error: false, errorMsg: "" };
+        this.rowErrors[index][eachCol.widgetId] = { error: false, errorMsg: "" };
       } else {
         valid = false;
         if (!this.rowErrors[index]) {
           this.rowErrors[index] = {};
         }
-        this.rowErrors[index][eachCol.metaData.widgetId] = {
+        this.rowErrors[index][eachCol.widgetId] = {
           error: true,
           errorMsg: eachCol?.metaData?.errorMessage || this.getErrorMessages(tempFormControl.errors, eachCol.label)[0],
         };
@@ -420,7 +416,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
       const column = DeepCopy.copy(eachColumn);
       column.value.value = column?.value?.value || null;
       newRow.push(column);
-      newRowData[eachColumn?.metaData?.widgetId] = column?.value?.value;
+      newRowData[eachColumn?.widgetId] = column?.value?.value;
     });
     this.tableData.push(newRow);
     if (this.isPaginationEnabled) {
@@ -468,8 +464,8 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
   onSortChange($event) {
     const order = $event.direction === "asc" ? 1 : $event.direction === "desc" ? -1 : 0;
     this.tableData.sort((data1, data2) => {
-      const value1Data = data1.find((cellData) => cellData.metaData.widgetId === $event.column);
-      const value2Data = data2.find((cellData) => cellData.metaData.widgetId === $event.column);
+      const value1Data = data1.find((cellData) => cellData.widgetId === $event.column);
+      const value2Data = data2.find((cellData) => cellData.widgetId === $event.column);
       const value1 = value1Data?.value?.value;
       const value2 = value2Data?.value?.value;
       let result = null;
@@ -491,7 +487,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
   getRulesFromFilterColumns(columns) {
     return (columns || []).map((column) => {
       return {
-        fieldId: column?.field?.widgetName,
+        widgetId: column?.field?.widgetName,
         condition: column.condition,
         dataType: column?.field?.type,
         operator: column.operator,
@@ -513,7 +509,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
         let filtersLogicCopy = JSON.parse(JSON.stringify(filtersLogic));
         for (let i: any = 0; i < rules.length; i++) {
           const rule = rules[i];
-          const fieldValue = rowDataInObject[rule?.fieldId];
+          const fieldValue = rowDataInObject[rule?.widgetId];
           let result = conditionValidation(rule, fieldValue);
           condMatched = i === 0 ? result : rule.operator === "AND" ? condMatched && result : condMatched || result;
           filtersLogicCopy = filtersLogicCopy.replace(new RegExp(i + 1, "g"), result);
@@ -546,7 +542,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
           if (rowIndex > -1) {
             cellValue = this.calculateNumberFormula(col, rowIndex, columnFormula);
             this.tableData[rowIndex].forEach((row) => {
-              if (row?.metaData?.widgetId === col?.metaData?.widgetId) {
+              if (row?.widgetId === col?.widgetId) {
                 row.value.value = cellValue;
               }
             });
@@ -556,7 +552,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
           if (rowIndex > -1) {
             cellValue = this.calculateStringFormula(col, rowIndex, columnFormula);
             this.tableData[rowIndex].forEach((row) => {
-              if (row?.metaData?.widgetId === col?.metaData?.widgetId) {
+              if (row?.widgetId === col?.widgetId) {
                 row.value.value = cellValue;
               }
             });
@@ -566,7 +562,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
           if (rowIndex > -1) {
             cellValue = this.calculateDateFormula(col, rowIndex, columnFormula);
             this.tableData[rowIndex]?.forEach((row) => {
-              if (row?.metaData?.widgetId === col?.metaData?.widgetId) {
+              if (row?.widgetId === col?.widgetId) {
                 row.value.value = cellValue;
               }
             });
@@ -585,7 +581,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
     columnFormula.forEach((field) => {
       if (field?.resourceType === resourceType.PAYLOAD_FIELD) {
         this.tableData[rowIndex].forEach((row) => {
-          if (row?.metaData?.widgetId === field?.metaData?.widgetId) {
+          if (row?.widgetId === field?.widgetId) {
             if (row?.value?.value === null) {
               row.value.value = undefined;
             }
@@ -623,7 +619,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
     columnFormula?.forEach((field) => {
       if (field?.resourceType === resourceType.PAYLOAD_FIELD) {
         this.tableData[rowIndex].forEach((row) => {
-          if (row?.metaData?.widgetId === field?.metaData?.widgetId && row?.value?.value) {
+          if (row?.widgetId === field?.widgetId && row?.value?.value) {
             cellValue = cellValue + row.value.value;
           }
         });
@@ -650,7 +646,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
         date1 = new Date();
       } else {
         this.tableData[rowIndex]?.forEach((row) => {
-          if (row?.metaData?.widgetId === columnFormula[dateIndex - 1]?.metaData?.widgetId && row?.value?.value) {
+          if (row?.widgetId === columnFormula[dateIndex - 1]?.widgetId && row?.value?.value) {
             date1 = moment.utc(row.value.value).toDate();
           }
         });
@@ -659,7 +655,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
         date2 = new Date();
       } else {
         this.tableData[rowIndex]?.forEach((row) => {
-          if (row?.metaData?.widgetId === columnFormula[dateIndex + 1]?.metaData?.widgetId && row?.value?.value) {
+          if (row?.widgetId === columnFormula[dateIndex + 1]?.widgetId && row?.value?.value) {
             date2 = moment.utc(row.value.value).toDate();
           }
         });

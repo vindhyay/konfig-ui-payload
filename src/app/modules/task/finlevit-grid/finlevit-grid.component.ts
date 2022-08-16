@@ -12,7 +12,7 @@ import { ActivatedRoute } from "@angular/router";
 import { EditorService } from "../editor.service";
 import { NotificationService } from "../../../services/notification.service";
 import { BaseComponent } from "../../shared/base/base.component";
-import { AddressDetails } from "src/app/utils";
+import { AddressDetails, validateFields } from "src/app/utils";
 
 @Component({
   selector: "finlevit-grid",
@@ -128,7 +128,7 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
       const item = eachItem.item;
       const baseItem = baseGridItem.$item;
       const checkSameItem = (item, baseItem) => {
-        const isSame = item.metaData.widgetId !== baseGridItem.item.metaData.widgetId;
+        const isSame = item.widgetId !== baseGridItem.item.widgetId;
         return isSame;
       };
       const checkIsBottom = (item, baseItem) => {
@@ -160,7 +160,7 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
         // Get only under items
         checkIsSide(item, baseItem) &&
         // Dont get if item found in prev round
-        !this.allEligibleFields.find((prevItem) => prevItem.item.metaData.widgetId === item.metaData.widgetId)
+        !this.allEligibleFields.find((prevItem) => prevItem.item.widgetId === item.widgetId)
       );
     });
     this.allEligibleFields = this.allEligibleFields.concat(eligibleItems);
@@ -171,13 +171,12 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
   checkItemSize(widget) {
     const gridItems = (this.gridsterRef?.grid || []).sort((a, b) => a?.item?.y - b?.item?.y);
     if (widget) {
-      const widgetGridItem = gridItems.find((item) => item?.item?.metaData?.widgetId === widget?.metaData?.widgetId);
+      const widgetGridItem = gridItems.find((item) => item?.item?.widgetId === widget?.widgetId);
       if (!widgetGridItem) {
         return;
       }
       const eligibleItems = this.getEligibleItems(gridItems, widgetGridItem).filter(
-        (thing, index, self) =>
-          index === self.findIndex((t) => t?.item?.metaData?.widgetId === thing?.item?.metaData?.widgetId)
+        (thing, index, self) => index === self.findIndex((t) => t?.item?.widgetId === thing?.item?.widgetId)
       );
       if (
         widget?.metaData?.movement === "DOWN" &&
@@ -316,6 +315,7 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
   }
 
   fillAddressDetails(addressDetails) {
+    let ValidationFields = [];
     let widget = addressDetails.widget;
     let widgetIds = widget?.metaData?.linkedWidetIds;
     let address: AddressDetails = addressDetails.address;
@@ -332,8 +332,8 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
       }
       if (widgetIds) {
         Object.keys(widgetIds).forEach((element) => {
-          let widget: BaseWidget = this.items.find((item) => item?.metaData?.widgetId == widgetIds[element]);
-
+          let widget: BaseWidget = this.items.find((item) => item?.widgetId == widgetIds[element]);
+          ValidationFields.push(widget);
           if (element != "addressLine2" && widget) {
             widget.value.value = address[element];
             if (widget.metaData?.businessRuleIds?.length) {
@@ -349,7 +349,8 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
       let addressWidget: BaseWidget = JSON.parse(JSON.stringify(widget));
       addressWidget.metaData.businessRuleIds = businessRuleIds;
       this.editorService.onRuleTrigger({ event: addressDetails, data: addressWidget });
-
+      //we need to validte the fields as we change the value of the field
+      validateFields(ValidationFields);
       if (ifConditionsIds?.length) {
         const ifConditions = this.editorService.getCoditions(ifConditionsIds);
         if (ifConditions?.length) {

@@ -1,4 +1,14 @@
-import { Component, EventEmitter, Input, NgZone, OnDestroy, OnInit, Output } from "@angular/core";
+import {
+  Component,
+  EventEmitter,
+  Input,
+  NgZone,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from "@angular/core";
 import { FieldData } from "../model/field-data.model";
 import { BaseWidget, Column, TableMetaData, WidgetTypes } from "../model/create-form.models";
 import { AddressDetails, DeepCopy, getFieldFromFields, parseApiResponse, validateFields } from "../../../utils";
@@ -14,7 +24,7 @@ import { NotificationService } from "../../../services/notification.service";
   templateUrl: "./payload-form-field.component.html",
   styleUrls: ["./payload-form-field.component.scss"],
 })
-export class PayloadFormFieldComponent extends BaseComponent implements OnInit, OnDestroy {
+export class PayloadFormFieldComponent extends BaseComponent implements OnInit, OnDestroy, OnChanges {
   _item: BaseWidget = {} as BaseWidget;
   Text: WidgetTypes = WidgetTypes.Text;
   Table: WidgetTypes = WidgetTypes.Table;
@@ -66,7 +76,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
 
   @Input() emitButtonEvent: boolean = false;
   @Output() onBtnClick = new EventEmitter();
-
+  @Input() value: any = { id: null, value: "" };
   @Input()
   set options(optionsData: any) {
     if (this.item?.metaData?.widgetType === WidgetTypes.Table) {
@@ -165,10 +175,17 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
     });
     this.readonlyMode = this.item?.metaData?.readOnly;
     this.subscribe(this.editorService.loaderField$, (fieldId) => {
-      this.loading = fieldId === this.item?.id;
+      this.loading = fieldId === this.item?.widgetId;
     });
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!changes.value.firstChange) {
+      if (changes.value.currentValue?.value != changes.value.previousValue?.value) {
+        validateFields([this._item]);
+      }
+    }
+  }
   ngAfterViewInit() {
     // Apply conditions based on default value
     setTimeout(() => {
@@ -287,7 +304,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
     this.allAvailableFields.forEach((fld) => {
       if (fld?.metaData?.isFormulaField) {
         let fieldUsedInFormula = fld?.metaData?.formula.find(
-          (formulaField) => formulaField?.metaData?.widgetId === field?.metaData?.widgetId
+          (formulaField) => formulaField?.widgetId === field?.widgetId
         );
         if (fieldUsedInFormula) {
           this.computeFormula(fld, this.payloadFields);
@@ -323,10 +340,8 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
     if (item?.metaData?.formula?.length > 0) {
       item?.metaData?.formula.forEach((field) => {
         if (field?.resourceType === resourceType.PAYLOAD_FIELD) {
-          let formulaField = this.allAvailableFields.find(
-            (fld) => fld?.metaData?.widgetId === field?.metaData?.widgetId
-          );
-          formula.push(getFieldFromFields(payloadFields, formulaField?.id));
+          let formulaField = this.allAvailableFields.find((fld) => fld?.widgetId === field?.widgetId);
+          formula.push(getFieldFromFields(payloadFields, formulaField?.widgetId));
         } else {
           formula.push(field);
         }
@@ -370,6 +385,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
           formulaValue = values[0]?.value?.value || null;
         }
         item.value.value = formulaValue;
+        this.editorService.onPopulate_TriggerCondition([item]);
         return formulaValue;
       case "string":
         formulaValue = "";
@@ -386,6 +402,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
           }
         });
         item.value.value = formulaValue;
+        this.editorService.onPopulate_TriggerCondition([item]);
         return formulaValue;
       case "date":
         const dateFunc = formula.filter((field) => {
@@ -418,6 +435,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
           formulaValue = years + "";
         }
         item.value.value = formulaValue;
+        this.editorService.onPopulate_TriggerCondition([item]);
         return formulaValue;
       case "array":
         switch (firstField.metaData.widgetType) {
@@ -484,6 +502,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
             }
             break;
         }
+        this.editorService.onPopulate_TriggerCondition([item]);
         item.value.value = formulaValue;
         return formulaValue;
     }

@@ -60,8 +60,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
             // indirectly updating form fields
             const newFormFields = transactionDetails.uiPayload || [];
             this.recursiveUpdateFieldProperties(this.formFields, newFormFields);
-            validateFields(this.formFields);
-            // this.editorService.onPopulate_TriggerCondition(this.formFields);
+            this.editorService.onPopulate_TriggerCondition(this.formFields);
           }
         } else {
           this.formFields = transactionDetails?.uiPayload || [];
@@ -104,7 +103,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
 
   recursiveUpdateFieldProperties(formFields = [], newFormFields = []) {
     newFormFields.forEach((newField) => {
-      const findField = getFieldFromFields(formFields, newField.id);
+      const findField = getFieldFromFields(formFields, newField.widgetId);
       if (findField) {
         for (const prop in newField) {
           // value and children are special properties need to handle differently

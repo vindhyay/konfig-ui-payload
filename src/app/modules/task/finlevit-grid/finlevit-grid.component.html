@@ -47,6 +47,7 @@
       <app-payload-form-field
         [options]="item?.metaData?.options"
         [item]="item"
+        [value]="item?.value"
         [emitButtonEvent]="emitButtonEvent"
         (onBtnClick)="onBtnClick.emit($event)"
       ></app-payload-form-field>

@@ -226,7 +226,7 @@ class TextInputValidators extends Validators {
 }
 
 export class MetaData {
-  widgetId: string;
+  // widgetId: string;
   widgetType: WidgetTypes;
   level: number;
   configure: boolean;
@@ -251,7 +251,7 @@ export class MetaData {
   conditionRuleIds?: any;
   constructor(data) {
     const {
-      widgetId,
+      // widgetId,
       widgetType,
       level,
       configure = false,
@@ -272,7 +272,7 @@ export class MetaData {
       businessRuleIds = [],
       conditionRuleIds = [],
     } = data;
-    this.widgetId = widgetId || getUniqueId("widget");
+    // this.widgetId = widgetId || getUniqueId("widget");
     this.widgetType = widgetType;
     this.level = level;
     this.configure = configure;
@@ -1590,8 +1590,9 @@ export class BaseWidget {
   defaultRows: number;
   defaultMinItemRows: number;
   defaultMinItemCols: number;
-
+  isMirrorField: boolean;
   isViewOnly: boolean;
+  widgetId: string;
   metaData:
     | TextMetaData
     | PasswordInputMetaData
@@ -1661,6 +1662,7 @@ export class BaseWidget {
       maxItemCols,
       maxItemRows,
       width = 100,
+      widgetId,
     } = data;
     if (!metaData) {
       switch (widgetType) {
@@ -1752,6 +1754,7 @@ export class BaseWidget {
     } else {
       this.metaData = metaData;
     }
+    this.widgetId = getUniqueId("widget");
     this.isViewOnly = isViewOnly;
     this.validators = new Validators(validators || {});
     this.cols = cols;
