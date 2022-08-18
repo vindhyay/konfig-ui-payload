@@ -14,10 +14,10 @@ agent any
         //bitbucketPush()
     }
 environment {
-   NAME = "finlevit-payload-m"
+   NAME = "finlevit-payload"
    //REPO = "harbor.tabner.us/finlevit"
    REPO = "10.10.5.17:443/finlevit"
-   DNAME = "finlevit-payload-m"
+   DNAME = "finlevit-payload"
 }
   stages {
      stage('Checkout Source')
@@ -71,7 +71,7 @@ environment {
       stage('Publish'){
          when {
     expression {
-        return env.BRANCH_NAME == 'dev-mongo';
+        return env.BRANCH_NAME == 'dev';
         }
     }
          steps {
@@ -82,7 +82,7 @@ environment {
 		stage('Deploy to Dev'){
 			when {
 			expression {
-			return env.BRANCH_NAME == 'dev-mongo';
+			return env.BRANCH_NAME == 'dev';
 			}
 			}
         steps{
