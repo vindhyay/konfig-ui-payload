@@ -359,7 +359,18 @@ export class EditorService extends BaseService {
       });
     }
   }
-
+  evaluvateFilter(filtersLogic,resultArray){
+    const expressionArray = filtersLogic.split(/[.\()&&||_]/).filter(function (indexItem) {
+      return indexItem != null && indexItem.length;
+    }).sort().reverse();
+    let expression = filtersLogic;
+    expressionArray.forEach((item)=>{
+        if(!isNaN(item)){
+          expression=expression.replaceAll(item,resultArray[item-1])
+        }
+    })
+    return eval(expression);
+  }
   checkCondition(conditionsArray) {
     const allFields = this.getFormFields();
     conditionsArray.forEach((element) => {
@@ -369,20 +380,38 @@ export class EditorService extends BaseService {
       if (!!conditions)
         for (let condition of conditions) {
           let condMatched = false;
+          let resultArray=[];
+          let expression ='';
           condition.rules.forEach((rule, index) => {
             const field = getFieldFromFields(allFields, rule?.field?.widgetId);
             const fieldValue = field?.value?.value;
             // let result = this.conditionValidation(rule, fieldValue);
             const targetField = isShowError ? getFieldFromFields(allFields, rule?.targetField?.widgetId) : null;
-            let result = this.conditionValidation(rule, fieldValue, targetField);
-            condMatched =
-              index === 0 ? result : rule.condition === "and" ? condMatched && result : condMatched || result;
+            resultArray.push(this.conditionValidation(rule, fieldValue, targetField));
+            // expression = 
+            // condMatched =
+            //   index === 0 ? result : rule.condition === "and" ? condMatched && result : condMatched || result;
           });
+          condMatched = this.evaluvateFilter(condition.filtersLogic,resultArray);
           if (condMatched) {
             // result = condition.mappingField;
             result = { ...condition.mappingField };
             console.log("Success", result);
             break;
+          }else if(!isShowError){
+            const showFields = condition?.mappingField?.showFields?.filter(item=>item?.['selected']===false);
+            showFields.forEach((showField) => {
+              const showFieldRef = getFieldFromFields(allFields, showField?.widgetId);
+              if (showFieldRef) {
+                showFieldRef.rows = showFieldRef.metaData?.defaultRows;
+                showFieldRef.minItemRows = showFieldRef.metaData?.defaultMinItemRows;
+                showFieldRef.minItemCols = showFieldRef.metaData?.defaultMinItemCols;
+                showFieldRef.metaData.movement = "DOWN";
+                // showFieldRef.y = showFieldRef.metaData.originalY;
+                showFieldRef.metaData.hidden = false;
+                this.widgetChange.next(showFieldRef);
+              }
+            });
           } else if (isShowError && condition?.mappingField?.targetField) {
             const removeErrorObj = getFieldFromFields(allFields, condition?.mappingField?.targetField?.widgetId);
             if (
@@ -400,8 +429,8 @@ export class EditorService extends BaseService {
           }
         }
       if (result && !result.messageType) {
-        const showFields = result?.showFields || [];
-        const hideFields = result?.hideFields || [];
+        const showFields = result?.showFields?.filter(item=>item?.['selected']===true);
+        const hideFields = result?.showFields?.filter(item=>item?.['selected']===false);
         showFields.forEach((showField) => {
           const showFieldRef = getFieldFromFields(allFields, showField?.widgetId);
           if (showFieldRef) {
