@@ -20,6 +20,7 @@ export class PhonenumberFieldComponent implements OnInit {
   ngOnInit(): void {}
 
   validateField($event: any) {
+    this.item.value.value = $event;
     this.onValueChange.emit($event);
   }
   optionChange($event: any) {
