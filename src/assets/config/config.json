@@ -1,5 +1,14 @@
 {
-  "authBaseUrl": "http://security-service.dev.finlevit.io/ss",
-  "workflowAdminBaseURL": "http://wf-admin-m.dev.finlevit.io/wfAdmin",
-  "accountWorkflowBaseURL": "http://workflow-service.dev.finlevit.io/workflowService"
+  "workflowAdminBaseURL": "http://wf-admin-dev.demo.finlevit.io/wfAdmin",
+  "alternateWorkflowAdminBaseURL": "http://wf-admin-dev.demo.finlevit.io/wfAdmin",
+  "accountWorkflowBaseURL": "http://workflow-service-dev.demo.finlevit.io/workflowService",
+  "mapServiceBaseURL": "http://mapping-service-dev.demo.finlevit.io/",
+  "aoWorkflowBaseURL": "http://workflow-service-dev.demo.finlevit.io/workflowService",
+  "authBaseUrl": "http://security-service-dev.demo.finlevit.io/ss",
+  "transformationsUiURL": "http://transformations-dev.demo.finlevit.io",
+  "serviceDetailerBaseURL": "http://service-detailer-dev.demo.finlevit.io/service-detailer",
+  "socketBaseURL": "ws://workflow-service-dev.demo.finlevit.io/workflowService",
+  "appURL": "http://ui-fp-dev.demo.finlevit.io",
+  "currentEnv": "dev",
+  "primaryEnv": "dev"
 }
