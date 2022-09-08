@@ -27,5 +27,5 @@
     ></i
     >{{ item?.metaData?.title }}
   </div>
-  <finlevit-grid [parent]="item" [items]="item.children"></finlevit-grid>
+  <finlevit-grid [parent]="item" [items]="item.children | searchFilter: { metaData: { isFooterContainer: false } }"></finlevit-grid>
 </div>
