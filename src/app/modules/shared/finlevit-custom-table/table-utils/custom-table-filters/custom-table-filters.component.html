@@ -1,7 +1,9 @@
 <div #dropdownReference class="search-btn-wrapper">
-  <div class="search-btn" (click)="showDropdown()">
-    <i [ngClass]="{ 'pi pi-filter': true, 'filter-active': filtersEnabled }"></i>
-  </div>
+  <finlevit-icon-preview
+    [style.cursor]="'pointer'"
+    (onClick)="showDropdown()"
+    icon="pi pi-filter"
+  ></finlevit-icon-preview>
 </div>
 <custom-dropdown [offsetX]="-550" [reference]="dropdownReference" #dropdownComp>
   <div class="search-container">
@@ -12,7 +14,7 @@
           [isRequired]="true"
           [optionLabel]="'label'"
           class="m-2"
-          [isSmall]="true"
+          size="xs"
           placeholder="Select Column"
           [options]="columns"
           formControlName="field"
@@ -21,7 +23,7 @@
         <finlevit-lib-select
           [isRequired]="true"
           class="m-2"
-          [isSmall]="true"
+          size="xs"
           optionLabel="name"
           optionValue="id"
           placeholder="Select Condition"
@@ -34,7 +36,7 @@
           <finlevit-text
             class="m-2"
             type="text"
-            [isSmall]="true"
+            size="xs"
             [placeholder]="control?.value?.field?.label || 'Enter Value'"
             formControlName="value"
             [isDisabled]="true"
@@ -44,7 +46,7 @@
           <ng-container [ngSwitch]="control?.value?.field?.colType">
             <finlevit-lib-datepicker
               class="m-2"
-              [isSmall]="true"
+              size="xs"
               *ngSwitchCase="DatePicker"
               [placeholder]="control?.value?.field?.label || 'Enter Value'"
               formControlName="value"
@@ -53,7 +55,7 @@
             <finlevit-number
               class="m-2"
               *ngSwitchCase="Number"
-              [isSmall]="true"
+              size="xs"
               [placeholder]="control?.value?.field?.label || 'Enter Value'"
               formControlName="value"
               [isDisabled]="readonlyMode"
@@ -63,42 +65,52 @@
               class="m-2"
               *ngSwitchDefault
               type="text"
-              [isSmall]="true"
+              size="xs"
               [placeholder]="control?.value?.field?.label || 'Enter Value'"
               formControlName="value"
               [isDisabled]="readonlyMode"
             ></finlevit-text>
           </ng-container>
         </ng-container>
-        <div (click)="removeSearchField(i)" *ngIf="advSearchForm.controls.length > 1 && !readonlyMode">
-          <span class="material-icons clear-icon"> clear </span>
-        </div>
-        <div (click)="addSearchField()" *ngIf="!readonlyMode">
-          <span class="material-icons add-icon"> add </span>
-        </div>
+        <app-btn-danger
+          *ngIf="advSearchForm.controls.length > 1 && !readonlyMode"
+          icon="pi pi-times"
+          (btnClick)="removeSearchField(i)"
+          size="xs"
+          class="mr-2 mt-2"
+        ></app-btn-danger>
+        <app-icon-btn
+          class="mt-2"
+          size="xs"
+          *ngIf="!readonlyMode"
+          icon="pi pi-plus"
+          (btnClick)="addSearchField()"
+        ></app-icon-btn>
       </div>
     </ng-container>
-    <div *ngIf="advSearchForm.controls.length > 1">
+    <div class="mt-3" *ngIf="advSearchForm.controls.length > 1">
       <finlevit-text
-        label="Apply Filters"
+        label="Logic"
         type="text"
+        [leftIcon]="functionIcon"
         [(ngModel)]="filtersLogic"
         (ngModelChange)="onFilterLogicChange($event)"
-        [isSmall]="true"
+        size="xs"
         [error]="filtersLogicError"
         [errorMsg]="filtersLogicError"
         (onBlur)="validateFilter()"
       ></finlevit-text>
       <div class="help-text">
-        <div><span>Note: Special characters ( & | allowed</span> - <span>Ex: (1 && 2) && 2</span></div>
+        <div>Note: Special characters ( & | only allowed</div>
+        <div>Ex: (1 && 2) && 2</div>
       </div>
     </div>
     <div class="d-flex justify-content-center m-2 filter-actions">
       <div class="m-2">
-        <app-icon-btn icon="pi pi-search" label="Search" (btnClick)="onSearch()"> </app-icon-btn>
+        <app-icon-btn size="xs" icon="pi pi-search" label="Search" (btnClick)="onSearch()"> </app-icon-btn>
       </div>
       <div class="m-2">
-        <app-btn-common (btnClick)="clearSearch()" label="Clear"> </app-btn-common>
+        <app-btn-common size="xs" (btnClick)="clearSearch()" label="Clear"> </app-btn-common>
       </div>
     </div>
   </div>

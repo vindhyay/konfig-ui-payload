@@ -127,7 +127,7 @@
                   maxWidth: columns[colIndex]?.width ? (columns[colIndex]?.width || 100) + 'px' : 'auto',
                   flex: (columns[colIndex]?.width || 100) + ' 0 auto'
                 }"
-                *ngFor="let col of rowData | searchFilter: { metaData: { isHidden: false } }; let colIndex = index"
+                *ngFor="let col of rowData | customFilter: { filterFn: rowDataColumnsFilterFn }; let colIndex = index"
                 (dblclick)="isColumnEdit && onColEdit($event, col, rowIndex, rowData)"
               >
                 <div
@@ -166,8 +166,7 @@
                           [tooltip]="col?.metaData?.tooltip"
                           [placeholder]="col?.metaData?.placeholder"
                           [isRequired]="col?.validators?.required"
-                          [isSmall]="true"
-                          [allowLabelWrapping]="col?.metaData?.allowLabelWrapping"
+                          size="sm"
                           [showClearButton]="col?.metaData?.showClearButton"
                           [prefixText]="col?.metaData?.prefixText"
                           [suffixText]="col?.metaData?.suffixText"
@@ -198,7 +197,6 @@
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
                           [placeholder]="col?.metaData?.placeholder || 'select'"
                           [isDisabled]="false"
-                          [isSmall]="true"
                           [isRequired]="col?.validators?.required"
                           [options]="columns[colIndex]?.metaData?.options"
                           [optionLabel]="
@@ -211,7 +209,6 @@
                               ? col?.metaData?.optionValue
                               : 'value'
                           "
-                          [allowLabelWrapping]="col?.metaData?.allowLabelWrapping"
                           [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
                           [showErrorMsg]="col?.metaData?.showErrorMessage"
                           [error]="
@@ -238,7 +235,7 @@
                           [styleProperties]="col?.metaData?.styleProperties?.properties"
                           [(ngModel)]="modifyingData[rowIndex][col.widgetId]"
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
-                          [isSmall]="true"
+                          size="sm"
                           [placeholder]="col?.metaData?.placeholder"
                           [error]="
                             rowErrors[rowIndex] && rowErrors[rowIndex][col?.widgetId]
@@ -257,7 +254,6 @@
                           [showMaxCharLimit]="col?.validators?.maxLength"
                           [maxCharLimit]="col?.validators?.maxLength"
                           [pattern]="col?.validators?.pattern || null"
-                          [allowLabelWrapping]="col?.metaData?.allowLabelWrapping"
                           [showClearButton]="col?.metaData?.showClearButton"
                           [prefixText]="col?.metaData?.prefixText"
                           [suffixText]="col?.metaData?.suffixText"
@@ -299,7 +295,7 @@
                           *ngIf="isCellEditMode(col, rowIndex)"
                           [(ngModel)]="modifyingData[rowIndex][col.widgetId]"
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
-                          [isSmall]="true"
+                          size="sm"
                           [placeholder]="'Enter image URL'"
                           [error]="
                             rowErrors[rowIndex] && rowErrors[rowIndex][col?.widgetId]
@@ -339,7 +335,8 @@
                           "
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
                           [placeholder]="col?.metaData?.placeholder"
-                          [isSmall]="true"
+                          [rightIcon]="col?.metaData?.rightIcon"
+                          [leftIcon]="col?.metaData?.leftIcon"
                           [tooltip]="col?.metaData?.tooltip"
                           [mode]="col?.metaData?.mode === 'currency' ? 'decimal' : col?.metaData?.mode"
                           [minFractionDigits]="col?.metaData?.minFractionDigits"
@@ -348,9 +345,6 @@
                           [maxLength]="col?.validators?.maxLength"
                           [showMaxCharLimit]="col?.validators?.maxLength"
                           [useGrouping]="col?.metaData?.thousandsSeparator"
-                          [rightIcon]="col?.metaData?.rightIcon"
-                          [leftIcon]="col?.metaData?.leftIcon"
-                          [allowLabelWrapping]="col?.metaData?.allowLabelWrapping"
                           [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
                           [showErrorMsg]="col?.metaData?.showErrorMessage"
                           [prefixText]="col?.metaData?.prefixText || col?.metaData?.currency?.currencySymbol"
@@ -386,7 +380,6 @@
                           [tooltip]="col?.metaData?.tooltip"
                           [placeholder]="col?.metaData?.placeholder"
                           [isRequired]="col?.validators?.required"
-                          [allowLabelWrapping]="col?.metaData?.styleProperties?.properties?.allowLabelWrapping"
                           [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
                           [showErrorMsg]="col?.metaData?.showErrorMessage"
                           [showCharCount]="col?.metaData?.styleProperties?.properties?.showCharCount"
@@ -420,7 +413,6 @@
                           [optionValue]="col?.metaData?.isLabelAndValue ? col?.metaData?.optionValue : 'name'"
                           [columns]="col?.metaData?.columns"
                           [tooltip]="col?.metaData?.tooltip"
-                          [allowLabelWrapping]="col?.metaData?.allowLabelWrapping"
                           [showErrorMsg]="col?.metaData?.showErrorMessage"
                           [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
                           [horizontalContentAlignment]="
@@ -477,7 +469,6 @@
                           [hourFormat]="col?.metaData?.hourFormat"
                           [stepMinute]="col?.metaData?.stepMinute"
                           [stepHour]="col?.metaData?.stepHour"
-                          [allowLabelWrapping]="col?.metaData?.styleProperties?.properties?.allowLabelWrapping"
                           [error]="
                             rowErrors[rowIndex] && rowErrors[rowIndex][col?.widgetId]
                               ? rowErrors[rowIndex][col?.widgetId]['error']
@@ -528,48 +519,46 @@
                       <div
                         [ngClass]="{ 'row-actions edit-action-mode': true, disabled: Object.keys(editCells).length }"
                       >
-                        <i
-                          [class]="
-                            saveLoadingRows[rowIndex] ? 'pi pi-spin pi-spinner save-icon' : 'pi pi-check save-icon'
-                          "
+                        <finlevit-icon-preview
+                          class="save-action"
+                          icon="pi pi-check save-icon"
                           (click)="onRowSave(rowIndex, modifyingData[rowIndex])"
-                        ></i>
-                        <i
-                          class="pi pi-times cancel-icon"
+                        ></finlevit-icon-preview>
+                        <finlevit-icon-preview
+                          class="delete-action"
+                          icon="pi pi-times cancel-icon"
                           (click)="onRowEditCancel(rowIndex, modifyingData[rowIndex])"
-                        ></i>
+                        ></finlevit-icon-preview>
                       </div>
                     </ng-container>
                     <ng-container *ngIf="!editRows[rowIndex] && newRows[rowIndex]">
                       <div [ngClass]="{ 'row-actions new-action-mode': true, disabled: Object.keys(editCells).length }">
-                        <i
-                          class="pi pi-check save-icon"
+                        <finlevit-icon-preview
+                          class="save-action"
+                          icon="pi pi-check save-icon"
                           (click)="onRowSave(rowIndex, modifyingData[rowIndex], true)"
-                        ></i>
-                        <i
-                          class="pi pi-trash delete-icon"
+                        ></finlevit-icon-preview>
+                        <finlevit-icon-preview
+                          class="delete-action"
+                          icon="pi pi-trash delete-icon"
                           (click)="onDelete(rowIndex, modifyingData[rowIndex], true)"
-                        ></i>
+                        ></finlevit-icon-preview>
                       </div>
                     </ng-container>
                     <ng-container *ngIf="!editRows[rowIndex] && !newRows[rowIndex]">
                       <div [ngClass]="{ 'row-actions': true, disabled: Object.keys(editCells).length }">
-                        <span class="edit-action" *ngIf="actions?.editRow" (click)="onEdit(rowIndex, rowData)">
-                          <i class="pi pi-pencil edit-icon"></i>
-                        </span>
-                        <span
+                        <finlevit-icon-preview
+                          class="edit-action"
+                          icon="pi pi-pencil edit-icon"
+                          *ngIf="actions?.editRow"
+                          (click)="onEdit(rowIndex, rowData)"
+                        ></finlevit-icon-preview>
+                        <finlevit-icon-preview
                           class="delete-action"
                           *ngIf="actions?.deleteRow"
+                          icon="pi pi-trash delete-icon"
                           (click)="onDelete(rowIndex, modifyingData[rowIndex])"
-                        >
-                          <i
-                            [class]="
-                              deleteLoadingRows[rowIndex]
-                                ? 'pi pi-spin pi-spinner delete-icon'
-                                : 'pi pi-trash delete-icon'
-                            "
-                          ></i>
-                        </span>
+                        ></finlevit-icon-preview>
                       </div>
                     </ng-container>
                   </div>
@@ -664,9 +653,13 @@
           [columns]="columns | searchFilter: { metaData: { isHidden: false } }"
           (search)="handleSearch($event)"
         ></app-custom-table-filters>
-        <button *ngIf="addRows && !tableFilters?.filtersEnabled" class="footer-btn" (click)="addRow()">
-          <i class="pi pi-plus"></i>
-        </button>
+        <finlevit-icon-preview
+          [style.cursor]="'pointer'"
+          class="ml-3"
+          *ngIf="addRows && !tableFilters?.filtersEnabled"
+          (onClick)="addRow()"
+          icon="pi pi-plus"
+        ></finlevit-icon-preview>
       </div>
     </div>
   </div>

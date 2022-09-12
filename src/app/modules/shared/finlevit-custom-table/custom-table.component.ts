@@ -93,6 +93,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
     alignment: CELL_ALIGNMENTS_TYPES.CENTER,
     label: "#",
   };
+  minRowHeight = MIN_ROW_HEIGHT;
   _columns: Column[] = [];
   selection = new SelectionModel<any>(true, []);
   searchObject = {};

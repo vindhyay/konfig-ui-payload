@@ -3,6 +3,7 @@ import { FormArray, FormBuilder, Validators } from "@angular/forms";
 import { CustomDropdownComponent } from "../../../custom-dropdown.component";
 import { Column, WidgetTypes } from "../../../../task/model/create-form.models";
 import { conditions } from "src/app/utils";
+import { IconTypes, IIcon } from "finlevit-library";
 
 @Component({
   selector: "app-custom-table-filters",
@@ -39,6 +40,10 @@ export class CustomTableFiltersComponent implements OnInit {
   filtersLogic = "";
   filtersLogicError = "";
   filtersPattern = new RegExp(/^[0-9 & ()|]*$/gm);
+  functionIcon: IIcon = {
+    type: IconTypes.MATERIAL_ICONS_OUTLINED,
+    value: "functions",
+  };
 
   ngOnInit() {
     this.addSearchField();

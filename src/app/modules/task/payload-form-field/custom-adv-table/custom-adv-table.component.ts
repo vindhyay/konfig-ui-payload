@@ -669,4 +669,8 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
     }
     return cellValue;
   }
+  rowDataColumnsFilterFn = (eachCol) => {
+    const colConfig = this.columns.find((col) => col?.displayName === eachCol?.displayName);
+    return colConfig && !colConfig?.metaData?.isHidden;
+  };
 }
