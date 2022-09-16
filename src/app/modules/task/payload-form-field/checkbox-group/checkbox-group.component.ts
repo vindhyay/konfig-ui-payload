@@ -18,14 +18,16 @@ export class CheckboxGroupComponent implements OnInit {
   }
   ngOnInit(): void {}
   onChange($event) {
-    const ifConditions = this.item.metaData.conditions;
-    if (ifConditions?.length) {
-      this.editorService.checkCondition(ifConditions);
-    } else if (ifConditions && !ifConditions?.length) {
-      this.editorService.checkCondition([{ ...ifConditions }]);
-    }
-    if (this.item?.metaData?.businessRuleIds?.length) {
-      this.editorService.onRuleTrigger({ event: $event, data: this.item });
-    }
+    setTimeout(()=> {
+      const ifConditions = this.item.metaData.conditions;
+      if (ifConditions?.length) {
+        this.editorService.checkCondition(ifConditions);
+      } else if (ifConditions && !ifConditions?.length) {
+        this.editorService.checkCondition([{ ...ifConditions }]);
+      }
+      if (this.item?.metaData?.businessRuleIds?.length) {
+        this.editorService.onRuleTrigger({ event: $event, data: this.item });
+      }
+    },0)
   }
 }
