@@ -99,6 +99,9 @@
   gridster-item.button-container, gridster-item.card-container, gridster-item.tab-container{
     overflow: visible;
   }
+  gridster-item.tab-container  gridster-item.button-container{
+    overflow: hidden;
+  }
   gridster-item.display-none{
     opacity: 0;
     visibility: hidden !important;
