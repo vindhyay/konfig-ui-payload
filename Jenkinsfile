@@ -15,8 +15,8 @@ agent any
     }
 environment {
    NAME = "finlevit-payload"
-   //REPO = "harbor.tabner.us/finlevit"
-   REPO = "10.10.5.17:443/finlevit"
+   REPO = "harbor.tabner.com:443/konfig"
+   //REPO = "10.10.5.17:443/finlevit"
    DNAME = "finlevit-payload"
 }
   stages {
@@ -68,7 +68,7 @@ environment {
           sh 'docker stop $(docker ps -a -q)'
          }
       }
-      stage('Publish'){
+      stage('Archive Artifactory'){
          when {
     expression {
         return env.BRANCH_NAME == 'dev';
@@ -87,8 +87,7 @@ environment {
 			}
         steps{
             echo"Deploying the latest version"
-			sh 'ssh root@10.10.5.24 "kubectl -n design set image deployments/${DNAME} ${NAME}=${REPO}/${NAME}:${BUILD_NUMBER}"'
-            sh 'ssh root@10.10.5.24 "kubectl -n design rollout restart deployment ${DNAME}"'
+			   sh 'ssh rke@konfig-dev-m1 "export KUBECONFIG=./kube_config_konfig-cluster.yml && kubectl -n dev set image deployments/${DNAME} ${NAME}=${REPO}/${NAME}:${BUILD_NUMBER} && kubectl -n dev rollout restart deployment ${DNAME}"'
             echo"Successfully deployed the latest version of the Application"
 			}
 		}
