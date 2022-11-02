@@ -68,7 +68,7 @@ environment {
           sh 'docker stop $(docker ps -a -q)'
          }
       }
-      stage('Publish'){
+      stage('Archive Artifactory'){
          when {
     expression {
         return env.BRANCH_NAME == 'staging';
