@@ -15,8 +15,8 @@ agent any
     }
 environment {
    NAME = "finlevit-payload"
-   //REPO = "harbor.tabner.us/finlevit"
-   REPO = "10.10.5.17:443/finlevit"
+   REPO = "harbor.tabner.com/konfig"
+   //REPO = "10.10.5.17:443/finlevit"
    DNAME = "finlevit-payload"
 }
   stages {
@@ -56,14 +56,14 @@ environment {
       stage('Build Docker Image'){
          steps {
 //		     echo "Running ${VERSION} on ${env.JENKINS_URL}"
-            sh 'docker build --force-rm=true -t ${REPO}/${NAME}:r-${BUILD_NUMBER} .'
+            sh 'docker build --force-rm=true -t ${REPO}/${NAME}:${BUILD_NUMBER} .'
          }
       }
        stage('Docker Image Testing'){
          steps {
           echo"unit testing"
-          sh'docker image inspect ${REPO}/${NAME}:r-${BUILD_NUMBER}'
-          sh 'docker run --rm -p 3700:8081 --detach ${REPO}/${NAME}:r-${BUILD_NUMBER}'
+          sh'docker image inspect ${REPO}/${NAME}:${BUILD_NUMBER}'
+          sh 'docker run --rm -p 3700:8081 --detach ${REPO}/${NAME}:${BUILD_NUMBER}'
           sleep(20)
           sh 'docker stop $(docker ps -a -q)'
          }
@@ -71,24 +71,24 @@ environment {
       stage('Archive Artifactory'){
          when {
     expression {
-        return env.BRANCH_NAME == 'staging';
+        return env.BRANCH_NAME == 'dev';
         }
     }
          steps {
             echo"Publishing the source files to remote registry"
-            sh 'docker push ${REPO}/${NAME}:r-${BUILD_NUMBER}'
+            sh 'docker push ${REPO}/${NAME}:${BUILD_NUMBER}'
          }
       }
 		stage('Deploy to Dev'){
 			when {
 			expression {
-			return env.BRANCH_NAME == 'staging';
+			return env.BRANCH_NAME == 'dev';
 			}
 			}
         steps{
             echo"Deploying the latest version"
-			      sh 'ssh rke@10.10.5.41 "kubectl -n design set image deployments/${DNAME} ${NAME}=${REPO}/${NAME}:r-${BUILD_NUMBER}"'
-               sh 'ssh rke@10.10.5.41 "kubectl -n design rollout restart deployment ${DNAME}"'
+			      sh 'ssh root@konfig-dev-m1 "kubectl -n dev set image deployments/${DNAME} ${NAME}=${REPO}/${NAME}:${BUILD_NUMBER}"'
+            sh 'ssh root@konfig-dev-m1 "kubectl -n dev rollout restart deployment ${DNAME}"'
             echo"Successfully deployed the latest version of the Application"
 			}
 		}
