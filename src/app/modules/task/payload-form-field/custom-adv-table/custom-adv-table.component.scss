@@ -147,6 +147,8 @@
     align-items: center;
     border-bottom: 1px solid var(--table-cell-bottom-border-color);
     border-right: 1px solid var(--table-cell-right-border-color);
+    overflow: hidden;
+    flex-wrap: wrap;
   }
   .finlevit-table .f-tbody .f-td:last-of-type {
     .cell-container {
