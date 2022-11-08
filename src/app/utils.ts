@@ -169,8 +169,8 @@ export const getAllFromFields = (fields, eligibileField) => {
       paramField = [...paramField, ...nestedParamField];
     } else if (field?.length) {
       const nestedParamField = getAllFromFields(field, eligibileField);
-      paramField = [...paramField, ...nestedParamField];      
-    }else if (eligibileField.indexOf(field?.metaData?.widgetType) >= 0) {
+      paramField = [...paramField, ...nestedParamField];
+    } else if (eligibileField.indexOf(field?.metaData?.widgetType) >= 0) {
       paramField.push({ label: field.label, value: field.value.value });
     }
   });

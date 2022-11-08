@@ -359,16 +359,21 @@ export class EditorService extends BaseService {
       });
     }
   }
-  evaluvateFilter(filtersLogic,resultArray){
-    const expressionArray = filtersLogic.split(/[.\()&&||_]/).filter(function (indexItem) {
-      return indexItem != null && indexItem.length;
-    }).sort().reverse();
+  evaluvateFilter(filtersLogic, resultArray) {
+    const expressionArray = filtersLogic
+      .split(/[.\()&&||_]/)
+      .filter(function (indexItem) {
+        return indexItem != null && indexItem.length;
+      })
+      .sort()
+      .reverse();
     let expression = filtersLogic;
-    expressionArray.forEach((item)=>{
-        if(!isNaN(item)){
-          expression=expression.replaceAll(item,resultArray[item-1])
-        }
-    })
+
+    expressionArray.forEach((item) => {
+      if (!isNaN(item)) {
+        expression = expression.replaceAll(item, resultArray[item - 1]);
+      }
+    });
     return eval(expression);
   }
   checkCondition(conditionsArray) {
@@ -380,26 +385,26 @@ export class EditorService extends BaseService {
       if (!!conditions)
         for (let condition of conditions) {
           let condMatched = false;
-          let resultArray=[];
-          let expression ='';
+          let resultArray = [];
+          let expression = "";
           condition.rules.forEach((rule, index) => {
             const field = getFieldFromFields(allFields, rule?.field?.widgetId);
             const fieldValue = field?.value?.value;
             // let result = this.conditionValidation(rule, fieldValue);
             const targetField = isShowError ? getFieldFromFields(allFields, rule?.targetField?.widgetId) : null;
             resultArray.push(this.conditionValidation(rule, fieldValue, targetField));
-            // expression = 
+            // expression =
             // condMatched =
             //   index === 0 ? result : rule.condition === "and" ? condMatched && result : condMatched || result;
           });
-          condMatched = this.evaluvateFilter(condition.filtersLogic,resultArray);
+          condMatched = this.evaluvateFilter(condition.filtersLogic, resultArray);
           if (condMatched) {
             // result = condition.mappingField;
             result = { ...condition.mappingField };
             console.log("Success", result);
             break;
-          }else if(!isShowError){
-            const showFields = condition?.mappingField?.showFields?.filter(item=>item?.['selected']===false);
+          } else if (!isShowError) {
+            const showFields = condition?.mappingField?.showFields?.filter((item) => item?.["selected"] === false);
             showFields.forEach((showField) => {
               const showFieldRef = getFieldFromFields(allFields, showField?.widgetId);
               if (showFieldRef) {
@@ -424,13 +429,13 @@ export class EditorService extends BaseService {
             ) {
               removeErrorObj.error = false;
               removeErrorObj.errorMessage = "";
-              console.log(removeErrorObj, condition?.mappingField);
             }
           }
         }
       if (result && !result.messageType) {
-        const showFields = result?.showFields?.filter(item=>item?.['selected']===true);
-        const hideFields = result?.showFields?.filter(item=>item?.['selected']===false);
+        const showFields = result?.showFields?.filter((item) => item?.["selected"] === true);
+        const hideFields = result?.showFields?.filter((item) => item?.["selected"] === false);
+
         showFields.forEach((showField) => {
           const showFieldRef = getFieldFromFields(allFields, showField?.widgetId);
           if (showFieldRef) {
@@ -508,6 +513,9 @@ export class EditorService extends BaseService {
     ) {
       return false;
     }
+    if (rule.operator === "isNull" || rule.operator === "isNotNull") {
+      return fieldValue === undefined || fieldValue === null;
+    }
     if (rule?.fnsName) {
       const calcValue = this.getFormulaValue(
         targetField ? targetField?.value?.value : fieldValue,
@@ -529,7 +537,9 @@ export class EditorService extends BaseService {
     }
     if (rule.field.dataType === "string") {
       fieldValue = this.rulesConditionEvaluation.convertCase(fieldValue);
-      rule.value = this.rulesConditionEvaluation.convertCase(rule?.value);
+      if (!rule.operator.includes("length")) {
+        rule.value = this.rulesConditionEvaluation.convertCase(rule?.value);
+      }
     }
     switch (rule.operator) {
       case "includes":
@@ -823,7 +833,6 @@ export class EditorService extends BaseService {
               expression = expression + " " + field?.expression;
             }
           });
-          console.log(expression);
           let evaluate;
           try {
             evaluate = eval(expression);
