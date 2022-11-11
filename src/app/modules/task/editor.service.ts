@@ -543,6 +543,7 @@ export class EditorService extends BaseService {
     }
     switch (rule.operator) {
       case "includes":
+      case "contains":
         ruleArray = rule?.value?.split(",");
         testCondition = ruleArray.every((r) => (fieldValue || []).includes(r));
         if (testCondition) {

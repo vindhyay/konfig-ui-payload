@@ -118,6 +118,7 @@
         [autoResize]="item?.metaData?.autoResize"
         [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
         [showErrorMsg]="item?.errorMessage || item?.metaData?.showErrorMessage"
+        (onBlur)="optionChange($event, item)"
       >
       </finlevit-lib-textarea>
     </div>
