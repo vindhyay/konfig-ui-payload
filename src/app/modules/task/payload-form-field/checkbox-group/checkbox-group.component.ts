@@ -18,8 +18,8 @@ export class CheckboxGroupComponent implements OnInit {
   }
   ngOnInit(): void {}
   onChange($event) {
-    setTimeout(()=> {
-      const ifConditions = this.item.metaData.conditions;
+    setTimeout(() => {
+      const ifConditions = this.editorService.getCoditions(this.item.metaData?.conditionRuleIds);
       if (ifConditions?.length) {
         this.editorService.checkCondition(ifConditions);
       } else if (ifConditions && !ifConditions?.length) {
@@ -28,6 +28,6 @@ export class CheckboxGroupComponent implements OnInit {
       if (this.item?.metaData?.businessRuleIds?.length) {
         this.editorService.onRuleTrigger({ event: $event, data: this.item });
       }
-    },0)
+    }, 0);
   }
 }
