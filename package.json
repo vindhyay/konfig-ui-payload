@@ -29,6 +29,7 @@
     "force": "^0.0.3",
     "lodash": "^4.17.21",
     "moment": "2.24.0",
+    "ngx-ellipsis": "^4.1.0",
     "ngx-loading": "^8.0.0",
     "ngx-mask": "11.1.4",
     "ngx-toastr": "^13.2.1",

@@ -146,7 +146,15 @@
                     }"
                   >
                     <ng-container [ngSwitch]="col?.metaData?.widgetType">
-                      <div class="pl-1" *ngSwitchCase="TextInput">
+                      <div
+                        *ngSwitchCase="TextInput"
+                        ellipsis
+                        #textInputContent
+                        [pTooltip]="
+                          !checkOverflow(textInputContent, rowData[col.columnId]) ? rowData[col.columnId] : ''
+                        "
+                        tooltipPosition="bottom"
+                      >
                         <ng-container *ngIf="!isCellEditMode(col, rowIndex)">
                           {{ col?.metaData?.isFormulaField ? calculateCellValue(col, rowIndex) : col?.value?.value }}
                         </ng-container>
@@ -318,9 +326,11 @@
                           {{
                             col?.metaData?.thousandsSeparator
                               ? col?.metaData?.currency
-                                ? (calculateCellValue(col, rowIndex)===undefined? col?.metaData.currency?.currencySymbol +' 0'  : col?.metaData.currency?.currencySymbol +
-                                  " " +
-                                  (calculateCellValue(col, rowIndex) | number))
+                                ? calculateCellValue(col, rowIndex) === undefined
+                                  ? col?.metaData.currency?.currencySymbol + " 0"
+                                  : col?.metaData.currency?.currencySymbol +
+                                    " " +
+                                    (calculateCellValue(col, rowIndex) | number)
                                 : (calculateCellValue(col, rowIndex) | number)
                               : col?.metaData?.currency
                               ? col?.metaData.currency?.currencySymbol + " " + calculateCellValue(col, rowIndex)
@@ -370,7 +380,13 @@
                           "
                         ></finlevit-number>
                       </div>
-                      <div class="pl-1" *ngSwitchCase="TextArea">
+                      <div
+                        *ngSwitchCase="TextArea"
+                        ellipsis
+                        #textAreaContent
+                        [pTooltip]="!checkOverflow(textAreaContent, rowData[col.columnId]) ? rowData[col.columnId] : ''"
+                        tooltipPosition="bottom"
+                      >
                         <ng-container *ngIf="!isCellEditMode(col, rowIndex)">
                           {{ col?.value?.value }}
                         </ng-container>

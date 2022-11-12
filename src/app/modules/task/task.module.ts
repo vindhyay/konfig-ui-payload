@@ -29,6 +29,7 @@ import { TooltipModule } from "primeng/tooltip";
 import { AvatarModule } from "primeng/avatar";
 import { AppTabContainerComponent } from "./payload-form-field/tab-container/tab-container.component";
 import { GetBorderShadowFilter } from "src/app/pipes/shadow-border.pipe";
+import {EllipsisModule} from "ngx-ellipsis";
 
 @NgModule({
   declarations: [
@@ -56,7 +57,7 @@ import { GetBorderShadowFilter } from "src/app/pipes/shadow-border.pipe";
     AppTabContainerComponent,
     GetBorderShadowFilter,
   ],
-  imports: [CommonModule, GridsterModule, SharedModule, ExtendedModule, TooltipModule, AvatarModule],
+  imports: [CommonModule, GridsterModule, SharedModule, ExtendedModule, TooltipModule, AvatarModule, EllipsisModule],
   providers: [AuthService],
 })
 export class TaskModule {}

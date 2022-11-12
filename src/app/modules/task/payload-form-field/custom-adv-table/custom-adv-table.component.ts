@@ -669,4 +669,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
     }
     return cellValue;
   }
+  checkOverflow(element: HTMLElement, colValue) {
+    return element.innerText === colValue;
+  }
 }
