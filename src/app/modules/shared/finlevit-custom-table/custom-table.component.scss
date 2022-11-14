@@ -10,7 +10,7 @@
   --header-line-height: var(--font-line-height-h5);
   --header-cell-font-family: var(--font-family);
   --header-font: var(--header-font-weight) var(--header-font-size) / var(--header-line-height)
-  var(--header-cell-font-family);
+    var(--header-cell-font-family);
 
   --header-cell-hover-background-color: var(--secondary-background-color);
   --header-cell-hover-color: var(--primary-text-color);
@@ -45,7 +45,7 @@
   --paginator-line-height: var(--font-line-height-h5);
   --paginator-font-weight: var(--font-weight-bold);
   --paginator-font: var(--paginator-font-weight) var(--paginator-font-size) / var(--paginator-line-height)
-  var(--paginator-font-family);
+    var(--paginator-font-family);
 
   --table-border-color: var(--ui-border-color-light);
 
@@ -169,7 +169,7 @@
   }
   .finlevit-table .f-thead .f-tr .f-th {
     padding: var(--header-cell-padding-top) var(--header-cell-padding-right) var(--header-cell-padding-bottom)
-    var(--header-cell-padding-left);
+      var(--header-cell-padding-left);
     position: relative;
     border-right: 1px solid var(--table-header-right-border-color);
     &:last-of-type {
@@ -196,6 +196,9 @@
         &.center {
           text-align: center;
         }
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
       }
     }
     &:last-of-type {
@@ -241,7 +244,10 @@
       width: 100%;
       display: flex;
     }
-    .edit-action, .save-action, .cancel-action, .delete-action {
+    .edit-action,
+    .save-action,
+    .cancel-action,
+    .delete-action {
       margin: 0 0.5rem;
       .delete-icon {
         color: var(--color-error);

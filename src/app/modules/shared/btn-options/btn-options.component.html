@@ -1,0 +1,26 @@
+<finlevit-button
+  [ngClass]="{ selected: t.menuOpen }"
+  [matMenuTriggerFor]="menu"
+  tabindex="-1"
+  (click)="onPrimaryClick(); t.openMenu(); $event.stopPropagation()"
+  #t="matMenuTrigger"
+  [rightIcon]="t.menuOpen ? 'pi pi-chevron-up' : 'pi pi-chevron-down'"
+  [label]="primaryTitle"
+  [variant]="variant"
+  [size]="size"
+></finlevit-button>
+<mat-menu #menu="matMenu" class="btn-options-menu-list">
+  <button
+    mat-menu-item
+    [ngClass]="{ 'button-menu-item': true }"
+    [disabled]="itemDisableKey && item[itemDisableKey]"
+    *ngFor="let item of items"
+    (click)="onItemClick(item)"
+  >
+    <div class="button-menu-item-wrapper">
+      <img *ngIf="item[iconPath]" [src]="item[iconPath]" class="icon" />
+      <span>{{ item[nameKey] }}</span>
+      <i class="material-icons" aria-hidden="true">{{ item[iconKey] }}</i>
+    </div>
+  </button>
+</mat-menu>

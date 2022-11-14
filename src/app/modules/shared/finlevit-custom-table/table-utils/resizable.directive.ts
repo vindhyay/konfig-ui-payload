@@ -4,12 +4,12 @@ import { distinctUntilChanged, map, switchMap, takeUntil, tap } from "rxjs/opera
 import { fromEvent } from "rxjs";
 
 @Directive({
-  selector: "[resizable]",
+  selector: "[resizable]"
 })
 export class ResizableDirective {
   @Output()
   readonly resizable = fromEvent<MouseEvent>(this.elementRef.nativeElement, "mousedown").pipe(
-    tap((e) => e.preventDefault()),
+    tap(e => e.preventDefault()),
     switchMap(() => {
       const { width, right } = this.elementRef.nativeElement.closest(".f-th")!.getBoundingClientRect();
 

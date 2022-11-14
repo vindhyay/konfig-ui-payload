@@ -92,7 +92,7 @@ export class CustomTableFiltersComponent implements OnInit {
     this.filtersEnabled = false;
     this.filtersLogic = "";
     this.filtersLogicError = "";
-    this.search.emit(null);
+    this.search.emit("");
     this.hideDropdown();
     this.advSearchForm.clear();
     this.addSearchField();
@@ -101,9 +101,14 @@ export class CustomTableFiltersComponent implements OnInit {
   onConditionChange($event, condition) {
     if ($event === "isNull") {
       condition.controls.value.setValue("None");
-    } else if (condition.controls.value.value == "None") {
+    } else {
       condition.controls.value.setValue("");
     }
+  }
+
+  onColumnChange($event, condition) {
+    condition.controls.condition.setValue("");
+    condition.controls.value.setValue("");
   }
 
   onFilterLogicChange($event) {

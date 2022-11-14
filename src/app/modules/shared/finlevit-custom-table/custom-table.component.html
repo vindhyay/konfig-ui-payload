@@ -1,4 +1,9 @@
-<div class="table-widget">
+<div
+  [ngClass]="{
+    'table-widget': true,
+    'no-data': !(tableFilters?.filtersEnabled ? filteredTableData : tableData).length
+  }"
+>
   <div
     [ngClass]="{
       'finlevit-table': true,
@@ -18,7 +23,7 @@
           'border-bottom-style': horizontalBorder ? 'solid' : 'none'
         }"
       >
-        <div *ngIf="colSearch" class="f-tr f-tr-search">
+        <div *ngIf="colSearch" class="f-tr f-tr-search pt-2 pb-2">
           <div
             *ngIf="selectable"
             class="f-th"
@@ -41,7 +46,7 @@
               ></div>
             </div>
           </div>
-          <ng-container *ngFor="let col of columns | customFilter: { filterFn: columnFilterFn }">
+          <ng-container *ngFor="let col of columns | customFilter: { filterFn: columnFilterHiddenColumns }">
             <div
               class="f-th"
               [ngStyle]="{
@@ -71,7 +76,20 @@
                           [(ngModel)]="searchObject[col.columnId]"
                           [placeholder]="col?.label"
                           (keydown)="onKeyDown($event, col)"
+                          size="xs"
                         ></finlevit-text>
+                      </ng-container>
+                      <ng-container *ngSwitchCase="Dropdown">
+                        <finlevit-lib-select
+                          [name]="'search' + col.columnId"
+                          [(ngModel)]="searchObject[col.columnId]"
+                          (ngModelChange)="emitColSearch(col)"
+                          [placeholder]="col?.label"
+                          size="xs"
+                          optionLabel="name"
+                          optionValue="value"
+                          [options]="col?.options || []"
+                        ></finlevit-lib-select>
                       </ng-container>
                       <ng-container *ngSwitchCase="DatePicker">
                         <finlevit-lib-datepicker
@@ -79,6 +97,7 @@
                           [(ngModel)]="searchObject[col.columnId]"
                           (ngModelChange)="emitColSearch(col)"
                           [placeholder]="col?.label"
+                          size="xs"
                         ></finlevit-lib-datepicker>
                       </ng-container>
                       <ng-container *ngSwitchDefault>
@@ -87,6 +106,7 @@
                           [(ngModel)]="searchObject[col.columnId]"
                           [placeholder]="col?.label"
                           (keydown)="onKeyDown($event, col)"
+                          size="xs"
                         ></finlevit-text>
                       </ng-container>
                     </ng-container>
@@ -162,7 +182,7 @@
               'f-th': true,
               sorted: sortHeader?.sorter?.active === col?.columnId
             }"
-            *ngFor="let col of columns | customFilter: { filterFn: columnFilterFn }"
+            *ngFor="let col of columns | customFilter: { filterFn: columnFilterHiddenColumns }"
             [sortEligible]="
               (sort || col?.sortable) &&
               !Object.keys(newRows).length &&
@@ -300,7 +320,7 @@
                   maxWidth: col?.width ? (col?.width || 100) + 'px' : 'auto',
                   flex: (col?.width || 100) + ' 0 auto'
                 }"
-                *ngFor="let col of columns | customFilter: { filterFn: columnFilterFn }"
+                *ngFor="let col of columns | customFilter: { filterFn: columnFilterHiddenColumns }"
                 (dblclick)="!col?.metaData?.readOnly && isColumnEdit ? onColEdit($event, col, rowIndex, rowData) : null"
               >
                 <div
@@ -370,7 +390,7 @@
                             </ng-template>
                           </ng-container>
                         </div>
-                        <div class="pl-1" *ngSwitchCase="TextArea">
+                        <div *ngSwitchCase="TextArea">
                           <ng-container *ngIf="isCellEditMode(col, rowIndex)">
                             <finlevit-lib-textarea
                               applyStyleVariables
@@ -467,15 +487,18 @@
                                 col?.metaData?.thousandsSeparator
                                   ? col?.metaData?.currency
                                     ? col?.metaData.currency?.currencySymbol +
-                                      " " +
+                                      ' ' +
                                       (calculateCellValue(col, rowIndex) | number)
                                     : (calculateCellValue(col, rowIndex) | number)
                                   : col?.metaData?.currency
-                                  ? col?.metaData.currency?.currencySymbol + " " + calculateCellValue(col, rowIndex)
+                                  ? col?.metaData.currency?.currencySymbol + ' ' + calculateCellValue(col, rowIndex)
                                   : calculateCellValue(col, rowIndex)
                               }}
                             </ng-template>
                           </ng-container>
+                        </div>
+                        <div *ngSwitchCase="Avatar">
+                          <finlevit-icon-name size="24" [data]="{ name: rowData[col?.columnId] }"></finlevit-icon-name>
                         </div>
                         <div *ngSwitchCase="DatePicker">
                           <ng-container *ngIf="isCellEditMode(col, rowIndex)">
@@ -715,9 +738,14 @@
         <app-custom-table-filters
           *ngIf="filter"
           #tableFilters
-          [columns]="columns | customFilter: { filterFn: columnFilterFn }"
+          [columns]="
+            columns
+              | customFilter: { filterFn: columnFilterNoFilterColumns }
+              | customFilter: { filterFn: columnFilterHiddenColumns }
+          "
           (search)="handleSearch($event)"
         ></app-custom-table-filters>
+        <ng-content select=".custom-actions"></ng-content>
         <finlevit-icon-preview
           [style.cursor]="'pointer'"
           class="ml-3"
