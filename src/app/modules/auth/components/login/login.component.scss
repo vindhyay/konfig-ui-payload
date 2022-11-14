@@ -1,0 +1,39 @@
+@import "scss/mixins";
+
+.login-wrapper {
+  height: 100vh;
+  display: flex;
+}
+.login-image {
+  width: 100%;
+  background-image: url("/assets/images/login-bg.png");
+  background-size: cover;
+}
+.login-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .login-form {
+    width: 100%;
+    max-width: 450px;
+  }
+}
+.logo {
+  margin: 0 0 var(--spacing-md) 0;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  border-radius: var(--border-radius-sm);
+  color: var(--primary-text-color);
+  @include font-main();
+  img {
+    width: 36px;
+    margin-right: var(--spacing-sm);
+  }
+}
+.subtitle {
+  @include font-body-large();
+  margin-bottom: var(--spacing-xxl);
+  color: var(--secondary-text-color);
+}

@@ -4,7 +4,7 @@ import { BaseComponent } from "./base/base.component";
 import { MaterialModule } from "../material/material.module";
 import { RouterModule } from "@angular/router";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { FinlevitLibraryModule } from "finlevit-library";
+import { FinlevitLibraryModule } from "../../../../lib/finlevit-library/src/public-api";
 import { BtnPrimaryComponent } from "./btn-primary/btn-primary.component";
 import { NgxLoadingModule } from "ngx-loading";
 import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
