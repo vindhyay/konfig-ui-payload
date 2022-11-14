@@ -607,7 +607,11 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
     if (evaluate === Infinity) {
       cellValue = "∞";
     } else if (isNaN(evaluate)) {
-      cellValue = undefined;
+      if(col.dataType === 'string'){
+        cellValue = null;
+      }else {
+        cellValue = undefined;
+      }
     } else {
       cellValue = eval(expression) || null;
     }
