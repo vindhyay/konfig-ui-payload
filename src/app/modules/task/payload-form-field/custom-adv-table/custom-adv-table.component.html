@@ -20,11 +20,12 @@
       >
         <div class="f-tr">
           <div
-            class="f-th"
             [ngStyle]="{
               width: (col?.width || 100) + 'px',
               maxWidth: col?.width ? col?.width + 'px' : 'auto',
               flex: (col?.width || 100) + ' 0 auto',
+              display: 'flex',
+              alignItems: 'center',
               'border-right-style': verticalBorder ? 'solid' : 'none'
             }"
             *ngFor="let col of columns | searchFilter: { metaData: { isHidden: false } }"
@@ -34,6 +35,11 @@
             [ref]="col?.widgetId"
             [align]="col?.metaData?.alignment"
             sortHeader
+            #sortHeader
+            [ngClass]="{
+              'f-th': true,
+              sorted: sortHeader?.sorter?.active === col?.widgetId
+            }"
           >
             <div class="f-resizable-header-content">
               <div
@@ -133,7 +139,7 @@
                 <div
                   [ngClass]="{ 'cell-container': true }"
                   [ngStyle]="{
-                    'border-right-style': verticalBorder && (actions.editRow || actions.deleteRow) ? 'solid' : 'none',
+                    'border-right-style': verticalBorder ? 'solid' : 'none',
                     'border-bottom-style': horizontalBorder ? 'solid' : 'none'
                   }"
                 >
@@ -269,6 +275,7 @@
                           *ngIf="isCellEditMode(col, rowIndex)"
                           applyStyleVariables
                           styleType="checkbox"
+                          class="table-cell-checkbox"
                           [styleProperties]="col?.metaData?.styleProperties?.properties"
                           [(ngModel)]="modifyingData[rowIndex][col.widgetId]"
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
@@ -314,9 +321,11 @@
                           {{
                             col?.metaData?.thousandsSeparator
                               ? col?.metaData?.currency
-                                ? (calculateCellValue(col, rowIndex)===undefined? col?.metaData.currency?.currencySymbol +' 0'  : col?.metaData.currency?.currencySymbol +
-                                  " " +
-                                  (calculateCellValue(col, rowIndex) | number))
+                                ? calculateCellValue(col, rowIndex) === undefined
+                                  ? col?.metaData.currency?.currencySymbol + " 0"
+                                  : col?.metaData.currency?.currencySymbol +
+                                    " " +
+                                    (calculateCellValue(col, rowIndex) | number)
                                 : (calculateCellValue(col, rowIndex) | number)
                               : col?.metaData?.currency
                               ? col?.metaData.currency?.currencySymbol + " " + calculateCellValue(col, rowIndex)
@@ -521,7 +530,9 @@
                       >
                         <finlevit-icon-preview
                           class="save-action"
-                          icon="pi pi-check save-icon"
+                          [icon]="
+                            saveLoadingRows[rowIndex] ? 'pi pi-spin pi-spinner save-icon' : 'pi pi-check save-icon'
+                          "
                           (click)="onRowSave(rowIndex, modifyingData[rowIndex])"
                         ></finlevit-icon-preview>
                         <finlevit-icon-preview
@@ -556,7 +567,11 @@
                         <finlevit-icon-preview
                           class="delete-action"
                           *ngIf="actions?.deleteRow"
-                          icon="pi pi-trash delete-icon"
+                          [icon]="
+                            deleteLoadingRows[rowIndex]
+                              ? 'pi pi-spin pi-spinner delete-icon'
+                              : 'pi pi-trash delete-icon'
+                          "
                           (click)="onDelete(rowIndex, modifyingData[rowIndex])"
                         ></finlevit-icon-preview>
                       </div>
