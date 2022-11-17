@@ -34,6 +34,11 @@
               "node_modules/ngx-toastr/toastr.css",
               "src/styles.scss"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "node_modules/finlevit-library/src/assets/"
+              ]
+            },
             "scripts": [],
             "vendorChunk": true,
             "extractLicenses": false,

@@ -14,8 +14,8 @@
         [label]="item?.label"
         applyStyleVariables
         styleType="input"
+        size="custom"
         [styleProperties]="item?.metaData?.styleProperties?.properties"
-        [allowLabelWrapping]="item?.metaData?.allowLabelWrapping"
         [showClearButton]="item?.metaData?.showClearButton"
         [prefixText]="item?.metaData?.prefixText"
         [suffixText]="item?.metaData?.suffixText"
@@ -44,7 +44,6 @@
         (ngModelChange)="validateField($event, item); calculateFormulaValue(item, true)"
         [isRequired]="item?.validators?.required"
         [label]="item?.label"
-        [allowLabelWrapping]="item?.metaData?.allowLabelWrapping"
         [showClearButton]="item?.metaData?.showClearButton"
         [prefixText]="item?.metaData?.prefixText"
         [suffixText]="item?.metaData?.suffixText"
@@ -55,6 +54,7 @@
         [maxCharLimit]="item?.validators?.maxLength"
         applyStyleVariables
         styleType="input"
+        size="custom"
         [styleProperties]="item?.metaData?.styleProperties?.properties"
         [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
         [errorMsg]="item?.errorMessage || item?.metaData?.errorMessage"
@@ -112,13 +112,13 @@
         applyStyleVariables
         styleType="input"
         [styleProperties]="item?.metaData?.styleProperties?.properties"
-        [allowLabelWrapping]="item?.metaData?.styleProperties?.properties?.allowLabelWrapping"
         [errorMsg]="item?.errorMessage || item?.metaData?.errorMessage"
         [showCharCount]="item?.metaData?.styleProperties?.properties?.showCharCount"
         [autoResize]="item?.metaData?.autoResize"
         [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
         [showErrorMsg]="item?.errorMessage || item?.metaData?.showErrorMessage"
         (onBlur)="optionChange($event, item)"
+        size="custom"
       >
       </finlevit-lib-textarea>
     </div>
@@ -141,7 +141,6 @@
         applyStyleVariables
         styleType="input"
         [styleProperties]="item?.metaData?.styleProperties?.properties"
-        [allowLabelWrapping]="item?.metaData?.allowLabelWrapping"
         [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
         [errorMsg]="item?.errorMessage || item?.metaData?.errorMessage"
         [showErrorMsg]="item?.errorMessage || item?.metaData?.showErrorMessage"
@@ -155,6 +154,7 @@
         [maxFractionDigits]="item?.metaData?.maxFractionDigits"
         [maxLength]="item?.validators?.maxLength"
         [showMaxCharLimit]="item?.validators?.maxLength"
+        size="custom"
       >
       </finlevit-number>
     </div>
@@ -189,7 +189,7 @@
         [isPress]="item?.metaData?.styleProperties?.properties?.press?.isActionEnabled"
         [isHover]="item?.metaData?.styleProperties?.properties?.hover?.isActionEnabled"
         [isFocus]="item?.metaData?.styleProperties?.properties?.focus?.isActionEnabled"
-        variant="custom"
+        size="custom"
       ></finlevit-button>
     </div>
   </ng-container>
@@ -286,6 +286,7 @@
         [showErrorMsg]="item?.errorMessage || item?.metaData?.showErrorMessage"
         applyStyleVariables
         styleType="checkbox"
+        size="custom"
         [styleProperties]="item?.metaData?.styleProperties?.properties"
       ></finlevit-lib-checkbox>
     </div>
@@ -328,7 +329,6 @@
         [alignOptions]="item?.metaData?.alignOptions"
         [columns]="item?.metaData?.columns"
         [tooltip]="item?.metaData?.tooltip"
-        [allowLabelWrapping]="item?.metaData?.allowLabelWrapping"
         [errorMsg]="item?.errorMessage || item?.metaData?.errorMessage"
         [showErrorMsg]="item?.errorMessage || item?.metaData?.showErrorMessage"
         [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
@@ -342,6 +342,7 @@
         [buttonAlignment]="item?.metaData?.styleProperties?.properties.radioAlign"
         applyStyleVariables
         styleType="radioGroup"
+        size="custom"
         [styleProperties]="item?.metaData?.styleProperties?.properties"
       ></finlevit-radio-group>
     </div>
@@ -371,9 +372,9 @@
         [stepMinute]="item?.metaData?.stepMinute"
         [stepHour]="item?.metaData?.stepHour"
         [independentBorders]="item?.metaData?.styleProperties?.properties?.independentBorder"
-        [allowLabelWrapping]="item?.metaData?.styleProperties?.properties?.allowLabelWrapping"
         applyStyleVariables
         styleType="stepper"
+        size="custom"
         [styleProperties]="item?.metaData?.styleProperties?.properties"
       >
       </finlevit-lib-datepicker>
@@ -479,7 +480,6 @@
         (ngModelChange)="validateField($event, item); calculateFormulaValue(item, true)"
         [isRequired]="item?.validators?.required"
         [label]="item?.label"
-        [allowLabelWrapping]="item?.metaData?.allowLabelWrapping"
         [showClearButton]="item?.metaData?.showClearButton"
         [prefixText]="item?.metaData?.prefixText"
         [suffixText]="item?.metaData?.suffixText"

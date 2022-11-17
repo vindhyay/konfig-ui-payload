@@ -1,14 +1,10 @@
 :host {
   .sort-icon {
-    position: absolute;
-    top: 10px;
-    right: 16px;
-    font-size: 12px;
-    &.right {
-      left: 16px;
-    }
-    &.left {
-      right: 16px;
+    margin-left: var(--spacing-sm);
+    color: var(--primary-color);
+    font-size: 1rem;
+    &.asc{
+      transform: rotate(180deg);
     }
   }
 }

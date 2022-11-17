@@ -1,7 +1,6 @@
 <finlevit-lib-checkbox-group
   [isDisabled]="isDisabled"
   [columns]="columns"
-  (ngModelChange)="onChange($event)"
   [isRequired]="item?.validators?.required"
   [label]="item?.label"
   [items]="item?.metaData?.options"
@@ -17,12 +16,15 @@
   "
   [tooltip]="item?.metaData?.tooltip"
   [(ngModel)]="item.value.value"
+  (ngModelChange)="onChange($event); validateField($event, item)"
   [alignOptions]="item?.metaData?.alignOptions"
   [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
   [errorMsg]="item?.errorMessage || item?.metaData?.errorMessage"
-  [showErrorMsg]="item?.metaData?.showErrorMessage"
+  [showErrorMsg]="!!(item?.errorMessage || item?.metaData?.showErrorMessage)"
+  [error]="item?.errorMessage?.length > 0 || item.error === true"
   [allowLabelWrapping]="item?.metaData?.allowLabelWrapping"
   applyStyleVariables
   styleType="checkboxGroup"
+  size="custom"
   [styleProperties]="item?.metaData?.styleProperties?.properties"
 ></finlevit-lib-checkbox-group>

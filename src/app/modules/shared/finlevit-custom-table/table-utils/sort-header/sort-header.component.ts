@@ -1,6 +1,7 @@
 import { Component, HostListener, Input, OnInit } from "@angular/core";
 import { SorterDirective } from "../sorter.directive";
 import { CELL_ALIGNMENTS_TYPES } from "../../../../task/model/create-form.models";
+import { IconTypes, IIcon } from "finlevit-library";
 
 @Component({
   selector: "[sortHeader]",
@@ -12,7 +13,11 @@ export class SortHeaderComponent implements OnInit {
   @Input() align: CELL_ALIGNMENTS_TYPES = CELL_ALIGNMENTS_TYPES.LEFT;
   cellAlignmentTypes = CELL_ALIGNMENTS_TYPES;
   @Input() ref: any; // <-- unique key for the column
-
+  icon: IIcon = {
+    type: IconTypes.MATERIAL_ICONS_FILLED,
+    value: "expand_circle_down",
+    size: "1rem",
+  };
   @HostListener("click")
   sort() {
     if (this.sortEligible) {

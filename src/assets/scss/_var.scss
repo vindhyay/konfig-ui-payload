@@ -1,4 +1,4 @@
-@import "bootstrap-variables";
+@import "mixins";
 
 $grid-columns: 12;
 $grid-gutter-width: 24px;
@@ -6,11 +6,8 @@ $grid-float-breakpoint: 768px;
 
 $maxWidth: 1792px;
 $minWidth: 320px;
-$minWidthAdmin: map-get($grid-breakpoints, "md");
-$minWidthUser: map-get($grid-breakpoints, "sm");
 $maxContentWidth: 960px;
 $mainContentPadding: 72px;
-$containerMarginsBreakpoint: $minWidthAdmin;
 $contentHolderMaxWidth: 1564px;
 
 $iconFont: "POC-icons";
@@ -23,20 +20,15 @@ $cardShadow: 0 1px 4px rgba(0, 0, 0, 0.25);
 $cardShadowHover: 0 1px 6px rgba(0, 0, 0, 0.45);
 $dropdownShadow: 0 1px 4px rgba(0, 0, 0, 0.25);
 
-//$primary: #3F51B5;
 $primary: #3f51b5;
-//$primary: #2981FF;
 $secondary: #3f51b5;
-//$secondary: #2981FF;
-//$accent: #2981FF;
 $accent: #3f51b5;
 $success: #05c04c;
 $warn: #f50022;
-$error: #f50022;
-//colors
+$error: #dc3545;
 $orange: #f99733;
 $darkOrange: #b9943c;
-$red: #f50022;
+$red: #dc3545;
 $pink: #cb79b7;
 $green: #49bd6c;
 $lightGreen: #afb93c;
@@ -47,6 +39,59 @@ $purple: #6e3cb9;
 $brown: #b94d3c;
 $dark: #424242;
 $gray: #9b9b9b;
+$white: #ffffff;
+$black: #000000;
+
+//colors
+
+$white-100: #ffffff;
+$white-200: #dee2e6;
+$white-300: #ced4d9;
+$white-400: #f5f5f5;
+
+$black-100: #000000;
+
+$blue-100: #cce5ff;
+$blue-200: #61affe;
+$blue-300: #3482a9;
+$blue-400: #697ad6;
+$blue-500: #4050b5;
+$blue-600: #29487d ;
+
+$red-100: #f8d7da;
+$red-200: #d41111;
+$red-300: #FF0000;
+$red-400: #721c24;
+$red-500: #312929;
+
+$green-100: #a7e1c4;
+$green-200: #49cc90;
+$green-300: #0dd60d;
+$green-400: #008000;
+$green-500: #185c07;
+
+$orange-100: #f1b03f;
+$orange-200: #FFA500;
+$orange-300: #ff8c00;
+
+$yellow-100: #feedaf;
+$yellow-200: #FFFF00;
+$yellow-300: #f1b03f;
+
+$gray-100: #D3D3D3;
+$gray-200: #7e7e7d;
+$gray-300: #495057;
+$gray-400: #383636e0;
+
+$pink-100: #e08dac;
+$pink-200: #f75990;
+$pink-300: #ff2c75;
+$pink-400: #b15c7b;
+
+$purple-100: #b084cc;
+$purple-200: #3d446d;
+
+$brown-100: #8a5340;
 
 $widgetTitleColor: $primary;
 $help-text-color: #6c7b85;
@@ -58,7 +103,6 @@ $textColor: #373f51;
 $textColorLight: rgba(0, 0, 0, 0.6);
 
 $borderColor: rgba(0, 0, 0, 0.12);
-//$tableHeaderColor: #878b97;
 $tableHeaderColor: #efeff6;
 $tableHeaderTextColor: #363e51;
 
@@ -70,8 +114,7 @@ $titleColor: $textColor;
 $titleColorLignt: $textColorLight;
 $card-header: #3f51b5;
 
-//$mainBG: #fff;
-$mainBG: #fff;
+$mainBG: #f3f6f9;
 $disabledBG: #f3f6f9;
 $activeHover: #f3f6f9;
 $optionHover: #f3f6f9;

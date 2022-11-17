@@ -1,4 +1,4 @@
-@import '../../../../assets/scss/var';
+@import "../../../../assets/scss/var";
 .preview-container {
   position: relative;
   height: 100%;
@@ -73,7 +73,7 @@
     height: 100%;
   }
 }
-.input-container{
+.input-container {
   height: 100%;
 }
 .nested-grid-container {
@@ -134,15 +134,20 @@
     }
   }
 }
-.collapse-container{
-  ::ng-deep{
-    .input-label, .checkbox-label {
+.collapse-container {
+  ::ng-deep {
+    .input-label,
+    .checkbox-label {
       font-weight: normal;
     }
   }
 }
-::ng-deep{
-  .stepper-container>div.mat-horizontal-stepper-header-container{
+::ng-deep {
+  .stepper-container > div.mat-horizontal-stepper-header-container {
     overflow: auto;
   }
+}
+.input-container,
+.select-container {
+  padding: var(--spacing-xxs);
 }

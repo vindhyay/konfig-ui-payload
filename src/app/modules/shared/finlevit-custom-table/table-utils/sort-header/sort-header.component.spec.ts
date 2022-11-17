@@ -8,7 +8,7 @@ describe("SortHeaderComponent", () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SortHeaderComponent],
+      declarations: [SortHeaderComponent]
     }).compileComponents();
   });
 

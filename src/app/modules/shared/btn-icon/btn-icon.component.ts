@@ -7,8 +7,8 @@ import { BtnPrimaryComponent } from "../btn-primary/btn-primary.component";
   styleUrls: ["./btn-icon.component.scss"]
 })
 export class BtnIconComponent extends BtnPrimaryComponent implements OnInit {
-  @Input() variant = 'raisedButton';
   @Input() icon = "";
+  @Input() type = "";
   @Output() btnClick = new EventEmitter();
   ngOnInit() {}
 }

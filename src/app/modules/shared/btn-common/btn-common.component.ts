@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import { Component, Input } from "@angular/core";
 import { BtnPrimaryComponent } from "../btn-primary/btn-primary.component";
 
 @Component({
@@ -6,6 +6,4 @@ import { BtnPrimaryComponent } from "../btn-primary/btn-primary.component";
   templateUrl: "./btn-common.component.html",
   styleUrls: []
 })
-export class BtnCommonComponent extends BtnPrimaryComponent {
-  @Input() variant = 'textButton';
-}
+export class BtnCommonComponent extends BtnPrimaryComponent {}

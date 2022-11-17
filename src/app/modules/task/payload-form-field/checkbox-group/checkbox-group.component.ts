@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { BaseWidget, MetaData } from "../../model/create-form.models";
 import { EditorService } from "../../editor.service";
+import { validateFields } from "../../../../utils";
 
 @Component({
   selector: "app-checkbox-group",
@@ -29,5 +30,8 @@ export class CheckboxGroupComponent implements OnInit {
         this.editorService.onRuleTrigger({ event: $event, data: this.item });
       }
     }, 0);
+  }
+  validateField($event: any, field: any) {
+    validateFields([field]);
   }
 }

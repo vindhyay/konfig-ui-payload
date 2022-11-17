@@ -9,12 +9,12 @@ import {
   ElementRef,
   Renderer2,
   HostBinding,
-  HostListener,
+  HostListener
 } from "@angular/core";
 
 @Directive({
   selector: "[pagination]",
-  exportAs: "pagination",
+  exportAs: "pagination"
 })
 export class PaginationDirective implements OnChanges, OnInit {
   @Input() pageNo = 1;
@@ -42,6 +42,12 @@ export class PaginationDirective implements OnChanges, OnInit {
     }
     const start = this.pageNo === 1 ? 1 : (this.pageNo - 1) * this.limit + 1;
     const end = start + (this.limit - 1) < this.totalRecords ? start + this.limit - 1 : this.totalRecords;
+    // let msg = "";
+    // if (!this.totalRecords) {
+    //   msg = "showing 0 results";
+    // } else {
+    //   msg = "showing " + start + " - " + end + " of " + this.totalRecords;
+    // }
     this.start = start;
     this.end = end;
   }
