@@ -231,7 +231,18 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
     this.editRows[rowIndex] = rowData;
     const currentRow: any = {};
     (rowData || []).forEach((eachColumn) => {
-      currentRow[eachColumn?.widgetId] = eachColumn?.value?.value;
+      if (eachColumn?.value?.value) {
+        currentRow[eachColumn?.widgetId] = eachColumn?.value?.value;
+      } else {
+        if (
+          eachColumn["metaData"].widgetType === WidgetTypes.DatePicker ||
+          eachColumn["metaData"].widgetType === WidgetTypes.Number
+        ) {
+          currentRow[eachColumn?.widgetId] = null;
+        } else {
+          currentRow[eachColumn?.widgetId] = "";
+        }
+      }
     });
     this.modifyingData[rowIndex] = currentRow;
   }
@@ -607,9 +618,9 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
     if (evaluate === Infinity) {
       cellValue = "∞";
     } else if (isNaN(evaluate)) {
-      if(col.dataType === 'string'){
+      if (col.dataType === "string") {
         cellValue = null;
-      }else {
+      } else {
         cellValue = undefined;
       }
     } else {
