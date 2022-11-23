@@ -63,6 +63,7 @@ export class CustomTableFiltersComponent implements OnInit {
       this.filtersLogic = "";
       this.filtersLogicError = "";
     }
+    this.validateFilter();
   }
   createSearchField() {
     return this.fb.group({
@@ -99,7 +100,7 @@ export class CustomTableFiltersComponent implements OnInit {
   }
 
   onConditionChange($event, condition) {
-    if ($event === "isNull") {
+    if ($event === "isNull" || $event === "isNotNull") {
       condition.controls.value.setValue("None");
     } else {
       condition.controls.value.setValue("");
