@@ -186,9 +186,9 @@
         applyStyleVariables
         styleType="button"
         [styleProperties]="item?.metaData?.styleProperties?.properties"
-        [isPress]="item?.metaData?.styleProperties?.properties?.press?.isActionEnabled"
-        [isHover]="item?.metaData?.styleProperties?.properties?.hover?.isActionEnabled"
-        [isFocus]="item?.metaData?.styleProperties?.properties?.focus?.isActionEnabled"
+        [isPress]="!item?.metaData?.readOnly && item?.metaData?.styleProperties?.properties?.press?.isActionEnabled"
+        [isHover]="!item?.metaData?.readOnly && item?.metaData?.styleProperties?.properties?.hover?.isActionEnabled"
+        [isFocus]="!item?.metaData?.readOnly && item?.metaData?.styleProperties?.properties?.focus?.isActionEnabled"
         size="custom"
       ></finlevit-button>
     </div>
