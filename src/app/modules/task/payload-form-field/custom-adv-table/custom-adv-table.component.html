@@ -134,7 +134,6 @@
                   flex: (columns[colIndex]?.width || 100) + ' 0 auto'
                 }"
                 *ngFor="let col of rowData | customFilter: { filterFn: rowDataColumnsFilterFn }; let colIndex = index"
-                (dblclick)="isColumnEdit && onColEdit($event, col, rowIndex, rowData)"
               >
                 <div
                   [ngClass]="{ 'cell-container': true }"
@@ -596,28 +595,28 @@
           <ng-template #zeroRecordsResult> Showing {{ pagination?.totalRecords }} results </ng-template>
         </div>
         <ng-template #cellEditActions>
-          <div class="ml-2 mr-2">
-            <finlevit-button
-              label="Save"
-              applyStyleVariables
-              [styleProperties]="saveBtnProperties?.properties"
-              styleType="button"
-              (btnClick)="onColSave($event)"
-              isHover="true"
-              variant="custom"
-            ></finlevit-button>
-          </div>
-          <div class="ml-2 mr-2">
-            <finlevit-button
-              label="Cancel"
-              applyStyleVariables
-              [styleProperties]="cancelBtnProperties?.properties"
-              styleType="button"
-              (btnClick)="onColSaveCancel($event)"
-              isHover="true"
-              variant="custom"
-            ></finlevit-button>
-          </div>
+          <!--          <div class="ml-2 mr-2">-->
+          <!--            <finlevit-button-->
+          <!--              label="Save"-->
+          <!--              applyStyleVariables-->
+          <!--              [styleProperties]="saveBtnProperties?.properties"-->
+          <!--              styleType="button"-->
+          <!--              (btnClick)="onColSave($event)"-->
+          <!--              isHover="true"-->
+          <!--              variant="custom"-->
+          <!--            ></finlevit-button>-->
+          <!--          </div>-->
+          <!--          <div class="ml-2 mr-2">-->
+          <!--            <finlevit-button-->
+          <!--              label="Cancel"-->
+          <!--              applyStyleVariables-->
+          <!--              [styleProperties]="cancelBtnProperties?.properties"-->
+          <!--              styleType="button"-->
+          <!--              (btnClick)="onColSaveCancel($event)"-->
+          <!--              isHover="true"-->
+          <!--              variant="custom"-->
+          <!--            ></finlevit-button>-->
+          <!--          </div>-->
         </ng-template>
       </div>
       <div [ngClass]="{ '-center': true, 'show-pagination': isPaginationEnabled }">
