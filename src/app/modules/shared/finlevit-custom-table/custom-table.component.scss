@@ -40,7 +40,7 @@
   --paginator-height: 30px;
   --paginator-background-color: var(--grey-color-200);
   --paginator-color: var(--primary-text-color);
-  --paginator-font-family: inherit;
+  --paginator-font-family: var(--font-family);
   --paginator-font-size: var(--font-size-h5);
   --paginator-line-height: var(--font-line-height-h5);
   --paginator-font-weight: var(--font-weight-bold);
@@ -297,6 +297,7 @@
     font-size: var(--paginator-font-size);
     font-weight: var(--paginator-font-weight);
     line-height: var(--paginator-line-height);
+    font-family: var(--paginator-font-family);
     height: var(--paginator-height);
     .table-results-counter {
       display: inline-flex;
