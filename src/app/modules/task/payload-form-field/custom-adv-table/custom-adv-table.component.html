@@ -171,7 +171,7 @@
                           [tooltip]="col?.metaData?.tooltip"
                           [placeholder]="col?.metaData?.placeholder"
                           [isRequired]="col?.validators?.required"
-                          size="sm"
+                          size="custom"
                           [showClearButton]="col?.metaData?.showClearButton"
                           [prefixText]="col?.metaData?.prefixText"
                           [suffixText]="col?.metaData?.suffixText"
@@ -197,6 +197,7 @@
                           *ngIf="isCellEditMode(col, rowIndex)"
                           applyStyleVariables
                           styleType="input"
+                          size="custom"
                           [styleProperties]="col?.metaData?.styleProperties?.properties"
                           [(ngModel)]="modifyingData[rowIndex][col.widgetId]"
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
@@ -240,7 +241,7 @@
                           [styleProperties]="col?.metaData?.styleProperties?.properties"
                           [(ngModel)]="modifyingData[rowIndex][col.widgetId]"
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
-                          size="sm"
+                          size="custom"
                           [placeholder]="col?.metaData?.placeholder"
                           [error]="
                             rowErrors[rowIndex] && rowErrors[rowIndex][col?.widgetId]
@@ -274,6 +275,7 @@
                           *ngIf="isCellEditMode(col, rowIndex)"
                           applyStyleVariables
                           styleType="checkbox"
+                          size="custom"
                           class="table-cell-checkbox"
                           [styleProperties]="col?.metaData?.styleProperties?.properties"
                           [(ngModel)]="modifyingData[rowIndex][col.widgetId]"
@@ -301,7 +303,7 @@
                           *ngIf="isCellEditMode(col, rowIndex)"
                           [(ngModel)]="modifyingData[rowIndex][col.widgetId]"
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
-                          size="sm"
+                          size="custom"
                           [placeholder]="'Enter image URL'"
                           [error]="
                             rowErrors[rowIndex] && rowErrors[rowIndex][col?.widgetId]
@@ -335,6 +337,7 @@
                           *ngIf="isCellEditMode(col, rowIndex)"
                           applyStyleVariables
                           styleType="input"
+                          size="custom"
                           [styleProperties]="col?.metaData?.styleProperties?.properties"
                           [(ngModel)]="
                             col?.metaData?.isFormulaField
@@ -380,6 +383,7 @@
                           *ngIf="isCellEditMode(col, rowIndex)"
                           applyStyleVariables
                           styleType="input"
+                          size="custom"
                           [styleProperties]="col?.metaData?.styleProperties?.properties"
                           [(ngModel)]="modifyingData[rowIndex][col.widgetId]"
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
@@ -411,6 +415,7 @@
                           *ngIf="isCellEditMode(col, rowIndex)"
                           applyStyleVariables
                           styleType="radioGroup"
+                          size="custom"
                           [styleProperties]="col?.metaData?.styleProperties?.properties"
                           [(ngModel)]="modifyingData[rowIndex][col.widgetId]"
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
@@ -459,6 +464,7 @@
                           *ngIf="isCellEditMode(col, rowIndex)"
                           applyStyleVariables
                           styleType="input"
+                          size="custom"
                           [styleProperties]="col?.metaData?.styleProperties?.properties"
                           [(ngModel)]="modifyingData[rowIndex][col.widgetId]"
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"

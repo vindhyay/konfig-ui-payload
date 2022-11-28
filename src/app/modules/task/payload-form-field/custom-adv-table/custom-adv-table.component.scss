@@ -241,6 +241,21 @@
       width: 100%;
       display: flex;
     }
+    &.center {
+      .row-actions {
+        justify-content: center;
+      }
+    }
+    &.left {
+      .row-actions {
+        justify-content: left;
+      }
+    }
+    &.right {
+      .row-actions {
+        justify-content: flex-end;
+      }
+    }
     .edit-action,
     .save-action,
     .cancel-action,

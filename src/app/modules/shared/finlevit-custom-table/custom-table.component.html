@@ -356,7 +356,7 @@
                                   : modifyingData[rowIndex][col.columnId]
                               "
                               (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col.columnId)"
-                              size="sm"
+                              size="custom"
                               [showClearButton]="col?.metaData?.showClearButton"
                               [prefixText]="col?.metaData?.prefixText"
                               [suffixText]="col?.metaData?.suffixText"
@@ -403,7 +403,7 @@
                               [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
                               [(ngModel)]="modifyingData[rowIndex][col.columnId]"
                               (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col.columnId)"
-                              size="sm"
+                              size="custom"
                               [showErrorMsg]="col?.metaData?.showErrorMessage"
                               [error]="
                                 rowErrors[rowIndex] && rowErrors[rowIndex][col.columnId]
@@ -461,7 +461,7 @@
                                   : modifyingData[rowIndex][col.columnId]
                               "
                               (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col.columnId)"
-                              size="sm"
+                              size="custom"
                               [showErrorMsg]="col?.metaData?.showErrorMessage"
                               [error]="
                                 rowErrors[rowIndex] && rowErrors[rowIndex][col.columnId]
@@ -519,7 +519,7 @@
                               [stepHour]="col?.metaData?.stepHour"
                               [(ngModel)]="modifyingData[rowIndex][col.columnId]"
                               (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col.columnId)"
-                              size="sm"
+                              size="custom"
                               [showErrorMsg]="col?.metaData?.showErrorMessage"
                               [minDate]="col?.validators?.minDate"
                               [maxDate]="col?.validators?.maxDate"
