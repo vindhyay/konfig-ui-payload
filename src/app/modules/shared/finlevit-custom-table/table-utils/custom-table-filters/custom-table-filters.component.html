@@ -43,7 +43,17 @@
             [isDisabled]="true"
           ></finlevit-text>
         </ng-container>
-        <ng-container *ngIf="control.value.condition !== 'isNull'">
+        <ng-container *ngIf="control.value.condition === 'isNotNull'">
+          <finlevit-text
+            class="m-2"
+            type="text"
+            size="xs"
+            [placeholder]="control?.value?.field?.label || 'Enter Value'"
+            formControlName="value"
+            [isDisabled]="true"
+          ></finlevit-text>
+        </ng-container>
+        <ng-container *ngIf="control.value.condition !== 'isNull' && control.value.condition !== 'isNotNull'">
           <ng-container [ngSwitch]="control?.value?.field?.colType">
             <finlevit-lib-datepicker
               class="m-2"
