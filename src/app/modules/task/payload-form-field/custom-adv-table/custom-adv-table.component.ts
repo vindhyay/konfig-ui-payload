@@ -421,6 +421,9 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
     }
   }
   addRow() {
+    if (this.isDisabled) {
+      return;
+    }
     const newRow: any = [];
     const newRowData = {};
     this.columns.forEach((eachColumn) => {

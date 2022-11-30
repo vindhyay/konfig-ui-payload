@@ -60,6 +60,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
   Address: WidgetTypes = WidgetTypes.Address;
 
   transactionStatus = null;
+  submissionStatus = "";
   hide = false;
   disable = false;
   readonlyMode = false;
@@ -140,6 +141,8 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
       if (value) {
         this._payloadFields = value.uiPayload;
         this.transactionStatus = value?.transactionStatus || null;
+        this.submissionStatus = value?.submissionStatus || "";
+        this.readonlyMode = this.readonlyMode || this.submissionStatus === "SUBMITTED";
         this.getAllAvailableFields(this.payloadFields);
         this.allAvailableFields.forEach((field) => {
           if (field?.value?.value && field?.metaData?.usedInFormula) {

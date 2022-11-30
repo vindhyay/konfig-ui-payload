@@ -128,6 +128,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() actions: TableActions = null;
   @Input() selectable = false;
   @Input() colSearch = false;
+  @Input() isDisabled: boolean = false;
   @Output() onColSearch = new EventEmitter();
   @Output() selectionHandler = new EventEmitter();
   @Output() selectedRows = new EventEmitter();
@@ -409,6 +410,9 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
     return _validators;
   };
   addRow() {
+    if (this.isDisabled) {
+      return;
+    }
     const newRow: any = {};
     this.columns.forEach((eachColumn) => {
       Object.assign(newRow, { [eachColumn.columnId]: eachColumn?.value?.value || null });

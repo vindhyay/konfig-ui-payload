@@ -186,9 +186,9 @@
         applyStyleVariables
         styleType="button"
         [styleProperties]="item?.metaData?.styleProperties?.properties"
-        [isPress]="!item?.metaData?.readOnly && item?.metaData?.styleProperties?.properties?.press?.isActionEnabled"
-        [isHover]="!item?.metaData?.readOnly && item?.metaData?.styleProperties?.properties?.hover?.isActionEnabled"
-        [isFocus]="!item?.metaData?.readOnly && item?.metaData?.styleProperties?.properties?.focus?.isActionEnabled"
+        [isPress]="!readonlyMode && item?.metaData?.styleProperties?.properties?.press?.isActionEnabled"
+        [isHover]="!readonlyMode && item?.metaData?.styleProperties?.properties?.hover?.isActionEnabled"
+        [isFocus]="!readonlyMode && item?.metaData?.styleProperties?.properties?.focus?.isActionEnabled"
         size="custom"
       ></finlevit-button>
     </div>
@@ -219,6 +219,7 @@
         [addRows]="item?.metaData?.addRows"
         [filter]="item?.metaData?.filter"
         [sort]="item?.metaData?.sort"
+        [isDisabled]="readonlyMode || disable || item?.isMirrorField"
         [fixedRecordsPerPage]="0"
         [overflowType]="item?.metaData?.overflow"
         [paginatorPosition]="item?.metaData?.paginatorPosition"
