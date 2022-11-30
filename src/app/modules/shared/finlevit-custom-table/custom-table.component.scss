@@ -151,6 +151,12 @@
         border-bottom: none !important;
       }
     }
+    .cell-container {
+      overflow: auto;
+      .inner-cell-container {
+        margin: auto;
+      }
+    }
   }
   .finlevit-table .f-thead .f-tr:not(.f-tr-search) .f-th {
     .f-resizer {

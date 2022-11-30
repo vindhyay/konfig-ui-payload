@@ -151,6 +151,12 @@
         border-bottom: none !important;
       }
     }
+    .cell-container {
+      overflow: auto;
+      .inner-cell-container {
+        margin: auto;
+      }
+    }
   }
   .finlevit-table .f-thead .f-tr:not(.f-tr-search) .f-th {
     .f-resizer {
@@ -237,7 +243,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    &.disable-actions{
+    &.disable-actions {
       pointer-events: none;
       opacity: 0.6;
     }
