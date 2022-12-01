@@ -78,7 +78,7 @@
     <div class="input-container">
       <app-ssninput-field
         [isDisabled]="readonlyMode || disable || item?.isMirrorField"
-        (onValueChange)="validateField($event, item)"
+        (onValueChange)="validateField($event, item); calculateFormulaValue(item, true)"
         (onBlurChange)="optionChange($event, item)"
         [item]="item"
         [value]="item.value.value"
@@ -90,7 +90,7 @@
     <div class="input-container">
       <app-phonenumber-field
         [isDisabled]="readonlyMode || disable || item?.isMirrorField"
-        (onValueChange)="validateField($event, item)"
+        (onValueChange)="validateField($event, item); calculateFormulaValue(item, true)"
         (onBlurChange)="optionChange($event, item)"
         [item]="item"
       >
@@ -106,7 +106,7 @@
         [tooltip]="item?.metaData?.tooltip"
         [placeholder]="item?.metaData?.placeholder"
         [(ngModel)]="item.value.value"
-        (ngModelChange)="validateField($event, item)"
+        (ngModelChange)="validateField($event, item); calculateFormulaValue(item, true)"
         [isRequired]="item?.validators?.required"
         [label]="item?.label"
         applyStyleVariables
