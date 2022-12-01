@@ -633,7 +633,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
   }
 
   calculateStringFormula(col, rowIndex, columnFormula) {
-    let cellValue;
+    let cellValue = "";
     columnFormula?.forEach((field) => {
       if (field?.resourceType === resourceType.PAYLOAD_FIELD) {
         this.tableData[rowIndex].forEach((row) => {
