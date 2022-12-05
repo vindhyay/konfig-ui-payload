@@ -390,12 +390,8 @@ export class EditorService extends BaseService {
           condition.rules.forEach((rule, index) => {
             const field = getFieldFromFields(allFields, rule?.field?.widgetId);
             const fieldValue = field?.value?.value;
-            // let result = this.conditionValidation(rule, fieldValue);
             const targetField = isShowError ? getFieldFromFields(allFields, rule?.targetField?.widgetId) : null;
             resultArray.push(this.conditionValidation(rule, fieldValue, targetField));
-            // expression =
-            // condMatched =
-            //   index === 0 ? result : rule.condition === "and" ? condMatched && result : condMatched || result;
           });
           condMatched = this.evaluvateFilter(condition.filtersLogic, resultArray);
           if (condMatched) {

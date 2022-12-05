@@ -98,7 +98,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
   set tableData(data) {
     this._tableData = data;
     this.filteredTableData = data;
-    this.tableFilters?.onSearch();
+    // this.tableFilters?.onSearch();
     this.updateRowsLimit();
   }
   get tableData() {
