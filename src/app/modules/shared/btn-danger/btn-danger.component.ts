@@ -20,19 +20,19 @@ export class BtnDangerComponent implements OnInit {
     this._size = value || 'xs';
     switch (this._size) {
       case "xxs":
-        this._hoverSize = "12px";
+        this._hoverSize = "11px";
         break;
       case "xs":
-        this._hoverSize = "12px";
+        this._hoverSize = "10px";
         break;
       case "sm":
-        this._hoverSize = "14px";
+        this._hoverSize = "11px";
         break;
       case "md":
-        this._hoverSize = "14px";
+        this._hoverSize = "12px";
         break;
       case "lg":
-        this._hoverSize = "16px";
+        this._hoverSize = "14px";
         break;
       case "xlg":
         this._hoverSize = "16px";

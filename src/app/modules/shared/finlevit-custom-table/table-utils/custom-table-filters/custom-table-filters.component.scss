@@ -1,15 +1,15 @@
-@import "src/assets/scss/var";
+@import "scss/index";
 
 .search-container {
   display: flex;
   flex-grow: 1;
   flex-direction: column;
   justify-content: left;
-  background-color: #fff;
-  padding: 20px;
+  background-color: var(--dialog-background-color);
+  padding: var(--spacing-md);
   background-clip: border-box;
-  box-shadow: 1px 3px 10px rgba(0, 0, 0, 0.24);
-  border-radius: 4px;
+  @include box-shadow-medium();
+  border-radius: var(--border-radius-sm);
   max-height: 320px;
   overflow: scroll;
   min-width: 600px;
@@ -22,59 +22,15 @@
   justify-content: left;
 }
 .rule-number {
-  margin-top: 10px;
+  margin-top: var(--spacing-sm);
 }
 .help-text {
-  color: #6c757d;
-  font-size: 11px;
-}
-.info-text{
-  padding: 0 10px;
+  margin-top: var(--spacing-sm);
+  @include font-body-input();
+  color: var(--grey-color-700);
 }
 .search-btn-wrapper {
   width: 100%;
   display: flex;
   align-items: center;
-  .search-btn {
-    display: inline-flex;
-    align-items: center;
-    padding: 5px 20px;
-    border-radius: 40px;
-    cursor: pointer;
-  }
-  .filter-active {
-    color: $accent;
-  }
-}
-.clear-icon {
-  margin-left: 20px;
-  background: #ec6b6e;
-  padding: 2px;
-  margin-top: 12px;
-  color: #fff;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
-}
-.add-icon {
-  margin-left: 20px;
-  background: $accent;
-  padding: 2px;
-  margin-top: 12px;
-  color: #fff;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
-}
-::ng-deep {
-  .clear-btn {
-    background-color: #d41111 !important;
-  }
-}
-.filter-actions{
-  ::ng-deep{
-    .p-button{
-      padding: 0.1375rem 0.65625rem;
-    }
-  }
 }

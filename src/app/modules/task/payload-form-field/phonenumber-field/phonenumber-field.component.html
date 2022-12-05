@@ -15,11 +15,12 @@
   [showClearButton]="item?.metaData?.showClearButton"
   [prefixText]="item?.metaData?.prefixText"
   [suffixText]="item?.metaData?.suffixText"
-  [allowLabelWrapping]="item?.metaData?.allowLabelWrapping"
   [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
   [errorMsg]="item?.errorMessage || item?.metaData?.errorMessage"
   [showErrorMsg]="item?.metaData?.showErrorMessage"
   applyStyleVariables
   styleType="input"
+  size="custom"
   [styleProperties]="item?.metaData?.styleProperties?.properties"
+  [maxCharLimit]="12"
 ></finlevit-mask-text>

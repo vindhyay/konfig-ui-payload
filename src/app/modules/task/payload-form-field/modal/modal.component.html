@@ -2,12 +2,12 @@
   [leftIcon]="metaData?.leftIcon"
   [rightIcon]="metaData?.rightIcon"
   [label]="item?.label"
-  [type]="metaData?.type"
   (btnClick)="toggleModal()"
   applyStyleVariables
+  [styleProperties]="styles?.properties"
   styleType="button"
-  [styleProperties]="item?.metaData?.styleProperties?.properties"
-  variant="custom"
+  size="custom"
+  [isDisabled]="isDisabled"
 ></finlevit-button>
 <p-dialog
   *ngIf="modalStatus"

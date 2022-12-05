@@ -20,11 +20,12 @@
       >
         <div class="f-tr">
           <div
-            class="f-th"
             [ngStyle]="{
               width: (col?.width || 100) + 'px',
               maxWidth: col?.width ? col?.width + 'px' : 'auto',
               flex: (col?.width || 100) + ' 0 auto',
+              display: 'flex',
+              alignItems: 'center',
               'border-right-style': verticalBorder ? 'solid' : 'none'
             }"
             *ngFor="let col of columns | searchFilter: { metaData: { isHidden: false } }"
@@ -34,6 +35,11 @@
             [ref]="col?.widgetId"
             [align]="col?.metaData?.alignment"
             sortHeader
+            #sortHeader
+            [ngClass]="{
+              'f-th': true,
+              sorted: sortHeader?.sorter?.active === col?.widgetId
+            }"
           >
             <div class="f-resizable-header-content">
               <div
@@ -127,13 +133,12 @@
                   maxWidth: columns[colIndex]?.width ? (columns[colIndex]?.width || 100) + 'px' : 'auto',
                   flex: (columns[colIndex]?.width || 100) + ' 0 auto'
                 }"
-                *ngFor="let col of rowData | searchFilter: { metaData: { isHidden: false } }; let colIndex = index"
-                (dblclick)="isColumnEdit && onColEdit($event, col, rowIndex, rowData)"
+                *ngFor="let col of rowData | customFilter: { filterFn: rowDataColumnsFilterFn }; let colIndex = index"
               >
                 <div
                   [ngClass]="{ 'cell-container': true }"
                   [ngStyle]="{
-                    'border-right-style': verticalBorder && (actions.editRow || actions.deleteRow) ? 'solid' : 'none',
+                    'border-right-style': verticalBorder ? 'solid' : 'none',
                     'border-bottom-style': horizontalBorder ? 'solid' : 'none'
                   }"
                 >
@@ -166,8 +171,7 @@
                           [tooltip]="col?.metaData?.tooltip"
                           [placeholder]="col?.metaData?.placeholder"
                           [isRequired]="col?.validators?.required"
-                          [isSmall]="true"
-                          [allowLabelWrapping]="col?.metaData?.allowLabelWrapping"
+                          size="custom"
                           [showClearButton]="col?.metaData?.showClearButton"
                           [prefixText]="col?.metaData?.prefixText"
                           [suffixText]="col?.metaData?.suffixText"
@@ -193,12 +197,12 @@
                           *ngIf="isCellEditMode(col, rowIndex)"
                           applyStyleVariables
                           styleType="input"
+                          size="custom"
                           [styleProperties]="col?.metaData?.styleProperties?.properties"
                           [(ngModel)]="modifyingData[rowIndex][col.widgetId]"
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
                           [placeholder]="col?.metaData?.placeholder || 'select'"
                           [isDisabled]="false"
-                          [isSmall]="true"
                           [isRequired]="col?.validators?.required"
                           [options]="columns[colIndex]?.metaData?.options"
                           [optionLabel]="
@@ -211,7 +215,6 @@
                               ? col?.metaData?.optionValue
                               : 'value'
                           "
-                          [allowLabelWrapping]="col?.metaData?.allowLabelWrapping"
                           [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
                           [showErrorMsg]="col?.metaData?.showErrorMessage"
                           [error]="
@@ -238,7 +241,7 @@
                           [styleProperties]="col?.metaData?.styleProperties?.properties"
                           [(ngModel)]="modifyingData[rowIndex][col.widgetId]"
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
-                          [isSmall]="true"
+                          size="custom"
                           [placeholder]="col?.metaData?.placeholder"
                           [error]="
                             rowErrors[rowIndex] && rowErrors[rowIndex][col?.widgetId]
@@ -257,7 +260,6 @@
                           [showMaxCharLimit]="col?.validators?.maxLength"
                           [maxCharLimit]="col?.validators?.maxLength"
                           [pattern]="col?.validators?.pattern || null"
-                          [allowLabelWrapping]="col?.metaData?.allowLabelWrapping"
                           [showClearButton]="col?.metaData?.showClearButton"
                           [prefixText]="col?.metaData?.prefixText"
                           [suffixText]="col?.metaData?.suffixText"
@@ -273,6 +275,8 @@
                           *ngIf="isCellEditMode(col, rowIndex)"
                           applyStyleVariables
                           styleType="checkbox"
+                          size="custom"
+                          class="table-cell-checkbox"
                           [styleProperties]="col?.metaData?.styleProperties?.properties"
                           [(ngModel)]="modifyingData[rowIndex][col.widgetId]"
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
@@ -299,7 +303,7 @@
                           *ngIf="isCellEditMode(col, rowIndex)"
                           [(ngModel)]="modifyingData[rowIndex][col.widgetId]"
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
-                          [isSmall]="true"
+                          size="custom"
                           [placeholder]="'Enter image URL'"
                           [error]="
                             rowErrors[rowIndex] && rowErrors[rowIndex][col?.widgetId]
@@ -318,9 +322,11 @@
                           {{
                             col?.metaData?.thousandsSeparator
                               ? col?.metaData?.currency
-                                ? (calculateCellValue(col, rowIndex)===undefined? col?.metaData.currency?.currencySymbol +' 0'  : col?.metaData.currency?.currencySymbol +
-                                  " " +
-                                  (calculateCellValue(col, rowIndex) | number))
+                                ? calculateCellValue(col, rowIndex) === undefined
+                                  ? col?.metaData.currency?.currencySymbol + " 0"
+                                  : col?.metaData.currency?.currencySymbol +
+                                    " " +
+                                    (calculateCellValue(col, rowIndex) | number)
                                 : (calculateCellValue(col, rowIndex) | number)
                               : col?.metaData?.currency
                               ? col?.metaData.currency?.currencySymbol + " " + calculateCellValue(col, rowIndex)
@@ -331,6 +337,7 @@
                           *ngIf="isCellEditMode(col, rowIndex)"
                           applyStyleVariables
                           styleType="input"
+                          size="custom"
                           [styleProperties]="col?.metaData?.styleProperties?.properties"
                           [(ngModel)]="
                             col?.metaData?.isFormulaField
@@ -339,7 +346,8 @@
                           "
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
                           [placeholder]="col?.metaData?.placeholder"
-                          [isSmall]="true"
+                          [rightIcon]="col?.metaData?.rightIcon"
+                          [leftIcon]="col?.metaData?.leftIcon"
                           [tooltip]="col?.metaData?.tooltip"
                           [mode]="col?.metaData?.mode === 'currency' ? 'decimal' : col?.metaData?.mode"
                           [minFractionDigits]="col?.metaData?.minFractionDigits"
@@ -348,9 +356,6 @@
                           [maxLength]="col?.validators?.maxLength"
                           [showMaxCharLimit]="col?.validators?.maxLength"
                           [useGrouping]="col?.metaData?.thousandsSeparator"
-                          [rightIcon]="col?.metaData?.rightIcon"
-                          [leftIcon]="col?.metaData?.leftIcon"
-                          [allowLabelWrapping]="col?.metaData?.allowLabelWrapping"
                           [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
                           [showErrorMsg]="col?.metaData?.showErrorMessage"
                           [prefixText]="col?.metaData?.prefixText || col?.metaData?.currency?.currencySymbol"
@@ -378,6 +383,7 @@
                           *ngIf="isCellEditMode(col, rowIndex)"
                           applyStyleVariables
                           styleType="input"
+                          size="custom"
                           [styleProperties]="col?.metaData?.styleProperties?.properties"
                           [(ngModel)]="modifyingData[rowIndex][col.widgetId]"
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
@@ -386,7 +392,6 @@
                           [tooltip]="col?.metaData?.tooltip"
                           [placeholder]="col?.metaData?.placeholder"
                           [isRequired]="col?.validators?.required"
-                          [allowLabelWrapping]="col?.metaData?.styleProperties?.properties?.allowLabelWrapping"
                           [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
                           [showErrorMsg]="col?.metaData?.showErrorMessage"
                           [showCharCount]="col?.metaData?.styleProperties?.properties?.showCharCount"
@@ -410,6 +415,7 @@
                           *ngIf="isCellEditMode(col, rowIndex)"
                           applyStyleVariables
                           styleType="radioGroup"
+                          size="custom"
                           [styleProperties]="col?.metaData?.styleProperties?.properties"
                           [(ngModel)]="modifyingData[rowIndex][col.widgetId]"
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
@@ -420,7 +426,6 @@
                           [optionValue]="col?.metaData?.isLabelAndValue ? col?.metaData?.optionValue : 'name'"
                           [columns]="col?.metaData?.columns"
                           [tooltip]="col?.metaData?.tooltip"
-                          [allowLabelWrapping]="col?.metaData?.allowLabelWrapping"
                           [showErrorMsg]="col?.metaData?.showErrorMessage"
                           [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
                           [horizontalContentAlignment]="
@@ -459,6 +464,7 @@
                           *ngIf="isCellEditMode(col, rowIndex)"
                           applyStyleVariables
                           styleType="input"
+                          size="custom"
                           [styleProperties]="col?.metaData?.styleProperties?.properties"
                           [(ngModel)]="modifyingData[rowIndex][col.widgetId]"
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
@@ -477,7 +483,6 @@
                           [hourFormat]="col?.metaData?.hourFormat"
                           [stepMinute]="col?.metaData?.stepMinute"
                           [stepHour]="col?.metaData?.stepHour"
-                          [allowLabelWrapping]="col?.metaData?.styleProperties?.properties?.allowLabelWrapping"
                           [error]="
                             rowErrors[rowIndex] && rowErrors[rowIndex][col?.widgetId]
                               ? rowErrors[rowIndex][col?.widgetId]['error']
@@ -519,6 +524,7 @@
                     [ngClass]="{
                       'inner-cell-container': true,
                       'table-row-actions': true,
+                      'disable-actions': isDisabled,
                       left: actions.alignment === CellAlignTypes.LEFT,
                       right: actions.alignment === CellAlignTypes.RIGHT,
                       center: actions.alignment === CellAlignTypes.CENTER
@@ -528,48 +534,52 @@
                       <div
                         [ngClass]="{ 'row-actions edit-action-mode': true, disabled: Object.keys(editCells).length }"
                       >
-                        <i
-                          [class]="
+                        <finlevit-icon-preview
+                          class="save-action"
+                          [icon]="
                             saveLoadingRows[rowIndex] ? 'pi pi-spin pi-spinner save-icon' : 'pi pi-check save-icon'
                           "
                           (click)="onRowSave(rowIndex, modifyingData[rowIndex])"
-                        ></i>
-                        <i
-                          class="pi pi-times cancel-icon"
+                        ></finlevit-icon-preview>
+                        <finlevit-icon-preview
+                          class="delete-action"
+                          icon="pi pi-times cancel-icon"
                           (click)="onRowEditCancel(rowIndex, modifyingData[rowIndex])"
-                        ></i>
+                        ></finlevit-icon-preview>
                       </div>
                     </ng-container>
                     <ng-container *ngIf="!editRows[rowIndex] && newRows[rowIndex]">
                       <div [ngClass]="{ 'row-actions new-action-mode': true, disabled: Object.keys(editCells).length }">
-                        <i
-                          class="pi pi-check save-icon"
+                        <finlevit-icon-preview
+                          class="save-action"
+                          icon="pi pi-check save-icon"
                           (click)="onRowSave(rowIndex, modifyingData[rowIndex], true)"
-                        ></i>
-                        <i
-                          class="pi pi-trash delete-icon"
+                        ></finlevit-icon-preview>
+                        <finlevit-icon-preview
+                          class="delete-action"
+                          icon="pi pi-trash delete-icon"
                           (click)="onDelete(rowIndex, modifyingData[rowIndex], true)"
-                        ></i>
+                        ></finlevit-icon-preview>
                       </div>
                     </ng-container>
                     <ng-container *ngIf="!editRows[rowIndex] && !newRows[rowIndex]">
                       <div [ngClass]="{ 'row-actions': true, disabled: Object.keys(editCells).length }">
-                        <span class="edit-action" *ngIf="actions?.editRow" (click)="onEdit(rowIndex, rowData)">
-                          <i class="pi pi-pencil edit-icon"></i>
-                        </span>
-                        <span
+                        <finlevit-icon-preview
+                          class="edit-action"
+                          icon="pi pi-pencil edit-icon"
+                          *ngIf="actions?.editRow"
+                          (click)="onEdit(rowIndex, rowData)"
+                        ></finlevit-icon-preview>
+                        <finlevit-icon-preview
                           class="delete-action"
                           *ngIf="actions?.deleteRow"
+                          [icon]="
+                            deleteLoadingRows[rowIndex]
+                              ? 'pi pi-spin pi-spinner delete-icon'
+                              : 'pi pi-trash delete-icon'
+                          "
                           (click)="onDelete(rowIndex, modifyingData[rowIndex])"
-                        >
-                          <i
-                            [class]="
-                              deleteLoadingRows[rowIndex]
-                                ? 'pi pi-spin pi-spinner delete-icon'
-                                : 'pi pi-trash delete-icon'
-                            "
-                          ></i>
-                        </span>
+                        ></finlevit-icon-preview>
                       </div>
                     </ng-container>
                   </div>
@@ -592,28 +602,28 @@
           <ng-template #zeroRecordsResult> Showing {{ pagination?.totalRecords }} results </ng-template>
         </div>
         <ng-template #cellEditActions>
-          <div class="ml-2 mr-2">
-            <finlevit-button
-              label="Save"
-              applyStyleVariables
-              [styleProperties]="saveBtnProperties?.properties"
-              styleType="button"
-              (btnClick)="onColSave($event)"
-              isHover="true"
-              variant="custom"
-            ></finlevit-button>
-          </div>
-          <div class="ml-2 mr-2">
-            <finlevit-button
-              label="Cancel"
-              applyStyleVariables
-              [styleProperties]="cancelBtnProperties?.properties"
-              styleType="button"
-              (btnClick)="onColSaveCancel($event)"
-              isHover="true"
-              variant="custom"
-            ></finlevit-button>
-          </div>
+          <!--          <div class="ml-2 mr-2">-->
+          <!--            <finlevit-button-->
+          <!--              label="Save"-->
+          <!--              applyStyleVariables-->
+          <!--              [styleProperties]="saveBtnProperties?.properties"-->
+          <!--              styleType="button"-->
+          <!--              (btnClick)="onColSave($event)"-->
+          <!--              isHover="true"-->
+          <!--              variant="custom"-->
+          <!--            ></finlevit-button>-->
+          <!--          </div>-->
+          <!--          <div class="ml-2 mr-2">-->
+          <!--            <finlevit-button-->
+          <!--              label="Cancel"-->
+          <!--              applyStyleVariables-->
+          <!--              [styleProperties]="cancelBtnProperties?.properties"-->
+          <!--              styleType="button"-->
+          <!--              (btnClick)="onColSaveCancel($event)"-->
+          <!--              isHover="true"-->
+          <!--              variant="custom"-->
+          <!--            ></finlevit-button>-->
+          <!--          </div>-->
         </ng-template>
       </div>
       <div [ngClass]="{ '-center': true, 'show-pagination': isPaginationEnabled }">
@@ -664,9 +674,13 @@
           [columns]="columns | searchFilter: { metaData: { isHidden: false } }"
           (search)="handleSearch($event)"
         ></app-custom-table-filters>
-        <button *ngIf="addRows && !tableFilters?.filtersEnabled" class="footer-btn" (click)="addRow()">
-          <i class="pi pi-plus"></i>
-        </button>
+        <finlevit-icon-preview
+          [style.cursor]="'pointer'"
+          class="ml-3"
+          *ngIf="addRows && !tableFilters?.filtersEnabled"
+          (onClick)="addRow()"
+          icon="pi pi-plus"
+        ></finlevit-icon-preview>
       </div>
     </div>
   </div>

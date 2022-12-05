@@ -71,6 +71,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
     return this._tableData;
   }
   constructor(private cdr: ChangeDetectorRef) {}
+  @Input() minRowHeight = MIN_ROW_HEIGHT;
   Object = Object;
   CellAlignTypes = CELL_ALIGNMENTS_TYPES;
   PaginatorPositionTypes = TABLE_PAGINATION_POSITIONS;
@@ -85,6 +86,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
   Image: WidgetTypes = WidgetTypes.Image;
   Dropdown: WidgetTypes = WidgetTypes.Dropdown;
   DatePicker: WidgetTypes = WidgetTypes.DatePicker;
+  Avatar: WidgetTypes = WidgetTypes.Avatar;
   CheckboxGroup: WidgetTypes = WidgetTypes.CheckboxGroup;
   RadioGroup: WidgetTypes = WidgetTypes.RadioGroup;
   Upload: WidgetTypes = WidgetTypes.Upload;
@@ -96,11 +98,11 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
   _columns: Column[] = [];
   selection = new SelectionModel<any>(true, []);
   searchObject = {};
-
   @Input() saveBtnProperties: any = {};
   @Input() cancelBtnProperties: any = {};
+
   @Input() customTemplates = {};
-  @Input() verticalBorder = true;
+  @Input() verticalBorder = false;
   @Input() horizontalBorder = true;
   @Input() tableBorder = true;
   isPaginationEnabled = true;
@@ -113,6 +115,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() rows = 0;
   @Input() isServerSidePagination = false;
   @Input() isServerSideSorting = false;
+  @Input() isServerSideFiltering = false;
   @Input() totalRecords = 0;
   @Input() pageOptions = [10, 15, 20, 30, 40, 50];
   @Input() fixedRecordsPerPage = 10;
@@ -121,10 +124,11 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() isLoading = false;
   @Input() hideHeader = false;
   @Input() hideFooter = false;
+  @Input() dateFormat = "medium";
   @Input() actions: TableActions = null;
   @Input() selectable = false;
   @Input() colSearch = false;
-  @Input() dateFormat: string;
+  @Input() isDisabled: boolean = false;
   @Output() onColSearch = new EventEmitter();
   @Output() selectionHandler = new EventEmitter();
   @Output() selectedRows = new EventEmitter();
@@ -138,6 +142,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
   @Output() handleRowSave = new EventEmitter();
   @Output() handleColsSave = new EventEmitter();
   @Output() handleRowDelete = new EventEmitter();
+  @Output() onFilter = new EventEmitter();
 
   tableId: any = null;
   editRows = {};
@@ -405,6 +410,9 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
     return _validators;
   };
   addRow() {
+    if (this.isDisabled) {
+      return;
+    }
     const newRow: any = {};
     this.columns.forEach((eachColumn) => {
       Object.assign(newRow, { [eachColumn.columnId]: eachColumn?.value?.value || null });
@@ -480,7 +488,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
   getRulesFromFilterColumns(columns) {
     return (columns || []).map((column) => {
       return {
-        widgetId: column?.field?.widgetId,
+        fieldId: column?.field?.columnId,
         condition: column.condition,
         dataType: column?.field?.type,
         operator: column.operator,
@@ -492,13 +500,17 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
   handleSearch({ searchColumns, filtersLogic }) {
     this.currentPage = 1;
     const rules = this.getRulesFromFilterColumns(searchColumns);
+    if (this.isServerSideFiltering) {
+      this.onFilter.emit({ rules, filtersLogic });
+      return;
+    }
     if (rules && rules.length) {
       this.filteredTableData = this.tableData.filter((rowData) => {
         let condMatched = true;
         let filtersLogicCopy = JSON.parse(JSON.stringify(filtersLogic));
         for (let i: any = 0; i < rules.length; i++) {
           const rule = rules[i];
-          const fieldValue = rowData[rule?.widgetId];
+          const fieldValue = rowData[rule?.fieldId];
           let result = conditionValidation(rule, fieldValue);
           condMatched = i === 0 ? result : rule.operator === "AND" ? condMatched && result : condMatched || result;
           filtersLogicCopy = filtersLogicCopy.replace(new RegExp(i + 1, "g"), result);
@@ -642,10 +654,13 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
     }
     return cellValue;
   }
-  columnFilterFn = (column: Column) => {
+  columnFilterHiddenColumns = (column: Column) => {
     if (column?.metaData?.hasOwnProperty("isHidden")) {
       return !column?.metaData?.isHidden;
     }
     return true;
+  };
+  columnFilterNoFilterColumns = (column: any) => {
+    return column?.filter !== false;
   };
 }

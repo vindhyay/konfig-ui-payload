@@ -10,12 +10,12 @@ import { AUTH_LABELS } from "../../state/labels";
 import { UserDataModel } from "../../models";
 import { NotificationService } from "src/app/services/notification.service";
 import { parseApiResponse } from "src/app/utils";
-import { CustomError } from "../../../../state/model/custom-error";
+import { CustomError } from "../../../../state/model";
 
 @Component({
   selector: "app-login",
   templateUrl: "./login.component.html",
-  styleUrls: ["../../auth.scss"],
+  styleUrls: ["./login.component.scss"],
 })
 export class LoginComponent extends BaseComponent implements OnInit {
   LABELS = AUTH_LABELS;

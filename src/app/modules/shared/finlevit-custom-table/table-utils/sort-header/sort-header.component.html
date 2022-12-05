@@ -1,21 +1,13 @@
 <ng-container *ngIf="align === cellAlignmentTypes.LEFT || cellAlignmentTypes.CENTER">
   <ng-content></ng-content>
   <ng-container *ngIf="sortEligible">
-    <i
+    <finlevit-icon-preview
       [ngClass]="{
-        right: align === cellAlignmentTypes.RIGHT,
-        left: align === cellAlignmentTypes.LEFT,
-        'sort-icon pi pi-arrow-up': true
+        'sort-icon': true,
+        asc: sorter?.active === ref && sorter?.direction === 'asc'
       }"
-      *ngIf="sorter?.active === ref && sorter?.direction === 'asc'"
-    ></i>
-    <i
-      [ngClass]="{
-        right: align === cellAlignmentTypes.RIGHT,
-        left: align === cellAlignmentTypes.LEFT,
-        'sort-icon pi pi-arrow-down': true
-      }"
-      *ngIf="sorter?.active === ref && sorter?.direction === 'desc'"
-    ></i>
+      *ngIf="sorter?.active === ref"
+      [icon]="icon"
+    ></finlevit-icon-preview>
   </ng-container>
 </ng-container>

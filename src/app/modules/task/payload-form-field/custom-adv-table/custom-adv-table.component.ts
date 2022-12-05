@@ -231,7 +231,18 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
     this.editRows[rowIndex] = rowData;
     const currentRow: any = {};
     (rowData || []).forEach((eachColumn) => {
-      currentRow[eachColumn?.widgetId] = eachColumn?.value?.value;
+      if (eachColumn?.value?.value) {
+        currentRow[eachColumn?.widgetId] = eachColumn?.value?.value;
+      } else {
+        if (
+          eachColumn["metaData"].widgetType === WidgetTypes.DatePicker ||
+          eachColumn["metaData"].widgetType === WidgetTypes.Number
+        ) {
+          currentRow[eachColumn?.widgetId] = null;
+        } else {
+          currentRow[eachColumn?.widgetId] = "";
+        }
+      }
     });
     this.modifyingData[rowIndex] = currentRow;
   }
@@ -410,6 +421,9 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
     }
   }
   addRow() {
+    if (this.isDisabled) {
+      return;
+    }
     const newRow: any = [];
     const newRowData = {};
     this.columns.forEach((eachColumn) => {
@@ -607,7 +621,11 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
     if (evaluate === Infinity) {
       cellValue = "∞";
     } else if (isNaN(evaluate)) {
-      cellValue = undefined;
+      if (col.dataType === "string") {
+        cellValue = null;
+      } else {
+        cellValue = undefined;
+      }
     } else {
       cellValue = eval(expression) || null;
     }
@@ -615,7 +633,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
   }
 
   calculateStringFormula(col, rowIndex, columnFormula) {
-    let cellValue;
+    let cellValue = "";
     columnFormula?.forEach((field) => {
       if (field?.resourceType === resourceType.PAYLOAD_FIELD) {
         this.tableData[rowIndex].forEach((row) => {
@@ -669,4 +687,8 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
     }
     return cellValue;
   }
+  rowDataColumnsFilterFn = (eachCol) => {
+    const colConfig = this.columns.find((col) => col?.displayName === eachCol?.displayName);
+    return colConfig && !colConfig?.metaData?.isHidden;
+  };
 }

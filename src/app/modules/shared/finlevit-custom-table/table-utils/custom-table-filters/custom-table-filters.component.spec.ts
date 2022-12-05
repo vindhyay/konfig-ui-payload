@@ -8,7 +8,7 @@ describe("CustomTableFiltersComponent", () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CustomTableFiltersComponent],
+      declarations: [CustomTableFiltersComponent]
     }).compileComponents();
   });
 

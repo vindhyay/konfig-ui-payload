@@ -1,5 +1,25 @@
+/* You can add global styles to this file, and also import other style files */
+
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
 @import "~@angular/material/theming";
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+// Override the typography in the core CSS.
 @include mat-core();
+
+/* You can add global styles to this file, and also import other style files */
+@import "./assets/scss/index.scss";
+//material icons
+@import "./assets/fonts/fonts";
+// action event pop over styles
+@import "~bootstrap/dist/css/bootstrap.css";
+
+/* common css */
+/* common css */
 
 /* primeng css */
 @import "~primeicons/primeicons.css";
@@ -7,157 +27,17 @@
 @import "~primeng/resources/primeng.min.css";
 @import "~primeflex/primeflex.css";
 
-/* You can add global styles to this file, and also import other style files */
-@import "~bootstrap/dist/css/bootstrap.css";
-@import "./assets/scss/index.scss";
-
-/* normalize css start */
-.preview-container {
-  input[type="checkbox"],
-  input[type="radio"] {
-    box-sizing: border-box;
-    padding: 0;
-    visibility: hidden;
-  }
+.ck.ck-list__item .ck-button.ck-on {
+  background: #d2d1d1 !important;
+  color: black !important;
 }
-/* normalize css end */
-
-/* custom primeng css */
-.p-inputnumber,
-.p-inputnumber-input,
-.p-inputtext,
-.p-calendar,
-.p-colorpicker {
-  width: 100%;
+.mention-active > a {
+  background: #d2d1d1 !important;
+  color: black !important;
 }
-.p-dropdown .p-dropdown-label {
-  padding: 0.3rem;
-}
-.p-calendar {
-  .p-button.p-button-icon-only {
-    padding: 0;
-    background: white;
-    color: #495157;
-    border-color: #ced4d9;
-    border-left: none;
-  }
-}
-.p-input-icon-right {
-  width: 100%;
-}
-.p-input-icon-left {
-  width: 100%;
-}
-.p-inputnumber-sm .p-inputnumber-input {
-  font-size: 0.875rem;
-  padding: 0.4375rem 0.65625rem;
-}
-::placeholder {
-  color: var(--surface-400);
-  //font-size: 1.5em;
-}
-.p-dropdown {
-  width: 100%;
-  //height: 2.2rem;
-}
-.error-input {
-  .p-inputnumber-input {
-    border-color: $red;
-  }
-  .p-checkbox-box {
-    border-color: $red;
-  }
-}
-.error-border {
-  input {
-    border-color: $red;
-  }
-  .p-calendar .p-button.p-button-icon-only {
-    border-color: $red;
-  }
-  input:hover {
-    border-color: $red !important;
-  }
-}
-.input-label,
-.checkbox-label {
-  .label-tooltip {
-    color: gray;
-  }
-  font-family: "Muli";
-  font-weight: 400;
-  .required {
-    color: $red;
-  }
-}
-.radio-group-label {
-  font-weight: 400 !important;
-}
-.p-field-checkbox > label,
-.p-field-radiobutton > label {
-  margin-left: 0.5rem;
-  line-height: 1;
-  margin-bottom: 0;
-}
-.button-input {
-  .p-button {
-    width: 100%;
-    height: 100%;
-  }
-}
-.tab-container {
-  height: 100%;
-  padding: 4px;
-  .p-tabview {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-  }
-  .p-tabview-panels {
-    height: 100%;
-    border: 1px solid #dee2e6;
-    border-top: 0;
-    font-size: 14px;
-    color: inherit;
-  }
-  &.no-tab-container {
-    .p-tabview-panels {
-      height: 100%;
-    }
-    .p-tabview {
-      height: 100%;
-    }
-  }
-  .p-tabview-panel {
-    height: 100%;
-  }
-  .p-tabview .p-tabview-nav li:not(.p-highlight) .p-tabview-nav-link {
-    border-color: #dee2e6;
-  }
-  .p-tabview .p-tabview-nav li .p-tabview-nav-link:not(.p-disabled):focus {
-    box-shadow: none;
-  }
-}
-/* custom primeng css */
-
-@keyframes focuses {
-  0% {
-    -webkit-box-shadow: 0 0 10px #ff9212;
-    -moz-box-shadow: 0 0 10px #ff9212;
-    box-shadow: 0 0 10px #ff9212;
-  }
-
-  50% {
-    -webkit-box-shadow: 0 0 0 #ff9212;
-    -moz-box-shadow: 0 0 0 #ff9212;
-    box-shadow: 0 0 0 #ff9212;
-  }
-
-  100% {
-    -webkit-box-shadow: 0 0 10px #ff9212;
-    -moz-box-shadow: 0 0 10px #ff9212;
-    box-shadow: 0 0 10px #ff9212;
-  }
+body {
+  font-size: 14px;
+  color: var(--primary-text-color);
 }
 /* Mat stepper widget css */
 .mat-stepper-horizontal {
@@ -195,7 +75,6 @@
 .stepper-btn-container {
   display: flex;
   justify-content: space-between;
-  padding: 0 2rem;
 }
 .step-btn {
   color: #ffffff;
@@ -213,10 +92,17 @@
   color: white;
 }
 /* Mat stepper widget css */
-/* Table css */
-.p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
-  background: none;
-  color: inherit;
+.ck.ck-editor__main > .ck-editor__editable {
+  background: #fafafa !important;
+}
+.ck-editor__editable {
+  min-height: 400px;
+  p {
+    padding: 0;
+  }
+}
+.text-editor-content {
+  min-height: 500px;
 }
 .text-content {
   p {
@@ -247,6 +133,9 @@
     padding: 0.4em;
     border: 1px solid #bfbfbf;
   }
+  figure {
+    margin: auto;
+  }
   blockquote {
     overflow: hidden;
     padding-right: 1.5em;
@@ -256,9 +145,9 @@
     font-style: italic;
     border-left: 5px solid #ccc;
   }
-  figure {
-    margin: auto;
-  }
+}
+.ck.ck-balloon-panel {
+  z-index: 9999 !important;
 }
 
 //Field Modal styles
@@ -270,9 +159,11 @@
   }
 }
 .p-dialog-mask {
-  z-index: 100;
+  z-index: 111 !important;
+  &.field-modal-mask {
+    z-index: 1 !important;
+  }
 }
-
 //Collapse Container
 .collapse-container {
   height: 100%;
@@ -296,79 +187,93 @@
   }
   .p-accordion .p-accordion-header .p-accordion-header-link {
     padding: 0;
-    text-decoration: none;
   }
   .p-accordion .p-accordion-header .p-accordion-header-link .p-accordion-toggle-icon {
     margin-right: 0;
   }
 }
-//Error styles
-.error-msg {
-  padding: 10px;
-  border-radius: 4px;
-  font-size: 14px;
-  color: rgb(97, 26, 21);
-  background-color: rgb(253, 236, 234);
-  margin: 0 20px;
-  display: flex;
+//Conditions CSS
+.conditions-component {
+  min-width: 70%;
 }
-//Table css start
-.p-datatable-wrapper {
-  font-family: sans-serif, serif;
-  font-size: 13px;
-  .p-datatable-thead > tr > th {
-    font-weight: 500;
-    line-height: 2rem;
-  }
-  .p-sortable-column-icon {
-    font-size: 11px;
-  }
-  .pi-filter-icon {
-    font-size: 11px;
-  }
+// cascade select css
+.p-cascadeselect {
+  width: 100%;
 }
-.p-datatable.p-datatable-sm .p-datatable-thead > tr > th {
-  padding: 0.2rem 0.5rem;
+.p-cascadeselect .p-cascadeselect-label {
+  padding: 0.3rem;
 }
-.p-datatable-tbody > tr > td,
-.p-datatable-tfoot > tr > td,
-.p-datatable-thead > tr > th {
-  overflow: hidden;
-  white-space: nowrap;
+.p-cascadeselect-panel .p-cascadeselect-items {
+  width: 100%;
 }
-//Table css end
 
-// modal footer button css start
-.p-dialog .p-dialog-footer button{
-  width: 100%
+body {
+  -webkit-font-smoothing: var(--font-smoothing-webkit);
+  -moz-osx-font-smoothing: var(--font-smoothing-moz);
 }
-// modal footer button css end
-//Dropdown options based on size
-.input-small-options {
-  .p-dropdown-item {
-    font-size: 0.75rem;
-    padding: 0.5rem 0.75rem !important;
-    line-height: normal;
+
+// Global styles
+// required styles
+.required {
+  color: var(--color-error);
+}
+.widget-Holder {
+  margin-bottom: var(--spacing-sm-md);
+}
+//icon config popover
+.icon-config-popover {
+  min-width: 370px;
+  .arrow::before {
+    display: none;
+  }
+  @include popover-container();
+  .popover-header {
+    @include popover-header();
   }
 }
-.input-medium-options {
-  .p-dropdown-item {
-    font-size: 0.9rem;
-    padding: 0.65rem 0.75rem !important;
-    line-height: normal;
+//Widget Config Popover{
+.config-popover {
+  min-width: 320px;
+  z-index: 110;
+  .arrow::before {
+    display: none;
   }
-}
-.input-large-options {
-  .p-dropdown-item {
-    font-size: 1.2rem;
-    padding: 0.75rem 0.75rem !important;
-    line-height: normal;
+  @include popover-container();
+  .popover-header {
+    @include popover-header();
   }
 }
 
-// Split Button set styles
-.p-buttonset .p-button:not(:last-child) {
-  &.split-btn {
-    border-right: 1px solid #dee2e6;
+.tab-container {
+  height: 100%;
+  padding: 4px;
+  .p-tabview {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .p-tabview-panels {
+    height: 100%;
+    border: 1px solid #dee2e6;
+    border-top: 0;
+    font-size: 14px;
+    color: inherit;
+  }
+  &.no-tab-container {
+    .p-tabview-panels {
+      height: 100%;
+    }
+    .p-tabview {
+      height: 100%;
+    }
+  }
+  .p-tabview-panel {
+    height: 100%;
+  }
+  .p-tabview .p-tabview-nav li:not(.p-highlight) .p-tabview-nav-link {
+    border-color: #dee2e6;
+  }
+  .p-tabview .p-tabview-nav li .p-tabview-nav-link:not(.p-disabled):focus {
+    box-shadow: none;
   }
 }

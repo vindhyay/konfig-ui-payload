@@ -1,4 +1,9 @@
-<div class="table-widget">
+<div
+  [ngClass]="{
+    'table-widget': true,
+    'no-data': !(tableFilters?.filtersEnabled ? filteredTableData : tableData).length
+  }"
+>
   <div
     [ngClass]="{
       'finlevit-table': true,
@@ -18,7 +23,7 @@
           'border-bottom-style': horizontalBorder ? 'solid' : 'none'
         }"
       >
-        <div *ngIf="colSearch" class="f-tr f-tr-search">
+        <div *ngIf="colSearch" class="f-tr f-tr-search pt-2 pb-2">
           <div
             *ngIf="selectable"
             class="f-th"
@@ -41,13 +46,15 @@
               ></div>
             </div>
           </div>
-          <ng-container *ngFor="let col of columns | customFilter: { filterFn: columnFilterFn }">
+          <ng-container *ngFor="let col of columns | customFilter: { filterFn: columnFilterHiddenColumns }">
             <div
               class="f-th"
               [ngStyle]="{
                 width: (col?.width || 100) + 'px',
-                maxWidth: col?.width ? (col?.width || 100) + 'px': 'auto',
+                maxWidth: col?.width ? (col?.width || 100) + 'px' : 'auto',
                 flex: (col?.width || 100) + ' 0 auto',
+                display: 'flex',
+                alignItems: 'center',
                 'border-right-style': verticalBorder ? 'solid' : 'none'
               }"
               [align]="col.alignment"
@@ -69,7 +76,20 @@
                           [(ngModel)]="searchObject[col.columnId]"
                           [placeholder]="col?.label"
                           (keydown)="onKeyDown($event, col)"
+                          size="xs"
                         ></finlevit-text>
+                      </ng-container>
+                      <ng-container *ngSwitchCase="Dropdown">
+                        <finlevit-lib-select
+                          [name]="'search' + col.columnId"
+                          [(ngModel)]="searchObject[col.columnId]"
+                          (ngModelChange)="emitColSearch(col)"
+                          [placeholder]="col?.label"
+                          size="xs"
+                          optionLabel="name"
+                          optionValue="value"
+                          [options]="col?.options || []"
+                        ></finlevit-lib-select>
                       </ng-container>
                       <ng-container *ngSwitchCase="DatePicker">
                         <finlevit-lib-datepicker
@@ -77,6 +97,7 @@
                           [(ngModel)]="searchObject[col.columnId]"
                           (ngModelChange)="emitColSearch(col)"
                           [placeholder]="col?.label"
+                          size="xs"
                         ></finlevit-lib-datepicker>
                       </ng-container>
                       <ng-container *ngSwitchDefault>
@@ -85,6 +106,7 @@
                           [(ngModel)]="searchObject[col.columnId]"
                           [placeholder]="col?.label"
                           (keydown)="onKeyDown($event, col)"
+                          size="xs"
                         ></finlevit-text>
                       </ng-container>
                     </ng-container>
@@ -139,6 +161,8 @@
               >
                 <finlevit-lib-checkbox
                   name="selectAll"
+                  size="xs"
+                  labelPos="Top"
                   (ngModelChange)="masterToggle()"
                   [ngModel]="selection.hasValue() && isAllSelected()"
                 ></finlevit-lib-checkbox>
@@ -146,14 +170,19 @@
             </div>
           </div>
           <div
-            class="f-th"
             [ngStyle]="{
               width: (col?.width || 100) + 'px',
               maxWidth: col?.width ? (col?.width || 100) + 'px' : 'auto',
               flex: (col?.width || 100) + ' 0 auto',
+              display: 'flex',
+              alignItems: 'center',
               'border-right-style': verticalBorder ? 'solid' : 'none'
             }"
-            *ngFor="let col of columns | customFilter: { filterFn: columnFilterFn }"
+            [ngClass]="{
+              'f-th': true,
+              sorted: sortHeader?.sorter?.active === col?.columnId
+            }"
+            *ngFor="let col of columns | customFilter: { filterFn: columnFilterHiddenColumns }"
             [sortEligible]="
               (sort || col?.sortable) &&
               !Object.keys(newRows).length &&
@@ -163,6 +192,7 @@
             [ref]="col.columnId"
             [align]="col.alignment"
             sortHeader
+            #sortHeader
           >
             <div class="f-resizable-header-content">
               <div
@@ -246,7 +276,7 @@
             <div
               class="f-tr"
               [ngStyle]="{
-                'min-height': '50px'
+                'min-height': minRowHeight + 'px'
               }"
             >
               <div
@@ -274,6 +304,7 @@
                     }"
                   >
                     <finlevit-lib-checkbox
+                      size="xs"
                       (click)="$event.stopPropagation()"
                       [name]="rowIndex"
                       (ngModelChange)="rowToggle(rowData)"
@@ -289,8 +320,7 @@
                   maxWidth: col?.width ? (col?.width || 100) + 'px' : 'auto',
                   flex: (col?.width || 100) + ' 0 auto'
                 }"
-                *ngFor="let col of columns| customFilter: { filterFn: columnFilterFn }"
-                (dblclick)="!col?.metaData?.readOnly && isColumnEdit ? onColEdit($event, col, rowIndex, rowData) : null"
+                *ngFor="let col of columns | customFilter: { filterFn: columnFilterHiddenColumns }"
               >
                 <div
                   [ngClass]="{ 'cell-container': true }"
@@ -309,7 +339,7 @@
                   >
                     <ng-container [ngSwitch]="col.colType">
                       <ng-container>
-                        <div class="pl-1" *ngSwitchCase="TextInput">
+                        <div *ngSwitchCase="TextInput">
                           <ng-container *ngIf="isCellEditMode(col, rowIndex)">
                             <finlevit-text
                               applyStyleVariables
@@ -326,8 +356,7 @@
                                   : modifyingData[rowIndex][col.columnId]
                               "
                               (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col.columnId)"
-                              [isSmall]="true"
-                              [allowLabelWrapping]="col?.metaData?.allowLabelWrapping"
+                              size="custom"
                               [showClearButton]="col?.metaData?.showClearButton"
                               [prefixText]="col?.metaData?.prefixText"
                               [suffixText]="col?.metaData?.suffixText"
@@ -360,7 +389,7 @@
                             </ng-template>
                           </ng-container>
                         </div>
-                        <div class="pl-1" *ngSwitchCase="TextArea">
+                        <div *ngSwitchCase="TextArea">
                           <ng-container *ngIf="isCellEditMode(col, rowIndex)">
                             <finlevit-lib-textarea
                               applyStyleVariables
@@ -371,11 +400,10 @@
                               [tooltip]="col?.metaData?.tooltip"
                               [placeholder]="col?.metaData?.placeholder"
                               [isRequired]="col?.validators?.required"
-                              [allowLabelWrapping]="col?.metaData?.styleProperties?.properties?.allowLabelWrapping"
                               [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
                               [(ngModel)]="modifyingData[rowIndex][col.columnId]"
                               (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col.columnId)"
-                              [isSmall]="true"
+                              size="custom"
                               [showErrorMsg]="col?.metaData?.showErrorMessage"
                               [error]="
                                 rowErrors[rowIndex] && rowErrors[rowIndex][col.columnId]
@@ -404,7 +432,7 @@
                             </ng-template>
                           </ng-container>
                         </div>
-                        <div class="pl-1" *ngSwitchCase="Number">
+                        <div *ngSwitchCase="Number">
                           <ng-container *ngIf="isCellEditMode(col, rowIndex)">
                             <finlevit-number
                               applyStyleVariables
@@ -412,6 +440,8 @@
                               [styleProperties]="col?.metaData?.styleProperties?.properties"
                               [placeholder]="col?.metaData?.placeholder"
                               [tooltip]="col?.metaData?.tooltip"
+                              [rightIcon]="col?.metaData?.rightIcon"
+                              [leftIcon]="col?.metaData?.leftIcon"
                               [mode]="col?.metaData?.mode === 'currency' ? 'decimal' : col?.metaData?.mode"
                               [minFractionDigits]="col?.metaData?.minFractionDigits"
                               [maxFractionDigits]="col?.metaData?.maxFractionDigits"
@@ -419,9 +449,6 @@
                               [maxLength]="col?.validators?.maxLength"
                               [showMaxCharLimit]="col?.validators?.maxLength"
                               [useGrouping]="col?.metaData?.thousandsSeparator"
-                              [rightIcon]="col?.metaData?.rightIcon"
-                              [leftIcon]="col?.metaData?.leftIcon"
-                              [allowLabelWrapping]="col?.metaData?.allowLabelWrapping"
                               [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
                               [prefixText]="col.metaData.prefixText || col?.metaData?.currency?.currencySymbol"
                               [suffixText]="col?.metaData?.suffixText"
@@ -434,7 +461,7 @@
                                   : modifyingData[rowIndex][col.columnId]
                               "
                               (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col.columnId)"
-                              [isSmall]="true"
+                              size="custom"
                               [showErrorMsg]="col?.metaData?.showErrorMessage"
                               [error]="
                                 rowErrors[rowIndex] && rowErrors[rowIndex][col.columnId]
@@ -469,7 +496,10 @@
                             </ng-template>
                           </ng-container>
                         </div>
-                        <div class="pl-1" *ngSwitchCase="DatePicker">
+                        <div *ngSwitchCase="Avatar">
+                          <finlevit-icon-name size="24" [data]="{ name: rowData[col?.columnId] }"></finlevit-icon-name>
+                        </div>
+                        <div *ngSwitchCase="DatePicker">
                           <ng-container *ngIf="isCellEditMode(col, rowIndex)">
                             <finlevit-lib-datepicker
                               applyStyleVariables
@@ -487,10 +517,9 @@
                               [hourFormat]="col?.metaData?.hourFormat"
                               [stepMinute]="col?.metaData?.stepMinute"
                               [stepHour]="col?.metaData?.stepHour"
-                              [allowLabelWrapping]="col?.metaData?.styleProperties?.properties?.allowLabelWrapping"
                               [(ngModel)]="modifyingData[rowIndex][col.columnId]"
                               (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col.columnId)"
-                              [isSmall]="true"
+                              size="custom"
                               [showErrorMsg]="col?.metaData?.showErrorMessage"
                               [minDate]="col?.validators?.minDate"
                               [maxDate]="col?.validators?.maxDate"
@@ -521,7 +550,7 @@
                             </ng-template>
                           </ng-container>
                         </div>
-                        <div class="pl-1" *ngSwitchDefault>
+                        <div *ngSwitchDefault>
                           <ng-container
                             *ngIf="customTemplates && customTemplates[col?.columnId]; else generic"
                             [ngTemplateOutlet]="customTemplates[col?.columnId]"
@@ -554,6 +583,7 @@
                     [ngClass]="{
                       'inner-cell-container': true,
                       'table-row-actions': true,
+                      'disable-actions': isDisabled,
                       left: actions.alignment === CellAlignTypes.LEFT,
                       right: actions.alignment === CellAlignTypes.RIGHT,
                       center: actions.alignment === CellAlignTypes.CENTER
@@ -563,42 +593,48 @@
                       <div
                         [ngClass]="{ 'row-actions edit-action-mode': true, disabled: Object.keys(editCells).length }"
                       >
-                        <i
+                        <finlevit-icon-preview
                           *ngIf="actions?.editRow"
-                          class="pi pi-check save-icon"
+                          class="save-action"
+                          icon="pi pi-check save-icon"
                           (click)="onRowSave(rowIndex, modifyingData[rowIndex])"
-                        ></i>
-                        <i
-                          class="pi pi-times cancel-icon"
+                        ></finlevit-icon-preview>
+                        <finlevit-icon-preview
+                          class="delete-action"
+                          icon="pi pi-times cancel-icon"
                           (click)="onRowEditCancel(rowIndex, modifyingData[rowIndex])"
-                        ></i>
+                        ></finlevit-icon-preview>
                       </div>
                     </ng-container>
                     <ng-container *ngIf="!isRowEditMode(rowIndex) && isNewRowEditMode(rowIndex)">
                       <div [ngClass]="{ 'row-actions new-action-mode': true, disabled: Object.keys(editCells).length }">
-                        <i
+                        <finlevit-icon-preview
+                          class="save-action"
                           *ngIf="actions?.editRow"
-                          class="pi pi-check save-icon"
+                          icon="pi pi-check save-icon"
                           (click)="onRowSave(rowIndex, modifyingData[rowIndex], true)"
-                        ></i>
-                        <i
-                          class="pi pi-trash delete-icon"
+                        ></finlevit-icon-preview>
+                        <finlevit-icon-preview
+                          class="delete-action"
+                          icon="pi pi-trash delete-icon"
                           (click)="onDelete($event, rowIndex, modifyingData[rowIndex] || rowData, true)"
-                        ></i>
+                        ></finlevit-icon-preview>
                       </div>
                     </ng-container>
                     <ng-container *ngIf="!isRowEditMode(rowIndex) && !isNewRowEditMode(rowIndex)">
                       <div [ngClass]="{ 'row-actions': true, disabled: Object.keys(editCells).length }">
-                        <span class="edit-action" *ngIf="actions?.editRow" (click)="onEdit($event, rowIndex, rowData)">
-                          <i class="pi pi-pencil"></i>
-                        </span>
-                        <span
+                        <finlevit-icon-preview
+                          class="edit-action"
+                          icon="pi pi-pencil"
+                          *ngIf="actions?.editRow"
+                          (click)="onEdit($event, rowIndex, rowData)"
+                        ></finlevit-icon-preview>
+                        <finlevit-icon-preview
                           class="delete-action"
+                          icon="pi pi-trash delete-icon"
                           *ngIf="actions?.deleteRow"
                           (click)="onDelete($event, rowIndex, modifyingData[rowIndex] || rowData)"
-                        >
-                          <i class="pi pi-trash delete-icon"></i>
-                        </span>
+                        ></finlevit-icon-preview>
                       </div>
                     </ng-container>
                   </div>
@@ -613,7 +649,7 @@
       <ng-container *ngTemplateOutlet="cellEditActions"></ng-container>
     </div>
     <div [ngClass]="{ '-pagination': true, 'table-footer': !hideFooter }">
-      <div class="-left d-flex" style="height: 1.5rem">
+      <div class="-left d-flex">
         <div class="table-results-counter" *ngIf="!Object.keys(editCells).length; else cellEditActions">
           <ng-container *ngIf="pagination?.totalRecords && isPaginationEnabled; else zeroRecordsResult">
             Showing {{ pagination?.start }} - {{ pagination?.end }} of {{ pagination?.totalRecords }}
@@ -621,28 +657,28 @@
           <ng-template #zeroRecordsResult> Showing {{ pagination?.totalRecords }} results </ng-template>
         </div>
         <ng-template #cellEditActions>
-          <div class="ml-2 mr-2">
-            <finlevit-button
-              label="Save"
-              applyStyleVariables
-              styleType="button"
-              variant="custom"
-              isHover="true"
-              [styleProperties]="saveBtnProperties?.properties"
-              (btnClick)="onColSave($event)"
-            ></finlevit-button>
-          </div>
-          <div class="ml-2 mr-2">
-            <finlevit-button
-              label="Cancel"
-              applyStyleVariables
-              styleType="button"
-              variant="custom"
-              isHover="true"
-              [styleProperties]="cancelBtnProperties?.properties"
-              (btnClick)="onColSaveCancel($event)"
-            ></finlevit-button>
-          </div>
+          <!--          <div class="ml-2 mr-2">-->
+          <!--            <finlevit-button-->
+          <!--              label="Save"-->
+          <!--              applyStyleVariables-->
+          <!--              styleType="button"-->
+          <!--              variant="custom"-->
+          <!--              isHover="true"-->
+          <!--              [styleProperties]="saveBtnProperties?.properties"-->
+          <!--              (btnClick)="onColSave($event)"-->
+          <!--            ></finlevit-button>-->
+          <!--          </div>-->
+          <!--          <div class="ml-2 mr-2">-->
+          <!--            <finlevit-button-->
+          <!--              label="Cancel"-->
+          <!--              applyStyleVariables-->
+          <!--              styleType="button"-->
+          <!--              variant="custom"-->
+          <!--              isHover="true"-->
+          <!--              [styleProperties]="cancelBtnProperties?.properties"-->
+          <!--              (btnClick)="onColSaveCancel($event)"-->
+          <!--            ></finlevit-button>-->
+          <!--          </div>-->
         </ng-template>
       </div>
       <div [ngClass]="{ '-center': true, 'show-pagination': isPaginationEnabled }">
@@ -651,12 +687,11 @@
             *ngIf="showPageOptions"
             class="items-per-page"
             optionLabel="name"
-            [isSmall]="true"
+            size="xs"
             name="pagelimit"
             [(ngModel)]="fixedRecordsPerPage"
             (ngModelChange)="onPageLimitChange($event)"
             [options]="pageOptions"
-            [style.--input-font-size]="'12px'"
           ></finlevit-lib-select>
         </div>
         <div class="-previous">
@@ -703,12 +738,21 @@
         <app-custom-table-filters
           *ngIf="filter"
           #tableFilters
-          [columns]="columns | customFilter: { filterFn: columnFilterFn }"
+          [columns]="
+            columns
+              | customFilter: { filterFn: columnFilterNoFilterColumns }
+              | customFilter: { filterFn: columnFilterHiddenColumns }
+          "
           (search)="handleSearch($event)"
         ></app-custom-table-filters>
-        <button *ngIf="addRows && !tableFilters?.filtersEnabled" class="footer-btn" (click)="addRow()">
-          <i class="pi pi-plus"></i>
-        </button>
+        <ng-content select=".custom-actions"></ng-content>
+        <finlevit-icon-preview
+          [style.cursor]="'pointer'"
+          class="ml-3"
+          *ngIf="addRows && !tableFilters?.filtersEnabled"
+          (onClick)="addRow()"
+          icon="pi pi-plus"
+        ></finlevit-icon-preview>
       </div>
     </div>
   </div>

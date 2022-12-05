@@ -1,4 +1,6 @@
 @import "normalize";
-@import "~bootstrap/scss/bootstrap-grid";
-@import "var"; // will override vars defined in library
+@import "var";
 @import "global";
+@import "dialogs";
+@import "scss/index";
+
