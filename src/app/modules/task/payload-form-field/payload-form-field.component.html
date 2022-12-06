@@ -306,7 +306,7 @@
       <app-dropdown-field
         [item]="item"
         [isDisabled]="readonlyMode || disable || item?.isMirrorField"
-        (optionChange)="optionChange($event, item); validateField($event, item); onChange($event)"
+        (optionChange)="optionChange($event, item); validateField($event, item)"
       ></app-dropdown-field>
     </div>
   </ng-container>
