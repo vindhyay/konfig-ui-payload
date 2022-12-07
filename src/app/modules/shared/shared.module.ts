@@ -33,6 +33,7 @@ import { ToPhoneFormatPipe } from "../../pipes/to-phone-format.pipe";
 import { AddressAutocompleteDirective } from "./address-autocomplete.directive";
 import { BtnCommonComponent } from "./btn-common/btn-common.component";
 import { CustomFilterPipe } from "../../pipes/custom-filter.pipe";
+import { ValueToLabelPipe } from "src/app/pipes/value-to-label.pipe";
 
 @NgModule({
   declarations: [
@@ -57,6 +58,7 @@ import { CustomFilterPipe } from "../../pipes/custom-filter.pipe";
     ToPhoneFormatPipe,
     AddressAutocompleteDirective,
     CustomFilterPipe,
+    ValueToLabelPipe,
   ],
   imports: [
     CommonModule,
@@ -108,6 +110,7 @@ import { CustomFilterPipe } from "../../pipes/custom-filter.pipe";
     AddressAutocompleteDirective,
     BtnCommonComponent,
     CustomFilterPipe,
+    ValueToLabelPipe,
   ],
 })
 export class SharedModule {}

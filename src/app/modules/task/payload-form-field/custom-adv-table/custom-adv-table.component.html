@@ -191,7 +191,7 @@
                       </div>
                       <div class="pl-1" *ngSwitchCase="Dropdown">
                         <ng-container *ngIf="!isCellEditMode(col, rowIndex)">
-                          {{ col?.value?.value }}
+                          {{ col?.value?.value | valueToLabel: col?.metaData?.options : col?.metaData?.isLabelAndValue }}
                         </ng-container>
                         <finlevit-lib-select
                           *ngIf="isCellEditMode(col, rowIndex)"
@@ -409,7 +409,7 @@
                       </div>
                       <div class="pl-1" *ngSwitchCase="RadioGroup">
                         <ng-container *ngIf="!isCellEditMode(col, rowIndex)">
-                          {{ col?.value?.value }}
+                          {{ col?.value?.value | valueToLabel: col?.metaData?.options : col?.metaData?.isLabelAndValue }}
                         </ng-container>
                         <finlevit-radio-group
                           *ngIf="isCellEditMode(col, rowIndex)"
