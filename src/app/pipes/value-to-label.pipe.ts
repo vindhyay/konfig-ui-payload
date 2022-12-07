@@ -13,7 +13,6 @@ export class ValueToLabelPipe implements PipeTransform {
     else {
       optionsList.forEach(option => {
         if (option.value === value){
-          console.log(option.name)
           label = option.name
         }
       })
