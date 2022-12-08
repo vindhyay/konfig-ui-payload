@@ -66,6 +66,7 @@ export class ModalComponent implements OnInit {
         );
         if (modalStatus) {
           this.modalStatus = modalStatus.type === ButtonActions.openModals;
+          this.selectedIndex = 0;
         }
       }
     });

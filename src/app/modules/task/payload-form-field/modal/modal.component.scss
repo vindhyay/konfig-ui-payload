@@ -1,3 +1,6 @@
+@import "../../../../../assets/scss/var";
+
+
 :host ::ng-deep {
   .p-button {
     width: 100%;
@@ -55,6 +58,30 @@
   .footer-content {
     gridster {
       background: inherit !important;
+    }
+  }
+}
+.stepsection-container {
+  position: absolute;
+  bottom: 48%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px;
+  z-index: 3;
+  &.prev-btn {
+    left: 0;
+  }
+  &.next-btn {
+    right: 0;
+  }
+  .icon {
+    border: 1px solid var(--ui-border-color);
+    padding: var(--spacing-xs-sm);
+    border-radius: 50%;
+    cursor: pointer;
+    @include font-title-fifth();
+    &:hover {
+      background: var(--ui-border-color);
     }
   }
 }
