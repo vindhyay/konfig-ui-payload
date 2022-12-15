@@ -144,12 +144,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
   constructor(private confirmationService: ConfirmationService) {}
 
   isCellEditMode(col, rowIndex) {
-    return (
-      !col?.metaData?.readOnly &&
-      (this.editRows[rowIndex] ||
-        this.newRows[rowIndex] ||
-        (this.editCells[rowIndex] && this.editCells[rowIndex].hasOwnProperty(col?.widgetId)))
-    );
+    return this.editRows[rowIndex] || this.newRows[rowIndex];
   }
   isRowEditMode(rowIndex) {
     return this.editRows[rowIndex];

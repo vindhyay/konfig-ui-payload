@@ -159,6 +159,7 @@
                           *ngIf="isCellEditMode(col, rowIndex)"
                           applyStyleVariables
                           styleType="input"
+                          [isDisabled]="col?.metaData?.readOnly"
                           [styleProperties]="col?.metaData?.styleProperties?.properties"
                           [(ngModel)]="
                             col?.metaData?.isFormulaField
@@ -191,7 +192,7 @@
                       </div>
                       <div class="pl-1" *ngSwitchCase="Dropdown">
                         <ng-container *ngIf="!isCellEditMode(col, rowIndex)">
-                          {{ col?.value?.value | valueToLabel: col?.metaData?.options : col?.metaData?.isLabelAndValue }}
+                          {{ col?.value?.value | valueToLabel: col?.metaData?.options:col?.metaData?.isLabelAndValue }}
                         </ng-container>
                         <finlevit-lib-select
                           *ngIf="isCellEditMode(col, rowIndex)"
@@ -202,7 +203,7 @@
                           [(ngModel)]="modifyingData[rowIndex][col.widgetId]"
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
                           [placeholder]="col?.metaData?.placeholder || 'select'"
-                          [isDisabled]="false"
+                          [isDisabled]="col?.metaData?.readOnly"
                           [isRequired]="col?.validators?.required"
                           [options]="columns[colIndex]?.metaData?.options"
                           [optionLabel]="
@@ -238,6 +239,7 @@
                           *ngIf="isCellEditMode(col, rowIndex)"
                           applyStyleVariables
                           styleType="input"
+                          [isDisabled]="col?.metaData?.readOnly"
                           [styleProperties]="col?.metaData?.styleProperties?.properties"
                           [(ngModel)]="modifyingData[rowIndex][col.widgetId]"
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
@@ -277,6 +279,7 @@
                           styleType="checkbox"
                           size="custom"
                           class="table-cell-checkbox"
+                          [isDisabled]="col?.metaData?.readOnly"
                           [styleProperties]="col?.metaData?.styleProperties?.properties"
                           [(ngModel)]="modifyingData[rowIndex][col.widgetId]"
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
@@ -304,6 +307,7 @@
                           [(ngModel)]="modifyingData[rowIndex][col.widgetId]"
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
                           size="custom"
+                          [isDisabled]="col?.metaData?.readOnly"
                           [placeholder]="'Enter image URL'"
                           [error]="
                             rowErrors[rowIndex] && rowErrors[rowIndex][col?.widgetId]
@@ -338,6 +342,7 @@
                           applyStyleVariables
                           styleType="input"
                           size="custom"
+                          [isDisabled]="col?.metaData?.readOnly"
                           [styleProperties]="col?.metaData?.styleProperties?.properties"
                           [(ngModel)]="
                             col?.metaData?.isFormulaField
@@ -384,6 +389,7 @@
                           applyStyleVariables
                           styleType="input"
                           size="custom"
+                          [isDisabled]="col?.metaData?.readOnly"
                           [styleProperties]="col?.metaData?.styleProperties?.properties"
                           [(ngModel)]="modifyingData[rowIndex][col.widgetId]"
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
@@ -409,13 +415,14 @@
                       </div>
                       <div class="pl-1" *ngSwitchCase="RadioGroup">
                         <ng-container *ngIf="!isCellEditMode(col, rowIndex)">
-                          {{ col?.value?.value | valueToLabel: col?.metaData?.options : col?.metaData?.isLabelAndValue }}
+                          {{ col?.value?.value | valueToLabel: col?.metaData?.options:col?.metaData?.isLabelAndValue }}
                         </ng-container>
                         <finlevit-radio-group
                           *ngIf="isCellEditMode(col, rowIndex)"
                           applyStyleVariables
                           styleType="radioGroup"
                           size="custom"
+                          [isDisabled]="col?.metaData?.readOnly"
                           [styleProperties]="col?.metaData?.styleProperties?.properties"
                           [(ngModel)]="modifyingData[rowIndex][col.widgetId]"
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
@@ -465,6 +472,7 @@
                           applyStyleVariables
                           styleType="input"
                           size="custom"
+                          [isDisabled]="col?.metaData?.readOnly"
                           [styleProperties]="col?.metaData?.styleProperties?.properties"
                           [(ngModel)]="modifyingData[rowIndex][col.widgetId]"
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
