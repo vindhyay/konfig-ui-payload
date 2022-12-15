@@ -390,7 +390,7 @@ export class EditorService extends BaseService {
           condition.rules.forEach((rule, index) => {
             const field = getFieldFromFields(allFields, rule?.field?.widgetId);
             const fieldValue = field?.value?.value;
-            const targetField = isShowError ? getFieldFromFields(allFields, rule?.targetField?.widgetId) : null;
+            const targetField = null;
             resultArray.push(this.conditionValidation(rule, fieldValue, targetField));
           });
           condMatched = this.evaluvateFilter(condition.filtersLogic, resultArray);
