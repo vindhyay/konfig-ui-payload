@@ -16,7 +16,7 @@ agent any
 environment {
    NAME = "finlevit-payload"
    //REPO = "harbor.tabner.us/finlevit"
-   REPO = "10.10.5.17:443/finlevit"
+   REPO = "10.10.5.17:443/konfig-stg"
    DNAME = "finlevit-payload"
 }
   stages {
@@ -71,7 +71,7 @@ environment {
       stage('Archive Artifactory'){
          when {
     expression {
-        return env.BRANCH_NAME == 'staging';
+        return env.BRANCH_NAME == 'stg';
         }
     }
          steps {
@@ -82,7 +82,7 @@ environment {
 		stage('Deploy to Dev'){
 			when {
 			expression {
-			return env.BRANCH_NAME == 'staging';
+			return env.BRANCH_NAME == 'stg';
 			}
 			}
         steps{
