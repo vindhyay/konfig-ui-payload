@@ -88,16 +88,28 @@ export const validateFields = (fields: any[], isPageSubmit = false) => {
         value = toSSNFormat(field?.value?.value);
       }
       const tempFormControl = new FormControl(value, getValidators(field?.validators || {}, field));
-      if (tempFormControl.valid || field?.rows === 0 || field?.metaData?.isHidden) {
-        field.error = false;
-        field.errorMessage = "";
+
+      if (field.metaData.widgetType == WidgetTypes.Checkbox) {
+        if (!value) {
+          field.error = true;
+          field.errorMessage =
+            field?.metaData?.errorMessage ||
+            getErrorMessages({ required: true }, field?.label || field?.displayName || field?.widgetName)[0];
+          errorFields.push(field);
+          result = false;
+        }
       } else {
-        field.error = true;
-        field.errorMessage =
-          field?.metaData?.errorMessage ||
-          getErrorMessages(tempFormControl.errors, field?.label || field?.displayName || field?.widgetName)[0];
-        errorFields.push(field);
-        result = false;
+        if (tempFormControl.valid || field?.rows === 0 || field?.metaData?.isHidden) {
+          field.error = false;
+          field.errorMessage = "";
+        } else {
+          field.error = true;
+          field.errorMessage =
+            field?.metaData?.errorMessage ||
+            getErrorMessages(tempFormControl.errors, field?.label || field?.displayName || field?.widgetName)[0];
+          errorFields.push(field);
+          result = false;
+        }
       }
     }
   });
