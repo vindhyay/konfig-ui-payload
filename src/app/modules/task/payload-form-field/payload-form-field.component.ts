@@ -198,6 +198,9 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
   editMode: boolean = false;
 
   btnClick($event, data) {
+    if (!data?.metaData?.widgetType.includes("Container")) {
+      $event.stopPropagation();
+    }
     if (this.readonlyMode || this.disable) {
       return;
     }
