@@ -359,4 +359,10 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
       }
     }
   }
+
+  widgetClickHandler($event, item) {
+    if (item?.metaData?.widgetType.includes("Container") && this.parent?.metaData?.widgetType.includes("Container")) {
+      $event.stopPropagation();
+    }
+  }
 }
