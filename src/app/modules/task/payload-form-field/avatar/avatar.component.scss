@@ -1,8 +1,8 @@
 :host{
   --avatar-size: 40px;
-  --avatar-label-font-size: 12px;
+  --avatar-label-font-size: var(--font-size-20);
   --avatar-label-font-color: #373F51;
-  --avatar-caption-font-size: 12px;
+  --avatar-caption-font-size: var(--font-size-20);
   --avatar-caption-font-color: #26262680;
   --avatar-background-color: #dee2e6;
   --avatar-text-font-color: #373F51;

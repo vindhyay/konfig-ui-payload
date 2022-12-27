@@ -8,7 +8,7 @@
   --label-font-weight: normal;
   --label-word-spacing: 0;
   --label-letter-spacing: 0;
-  --label-font-size: 16px;
+  --label-font-size: var(--font-size-40);
   --active-text-color: "#5b737b";
   --active-border-color: "#2d4881"; 
 }
@@ -55,7 +55,7 @@
     background: #ffffff;
     color: #5b737b;
     padding: 1rem;
-    font-weight: 600;
+    font-weight: var(--font-weight-bolder);
     border-top-right-radius: 3px;
     border-top-left-radius: 3px;
     transition: box-shadow 0.2s;
@@ -75,7 +75,7 @@
     background: #ffffff;
     border-color: #2d4881;;
     color: #000;
-    font-weight: 500;
+    font-weight: var(--font-weight-bold);
   }
   .p-tabview .p-tabview-left-icon {
     margin-right: 0.5rem;

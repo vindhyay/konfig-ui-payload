@@ -44,13 +44,13 @@
   }
   &.text-style-subtitle1 {
     font-size: 0.8rem;
-    font-weight: 400;
+    font-weight: var(--font-weight-normal);
     line-height: 1.75;
     letter-spacing: 0.00938rem;
   }
   &.text-style-body1 {
     font-size: 1rem;
-    font-weight: 500;
+    font-weight: var(--font-weight-bold);
     line-height: 1.5;
     letter-spacing: 0.00938rem;
   }
@@ -83,8 +83,8 @@
     height: 40px;
     background-color: lightgray;
     font-style: normal;
-    font-weight: 600;
-    font-size: 12px;
+    font-weight: var(--font-weight-bolder);
+    font-size: var(--font-size-20);
     display: flex;
     align-items: center;
     line-height: 16px;

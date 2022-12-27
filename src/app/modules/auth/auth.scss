@@ -55,7 +55,7 @@
   color: #ffff;
   text-transform: capitalize;
   font-size: 35px;
-  font-weight: 800;
+  font-weight: calc(var(--font-weight-bolder) + 200);
 }
 
 .spinner-border {

@@ -13,7 +13,7 @@
   --input-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   --input-text-decoration: none;
   --input-text-align: left;
-  --input-font-size: 16px;
+  --input-font-size: var(--font-size-40);
   --input-border: solid;
   --input-border-radius: 4px;
   --input-border-width: 1px;
@@ -175,7 +175,7 @@ li .step-label {
   text-overflow: ellipsis;
   min-width: 50px;
   vertical-align: middle;
-  font-weight: 500;
+  font-weight: var(--font-weight-bold);
   font-size: 15px;
   padding-top: 5px;
 
