@@ -20,7 +20,7 @@
 
 .error-msg {
   padding: 10px;
-  border-radius: 4px;
+  border-radius: var(--border-radius-sm);
   font-size: var(--font-size-30);
   color: rgb(97, 26, 21);
   background-color: rgb(253, 236, 234);

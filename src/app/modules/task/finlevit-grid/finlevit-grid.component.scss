@@ -92,7 +92,7 @@
   .draggable {
     padding: 13px;
     margin-left: 20px;
-    border-radius: 4px;
+    border-radius: var(--border-radius-sm);
     text-align: center;
     font-family: Arial, Helvetica, sans-serif;
   }

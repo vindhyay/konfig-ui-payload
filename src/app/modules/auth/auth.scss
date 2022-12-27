@@ -37,7 +37,7 @@
   -webkit-transition: all ease-in-out 0.25s;
   transition: all ease-in-out 0.25s;
   overflow: hidden;
-  border-radius: 4px;
+  border-radius: var(--border-radius-sm);
   background: #fff;
 }
 

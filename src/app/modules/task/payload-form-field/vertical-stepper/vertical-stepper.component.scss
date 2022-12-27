@@ -15,7 +15,7 @@
   --input-text-align: left;
   --input-font-size: var(--font-size-40);
   --input-border: solid;
-  --input-border-radius: 4px;
+  --input-border-radius: var(--border-radius-sm);
   --input-border-width: 1px;
   --input-font-style: normal;
   --input-font-weight: normal;
@@ -217,7 +217,7 @@ li.selected .step-icon img,
 }
 
 li.selected .step-icon img {
-  border-radius: 5px;
+  border-radius: calc(var(--border-radius-sm) + 1px);
   box-shadow: 0 0 4px #3f51b5;
 }
 
@@ -299,7 +299,7 @@ li .indicator.box-pattern{
       top: -18px;
       left: 17px;
       border: 1px solid lightgray;
-      border-radius: 8px;
+      border-radius: var(--border-radius-md);
       padding: 5px;
       background: white;
     }
@@ -308,7 +308,7 @@ li .indicator.box-pattern{
 
 .personal-panel {
   border: 1px solid lightgray;
-  border-radius: 10px;
+  border-radius: calc(var(--border-radius-md) + 2px);
   padding: 30px 10px 10px 20px;
   margin-top: 50px;
   min-height: 100px;
@@ -317,7 +317,7 @@ li .indicator.box-pattern{
   }
   .edit-btn {
     float: right;
-    border-radius: 12px;
+    border-radius: calc(var(--border-radius-sm) * 3px);
     margin-top: -18px;
     padding: 3px 12px;
   }
