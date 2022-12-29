@@ -1,7 +1,7 @@
 .icon {
   width: 25px;
   height: 25px;
-  margin-right: 12px;
+  margin-right: var(--spacing-sm-md);
 }
 .button-menu-item {
   &.small {
@@ -11,6 +11,6 @@
   .icon {
     width: 16px;
     height: 16px;
-    margin-right: 12px;
+    margin-right: var(--spacing-sm-md);
   }
 }

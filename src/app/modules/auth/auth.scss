@@ -51,7 +51,7 @@
   align-items: center;
   padding: 7px;
   justify-content: center;
-  background-color: #3f51b5;
+  background-color: $primary;
   color: #ffff;
   text-transform: capitalize;
   font-size: 35px;
@@ -65,6 +65,6 @@
 }
 
 .badged-button {
-  background-color: #3f51b5 !important;
+  background-color: $primary !important;
   color: white;
 }

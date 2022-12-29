@@ -111,7 +111,7 @@ $menuAnim: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @mixin overflowEllipse() {
-  margin-bottom: 6px;
+  margin-bottom: var(--spacing-xs-sm);
   text-overflow: ellipsis;
   overflow: hidden;
   word-break: break-all;
@@ -154,7 +154,7 @@ $menuAnim: cubic-bezier(0.4, 0, 0.2, 1);
   .field {
     .label {
       font-weight: var(--font-weight-bolder);
-      font-size: 13px;
+      font-size: var(--font-size-30); //closest value
       position: relative;
 
       .help-text {

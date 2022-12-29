@@ -41,7 +41,7 @@ $break: 400px;
       border: 4px solid $dark;
       border-radius: calc(var(--border-radius-sm) + 1px);
       margin-left: -25px;
-      margin-top: 50px;
+      margin-top: var(--spacing-xxl); //closest variable
 
       .red {
         height: calc(100% / 3);
@@ -94,7 +94,7 @@ $break: 400px;
         width: 30px;
         height: 15px;
         border: 7px solid $dark;
-        margin-right: 20px;
+        margin-right: calc(var(--spacing-md) + 4px);
         border-top-left-radius: 22px;
         border-top-right-radius: 22px;
         border-bottom: 0;
@@ -106,7 +106,7 @@ $break: 400px;
         width: 30px;
         height: 15px;
         border: 7px solid $dark;
-        margin-left: 20px;
+        margin-left: calc(var(--spacing-md) + 4px);
         border-top-left-radius: 22px;
         border-top-right-radius: 22px;
         border-bottom: 0;
@@ -122,7 +122,7 @@ $break: 400px;
         display: inline-block;
         width: 10px;
         height: 10px;
-        margin-right: 80px;
+        margin-right: calc(var(--spacing-xxxl) + 16px);
         border-radius: 50%;
         background-color: rgba($red, 0.4);
       }
@@ -152,11 +152,11 @@ $break: 400px;
     color: $dark;
     text-align: center;
     font-size: 2.5em;
-    padding-top: 20px;
+    padding-top: calc(var(--spacing-md) + 4px);
 
     @media screen and (max-width: $break) {
-      padding-left: 20px;
-      padding-right: 20px;
+      padding-left: calc(var(--spacing-md) + 4px);
+      padding-right: calc(var(--spacing-md) + 4px);
       font-size: 2em;
     }
   }

@@ -432,7 +432,7 @@
   }
   .hide-footer-cell-actions {
     display: flex;
-    padding: 4px 12px;
+    padding: var(--spacing-xs) var(--spacing-sm-md);
     color: var(--paginator-color);
     background-color: var(--paginator-background-color);
   }

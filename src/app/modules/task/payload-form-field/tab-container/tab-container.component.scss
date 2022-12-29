@@ -1,3 +1,5 @@
+@import "src/assets/scss/_var.scss";
+
 :host {
   --label-color: #000000;
   --lebel-background-color: #ffffff;
@@ -24,7 +26,7 @@
           display: flex;
           align-items: center;
           flex-direction: column;
-          font-size: 13px;
+          font-size: var(--font-size-30); //closest value
           justify-content: center;
           color: gray;
           position: absolute;
@@ -40,8 +42,8 @@
 }
 ::ng-deep{
   .p-tabview .p-tabview-nav {
-    background: #ffffff;
-    border: 1px solid #dee2e6;
+    background: $white-100;
+    border: 1px solid $white-200;
     border-width: 0 0 2px 0;
     position: relative;
   }
@@ -49,10 +51,10 @@
     margin-right: 0;
   }
   .p-tabview .p-tabview-nav li .p-tabview-nav-link {
-    border: solid #dee2e6;
+    border: solid $white-200;
     border-width: 0 0 2px 0;
-    border-color: transparent transparent #dee2e6 transparent;
-    background: #ffffff;
+    border-color: transparent transparent $white-200 transparent;
+    background: $white-100;
     color: #5b737b;
     padding: 1rem;
     font-weight: var(--font-weight-bolder);
@@ -67,12 +69,12 @@
     box-shadow: 0 0 0 0.2rem #a6d5fa;
   }
   .p-tabview .p-tabview-nav li:not(.p-highlight):not(.p-disabled):hover .p-tabview-nav-link {
-    background: #ffffff;
+    background: $white-100;
     border-color: #6c757d;
     color: #6c757d;
   }
   .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
-    background: #ffffff;
+    background: $white-100;
     border-color: #2d4881;;
     color: #000;
     font-weight: var(--font-weight-bold);
@@ -87,7 +89,7 @@
     margin-left: 0.5rem;
   }
   .p-tabview .p-tabview-panels {
-    background: #ffffff;
+    background: $white-100;
     padding: 1rem;
     border: 0 none;
     color: #495057;
