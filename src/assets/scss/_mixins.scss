@@ -281,3 +281,66 @@ $menuAnim: cubic-bezier(0.4, 0, 0.2, 1);
     border-bottom: none;
   }
 }
+
+@mixin nested-grid-container() {
+  .nested-grid-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    &.empty-child {
+      position: relative;
+      ::ng-deep {
+        .container-help-text {
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+          font-size: var(--font-size-30); //closest variable
+          justify-content: center;
+          color: $gray-200;
+          position: absolute;
+          z-index: 1;
+          height: 100%;
+          left: 0;
+          right: 0;
+          pointer-events: none;
+        }
+      }
+    }
+    .container-title {
+      height: 40px;
+      background-color: $gray-100;
+      font-style: normal;
+      font-weight: var(--font-weight-bolder);
+      font-size: var(--font-size-20);
+      display: flex;
+      align-items: center;
+      line-height: var(--font-line-height-30);
+      letter-spacing: 0.03em;
+      color: $gray-200;
+      padding-left: var(--spacing-md); //closest variable
+      padding-right: calc(var(--spacing-md) + 2px);
+      border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 0;
+    }
+    ::ng-deep {
+      gridster {
+        background: $white-200;
+      }
+      .card-container {
+        height: 100%;
+        background: $white-100;
+        border: 1px solid $white-300;
+        gridster {
+          background: $white-100;
+        }
+      }
+    }
+    &.footer-container {
+      ::ng-deep {
+        gridster {
+          background: $gray-400;
+          color: $white-100;
+        }
+      }
+    }
+  }
+}
