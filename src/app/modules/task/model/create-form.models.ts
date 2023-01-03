@@ -1200,7 +1200,7 @@ export class CheckboxGroupMetaData extends CheckboxMetaData {
   dataResourceId: string;
   datalistId: string;
   alignOptions: string;
-  columns: number;
+  columnsCount: number;
   allowLabelWrapping: boolean;
   showFieldDependencyConfig: boolean;
   constructor(data) {
@@ -1215,7 +1215,7 @@ export class CheckboxGroupMetaData extends CheckboxMetaData {
       dataResourceId = null,
       datalistId = null,
       alignOptions = "Horizontal",
-      columns = 1,
+      columnsCount = 1,
       allowLabelWrapping = false,
       showFieldDependencyConfig = false,
     } = data;
@@ -1228,7 +1228,7 @@ export class CheckboxGroupMetaData extends CheckboxMetaData {
     this.datalistId = datalistId;
     this.dataResourceId = dataResourceId;
     this.alignOptions = alignOptions;
-    this.columns = columns;
+    this.columnsCount = columnsCount;
     this.allowLabelWrapping = allowLabelWrapping;
     this.showFieldDependencyConfig = showFieldDependencyConfig;
   }
@@ -1242,7 +1242,7 @@ export class RadioGroupMetaData extends CheckboxMetaData {
   optionLabel: string;
   optionValue: string;
   alignOptions: string;
-  columns: number;
+  columnsCount: number;
   allowLabelWrapping: boolean;
   showErrorMessage: boolean;
   errorMessage: string;
@@ -1257,7 +1257,7 @@ export class RadioGroupMetaData extends CheckboxMetaData {
       optionValue = "value",
       isLabelAndValue = false,
       alignOptions = "Vertical",
-      columns = 1,
+      columnsCount = 1,
       allowLabelWrapping = false,
       showErrorMessage = true,
       errorMessage = "",
@@ -1270,7 +1270,7 @@ export class RadioGroupMetaData extends CheckboxMetaData {
     this.optionLabel = optionLabel;
     this.optionValue = optionValue;
     this.alignOptions = alignOptions;
-    this.columns = columns;
+    this.columnsCount = columnsCount;
     this.allowLabelWrapping = allowLabelWrapping;
     this.showErrorMessage = showErrorMessage;
     this.errorMessage = errorMessage;
