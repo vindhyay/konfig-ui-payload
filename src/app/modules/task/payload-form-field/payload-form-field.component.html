@@ -297,7 +297,7 @@
       <app-checkbox-group
         [item]="item"
         [isDisabled]="readonlyMode || disable || item?.isMirrorField"
-        [columns]="item?.metaData?.columns"
+        [columns]="item?.metaData?.columnsCount"
       ></app-checkbox-group>
     </div>
   </ng-container>
@@ -328,7 +328,7 @@
         (ngModelChange)="validateField($event, item); optionChange($event, item)"
         [error]="isError(item)"
         [alignOptions]="item?.metaData?.alignOptions"
-        [columns]="item?.metaData?.columns"
+        [columns]="item?.metaData?.columnsCount"
         [tooltip]="item?.metaData?.tooltip"
         [errorMsg]="item?.errorMessage || item?.metaData?.errorMessage"
         [showErrorMsg]="item?.errorMessage || item?.metaData?.showErrorMessage"
