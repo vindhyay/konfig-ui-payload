@@ -88,8 +88,7 @@ export const validateFields = (fields: any[], isPageSubmit = false) => {
         value = toSSNFormat(field?.value?.value);
       }
       const tempFormControl = new FormControl(value, getValidators(field?.validators || {}, field));
-
-      if (field.metaData.widgetType == WidgetTypes.Checkbox) {
+      if (field?.metaData?.widgetType == WidgetTypes.Checkbox) {
         if (field.validators?.required && !value) {
           field.error = true;
           field.errorMessage =
