@@ -150,45 +150,6 @@ $menuAnim: cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
 
-@mixin customInputs() {
-  .field {
-    .label {
-      font-weight: var(--font-weight-bolder);
-      font-size: var(--font-size-30); //closest value
-      position: relative;
-
-      .help-text {
-        font-size: 8px;
-        position: absolute;
-        top: 15px;
-        font-weight: var(--font-weight-normal);
-        color: gray;
-      }
-
-      sup {
-        color: red;
-      }
-    }
-
-    .toggle {
-      margin: 0 5px;
-      display: flex;
-      align-items: center;
-    }
-
-    .delete {
-      cursor: pointer;
-    }
-
-    .value {
-      &.disable {
-        opacity: 0.5;
-        cursor: not-allowed;
-      }
-    }
-  }
-}
-
 @keyframes blink {
   0%,
   100% {
@@ -240,45 +201,6 @@ $menuAnim: cubic-bezier(0.4, 0, 0.2, 1);
       color: var(--color-negative);
       background: var(--negative-background-color);
     }
-  }
-}
-@mixin accordian($size: "sm") {
-  .p-accordion .p-accordion-header .p-accordion-header-link {
-    padding: var(--spacing-sm-md);
-    background: var(--primary-background-color);
-    border-radius: 0;
-    border: none;
-    transition: box-shadow 0.15s;
-    @if $size == "sm" {
-      @include font-subtitle();
-    }
-    @if $size == "md" {
-      @include font-title-fifth();
-    }
-    color: var(--secondary-text-color);
-    font-weight: var(--font-weight-bolder);
-    text-transform: uppercase;
-    display: flex;
-    flex-direction: row-reverse;
-    justify-content: space-between;
-  }
-  .p-accordion .p-accordion-tab {
-    border-top: 1px solid var(--layout-border-color);
-  }
-  .p-accordion .p-accordion-header .p-accordion-header-link .p-accordion-toggle-icon {
-    font-size: var(--font-size-10);
-  }
-  .p-accordion-content {
-    padding: var(--spacing-sm) var(--spacing-sm);
-  }
-  .p-accordion .p-accordion-header:not(.p-disabled) .p-accordion-header-link:focus {
-    box-shadow: none;
-  }
-  .p-accordion p-accordiontab .p-accordion-content {
-    border: none;
-  }
-  .p-accordion p-accordiontab:not(:last-child) .p-accordion-header .p-accordion-header-link {
-    border-bottom: none;
   }
 }
 

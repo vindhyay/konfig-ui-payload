@@ -1,32 +1,5 @@
 @import "scss/mixins";
 
-.heading-1 {
-  @include font-main();
-}
-.heading-2 {
-  @include font-title();
-}
-.heading-3 {
-  @include font-title-secondary();
-}
-.heading-4 {
-  @include font-title-fourth();
-}
-.heading-5 {
-  @include font-title-fifth();
-}
-.heading-6 {
-  @include font-subtitle();
-}
-.body-large {
-  @include font-body-large();
-}
-.body-p {
-  @include font-paragraph();
-}
-.body-input {
-  @include font-body-input();
-}
 // Tooltip
 .p-tooltip .p-tooltip-text {
   font-size: var(--font-size-20);
@@ -41,20 +14,4 @@
 .p-error {
   @include font-subtitle();
   color: var(--color-error);
-}
-// Options Delete in Menu
-.option-delete {
-  .p-menuitem-link .p-menuitem-icon,
-  .p-menuitem-link .p-menuitem-text {
-    color: var(--color-error);
-  }
-  .p-menuitem-link:not(.p-disabled):hover .p-menuitem-icon{
-    color: var(--color-error);
-  }
-  .p-menuitem-link:not(.p-disabled):hover .p-menuitem-text{
-    color: var(--color-error);
-  }
-  .p-menuitem-link:not(.p-disabled):hover{
-    background-color: var(--color-error-hover);
-  }
 }

@@ -155,6 +155,9 @@ export class EditorService extends BaseService {
   }
 
   onBtnClick($event) {
+    if (!$event?.data?.metaData?.onClickConfigs?.length) {
+      return;
+    }
     const {
       data: {
         metaData: { onClickConfigs = [] },
