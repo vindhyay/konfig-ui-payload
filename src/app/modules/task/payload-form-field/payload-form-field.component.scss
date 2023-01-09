@@ -9,10 +9,10 @@
 }
 .card-container {
   height: 100%;
-  background: $white-100;
+  background: var(--color-white);
   border: 1px solid #dddddd;
   gridster {
-    background: $white-100;
+    background: var(--color-white);
   }
 }
 .text-content {

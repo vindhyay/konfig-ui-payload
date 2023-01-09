@@ -296,7 +296,7 @@ $menuAnim: cubic-bezier(0.4, 0, 0.2, 1);
           flex-direction: column;
           font-size: var(--font-size-30); //closest variable
           justify-content: center;
-          color: $gray-200;
+          color: var(--grey-color-700);
           position: absolute;
           z-index: 1;
           height: 100%;
@@ -308,7 +308,7 @@ $menuAnim: cubic-bezier(0.4, 0, 0.2, 1);
     }
     .container-title {
       height: 40px;
-      background-color: $gray-100;
+      background-color: var(--grey-color-600);
       font-style: normal;
       font-weight: var(--font-weight-bolder);
       font-size: var(--font-size-20);
@@ -316,7 +316,7 @@ $menuAnim: cubic-bezier(0.4, 0, 0.2, 1);
       align-items: center;
       line-height: var(--font-line-height-30);
       letter-spacing: 0.03em;
-      color: $gray-200;
+      color: var(--grey-color-700);
       padding-left: var(--spacing-md); //closest variable
       padding-right: calc(var(--spacing-md) + 2px);
       border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 0;
@@ -327,18 +327,18 @@ $menuAnim: cubic-bezier(0.4, 0, 0.2, 1);
       }
       .card-container {
         height: 100%;
-        background: $white-100;
-        border: 1px solid $white-300;
+        background: var(--color-white);
+        border: 1px solid var(--grey-color-500);
         gridster {
-          background: $white-100;
+          background: var(--color-white);
         }
       }
     }
     &.footer-container {
       ::ng-deep {
         gridster {
-          background: $gray-400;
-          color: $white-100;
+          background: var(--grey-color-900);
+          color: var(--color-white);
         }
       }
     }

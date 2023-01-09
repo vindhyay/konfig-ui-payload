@@ -9,7 +9,7 @@
   min-height: 100vh;
   margin: auto;
   .editor {
-    background: $white-100;
+    background: var(--color-white);
   }
 }
 .gridster-container {
