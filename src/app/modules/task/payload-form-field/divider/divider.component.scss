@@ -21,8 +21,8 @@
 }
 
 .text {
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: var(--spacing-sm-md); //closest variable
+  padding-right: var(--spacing-sm-md); //closest variable
 }
 
 .mat-divider-vertical{
