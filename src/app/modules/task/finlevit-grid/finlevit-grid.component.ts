@@ -7,7 +7,7 @@ import {
   GridsterItemComponentInterface,
   GridType,
 } from "../../../../../lib/angular-gridster2/src/public_api";
-import { BaseWidget, ContainerActions, MIN_COLUMNS, MIN_ROWS, WidgetTypes } from "../model/create-form.models";
+import { BaseWidget, MIN_COLUMNS, MIN_ROWS, WidgetTypes } from "../model/create-form.models";
 import { ActivatedRoute } from "@angular/router";
 import { EditorService } from "../editor.service";
 import { NotificationService } from "../../../services/notification.service";
@@ -21,12 +21,10 @@ import { AddressDetails, validateFields } from "src/app/utils";
 })
 export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDestroy {
   options: GridsterConfig | undefined;
-  dashboard: Array<GridsterItem> | undefined;
   @Input() items: Array<BaseWidget> | undefined;
   @Input() parent: BaseWidget | undefined;
   @Input() emitButtonEvent: boolean = false;
   @Output() onBtnClick = new EventEmitter();
-  @Input() modifyOptions: any = {};
   @Input() filter: any = null;
   @ViewChild("gridsterComponent", { static: false }) gridsterRef: any;
 
@@ -104,7 +102,6 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
       maxItemCols: 200,
       maxItemRows: 200,
       maxItemArea: 40000,
-      ...this.modifyOptions,
     };
     if (this.activatedRoute?.parent?.parent?.params) {
       this.subscribe(this.activatedRoute?.parent?.parent?.params, (params) => {

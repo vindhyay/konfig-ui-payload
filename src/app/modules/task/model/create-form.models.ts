@@ -1,11 +1,7 @@
 import { getUniqueId } from "../../../utils";
 
 export const MIN_COLUMNS = 100;
-export const HEADER_MIN_COLUMNS = 50;
 export const MIN_ROWS = 50;
-
-export const NESTED_MIN_COLUMNS = 60;
-export const NESTED_MIN_ROWS = 20;
 
 export enum ButtonTypes {
   primary = "primary",
@@ -128,16 +124,6 @@ export class TableActions {
   }
 }
 
-export interface WidgetItem {
-  cols: number;
-  label: string;
-  description: string;
-  rows: number;
-  isViewOnly?: boolean;
-  widgetType: WidgetTypes;
-  dataType: DATA_TYPES;
-}
-
 export enum WidgetTypes {
   Text = "Text",
   Table = "Table",
@@ -203,16 +189,6 @@ class Validators {
     this.minDate = minDate;
     this.maxDate = maxDate;
     this.pattern = pattern;
-  }
-}
-class TextInputValidators extends Validators {
-  minLength: number;
-  maxLength: number;
-  constructor(validator) {
-    super(validator);
-    const { minLength = null, maxLength = null } = validator;
-    this.minLength = minLength;
-    this.maxLength = maxLength;
   }
 }
 
@@ -1576,7 +1552,6 @@ export class BaseWidget {
   minItemRows: number;
   maxItemRows: number;
   width?: any;
-
   hideRows: number;
   defaultRows: number;
   defaultMinItemRows: number;

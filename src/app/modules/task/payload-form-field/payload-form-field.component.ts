@@ -9,7 +9,6 @@ import {
   Output,
   SimpleChanges,
 } from "@angular/core";
-import { FieldData } from "../model/field-data.model";
 import { BaseWidget, Column, TableMetaData, WidgetTypes } from "../model/create-form.models";
 import { AddressDetails, DeepCopy, getFieldFromFields, parseApiResponse, validateFields } from "../../../utils";
 import { AuthService } from "../../auth/services/auth.service";
@@ -46,7 +45,6 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
   SSNInput: WidgetTypes = WidgetTypes.SSNInput;
   Email: WidgetTypes = WidgetTypes.Email;
   PhonenumberInput: WidgetTypes = WidgetTypes.PhonenumberInput;
-  ErrorContainer: WidgetTypes = WidgetTypes.ErrorContainer;
   TextArea: WidgetTypes = WidgetTypes.TextArea;
   Number: WidgetTypes = WidgetTypes.Number;
   Checkbox: WidgetTypes = WidgetTypes.Checkbox;
@@ -113,13 +111,6 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
     }
     this._item = data;
   }
-  @Input() parent: FieldData = {} as FieldData;
-  @Input() fieldIndex: number = 0;
-  @Input() addMode = true;
-  @Input() showEdit = true;
-  @Input() viewMode = false;
-  @Input() showDelete = true;
-  @Output() edit = new EventEmitter();
   allAvailableFields = [];
   private _payloadFields: any;
   get payloadFields(): any {
