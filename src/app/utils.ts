@@ -88,15 +88,17 @@ export const validateFields = (fields: any[], isPageSubmit = false) => {
         value = toSSNFormat(field?.value?.value);
       }
       const tempFormControl = new FormControl(value, getValidators(field?.validators || {}, field));
-
-      if (field.metaData.widgetType == WidgetTypes.Checkbox) {
-        if (!value) {
+      if (field?.metaData?.widgetType == WidgetTypes.Checkbox) {
+        if (field.validators?.required && !value) {
           field.error = true;
           field.errorMessage =
             field?.metaData?.errorMessage ||
             getErrorMessages({ required: true }, field?.label || field?.displayName || field?.widgetName)[0];
           errorFields.push(field);
           result = false;
+        } else {
+          field.error = false;
+          field.errorMessage = "";
         }
       } else {
         if (tempFormControl.valid || field?.rows === 0 || field?.metaData?.isHidden) {
