@@ -323,7 +323,7 @@ $menuAnim: cubic-bezier(0.4, 0, 0.2, 1);
     }
     ::ng-deep {
       gridster {
-        background: $white-200;
+        background: var(--ui-border-color-lighter);
       }
       .card-container {
         height: 100%;

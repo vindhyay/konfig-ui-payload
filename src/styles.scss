@@ -254,7 +254,7 @@ body {
   }
   .p-tabview-panels {
     height: 100%;
-    border: 1px solid $white-200;
+    border: 1px solid var(--ui-border-color-lighter);
     border-top: 0;
     font-size: var(--font-size-30);
     color: inherit;
@@ -271,7 +271,7 @@ body {
     height: 100%;
   }
   .p-tabview .p-tabview-nav li:not(.p-highlight) .p-tabview-nav-link {
-    border-color: $white-200;
+    border-color: var(--ui-border-color-lighter);
   }
   .p-tabview .p-tabview-nav li .p-tabview-nav-link:not(.p-disabled):focus {
     box-shadow: none;

@@ -18,7 +18,7 @@
 
   .error {
     text-align: center;
-    color: $red;
+    color: var(--color-wild-watermelon-darker);
   }
 }
 
@@ -51,7 +51,7 @@
   align-items: center;
   padding: 7px;
   justify-content: center;
-  background-color: $primary;
+  background-color: var(--primary-color-800);
   color: #ffff;
   text-transform: capitalize;
   font-size: 35px;
@@ -65,6 +65,6 @@
 }
 
 .badged-button {
-  background-color: $primary !important;
+  background-color: var(--primary-color-800) !important;
   color: white;
 }

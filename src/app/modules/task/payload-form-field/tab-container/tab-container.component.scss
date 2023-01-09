@@ -23,7 +23,7 @@
 ::ng-deep{
   .p-tabview .p-tabview-nav {
     background: var(--color-white);
-    border: 1px solid $white-200;
+    border: 1px solid var(--ui-border-color-lighter);
     border-width: 0 0 2px 0;
     position: relative;
   }
@@ -31,9 +31,9 @@
     margin-right: 0;
   }
   .p-tabview .p-tabview-nav li .p-tabview-nav-link {
-    border: solid $white-200;
+    border: solid var(--ui-border-color-lighter);
     border-width: 0 0 2px 0;
-    border-color: transparent transparent $white-200 transparent;
+    border-color: transparent transparent var(--ui-border-color-lighter) transparent;
     background: var(--color-white);
     color: #5b737b;
     padding: 1rem;
