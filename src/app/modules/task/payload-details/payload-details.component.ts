@@ -94,11 +94,11 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
         (error) => {
           this.loading = false;
           if (error.status === 401) {
-            this.authService.logoff(false, this.activatedRoute);
+            this.authService.logoff(false);
           }
           if (error.status === 500) {
             this.notificationService.error(error?.error?.error?.errorMessage);
-            this.authService.logoff(false, this.activatedRoute);
+            this.authService.logoff(false);
           }
         }
       );

@@ -26,15 +26,6 @@ export enum PopulateConfigOptionTypes {
   ontrigger = "ontrigger",
 }
 
-export enum ColumnTypes {
-  Text = "Text",
-  TextInput = "TextInput",
-  TextArea = "TextArea",
-  Number = "Number",
-  DatePicker = "DatePicker",
-  Data = "Data",
-}
-
 export enum ButtonActions {
   none = "none",
   logout = "logout",

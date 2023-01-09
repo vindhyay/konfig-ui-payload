@@ -288,7 +288,7 @@ export class EditorService extends BaseService {
     if (uiActions?.length) {
       uiActions.forEach((item) => {
         if (item.action === ButtonActions.logout) {
-          this.authService.logoff(false, this.activatedRoute);
+          this.authService.logoff(false);
         }
         if (item.action === ButtonActions.openModals) {
           this.setOpenModals(item.fields);

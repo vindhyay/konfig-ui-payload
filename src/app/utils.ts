@@ -205,14 +205,6 @@ export const addOriginalPosition = (fields) => {
     }
   });
 };
-
-export const passwordPattern: any = {
-  oneLowerCase: "(?=.*[a-z])",
-  oneUpperCase: "(?=.*[A-Z])",
-  oneNumber: "(?=.*[0-9])",
-  oneSpecialchar: "(?=.*[$@$!%*?&])",
-  minLength: ".{x,}",
-};
 export const superClone = (object): any => {
   const cloning = {};
   if (!object) {

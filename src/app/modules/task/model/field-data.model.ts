@@ -47,17 +47,6 @@ export interface Tab {
   fields: Field[];
 }
 
-export interface TabConfig {
-  STRING: Tab[];
-  NUMBER: Tab[];
-  BOOLEAN?: Tab[];
-  HR_LINE?: Tab[];
-  CARD?: Tab[];
-  PANEL?: Tab[];
-  FIELDSET?: Tab[];
-  WELL?: Tab[];
-}
-
 interface Values {
   name: string;
   value: string;
@@ -128,12 +117,4 @@ export interface FieldData {
   type: string;
   components: [];
   children: FieldData[];
-}
-
-export interface searchParams {
-  pageNo: any;
-  recordNo: any;
-  transactionId: any;
-  sort: any;
-  searchField?: any;
 }

@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
-import { UserDataModel } from "../modules/auth/models";
-import { SelectedPreferencesModel } from "../modules/auth/models/selected-preferences.model";
+import { SelectedPreferencesModel } from "../modules/auth/models";
 import { JWT_TOKEN, PREF, USER_DATA_KEY } from "../state/constants";
 
 // TODO change to cookies
@@ -36,10 +35,6 @@ export class StorageService {
   set preference(preference: SelectedPreferencesModel) {
     sessionStorage.setItem(PREF, JSON.stringify(preference));
   }
-  clearPreferences() {
-    sessionStorage.removeItem(PREF);
-  }
-
   // Clear Localstorage Keys
   clear() {
     localStorage.removeItem(USER_DATA_KEY);

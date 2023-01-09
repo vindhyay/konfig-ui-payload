@@ -8,7 +8,6 @@ import { CONFIG_FILE_PATH } from "../state/constants";
 })
 export class AppConfigService {
   private apiUrls: Object = {};
-  private _envDisabledFields: any = [];
 
   constructor(private http: HttpClient) {}
 
@@ -30,10 +29,6 @@ export class AppConfigService {
 
   public getApiUrls(): any {
     return this.apiUrls;
-  }
-
-  public get envDisabledFields() {
-    return this._envDisabledFields;
   }
 
   private appendBaseUrls(config: ConfigUrlsModel = {} as ConfigUrlsModel) {

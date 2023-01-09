@@ -1,8 +1,3 @@
-export interface Avatar {
-  name: string;
-  imageUrl: string;
-}
-
 export const enum UserRole {
   Admin = "Admin",
   WorkflowManager = "workflowManager",

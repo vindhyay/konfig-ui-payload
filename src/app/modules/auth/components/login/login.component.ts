@@ -6,7 +6,6 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { HttpErrorResponse } from "@angular/common/http";
 import { StorageService } from "../../../../services/storage.service";
 import { get } from "lodash";
-import { AUTH_LABELS } from "../../state/labels";
 import { UserDataModel } from "../../models";
 import { NotificationService } from "src/app/services/notification.service";
 import { parseApiResponse } from "src/app/utils";
@@ -18,7 +17,6 @@ import { CustomError } from "../../../../state/model";
   styleUrls: ["./login.component.scss"],
 })
 export class LoginComponent extends BaseComponent implements OnInit {
-  LABELS = AUTH_LABELS;
   loginError: string;
   authForm = this.fb.group({
     userName: ["", [Validators.required]],

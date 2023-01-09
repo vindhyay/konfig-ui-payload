@@ -10,25 +10,25 @@
       <div class="mb-4">
         <finlevit-text
           type="text"
-          [label]="LABELS.USER_ID"
+          label="UserId"
           formControlName="userName"
           [isRequired]="true"
           size="md"
-          [errorMsg]="LABELS.USER_ID_ERROR_MSG"
+          errorMsg="Please enter User Id"
         ></finlevit-text>
       </div>
       <div class="mt-2 mb-4">
         <finlevit-text
           type="password"
-          [label]="LABELS.PASSWORD"
+          label="Password"
           formControlName="passWord"
           [isRequired]="true"
           size="md"
-          [errorMsg]="LABELS.PASSWORD_ERROR_MSG"
+          errorMsg="Please enter Password"
         ></finlevit-text>
       </div>
       <div class="mt-2 mb-4">
-        <finlevit-lib-checkbox class="d-flex" size="sm" [label]="LABELS.REMEMBER_ME_TEXT"></finlevit-lib-checkbox>
+        <finlevit-lib-checkbox class="d-flex" size="sm" label="Remember me"></finlevit-lib-checkbox>
       </div>
       <div class="error-msg mt-2 mb-2">{{ loginError }}</div>
       <div class="mt-6">

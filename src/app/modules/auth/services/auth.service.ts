@@ -32,7 +32,7 @@ export class AuthService extends BaseService implements OnDestroy {
     this.authSubject.complete();
   }
 
-  public logoff(api: boolean = true, activatedRoute?: ActivatedRoute) {
+  public logoff(api: boolean = true) {
     if (api) {
       const url = this.config.getApiUrls().logoutURL;
       this.getData(url).subscribe(

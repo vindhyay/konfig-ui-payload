@@ -5,7 +5,6 @@ import { MaterialModule } from "../material/material.module";
 import { RouterModule } from "@angular/router";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { FinlevitLibraryModule } from "finlevit-library";
-import { BtnPrimaryComponent } from "./btn-primary/btn-primary.component";
 import { NgxLoadingModule } from "ngx-loading";
 import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
 import { ToastrModule } from "ngx-toastr";
@@ -23,7 +22,6 @@ import { SorterDirective } from "./finlevit-custom-table/table-utils/sorter.dire
 import { SortHeaderComponent } from "./finlevit-custom-table/table-utils/sort-header/sort-header.component";
 import { CustomTableFiltersComponent } from "./finlevit-custom-table/table-utils/custom-table-filters/custom-table-filters.component";
 import { BtnIconComponent } from "./btn-icon/btn-icon.component";
-import { BtnDangerComponent } from "./btn-danger/btn-danger.component";
 import { LoaderComponent } from "./loader/loader.component";
 import { FilterPipe } from "src/app/pipes/filter.pipe";
 import { CustomDatePipe } from "../../pipes/custom-date.pipe";
@@ -38,7 +36,6 @@ import { ValueToLabelPipe } from "src/app/pipes/value-to-label.pipe";
 @NgModule({
   declarations: [
     BaseComponent,
-    BtnPrimaryComponent,
     BtnCommonComponent,
     PageNotFoundComponent,
     CustomDropdownComponent,
@@ -50,7 +47,6 @@ import { ValueToLabelPipe } from "src/app/pipes/value-to-label.pipe";
     SortHeaderComponent,
     CustomTableFiltersComponent,
     BtnIconComponent,
-    BtnDangerComponent,
     LoaderComponent,
     FilterPipe,
     CustomDatePipe,
@@ -85,7 +81,6 @@ import { ValueToLabelPipe } from "src/app/pipes/value-to-label.pipe";
     FormsModule,
     ReactiveFormsModule,
     FinlevitLibraryModule,
-    BtnPrimaryComponent,
     TabViewModule,
     DialogModule,
     ButtonModule,
@@ -100,7 +95,6 @@ import { ValueToLabelPipe } from "src/app/pipes/value-to-label.pipe";
     CustomTableComponent,
     CustomTableFiltersComponent,
     BtnIconComponent,
-    BtnDangerComponent,
     LoaderComponent,
     FilterPipe,
     CustomDatePipe,
