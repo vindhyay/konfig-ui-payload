@@ -9,7 +9,7 @@
   min-height: 100vh;
   margin: auto;
   .editor {
-    background: #ffffff;
+    background: var(--color-white);
   }
 }
 .gridster-container {
@@ -20,8 +20,8 @@
 
 .error-msg {
   padding: 10px;
-  border-radius: 4px;
-  font-size: 14px;
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-30);
   color: rgb(97, 26, 21);
   background-color: rgb(253, 236, 234);
   margin: 0 20px;
@@ -35,8 +35,8 @@
   flex-direction: column;
   height: 100%;
   .help-text {
-    margin-top: 30px;
-    font-size: 18px;
+    margin-top: var(--spacing-xl); //closest variable
+    font-size: var(--font-size-50); //closest variable
     color: $help-text-color;
   }
 }

@@ -30,7 +30,7 @@
   }
   .p-dialog-header .p-dialog-title {
     @include font-title-secondary();
-    font-weight: 600;
+    font-weight: var(--font-weight-bolder);
   }
 }
 
