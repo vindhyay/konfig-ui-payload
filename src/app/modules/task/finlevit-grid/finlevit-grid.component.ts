@@ -282,7 +282,7 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
       //we need to validte the fields as we change the value of the field
       validateFields(ValidationFields);
       if (ifConditionsIds?.length) {
-        const ifConditions = this.editorService.getCoditions(ifConditionsIds);
+        const ifConditions = this.editorService.getConditions(ifConditionsIds);
         if (ifConditions?.length) {
           this.editorService.checkCondition(ifConditions);
         }

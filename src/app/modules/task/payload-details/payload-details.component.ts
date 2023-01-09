@@ -60,9 +60,9 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
             // indirectly updating form fields
             const newFormFields = transactionDetails.uiPayload || [];
             this.recursiveUpdateFieldProperties(this.formFields, newFormFields);
-            this.editorService.onPopulate_TriggerCondition(this.formFields);
+            this.editorService.onPopulateTriggerCondition(this.formFields);
             setTimeout(() => {
-              this.editorService.onPopulate_TriggerCondition(this.formFields);
+              this.editorService.onPopulateTriggerCondition(this.formFields);
             }, 0);
           }
         } else {

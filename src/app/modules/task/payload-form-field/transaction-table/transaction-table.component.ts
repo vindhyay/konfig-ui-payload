@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import { BaseWidget } from "../../model/create-form.models";
 import { parseApiResponse } from "../../../../utils";
 import { BaseComponent } from "../../../shared/base/base.component";

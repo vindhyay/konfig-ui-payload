@@ -287,7 +287,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
   onChange($event) {
     const ifConditionsIds = this.item.metaData?.conditionRuleIds;
     if (ifConditionsIds?.length) {
-      const ifConditions = this.editorService.getCoditions(ifConditionsIds);
+      const ifConditions = this.editorService.getConditions(ifConditionsIds);
       if (ifConditions?.length) {
         this.editorService.checkCondition(ifConditions);
       } else if (ifConditions && !ifConditions?.length) {
@@ -391,7 +391,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
           formulaValue = values[0]?.value?.value || null;
         }
         item.value.value = formulaValue;
-        this.editorService.onPopulate_TriggerCondition([item]);
+        this.editorService.onPopulateTriggerCondition([item]);
         return formulaValue;
       case "string":
         formulaValue = "";
@@ -408,7 +408,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
           }
         });
         item.value.value = formulaValue;
-        this.editorService.onPopulate_TriggerCondition([item]);
+        this.editorService.onPopulateTriggerCondition([item]);
         return formulaValue;
       case "date":
         const dateFunc = formula.filter((field) => {
@@ -441,7 +441,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
           formulaValue = years + "";
         }
         item.value.value = formulaValue;
-        this.editorService.onPopulate_TriggerCondition([item]);
+        this.editorService.onPopulateTriggerCondition([item]);
         return formulaValue;
       case "array":
         switch (firstField.metaData.widgetType) {
@@ -508,7 +508,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
             }
             break;
         }
-        this.editorService.onPopulate_TriggerCondition([item]);
+        this.editorService.onPopulateTriggerCondition([item]);
         item.value.value = formulaValue;
         return formulaValue;
     }

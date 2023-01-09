@@ -20,7 +20,7 @@ export class CheckboxGroupComponent implements OnInit {
   ngOnInit(): void {}
   onChange($event) {
     setTimeout(() => {
-      const ifConditions = this.editorService.getCoditions(this.item.metaData?.conditionRuleIds);
+      const ifConditions = this.editorService.getConditions(this.item.metaData?.conditionRuleIds);
       if (ifConditions?.length) {
         this.editorService.checkCondition(ifConditions);
       } else if (ifConditions && !ifConditions?.length) {
