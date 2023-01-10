@@ -188,7 +188,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
   }
   editMode: boolean = false;
 
-  btnClick($event, data) {
+  btnClick($event: any, data: any) {
     if (!data?.metaData?.widgetType.includes("Container")) {
       $event.stopPropagation();
     }
@@ -249,7 +249,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
     });
   };
 
-  optionChange($event, data) {
+  optionChange($event: any, data: any) {
     const metaData = this.item.metaData;
     if (!!metaData["onChangeConfigs"] && metaData["onChangeConfigs"]?.length) {
       this.editorService.onOptionChange({ event: $event, data });
@@ -260,7 +260,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
     }
   }
 
-  onCollapse(status, item) {
+  onCollapse(status: boolean, item: any) {
     if (!status) {
       this.item.rows = item?.metaData?.hideRows || 0;
       this.item.minItemRows = item?.metaData?.hideRows || 0;
@@ -293,7 +293,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
 
   visitedFields = [];
 
-  calculateFormulaValue(field, callingFirst) {
+  calculateFormulaValue(field: any, callingFirst: boolean) {
     if (callingFirst) {
       this.visitedFields = [];
     }
@@ -313,7 +313,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
     });
   }
 
-  getAllAvailableFields(fields) {
+  getAllAvailableFields(fields: any) {
     fields.forEach((field) => {
       this.allAvailableFields.push(field);
       if (field.children && field.children.length) {
@@ -322,7 +322,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
     });
   }
 
-  checkVisitedField(field): boolean {
+  checkVisitedField(field: any): boolean {
     if (this.visitedFields.indexOf(field) < 0) {
       return false;
     }
@@ -331,7 +331,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
     }
   }
 
-  computeFormula(item, payloadFields): any {
+  computeFormula(item: any, payloadFields: any): any {
     let formulaValue;
     let formula = [];
     if (item?.metaData?.formula?.length > 0) {

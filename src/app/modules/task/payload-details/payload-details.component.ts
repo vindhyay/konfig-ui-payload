@@ -75,7 +75,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
       }
     });
   }
-  createTransaction(applicationId: string, id = "") {
+  createTransaction(applicationId: string, id: string = "") {
     this.loading = true;
     this.editorService
       .createTransaction({ applicationId, ...(id && { id }) }, { sessionData: this.sessionFields })

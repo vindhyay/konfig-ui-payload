@@ -218,7 +218,7 @@ li.selected .step-icon img,
 
 li.selected .step-icon img {
   border-radius: calc(var(--border-radius-sm) + 1px);
-  box-shadow: 0 0 4px $accent;
+  box-shadow: 0 0 4px var(--primary-color-800);
 }
 
 li .indicator {

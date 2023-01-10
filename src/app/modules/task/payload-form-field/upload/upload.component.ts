@@ -28,7 +28,7 @@ export class UploadComponent implements OnInit {
     return this.item.metaData as UploadMetaData;
   }
 
-  uploadFile(fileData) {
+  uploadFile(fileData: any) {
     const transactionId = this.editorService.getTransactionDetails()?.transactionId;
     if (!this.file) {
       this.notificationService.info("Please select file for upload", "Info");

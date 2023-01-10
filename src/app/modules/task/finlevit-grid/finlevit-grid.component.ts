@@ -118,10 +118,10 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
     });
   }
 
-  getEligibleItems(items, baseGridItem) {
+  getEligibleItems(items: any, baseGridItem: any) {
     const baseOriginalHeight = baseGridItem?.item?.metaData?.originalHeight;
     const movement = baseGridItem?.item?.metaData?.movement;
-    const eligibleItems = items.filter((eachItem) => {
+    const eligibleItems = items.filter((eachItem: GridsterItem) => {
       const item = eachItem.item;
       const baseItem = baseGridItem.$item;
       const checkSameItem = (item, baseItem) => {
@@ -165,7 +165,7 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
     return [...eligibleItems, ...itemEligibleItems];
   }
 
-  checkItemSize(widget) {
+  checkItemSize(widget: BaseWidget) {
     const gridItems = (this.gridsterRef?.grid || []).sort((a, b) => a?.item?.y - b?.item?.y);
     if (widget) {
       const widgetGridItem = gridItems.find((item) => item?.item?.widgetId === widget?.widgetId);
@@ -241,7 +241,7 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
     );
   }
 
-  fillAddressDetails(addressDetails) {
+  fillAddressDetails(addressDetails: {widget: any, address: AddressDetails}) {
     let ValidationFields = [];
     let widget = addressDetails.widget;
     let widgetIds = widget?.metaData?.linkedWidetIds;
@@ -287,7 +287,7 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
     }
   }
 
-  widgetClickHandler($event, item) {
+  widgetClickHandler($event: any, item: BaseWidget) {
     if (item?.metaData?.widgetType.includes("Container") && this.parent?.metaData?.widgetType.includes("Container")) {
       $event.stopPropagation();
     }

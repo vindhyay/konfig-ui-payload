@@ -232,7 +232,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
     }
   }
 
-  onResize($event, column) {
+  onResize($event: string, column: Column | TableActions) {
     column.width = parseInt($event, 10);
   }
   getMinWidth() {
@@ -248,7 +248,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
     }
     return sum + "px";
   }
-  onDelete($event, index, rowData, isNew = false) {
+  onDelete($event: any, index: any, rowData: any, isNew = false) {
     if ($event) {
       $event.stopPropagation();
     }
@@ -262,7 +262,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
     delete this.modifyingData[index];
     this.handleRowDelete.emit({ index, rowData, isNew });
   }
-  onEdit($event, rowIndex, data: Array<any>) {
+  onEdit($event: any, rowIndex: string, data: Array<any>) {
     $event.stopPropagation();
     if (this.actions?.emitOnEdit) {
       this.onRowEditClick.emit({ event: $event, data });
@@ -438,7 +438,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
       });
     }
   }
-  handlePageChange($event) {
+  handlePageChange($event: number) {
     this.currentPage = $event;
     if (this.isServerSidePagination) {
       this.onPageChange.emit({ limit: this.limitPerPage, page: $event });
@@ -460,7 +460,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
     }
     return pages;
   }
-  onSortChange($event) {
+  onSortChange($event: any) {
     const order = $event.direction === "asc" ? 1 : $event.direction === "desc" ? -1 : 0;
     if (this.isServerSideSorting) {
       this.onSort.emit($event);
@@ -485,7 +485,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
     });
   }
 
-  getRulesFromFilterColumns(columns) {
+  getRulesFromFilterColumns(columns: any) {
     return (columns || []).map((column) => {
       return {
         fieldId: column?.field?.columnId,
@@ -528,20 +528,20 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
       this.filteredTableData = [...this.tableData];
     }
   }
-  emitColSearch(column) {
+  emitColSearch(column: Column) {
     this.onColSearch.emit({ search: this.searchObject, column });
   }
-  onKeyDown($event, column) {
+  onKeyDown($event, column: Column) {
     if ($event.keyCode === 13) {
       this.emitColSearch(column);
     }
   }
-  onPageLimitChange($event) {
+  onPageLimitChange($event: number) {
     this.currentPage = 1;
     this.updateRowsLimit();
     this.onPageChange.emit({ limit: $event, page: this.currentPage });
   }
-  calculateCellValue(col, rowIndex) {
+  calculateCellValue(col: any, rowIndex: any) {
     if (col?.metaData?.isFormulaField) {
       let cellValue = "";
       let columnFormula = col?.metaData?.formula;

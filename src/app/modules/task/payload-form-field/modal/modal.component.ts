@@ -19,7 +19,7 @@ export class ModalComponent implements OnInit {
   get metaData(): ModalMetaData {
     return this.item.metaData as ModalMetaData;
   }
-  onFooterClick($event) {
+  onFooterClick($event: any) {
     const indexObj = $event?.data.metaData["onClickConfigs"].filter(
       (subitem) => subitem.action === "previousStep" || subitem.action === "nextStep" || subitem.action === "submit"
     );
@@ -35,7 +35,7 @@ export class ModalComponent implements OnInit {
         break;
     }
   }
-  onPrevClick($event) {
+  onPrevClick($event: any) {
     let index = Number(this.selectedIndex || 0);
     if (index > 0) {
       index -= 1;
@@ -43,7 +43,7 @@ export class ModalComponent implements OnInit {
     this.selectedIndex = index;
     this.editorService.onBtnClick($event);
   }
-  onNextClick($event) {
+  onNextClick($event: any) {
     let index = this.selectedIndex;
     const child = this.item.children[index];
     const { result: validate } = validateFields(child.children);
