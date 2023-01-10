@@ -17,6 +17,7 @@ import {
   TABLE_PAGINATION_POSITIONS,
   TableActions,
   WidgetTypes,
+  Column,
 } from "../../model/create-form.models";
 import { conditionValidation, DeepCopy, getUniqueId, scrollToBottom, superClone } from "../../../../utils";
 import { FormControl, Validators } from "@angular/forms";
@@ -405,7 +406,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
     });
     return _validators;
   };
-  getColumnDefaultValue(column) {
+  getColumnDefaultValue(column: Column) {
     switch (column.type) {
       case "string":
         return "";
@@ -448,7 +449,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
       });
     }
   }
-  handlePageChange($event) {
+  handlePageChange($event: number) {
     this.currentPage = $event;
     if (this.isServerSidePagination) {
       this.onPageChange.emit({ limit: this.limitPerPage, page: $event });
