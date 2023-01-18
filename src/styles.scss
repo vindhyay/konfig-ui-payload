@@ -83,7 +83,7 @@ body {
   padding: 0.2rem 1rem;
   font-size: 1rem;
   transition: background-color 0.15s, border-color 0.15s, box-shadow 0.15s;
-  border-radius: calc(var(--border-radius-lg) * 2px); //closest variable
+  border-radius: calc(var(--border-radius-lg) * 2); //closest variable
 }
 .mat-step-header .mat-step-icon-selected,
 .mat-step-header .mat-step-icon-state-done,
