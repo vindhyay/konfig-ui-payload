@@ -39,3 +39,10 @@ export interface UserDataModel {
   seatLocation: string;
   managerName: string;
 }
+
+export interface Tokens {
+  refreshToken: string;
+  refreshTokenExpirationTime: number;
+  accessToken: string;
+  accessTokenExpirationTime: number;
+}

@@ -38,11 +38,13 @@ export class AppConfigService {
     const AUTH_BASE_URL = config.authBaseUrl || "";
     return {
       // Token Gen URL
-      authenticateUrl: AUTH_BASE_URL + "/authenticate",
+      authenticateUrl: AUTH_BASE_URL + "/access-token",
+      // Refresh token URL
+      getAccessTokenUrl: AUTH_BASE_URL + "/refresh-token",
       // LOGOUT URL
       logoutURL: AUTH_BASE_URL + "/logout",
       // Permissions URl
-      permissionsURL: WORKFLOW_ADMIN_BASE_URL + "/user/permissions",
+      loginUrl: WORKFLOW_ADMIN_BASE_URL + "/user/permissions",
       // Task Details URL
       workflowTaskDetailsURL: ACCOUNT_WORKFLOW_BASE_URL + "/rest/workflow/get/transaction",
       // History Task Details URL

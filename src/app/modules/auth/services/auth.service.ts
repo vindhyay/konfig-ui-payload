@@ -7,6 +7,7 @@ import { BaseService } from "../../../services/base.service";
 import { LoginDataModel, UserDataModel, UserRole } from "../models";
 import { AppConfigService } from "../../../app-config-providers/app-config.service";
 import { parseApiResponse } from "../../../utils";
+import { ACCESS_TOKEN, REFRESH_TOKEN } from "src/app/state/constants";
 
 @Injectable({
   providedIn: "root",
@@ -35,7 +36,9 @@ export class AuthService extends BaseService implements OnDestroy {
   public logoff(api: boolean = true) {
     if (api) {
       const url = this.config.getApiUrls().logoutURL;
-      this.getData(url).subscribe(
+      const refreshToken = this.storage.getToken(REFRESH_TOKEN);
+      const data = { refreshToken };
+      this.postData(url, data).subscribe(
         (result) => {
           console.log("result", result);
         },
@@ -62,8 +65,13 @@ export class AuthService extends BaseService implements OnDestroy {
     return this.postData(url, loginData);
   }
 
+  public getAccessToken(refreshTokenData) {
+    const url = this.config.getApiUrls().getAccessTokenUrl;
+    return this.postData(url, refreshTokenData);
+  }
+
   public getUserDetails(appId) {
-    const url = `${this.config.getApiUrls().permissionsURL}/${appId}`;
+    const url = `${this.config.getApiUrls().loginUrl}/${appId}`;
     return this.getData(url);
   }
 
@@ -87,12 +95,7 @@ export class AuthService extends BaseService implements OnDestroy {
   }
 
   public isAuthenticated(): boolean {
-    // Check whether the token is expired and return
-    // true or false
-    // TODO: implement some authentication engine:
-    // return !this.jwtHelper.isTokenExpired(token);
-
-    return !!this.storage.user;
+    return !!(this.storage.getToken(ACCESS_TOKEN) || this.storage.getToken(REFRESH_TOKEN));
   }
 
   public getCurrentUser(): UserDataModel {
