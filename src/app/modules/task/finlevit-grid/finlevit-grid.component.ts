@@ -7,7 +7,7 @@ import {
   GridsterItemComponentInterface,
   GridType,
 } from "../../../../../lib/angular-gridster2/src/public_api";
-import { BaseWidget, ContainerActions, MIN_COLUMNS, MIN_ROWS, WidgetTypes } from "../model/create-form.models";
+import { BaseWidget, MIN_COLUMNS, MIN_ROWS, WidgetTypes } from "../model/create-form.models";
 import { ActivatedRoute } from "@angular/router";
 import { EditorService } from "../editor.service";
 import { NotificationService } from "../../../services/notification.service";
@@ -21,12 +21,10 @@ import { AddressDetails, validateFields } from "src/app/utils";
 })
 export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDestroy {
   options: GridsterConfig | undefined;
-  dashboard: Array<GridsterItem> | undefined;
   @Input() items: Array<BaseWidget> | undefined;
   @Input() parent: BaseWidget | undefined;
   @Input() emitButtonEvent: boolean = false;
   @Output() onBtnClick = new EventEmitter();
-  @Input() modifyOptions: any = {};
   @Input() filter: any = null;
   @ViewChild("gridsterComponent", { static: false }) gridsterRef: any;
 
@@ -104,7 +102,6 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
       maxItemCols: 200,
       maxItemRows: 200,
       maxItemArea: 40000,
-      ...this.modifyOptions,
     };
     if (this.activatedRoute?.parent?.parent?.params) {
       this.subscribe(this.activatedRoute?.parent?.parent?.params, (params) => {
@@ -121,10 +118,10 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
     });
   }
 
-  getEligibleItems(items, baseGridItem) {
+  getEligibleItems(items: any, baseGridItem: any) {
     const baseOriginalHeight = baseGridItem?.item?.metaData?.originalHeight;
     const movement = baseGridItem?.item?.metaData?.movement;
-    const eligibleItems = items.filter((eachItem) => {
+    const eligibleItems = items.filter((eachItem: GridsterItem) => {
       const item = eachItem.item;
       const baseItem = baseGridItem.$item;
       const checkSameItem = (item, baseItem) => {
@@ -168,7 +165,7 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
     return [...eligibleItems, ...itemEligibleItems];
   }
 
-  checkItemSize(widget) {
+  checkItemSize(widget: BaseWidget) {
     const gridItems = (this.gridsterRef?.grid || []).sort((a, b) => a?.item?.y - b?.item?.y);
     if (widget) {
       const widgetGridItem = gridItems.find((item) => item?.item?.widgetId === widget?.widgetId);
@@ -244,77 +241,7 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
     );
   }
 
-  getGlobalStyles(item, index) {
-    if (!item?.metaData || item?.metaData?.widgetType !== this.Container) return {};
-    let style = {};
-    if (
-      this.gridsterRef?.grid[index]?.width &&
-      item.rows &&
-      item.metaData &&
-      item.metaData?.styleProperties &&
-      Object.keys(item.metaData.styleProperties).length &&
-      item.metaData?.styleProperties?.properties
-    ) {
-      const styleProperties = item.metaData?.styleProperties?.properties;
-      const {
-        independentBorder,
-        borderTopStyle,
-        borderLeftStyle,
-        borderBottomStyle,
-        borderRightStyle,
-        borderTopLeftRadius,
-        borderTopRightRadius,
-        borderBottomLeftRadius,
-        borderBottomRightRadius,
-        borderTopColor,
-        borderLeftColor,
-        borderBottomColor,
-        borderRightColor,
-        borderTopWidth,
-        borderLeftWidth,
-        borderBottomWidth,
-        borderRightWidth,
-        borderStyle,
-        borderRadius,
-        borderColor,
-        borderWidth,
-      } = styleProperties;
-      style = {
-        "border-top-style": independentBorder ? borderTopStyle : borderStyle,
-        "border-left-style": independentBorder ? borderLeftStyle : borderStyle,
-        "border-bottom-style": independentBorder ? borderBottomStyle : borderStyle,
-        "border-right-style": independentBorder ? borderRightStyle : borderStyle,
-
-        "border-top-left-radius": independentBorder ? borderTopLeftRadius : borderRadius,
-        "border-top-right-radius": independentBorder ? borderTopRightRadius : borderRadius,
-        "border-bottom-left-radius": independentBorder ? borderBottomLeftRadius : borderRadius,
-        "border-bottom-right-radius": independentBorder ? borderBottomRightRadius : borderRadius,
-
-        "border-top-color": independentBorder ? borderTopColor : borderColor,
-        "border-left-color": independentBorder ? borderLeftColor : borderColor,
-        "border-bottom-color": independentBorder ? borderBottomColor : borderColor,
-        "border-right-color": independentBorder ? borderRightColor : borderColor,
-
-        "border-top-width": independentBorder ? borderTopWidth : borderWidth,
-        "border-left-width": independentBorder ? borderLeftWidth : borderWidth,
-        "border-bottom-width": independentBorder ? borderBottomWidth : borderWidth,
-        "border-right-width": independentBorder ? borderRightWidth : borderWidth,
-      };
-    }
-
-    if (
-      item.metaData &&
-      item.metaData?.onClickConfig &&
-      (item.metaData?.onClickConfig?.action === ContainerActions.next ||
-        item.metaData?.onClickConfig?.action === ContainerActions.previous ||
-        item.metaData?.onClickConfig?.action === ContainerActions.externalLink)
-    ) {
-      style["cursor"] = "pointer";
-    }
-    return style;
-  }
-
-  fillAddressDetails(addressDetails) {
+  fillAddressDetails(addressDetails: {widget: any, address: AddressDetails}) {
     let ValidationFields = [];
     let widget = addressDetails.widget;
     let widgetIds = widget?.metaData?.linkedWidetIds;
@@ -352,11 +279,17 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
       //we need to validte the fields as we change the value of the field
       validateFields(ValidationFields);
       if (ifConditionsIds?.length) {
-        const ifConditions = this.editorService.getCoditions(ifConditionsIds);
+        const ifConditions = this.editorService.getConditions(ifConditionsIds);
         if (ifConditions?.length) {
           this.editorService.checkCondition(ifConditions);
         }
       }
+    }
+  }
+
+  widgetClickHandler($event: any, item: BaseWidget) {
+    if (item?.metaData?.widgetType.includes("Container") && this.parent?.metaData?.widgetType.includes("Container")) {
+      $event.stopPropagation();
     }
   }
 }

@@ -51,7 +51,7 @@ export class VerticalStepperComponent implements OnInit {
         ?.querySelectorAll("li")
         [this.selectedIndex]?.scrollIntoView({ block: "nearest", inline: "nearest" });
   }
-  setSelection($event) {
+  setSelection($event: any) {
     this.isInteract = true;
     const actionName = $event.data.metaData?.onClickConfigs.find(
       (item) => item.action === "previousStep" || item.action === "nextStep"
@@ -68,7 +68,7 @@ export class VerticalStepperComponent implements OnInit {
         break;
     }
   }
-  onPrevClick($event) {
+  onPrevClick($event: any) {
     let index = this.selectedIndex || 1;
     if (index > 0) {
       index -= 1;
@@ -76,7 +76,7 @@ export class VerticalStepperComponent implements OnInit {
     this.selectedIndex = index;
     this.editorService.onBtnClick($event);
   }
-  onNextClick($event) {
+  onNextClick($event: any) {
     let index = this.selectedIndex;
     const child = this.children[index];
     const { result: validate } = validateFields(child.children, true);
@@ -96,7 +96,7 @@ export class VerticalStepperComponent implements OnInit {
       ".content" + this.metaData["widgetId"]
     );
   }
-  onSelectIndexChange = (index) => {
+  onSelectIndexChange = (index: number) => {
     this.isInteract = true;
     if (this.metaData.isFreeFlow || this.selectedIndex > index) {
       this.selectedIndex = index;

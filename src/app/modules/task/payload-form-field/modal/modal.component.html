@@ -26,6 +26,18 @@
   [closable]="false"
 >
   <ng-template pTemplate="header">
+    <ng-container *ngIf="item.children.length > 1">
+      <div class="stepsection-container prev-btn" (click)="onPrevClick($event)" *ngIf="selectedIndex > 0">
+        <finlevit-icon-preview class="icon" icon="pi pi-chevron-left"></finlevit-icon-preview>
+      </div>
+      <div
+        class="stepsection-container next-btn"
+        (click)="onNextClick($event)"
+        *ngIf="selectedIndex < item.children.length - 1"
+      >
+        <finlevit-icon-preview class="icon" icon="pi pi-chevron-right"></finlevit-icon-preview>
+      </div>
+    </ng-container>
     <div
       [class]="'header-content'"
       [style]="{

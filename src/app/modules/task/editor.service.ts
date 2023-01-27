@@ -13,7 +13,6 @@ import {
 } from "../../utils";
 import { NotificationService } from "../../services/notification.service";
 import { AuthService } from "../auth/services/auth.service";
-import { ActivatedRoute } from "@angular/router";
 import { BaseService } from "../../services/base.service";
 import { HttpClient } from "@angular/common/http";
 import { AppConfigService } from "../../app-config-providers/app-config.service";
@@ -30,15 +29,12 @@ export class EditorService extends BaseService {
     protected http: HttpClient,
     private notificationService: NotificationService,
     private authService: AuthService,
-    private activatedRoute: ActivatedRoute,
     protected config: AppConfigService,
     protected loaderService: LoaderService
   ) {
     super(http);
   }
   activeTabIndexes = {};
-  activeStepperIndexes = {};
-  unsavedChanges: boolean = false;
 
   public widgetChange = new BehaviorSubject<any>(null);
   public widgetChange$ = this.widgetChange.asObservable();
@@ -52,12 +48,8 @@ export class EditorService extends BaseService {
   //Add Typings
   private transactionDetails = new BehaviorSubject(null);
   public transactionDetails$ = this.transactionDetails.asObservable();
-
   private conditionDetails = new BehaviorSubject(null);
-  public conditionDetails$ = this.conditionDetails.asObservable();
-
   private formFields = new BehaviorSubject(null);
-  public formFields$ = this.formFields.asObservable();
 
   public setTransactionDetails(transactionDetails: any) {
     this.transactionDetails.next(transactionDetails);
@@ -163,6 +155,9 @@ export class EditorService extends BaseService {
   }
 
   onBtnClick($event) {
+    if (!$event?.data?.metaData?.onClickConfigs?.length) {
+      return;
+    }
     const {
       data: {
         metaData: { onClickConfigs = [] },
@@ -288,7 +283,7 @@ export class EditorService extends BaseService {
     if (uiActions?.length) {
       uiActions.forEach((item) => {
         if (item.action === ButtonActions.logout) {
-          this.authService.logoff(false, this.activatedRoute);
+          this.authService.logoff(false);
         }
         if (item.action === ButtonActions.openModals) {
           this.setOpenModals(item.fields);
@@ -359,7 +354,7 @@ export class EditorService extends BaseService {
       });
     }
   }
-  evaluvateFilter(filtersLogic, resultArray) {
+  evaluateFilter(filtersLogic, resultArray) {
     const expressionArray = filtersLogic
       .split(/[.\()&&||_]/)
       .filter(function (indexItem) {
@@ -390,14 +385,10 @@ export class EditorService extends BaseService {
           condition.rules.forEach((rule, index) => {
             const field = getFieldFromFields(allFields, rule?.field?.widgetId);
             const fieldValue = field?.value?.value;
-            // let result = this.conditionValidation(rule, fieldValue);
-            const targetField = isShowError ? getFieldFromFields(allFields, rule?.targetField?.widgetId) : null;
+            const targetField = null;
             resultArray.push(this.conditionValidation(rule, fieldValue, targetField));
-            // expression =
-            // condMatched =
-            //   index === 0 ? result : rule.condition === "and" ? condMatched && result : condMatched || result;
           });
-          condMatched = this.evaluvateFilter(condition.filtersLogic, resultArray);
+          condMatched = this.evaluateFilter(condition.filtersLogic, resultArray);
           if (condMatched) {
             // result = condition.mappingField;
             result = { ...condition.mappingField };
@@ -483,16 +474,14 @@ export class EditorService extends BaseService {
       }
     });
   }
-  onPopulate_TriggerCondition = (fields: any[]) => {
-    let result = true;
-    let errorFields = [];
+  onPopulateTriggerCondition = (fields: any[]) => {
     fields.forEach((field: any) => {
       if (field?.children && field?.children?.length) {
-        this.onPopulate_TriggerCondition(field.children);
+        this.onPopulateTriggerCondition(field.children);
       } else if (field) {
         const ifConditionsIds = field.metaData?.conditionRuleIds;
         if (ifConditionsIds?.length) {
-          const ifConditions = this.getCoditions(ifConditionsIds);
+          const ifConditions = this.getConditions(ifConditionsIds);
           if (ifConditions?.length) {
             this.checkCondition(ifConditions);
           } else if (ifConditions && !ifConditions?.length) {
@@ -637,22 +626,12 @@ export class EditorService extends BaseService {
   };
   saveTransaction = (params, payload: any): Observable<any> => {
     const url = `${this.config.getApiUrls().saveTransactionURL}`;
-    return this.postData(url, payload, params);
-  };
-  //  Save and validate screen
-  saveAndValidateScreen = (params, payload: any): Observable<any> => {
-    const url = `${this.config.getApiUrls().saveAndValidateScreenURL}`;
-    return this.postData(url, payload, params);
-  };
-  // Get screen details based on action id
-  getScreenData = (transactionId, params): Observable<any> => {
-    const url = `${this.config.getApiUrls().getScreenDataURL}/${transactionId}`;
-    return this.getData(url, params);
+    return this.putData(url, payload, params);
   };
   // submit Action
   submitMultipleAction = (transactionId, params, data = {}): Observable<any> => {
-    const url = `${this.config.getApiUrls().submitMultipleAction}/${transactionId}`;
-    return this.postData(url, data, params);
+    const url = `${this.config.getApiUrls().submitMultipleAction}`.replace("{transactionId}", transactionId);
+    return this.putData(url, data, params);
   };
   // Create Transaction
   createTransaction = (params, payload): Observable<any> => {
@@ -683,15 +662,15 @@ export class EditorService extends BaseService {
     });
   }
 
-  getCoditions(ifConditionsIds: any): any {
+  getConditions(ifConditionsIds: any): any {
     return this.getConditionDetails()?.filter((item: any) => ifConditionsIds.includes(item?.id)) || [];
   }
   calcDate(date1, date2) {
-    var diff = Math.floor(date1.getTime() - date2.getTime());
-    var day = 1000 * 60 * 60 * 24;
-    var days = Math.floor(diff / day);
-    var months = Math.floor(days / 31);
-    var years = Math.floor(months / 12);
+    const diff = Math.floor(date1.getTime() - date2.getTime());
+    const day = 1000 * 60 * 60 * 24;
+    const days = Math.floor(diff / day);
+    const months = Math.floor(days / 31);
+    const years = Math.floor(months / 12);
     return { days: days, months: months, years: years };
   }
   addMonths(dateValue, months = 0) {
@@ -700,7 +679,7 @@ export class EditorService extends BaseService {
     return result;
   }
   addDays(date, days) {
-    var result = new Date(date);
+    const result = new Date(date);
     result.setDate(result.getDate() + parseInt(days));
     return result;
   }

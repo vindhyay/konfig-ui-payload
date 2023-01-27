@@ -87,7 +87,7 @@ $menuAnim: cubic-bezier(0.4, 0, 0.2, 1);
   height: 32px;
   line-height: 32px;
   text-align: center;
-  font-size: 24px;
+  font-size: var(--font-size-60);
 }
 
 @mixin transition($transition) {
@@ -111,7 +111,7 @@ $menuAnim: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @mixin overflowEllipse() {
-  margin-bottom: 6px;
+  margin-bottom: var(--spacing-xs-sm);
   text-overflow: ellipsis;
   overflow: hidden;
   word-break: break-all;
@@ -125,16 +125,16 @@ $menuAnim: cubic-bezier(0.4, 0, 0.2, 1);
   ::-webkit-input-placeholder {
     /* Edge */
     color: #b1b8c1;
-    font-weight: 400;
+    font-weight: var(--font-weight-normal);
   }
   :-ms-input-placeholder {
     /* Internet Explorer 10-11 */
     color: #b1b8c1;
-    font-weight: 400;
+    font-weight: var(--font-weight-normal);
   }
   ::placeholder {
     color: #b1b8c1;
-    font-weight: 400;
+    font-weight: var(--font-weight-normal);
   }
 }
 
@@ -147,45 +147,6 @@ $menuAnim: cubic-bezier(0.4, 0, 0.2, 1);
   }
   100% {
     right: 15px;
-  }
-}
-
-@mixin customInputs() {
-  .field {
-    .label {
-      font-weight: 600;
-      font-size: 13px;
-      position: relative;
-
-      .help-text {
-        font-size: 8px;
-        position: absolute;
-        top: 15px;
-        font-weight: 400;
-        color: gray;
-      }
-
-      sup {
-        color: red;
-      }
-    }
-
-    .toggle {
-      margin: 0 5px;
-      display: flex;
-      align-items: center;
-    }
-
-    .delete {
-      cursor: pointer;
-    }
-
-    .value {
-      &.disable {
-        opacity: 0.5;
-        cursor: not-allowed;
-      }
-    }
   }
 }
 
@@ -225,7 +186,7 @@ $menuAnim: cubic-bezier(0.4, 0, 0.2, 1);
     }
   }
 }
-@mixin pill(){
+@mixin pill() {
   .pill {
     display: inline-block;
     padding: var(--spacing-xs) var(--spacing-sm);
@@ -242,42 +203,66 @@ $menuAnim: cubic-bezier(0.4, 0, 0.2, 1);
     }
   }
 }
-@mixin accordian($size: 'sm') {
-  .p-accordion .p-accordion-header .p-accordion-header-link {
-    padding: var(--spacing-sm-md);
-    background: var(--primary-background-color);
-    border-radius: 0;
-    border: none;
-    transition: box-shadow 0.15s;
-    @if $size == 'sm' {
-      @include font-subtitle();
-    }
-    @if $size == 'md' {
-      @include font-title-fifth();
-    }
-    color: var(--secondary-text-color);
-    font-weight: var(--font-weight-bolder);
-    text-transform: uppercase;
+
+@mixin nested-grid-container() {
+  .nested-grid-container {
     display: flex;
-    flex-direction: row-reverse;
-    justify-content: space-between;
-  }
-  .p-accordion .p-accordion-tab {
-    border-top: 1px solid var(--layout-border-color);
-  }
-  .p-accordion .p-accordion-header .p-accordion-header-link .p-accordion-toggle-icon {
-    font-size: 10px;
-  }
-  .p-accordion-content {
-    padding: var(--spacing-sm) var(--spacing-sm);
-  }
-  .p-accordion .p-accordion-header:not(.p-disabled) .p-accordion-header-link:focus {
-    box-shadow: none;
-  }
-  .p-accordion p-accordiontab .p-accordion-content {
-    border: none;
-  }
-  .p-accordion p-accordiontab:not(:last-child) .p-accordion-header .p-accordion-header-link {
-    border-bottom: none;
+    flex-direction: column;
+    height: 100%;
+    &.empty-child {
+      position: relative;
+      ::ng-deep {
+        .container-help-text {
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+          font-size: var(--font-size-30); //closest variable
+          justify-content: center;
+          color: var(--grey-color-700);
+          position: absolute;
+          z-index: 1;
+          height: 100%;
+          left: 0;
+          right: 0;
+          pointer-events: none;
+        }
+      }
+    }
+    .container-title {
+      height: 40px;
+      background-color: var(--grey-color-600);
+      font-style: normal;
+      font-weight: var(--font-weight-bolder);
+      font-size: var(--font-size-20);
+      display: flex;
+      align-items: center;
+      line-height: var(--font-line-height-30);
+      letter-spacing: 0.03em;
+      color: var(--grey-color-700);
+      padding-left: var(--spacing-md); //closest variable
+      padding-right: calc(var(--spacing-md) + 2px);
+      border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 0;
+    }
+    ::ng-deep {
+      gridster {
+        background: var(--ui-border-color-lighter);
+      }
+      .card-container {
+        height: 100%;
+        background: var(--color-white);
+        border: 1px solid var(--grey-color-500);
+        gridster {
+          background: var(--color-white);
+        }
+      }
+    }
+    &.footer-container {
+      ::ng-deep {
+        gridster {
+          background: var(--grey-color-900);
+          color: var(--color-white);
+        }
+      }
+    }
   }
 }

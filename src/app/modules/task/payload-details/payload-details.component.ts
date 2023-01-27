@@ -60,10 +60,10 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
             // indirectly updating form fields
             const newFormFields = transactionDetails.uiPayload || [];
             this.recursiveUpdateFieldProperties(this.formFields, newFormFields);
-            this.editorService.onPopulate_TriggerCondition(this.formFields);
-            setTimeout(()=>{
-              this.editorService.onPopulate_TriggerCondition(this.formFields);
-            },0)
+            this.editorService.onPopulateTriggerCondition(this.formFields);
+            setTimeout(() => {
+              this.editorService.onPopulateTriggerCondition(this.formFields);
+            }, 0);
           }
         } else {
           this.formFields = transactionDetails?.uiPayload || [];
@@ -75,7 +75,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
       }
     });
   }
-  createTransaction(applicationId: string, id = "") {
+  createTransaction(applicationId: string, id: string = "") {
     this.loading = true;
     this.editorService
       .createTransaction({ applicationId, ...(id && { id }) }, { sessionData: this.sessionFields })
@@ -94,11 +94,11 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
         (error) => {
           this.loading = false;
           if (error.status === 401) {
-            this.authService.logoff(false, this.activatedRoute);
+            this.authService.logoff(false);
           }
           if (error.status === 500) {
             this.notificationService.error(error?.error?.error?.errorMessage);
-            this.authService.logoff(false, this.activatedRoute);
+            this.authService.logoff(false);
           }
         }
       );

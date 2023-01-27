@@ -50,6 +50,7 @@
         [value]="item?.value"
         [emitButtonEvent]="emitButtonEvent"
         (onBtnClick)="onBtnClick.emit($event)"
+        (click)="widgetClickHandler($event, item)"
       ></app-payload-form-field>
     </gridster-item>
   </ng-container>

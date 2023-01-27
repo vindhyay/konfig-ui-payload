@@ -1,6 +1,6 @@
 # Stage-1 to Build the Application
 # base image
-FROM node:12-alpine AS builder
+FROM node:14-alpine AS builder
 #Install Git and ssh tools
 RUN apk update && apk upgrade && \
     apk add --no-cache bash git openssh

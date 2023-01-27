@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import { BaseWidget } from "../../model/create-form.models";
 import { parseApiResponse } from "../../../../utils";
 import { BaseComponent } from "../../../shared/base/base.component";
@@ -23,7 +23,7 @@ export class TransactionTableComponent extends BaseComponent implements OnInit {
     return this.item.metaData;
   }
   ngOnInit(): void {}
-  getTransactionTableData(params) {
+  getTransactionTableData(params: {applicationId: string, widgetId: string, pageNo: number, recordNo: number}) {
     this.editorService.getTransactionTableData(params).subscribe((result) => {
       const { data, error } = parseApiResponse(result);
       if (!error && data) {
@@ -40,21 +40,21 @@ export class TransactionTableComponent extends BaseComponent implements OnInit {
       }
     });
   }
-  onRowClick($event) {
+  onRowClick($event: any) {
     if ($event.id) {
       this.getTransactionDetails($event.id);
     } else {
       this.notificationService.error("Transaction not found");
     }
   }
-  onPageChange($event) {
+  onPageChange($event: any) {
     const { page = 1, limit = 10 } = $event || {};
     const { applicationId } = this.editorService.getTransactionDetails();
     const { widgetId } = this.item;
     const params = { applicationId, widgetId, pageNo: page - 1, recordNo: limit };
     this.getTransactionTableData(params);
   }
-  getTransactionDetails(id) {
+  getTransactionDetails(id: string) {
     this.loading = true;
     this.editorService.fetchTransactionDetails(id).subscribe(
       (result) => {

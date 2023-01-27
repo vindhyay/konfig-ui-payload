@@ -22,7 +22,7 @@ export class CollapseContainerComponent implements OnInit, AfterViewInit {
   get metaData(): CollapseContainerMetaData {
     return this.item.metaData as CollapseContainerMetaData;
   }
-  onCollapse(status, item) {
+  onCollapse(status: boolean, item: any) {
     if (!status) {
       this.item.rows = item?.metaData?.hideRows || 0;
       this.item.minItemRows = item?.metaData?.hideRows || 0;
