@@ -58,8 +58,8 @@ export const toCapitalize = (string: string = "") => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
 export const parseApiResponse = (result: result): result => {
-  const data = result.data;
-  const error = result.error;
+  const data = result;
+  const error = null;
   return { data, error };
 };
 export const validateFields = (fields: any[], isPageSubmit = false) => {
