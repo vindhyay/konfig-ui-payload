@@ -9,7 +9,6 @@ import {
   Output,
   SimpleChanges,
 } from "@angular/core";
-import { FieldData } from "../model/field-data.model";
 import { BaseWidget, Column, TableMetaData, WidgetTypes } from "../model/create-form.models";
 import { AddressDetails, DeepCopy, getFieldFromFields, parseApiResponse, validateFields } from "../../../utils";
 import { AuthService } from "../../auth/services/auth.service";
@@ -46,7 +45,6 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
   SSNInput: WidgetTypes = WidgetTypes.SSNInput;
   Email: WidgetTypes = WidgetTypes.Email;
   PhonenumberInput: WidgetTypes = WidgetTypes.PhonenumberInput;
-  ErrorContainer: WidgetTypes = WidgetTypes.ErrorContainer;
   TextArea: WidgetTypes = WidgetTypes.TextArea;
   Number: WidgetTypes = WidgetTypes.Number;
   Checkbox: WidgetTypes = WidgetTypes.Checkbox;
@@ -113,13 +111,6 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
     }
     this._item = data;
   }
-  @Input() parent: FieldData = {} as FieldData;
-  @Input() fieldIndex: number = 0;
-  @Input() addMode = true;
-  @Input() showEdit = true;
-  @Input() viewMode = false;
-  @Input() showDelete = true;
-  @Output() edit = new EventEmitter();
   allAvailableFields = [];
   private _payloadFields: any;
   get payloadFields(): any {
@@ -197,8 +188,10 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
   }
   editMode: boolean = false;
 
-  btnClick($event, data) {
-    $event.stopPropagation();
+  btnClick($event: any, data: any) {
+    if (!data?.metaData?.widgetType.includes("Container")) {
+      $event.stopPropagation();
+    }
     if (this.readonlyMode || this.disable) {
       return;
     }
@@ -256,17 +249,18 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
     });
   };
 
-  optionChange($event, data) {
+  optionChange($event: any, data: any) {
     const metaData = this.item.metaData;
     if (!!metaData["onChangeConfigs"] && metaData["onChangeConfigs"]?.length) {
       this.editorService.onOptionChange({ event: $event, data });
     } else if (metaData?.businessRuleIds?.length) {
       this.editorService.onRuleTrigger({ event: $event, data });
+    } else {
+      this.onChange($event);
     }
-    this.onChange($event);
   }
 
-  onCollapse(status, item) {
+  onCollapse(status: boolean, item: any) {
     if (!status) {
       this.item.rows = item?.metaData?.hideRows || 0;
       this.item.minItemRows = item?.metaData?.hideRows || 0;
@@ -284,7 +278,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
   onChange($event) {
     const ifConditionsIds = this.item.metaData?.conditionRuleIds;
     if (ifConditionsIds?.length) {
-      const ifConditions = this.editorService.getCoditions(ifConditionsIds);
+      const ifConditions = this.editorService.getConditions(ifConditionsIds);
       if (ifConditions?.length) {
         this.editorService.checkCondition(ifConditions);
       } else if (ifConditions && !ifConditions?.length) {
@@ -299,7 +293,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
 
   visitedFields = [];
 
-  calculateFormulaValue(field, callingFirst) {
+  calculateFormulaValue(field: any, callingFirst: boolean) {
     if (callingFirst) {
       this.visitedFields = [];
     }
@@ -319,7 +313,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
     });
   }
 
-  getAllAvailableFields(fields) {
+  getAllAvailableFields(fields: any) {
     fields.forEach((field) => {
       this.allAvailableFields.push(field);
       if (field.children && field.children.length) {
@@ -328,7 +322,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
     });
   }
 
-  checkVisitedField(field): boolean {
+  checkVisitedField(field: any): boolean {
     if (this.visitedFields.indexOf(field) < 0) {
       return false;
     }
@@ -337,7 +331,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
     }
   }
 
-  computeFormula(item, payloadFields): any {
+  computeFormula(item: any, payloadFields: any): any {
     let formulaValue;
     let formula = [];
     if (item?.metaData?.formula?.length > 0) {
@@ -388,7 +382,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
           formulaValue = values[0]?.value?.value || null;
         }
         item.value.value = formulaValue;
-        this.editorService.onPopulate_TriggerCondition([item]);
+        this.editorService.onPopulateTriggerCondition([item]);
         return formulaValue;
       case "string":
         formulaValue = "";
@@ -405,7 +399,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
           }
         });
         item.value.value = formulaValue;
-        this.editorService.onPopulate_TriggerCondition([item]);
+        this.editorService.onPopulateTriggerCondition([item]);
         return formulaValue;
       case "date":
         const dateFunc = formula.filter((field) => {
@@ -438,7 +432,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
           formulaValue = years + "";
         }
         item.value.value = formulaValue;
-        this.editorService.onPopulate_TriggerCondition([item]);
+        this.editorService.onPopulateTriggerCondition([item]);
         return formulaValue;
       case "array":
         switch (firstField.metaData.widgetType) {
@@ -505,7 +499,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
             }
             break;
         }
-        this.editorService.onPopulate_TriggerCondition([item]);
+        this.editorService.onPopulateTriggerCondition([item]);
         item.value.value = formulaValue;
         return formulaValue;
     }

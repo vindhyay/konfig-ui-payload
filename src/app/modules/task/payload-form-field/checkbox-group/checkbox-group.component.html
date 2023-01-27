@@ -4,16 +4,8 @@
   [isRequired]="item?.validators?.required"
   [label]="item?.label"
   [items]="item?.metaData?.options"
-  [optionLabel]="
-    item?.metaData?.isLabelAndValue || item?.metaData?.optionType === 'dataresource'
-      ? item?.metaData?.optionLabel
-      : 'name'
-  "
-  [optionValue]="
-    item?.metaData?.isLabelAndValue || item?.metaData?.optionType === 'dataresource'
-      ? item?.metaData?.optionValue
-      : 'name'
-  "
+  [optionLabel]="item?.metaData?.isLabelAndValue ? item?.metaData?.optionLabel : 'name'"
+  [optionValue]="item?.metaData?.isLabelAndValue ? item?.metaData?.optionValue : 'name'"
   [tooltip]="item?.metaData?.tooltip"
   [(ngModel)]="item.value.value"
   (ngModelChange)="onChange($event); validateField($event, item)"

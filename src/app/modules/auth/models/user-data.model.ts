@@ -1,8 +1,3 @@
-export interface Avatar {
-  name: string;
-  imageUrl: string;
-}
-
 export const enum UserRole {
   Admin = "Admin",
   WorkflowManager = "workflowManager",
@@ -43,4 +38,11 @@ export interface UserDataModel {
   status: string;
   seatLocation: string;
   managerName: string;
+}
+
+export interface Tokens {
+  refreshToken: string;
+  refreshTokenExpirationTime: number;
+  accessToken: string;
+  accessTokenExpirationTime: number;
 }

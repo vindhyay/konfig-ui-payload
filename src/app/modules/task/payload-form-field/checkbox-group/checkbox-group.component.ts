@@ -18,9 +18,9 @@ export class CheckboxGroupComponent implements OnInit {
     return this.item.metaData as MetaData;
   }
   ngOnInit(): void {}
-  onChange($event) {
+  onChange($event: any) {
     setTimeout(() => {
-      const ifConditions = this.editorService.getCoditions(this.item.metaData?.conditionRuleIds);
+      const ifConditions = this.editorService.getConditions(this.item.metaData?.conditionRuleIds);
       if (ifConditions?.length) {
         this.editorService.checkCondition(ifConditions);
       } else if (ifConditions && !ifConditions?.length) {

@@ -17,6 +17,7 @@ import {
   TABLE_PAGINATION_POSITIONS,
   TableActions,
   WidgetTypes,
+  Column,
 } from "../../model/create-form.models";
 import { conditionValidation, DeepCopy, getUniqueId, scrollToBottom, superClone } from "../../../../utils";
 import { FormControl, Validators } from "@angular/forms";
@@ -98,7 +99,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
   set tableData(data) {
     this._tableData = data;
     this.filteredTableData = data;
-    this.tableFilters?.onSearch();
+    // this.tableFilters?.onSearch();
     this.updateRowsLimit();
   }
   get tableData() {
@@ -144,12 +145,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
   constructor(private confirmationService: ConfirmationService) {}
 
   isCellEditMode(col, rowIndex) {
-    return (
-      !col?.metaData?.readOnly &&
-      (this.editRows[rowIndex] ||
-        this.newRows[rowIndex] ||
-        (this.editCells[rowIndex] && this.editCells[rowIndex].hasOwnProperty(col?.widgetId)))
-    );
+    return this.editRows[rowIndex] || this.newRows[rowIndex];
   }
   isRowEditMode(rowIndex) {
     return this.editRows[rowIndex];
@@ -410,7 +406,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
     });
     return _validators;
   };
-  getColumnDefaultValue(column) {
+  getColumnDefaultValue(column: Column) {
     switch (column.type) {
       case "string":
         return "";
@@ -453,7 +449,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
       });
     }
   }
-  handlePageChange($event) {
+  handlePageChange($event: number) {
     this.currentPage = $event;
     if (this.isServerSidePagination) {
       this.onPageChange.emit({ limit: this.limitPerPage, page: $event });

@@ -16,7 +16,7 @@ export class AppTabContainerComponent implements OnInit {
     this.tabActiveIndex = this.editorService.activeTabIndexes[this.item.widgetId];
   }
 
-  onTabChange($event) {
+  onTabChange($event: any) {
     const { index = 0 } = $event;
     this.editorService.activeTabIndexes[this.item.widgetId] = index;
     this.tabActiveIndex = index;

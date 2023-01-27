@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { AlignTypes, BaseWidget, DropdownMetaData } from "../../model/create-form.models";
+import { BaseWidget, DropdownMetaData } from "../../model/create-form.models";
 
 @Component({
   selector: "app-dropdown-field",

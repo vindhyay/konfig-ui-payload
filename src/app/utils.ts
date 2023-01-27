@@ -58,8 +58,8 @@ export const toCapitalize = (string: string = "") => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
 export const parseApiResponse = (result: result): result => {
-  const data = result.data;
-  const error = result.error;
+  const data = result;
+  const error = null;
   return { data, error };
 };
 export const validateFields = (fields: any[], isPageSubmit = false) => {
@@ -88,16 +88,30 @@ export const validateFields = (fields: any[], isPageSubmit = false) => {
         value = toSSNFormat(field?.value?.value);
       }
       const tempFormControl = new FormControl(value, getValidators(field?.validators || {}, field));
-      if (tempFormControl.valid || field?.rows === 0 || field?.metaData?.isHidden) {
-        field.error = false;
-        field.errorMessage = "";
+      if (field?.metaData?.widgetType == WidgetTypes.Checkbox) {
+        if (field.validators?.required && !value) {
+          field.error = true;
+          field.errorMessage =
+            field?.metaData?.errorMessage ||
+            getErrorMessages({ required: true }, field?.label || field?.displayName || field?.widgetName)[0];
+          errorFields.push(field);
+          result = false;
+        } else {
+          field.error = false;
+          field.errorMessage = "";
+        }
       } else {
-        field.error = true;
-        field.errorMessage =
-          field?.metaData?.errorMessage ||
-          getErrorMessages(tempFormControl.errors, field?.label || field?.displayName || field?.widgetName)[0];
-        errorFields.push(field);
-        result = false;
+        if (tempFormControl.valid || field?.rows === 0 || field?.metaData?.isHidden) {
+          field.error = false;
+          field.errorMessage = "";
+        } else {
+          field.error = true;
+          field.errorMessage =
+            field?.metaData?.errorMessage ||
+            getErrorMessages(tempFormControl.errors, field?.label || field?.displayName || field?.widgetName)[0];
+          errorFields.push(field);
+          result = false;
+        }
       }
     }
   });
@@ -190,14 +204,6 @@ export const addOriginalPosition = (fields) => {
       addOriginalPosition(field.children);
     }
   });
-};
-
-export const passwordPattern: any = {
-  oneLowerCase: "(?=.*[a-z])",
-  oneUpperCase: "(?=.*[A-Z])",
-  oneNumber: "(?=.*[0-9])",
-  oneSpecialchar: "(?=.*[$@$!%*?&])",
-  minLength: ".{x,}",
 };
 export const superClone = (object): any => {
   const cloning = {};

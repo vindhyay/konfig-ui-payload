@@ -36,7 +36,7 @@
   color: black !important;
 }
 body {
-  font-size: 14px;
+  font-size: var(--font-size-30);
   color: var(--primary-text-color);
 }
 /* Mat stepper widget css */
@@ -77,13 +77,13 @@ body {
   justify-content: space-between;
 }
 .step-btn {
-  color: #ffffff;
+  color: var(--color-white);
   background: #007bff;
   border: 1px solid #007bff;
   padding: 0.2rem 1rem;
   font-size: 1rem;
   transition: background-color 0.15s, border-color 0.15s, box-shadow 0.15s;
-  border-radius: 30px;
+  border-radius: calc(var(--border-radius-lg) * 2); //closest variable
 }
 .mat-step-header .mat-step-icon-selected,
 .mat-step-header .mat-step-icon-state-done,
@@ -246,7 +246,7 @@ body {
 
 .tab-container {
   height: 100%;
-  padding: 4px;
+  padding: var(--spacing-xs);
   .p-tabview {
     height: 100%;
     display: flex;
@@ -254,9 +254,9 @@ body {
   }
   .p-tabview-panels {
     height: 100%;
-    border: 1px solid #dee2e6;
+    border: 1px solid var(--ui-border-color-lighter);
     border-top: 0;
-    font-size: 14px;
+    font-size: var(--font-size-30);
     color: inherit;
   }
   &.no-tab-container {
@@ -271,7 +271,7 @@ body {
     height: 100%;
   }
   .p-tabview .p-tabview-nav li:not(.p-highlight) .p-tabview-nav-link {
-    border-color: #dee2e6;
+    border-color: var(--ui-border-color-lighter);
   }
   .p-tabview .p-tabview-nav li .p-tabview-nav-link:not(.p-disabled):focus {
     box-shadow: none;
