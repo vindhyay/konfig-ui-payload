@@ -133,7 +133,7 @@ export class AppConfigService {
       // Submit with files URL
       submitWithFilesURL: ACCOUNT_WORKFLOW_BASE_URL + "/transaction/submit-with-files",
       // save transaction URL
-      saveTransactionURL: ACCOUNT_WORKFLOW_BASE_URL + "/transaction/save",
+      saveTransactionURL: ACCOUNT_WORKFLOW_BASE_URL + "/transactions",
       // Populate Transaction Fields URL
       populateTransactionURL: ACCOUNT_WORKFLOW_BASE_URL + "/transaction/populate-data-trigger",
       // Unique Key Transaction URL
@@ -141,7 +141,7 @@ export class AppConfigService {
       // get workflow details URL
       getWorkflowDetailsURL: WORKFLOW_ADMIN_BASE_URL + "/get-workflow-detail",
       // create transaction for  workflow URL
-      createTransactionURL: ACCOUNT_WORKFLOW_BASE_URL + "/transaction",
+      createTransactionURL: ACCOUNT_WORKFLOW_BASE_URL + "/transactions",
       // get payload stats
       getTransactionCountURL: ACCOUNT_WORKFLOW_BASE_URL + "/transaction/get-transaction-count",
       // data-changes for my-tasks and team-tasks
@@ -160,7 +160,7 @@ export class AppConfigService {
       saveAndValidateScreenURL: ACCOUNT_WORKFLOW_BASE_URL + "/transaction/save-and-validate",
       getScreenDataURL: ACCOUNT_WORKFLOW_BASE_URL + "/transaction",
       //MultipleClickActionSubmit
-      submitMultipleAction: ACCOUNT_WORKFLOW_BASE_URL + "/transaction/click-trigger",
+      submitMultipleAction: ACCOUNT_WORKFLOW_BASE_URL + "/transactions/{transactionId}/click-trigger",
       // Update row API
       updateTableRowDataURL: ACCOUNT_WORKFLOW_BASE_URL + "/transaction/advance-table-action",
     };

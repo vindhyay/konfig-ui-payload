@@ -626,12 +626,12 @@ export class EditorService extends BaseService {
   };
   saveTransaction = (params, payload: any): Observable<any> => {
     const url = `${this.config.getApiUrls().saveTransactionURL}`;
-    return this.postData(url, payload, params);
+    return this.putData(url, payload, params);
   };
   // submit Action
   submitMultipleAction = (transactionId, params, data = {}): Observable<any> => {
-    const url = `${this.config.getApiUrls().submitMultipleAction}/${transactionId}`;
-    return this.postData(url, data, params);
+    const url = `${this.config.getApiUrls().submitMultipleAction}`.replace("{transactionId}", transactionId);
+    return this.putData(url, data, params);
   };
   // Create Transaction
   createTransaction = (params, payload): Observable<any> => {

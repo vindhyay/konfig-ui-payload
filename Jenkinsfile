@@ -15,8 +15,8 @@ agent any
     }
 environment {
    NAME = "finlevit-payload"
-   //REPO = "harbor.tabner.us/finlevit"
-   REPO = "10.10.5.17:443/konfig-vault"
+   REPO = "harbor.tabner.com:443/konfig"
+   //REPO = "10.10.5.17:443/finlevit"
    DNAME = "finlevit-payload"
 }
   stages {
@@ -56,7 +56,7 @@ environment {
       stage('Build Docker Image'){
          steps {
 //		     echo "Running ${VERSION} on ${env.JENKINS_URL}"
-            sh 'docker build --force-rm=true -t ${REPO}/${NAME}:r-${BUILD_NUMBER} .'
+            sh 'docker build --force-rm=true -t ${REPO}/${NAME}:${BUILD_NUMBER} .'
          }
       }
        stage('Docker Image Testing'){
@@ -71,7 +71,7 @@ environment {
       stage('Archive Artifactory'){
          when {
     expression {
-        return env.BRANCH_NAME == 'stg-refactor';
+        return env.BRANCH_NAME == 'dev';
         }
     }
          steps {
@@ -79,16 +79,16 @@ environment {
             sh 'docker push ${REPO}/${NAME}:${BUILD_NUMBER}'
          }
       }
-		stage('Deploy to sit'){
+		stage('Deploy to Dev'){
 			when {
 			expression {
-			return env.BRANCH_NAME == 'stg-refactor';
+			return env.BRANCH_NAME == 'dev';
 			}
 			}
         steps{
             echo"Deploying the latest version"
-			      sh 'ssh rke@10.10.5.41 "kubectl -n sit set image deployments/${DNAME} ${NAME}=${REPO}/${NAME}:${BUILD_NUMBER}"'
-               sh 'ssh rke@10.10.5.41 "kubectl -n sit rollout restart deployment ${DNAME}"'
+			      sh 'ssh root@konfig-dev-m1 "kubectl -n dev set image deployments/${DNAME} ${NAME}=${REPO}/${NAME}:${BUILD_NUMBER}"'
+            sh 'ssh root@konfig-dev-m1 "kubectl -n dev rollout restart deployment ${DNAME}"'
             echo"Successfully deployed the latest version of the Application"
 			}
 		}

@@ -28,7 +28,7 @@ export class JwtInterceptor implements HttpInterceptor {
       return next.handle(this.injectToken(request));
     } else if (refreshToken) {
       return this.authService.getAccessToken({ refreshToken }).pipe(
-        switchMap(authResponse => {
+        switchMap((authResponse) => {
           this.storage.saveTokensData(authResponse);
           return next.handle(this.injectToken(request));
         })
@@ -40,13 +40,15 @@ export class JwtInterceptor implements HttpInterceptor {
   }
   injectToken(request: HttpRequest<any>) {
     const token = this.storage.getToken(ACCESS_TOKEN);
+    const { id = "" } = this.authService.getAgentRole() || {};
     return request.clone({
       setHeaders: {
         "Cache-Control": "no-cache, no-store, must-revalidate, post-check=0, pre-check=0",
         Pragma: "no-cache",
         Expires: "0",
-        Authorization: `Bearer ${token}`
-      }
+        ...(id && { rId: id }),
+        Authorization: `Bearer ${token}`,
+      },
     });
   }
 }
