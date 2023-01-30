@@ -15,8 +15,8 @@ export class StorageService {
     return this.getCookie(type);
   }
   saveTokensData(data: Tokens) {
-    this.setToken({ type: ACCESS_TOKEN, token: data?.accessToken, expiryTime: data?.accessTokenExpirationTime });
-    this.setToken({ type: REFRESH_TOKEN, token: data?.refreshToken, expiryTime: data?.refreshTokenExpirationTime });
+    this.setToken({ type: ACCESS_TOKEN, token: data?.accessToken, expiryTime: data?.accessTokenExpirationTime * 1e3 });
+    this.setToken({ type: REFRESH_TOKEN, token: data?.refreshToken, expiryTime: data?.refreshTokenExpirationTime * 1e3});
   }
 
   // User data
