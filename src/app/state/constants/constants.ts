@@ -4,3 +4,4 @@ export const JWT_TOKEN = "jwt_token";
 export const PREF = "preference";
 export const ACCESS_TOKEN = 'access_token';
 export const REFRESH_TOKEN = 'refresh_token';
+export const ACCESS_TOKEN_EXPIRY = 'access_token_expiration_time';
