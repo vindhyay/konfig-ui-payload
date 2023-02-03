@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Tokens } from "../modules/auth/models";
-import { USER_DATA_KEY, ACCESS_TOKEN, REFRESH_TOKEN } from "../state/constants";
+import { USER_DATA_KEY, ACCESS_TOKEN, REFRESH_TOKEN, ACCESS_TOKEN_EXPIRY } from "../state/constants";
 
 // TODO change to cookies
 
@@ -8,15 +8,32 @@ import { USER_DATA_KEY, ACCESS_TOKEN, REFRESH_TOKEN } from "../state/constants";
   providedIn: "root",
 })
 export class StorageService {
-  setToken(tokenData: { type: string; token: string; expiryTime: number }) {
-    this.setCookie(tokenData?.type, tokenData?.token, tokenData?.expiryTime);
+  setToken(tokenData: { type: string; token: string; expiryTime: number; domain: string }) {
+    this.setCookie(tokenData?.type, tokenData?.token, tokenData?.expiryTime * 1e3, tokenData?.domain);
   }
   getToken(type: string) {
     return this.getCookie(type);
   }
-  saveTokensData(data: Tokens) {
-    this.setToken({ type: ACCESS_TOKEN, token: data?.accessToken, expiryTime: data?.accessTokenExpirationTime * 1e3 });
-    this.setToken({ type: REFRESH_TOKEN, token: data?.refreshToken, expiryTime: data?.refreshTokenExpirationTime * 1e3 });
+  saveTokensData(data: Tokens, domain: string) {
+    this.setToken({
+      type: ACCESS_TOKEN,
+      token: data?.accessToken,
+      expiryTime: data?.accessTokenExpirationTime,
+      domain: domain
+    });
+    this.setToken({
+      type: REFRESH_TOKEN,
+      token: data?.refreshToken,
+      expiryTime: data?.refreshTokenExpirationTime,
+      domain: domain
+    });
+
+    let time = Date.now() + data?.accessTokenExpirationTime * 1e3;
+    this.setCookie(ACCESS_TOKEN_EXPIRY, time.toString(), data?.accessTokenExpirationTime * 1e3, domain);
+  }
+  getTimeToExpiration(name: string){
+    let timeLeft = Number(this.getCookie(ACCESS_TOKEN_EXPIRY)) - Date.now() - 5000;
+    return timeLeft;
   }
 
   // User data
@@ -28,21 +45,23 @@ export class StorageService {
     localStorage.setItem(USER_DATA_KEY, JSON.stringify(user));
   }
 
-  clear() {
+  clear(domain: string) {
     localStorage.removeItem(USER_DATA_KEY);
-    this.clearCookie(ACCESS_TOKEN);
-    this.clearCookie(REFRESH_TOKEN);
+    this.clearCookie(ACCESS_TOKEN, domain);
+    this.clearCookie(REFRESH_TOKEN, domain);
+    this.clearCookie(ACCESS_TOKEN_EXPIRY, domain);
   }
 
   // Cookie methods
-  setCookie(name, value, time) {
+  setCookie(name, value, time, domain) {
     let expires = "";
     if (time) {
       const date = new Date();
       date.setTime(date.getTime() + time);
       expires = "; expires=" + date.toUTCString();
     }
-    document.cookie = name + "=" + (value || "") + expires + "; path=/";
+    document.cookie = name + "=" + value + expires + "; domain=" + domain;
+    // document.cookie = name + "=" + value + +expires + "; path=/";
   }
   getCookie(name) {
     const nameEQ = name + "=";
@@ -54,7 +73,7 @@ export class StorageService {
     }
     return null;
   }
-  clearCookie(name) {
-    document.cookie = name + "=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+  clearCookie(name, domain) {
+    document.cookie = name + "=; domain=" + domain + "; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
   }
 }

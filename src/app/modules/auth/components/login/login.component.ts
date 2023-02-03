@@ -10,6 +10,7 @@ import { UserDataModel } from "../../models";
 import { NotificationService } from "src/app/services/notification.service";
 import { parseApiResponse } from "src/app/utils";
 import { CustomError } from "../../../../state/model";
+import { AppConfigService } from "src/app/app-config-providers/app-config.service";
 
 @Component({
   selector: "app-login",
@@ -32,7 +33,8 @@ export class LoginComponent extends BaseComponent implements OnInit {
     private fb: FormBuilder,
     private storage: StorageService,
     protected notificationService: NotificationService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private config: AppConfigService
   ) {
     super();
   }
@@ -58,7 +60,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
       this.loading = true;
       this.authService.authenticate(this.authForm.value).subscribe(
         (tokenResponse) => {
-          this.storage.saveTokensData(tokenResponse);
+          this.storage.saveTokensData(tokenResponse, this.config.getDomain());
           this.getUserDetails();
         },
         (error) => this.handleError(error)

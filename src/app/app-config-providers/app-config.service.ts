@@ -8,12 +8,14 @@ import { CONFIG_FILE_PATH } from "../state/constants";
 })
 export class AppConfigService {
   private apiUrls: Object = {};
+  private domain: string = "";
 
   constructor(private http: HttpClient) {}
 
   public loadAppConfig(): Promise<any> {
     return this.getConfigFile().then((config) => {
       this.apiUrls = this.appendBaseUrls(config);
+      this.setDomain(config.domain);
       return this.apiUrls;
     });
   }
@@ -29,6 +31,13 @@ export class AppConfigService {
 
   public getApiUrls(): any {
     return this.apiUrls;
+  }
+
+  private setDomain(domain: string) {
+    this.domain = domain;
+  }
+  public getDomain() {
+    return this.domain;
   }
 
   private appendBaseUrls(config: ConfigUrlsModel = {} as ConfigUrlsModel) {

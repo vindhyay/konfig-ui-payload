@@ -10,5 +10,6 @@
   "socketBaseURL": "ws://workflow-service.dev.finlevit.io/account",
   "appURL": "http://ui-fp.dev.finlevit.io",
   "currentEnv": "dev",
-  "primaryEnv": "dev"
+  "primaryEnv": "dev",
+  "domain": "dev.finlevit.io"
 }
