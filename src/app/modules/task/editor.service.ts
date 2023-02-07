@@ -385,7 +385,7 @@ export class EditorService extends BaseService {
           condition.rules.forEach((rule, index) => {
             const field = getFieldFromFields(allFields, rule?.field?.widgetId);
             const fieldValue = field?.value?.value;
-            const targetField = null;
+            const targetField = getFieldFromFields(allFields, rule?.targetField?.widgetId);
             resultArray.push(this.conditionValidation(rule, fieldValue, targetField));
           });
           condMatched = this.evaluateFilter(condition.filtersLogic, resultArray);

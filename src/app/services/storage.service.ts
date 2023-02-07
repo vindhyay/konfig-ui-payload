@@ -9,7 +9,7 @@ import { USER_DATA_KEY, ACCESS_TOKEN, REFRESH_TOKEN, ACCESS_TOKEN_EXPIRY } from 
 })
 export class StorageService {
   setToken(tokenData: { type: string; token: string; expiryTime: number; domain: string }) {
-    this.setCookie(tokenData?.type, tokenData?.token, tokenData?.expiryTime * 1e3, tokenData?.domain);
+    this.setCookie(tokenData?.type, tokenData?.token, tokenData?.expiryTime, tokenData?.domain);
   }
   getToken(type: string) {
     return this.getCookie(type);
@@ -18,13 +18,13 @@ export class StorageService {
     this.setToken({
       type: ACCESS_TOKEN,
       token: data?.accessToken,
-      expiryTime: data?.accessTokenExpirationTime,
+      expiryTime: (data?.accessTokenExpirationTime * 1e3),
       domain: domain
     });
     this.setToken({
       type: REFRESH_TOKEN,
       token: data?.refreshToken,
-      expiryTime: data?.refreshTokenExpirationTime,
+      expiryTime: (data?.refreshTokenExpirationTime * 1e3),
       domain: domain
     });
 
