@@ -8,14 +8,13 @@ import { CONFIG_FILE_PATH } from "../state/constants";
 })
 export class AppConfigService {
   private apiUrls: Object = {};
-  private domain: string = "";
-
+  private domain;
   constructor(private http: HttpClient) {}
 
   public loadAppConfig(): Promise<any> {
     return this.getConfigFile().then((config) => {
-      this.apiUrls = this.appendBaseUrls(config);
       this.setDomain(config.domain);
+      this.apiUrls = this.appendBaseUrls(config);
       return this.apiUrls;
     });
   }
@@ -29,15 +28,16 @@ export class AppConfigService {
       });
   }
 
-  public getApiUrls(): any {
-    return this.apiUrls;
-  }
-
-  private setDomain(domain: string) {
+  public setDomain(domain: string): any {
     this.domain = domain;
   }
-  public getDomain() {
+
+  public getDomain(): any {
     return this.domain;
+  }
+
+  public getApiUrls(): any {
+    return this.apiUrls;
   }
 
   private appendBaseUrls(config: ConfigUrlsModel = {} as ConfigUrlsModel) {
@@ -171,7 +171,7 @@ export class AppConfigService {
       //MultipleClickActionSubmit
       submitMultipleAction: ACCOUNT_WORKFLOW_BASE_URL + "/transactions/{transactionId}/click-trigger",
       // Update row API
-      updateTableRowDataURL: ACCOUNT_WORKFLOW_BASE_URL + "/transaction/advance-table-action",
+      updateTableRowDataURL: ACCOUNT_WORKFLOW_BASE_URL + "/transactions",
     };
   }
 }

@@ -19,19 +19,19 @@ export class StorageService {
       type: ACCESS_TOKEN,
       token: data?.accessToken,
       expiryTime: data?.accessTokenExpirationTime,
-      domain: domain
+      domain: domain,
     });
     this.setToken({
       type: REFRESH_TOKEN,
       token: data?.refreshToken,
       expiryTime: data?.refreshTokenExpirationTime,
-      domain: domain
+      domain: domain,
     });
 
     let time = Date.now() + data?.accessTokenExpirationTime * 1e3;
     this.setCookie(ACCESS_TOKEN_EXPIRY, time.toString(), data?.accessTokenExpirationTime * 1e3, domain);
   }
-  getTimeToExpiration(name: string){
+  getTimeToExpiration(name: string) {
     let timeLeft = Number(this.getCookie(ACCESS_TOKEN_EXPIRY)) - Date.now() - 5000;
     return timeLeft;
   }
