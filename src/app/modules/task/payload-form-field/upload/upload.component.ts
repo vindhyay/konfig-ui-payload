@@ -37,7 +37,7 @@ export class UploadComponent implements OnInit {
     if (transactionId) {
       this.loading = true;
       this.uploadStatus = "pending";
-      this.editorService.uploadFile(fileData, { transactionId }).subscribe(
+      this.editorService.uploadFile(fileData,transactionId).subscribe(
         (result) => {
           this.loading = false;
           const { data, error } = parseApiResponse(result);
@@ -50,7 +50,7 @@ export class UploadComponent implements OnInit {
           }
         },
         (error) => {
-          // TODo error handling
+          this.uploadStatus = "failed";
           this.loading = false;
         }
       );
