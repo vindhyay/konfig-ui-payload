@@ -609,9 +609,9 @@ export class EditorService extends BaseService {
     const url = `${this.config.getApiUrls().getDataListValuesURL}`;
     return this.postData(url, payload);
   };
-  uploadFile = (formData, params): Observable<any> => {
-    const url = `${this.config.getApiUrls().uploadFile}`;
-    return this.postData(url, formData, params);
+  uploadFile = (formData, transactionId): Observable<any> => {
+    const url = `${this.config.getApiUrls().uploadFile}`.replace("{transactionId}", transactionId);;
+    return this.postData(url, formData);
   };
   getTransactionTableData = (params): Observable<any> => {
     const url = `${this.config.getApiUrls().transactionTableURL}`;
