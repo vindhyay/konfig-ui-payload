@@ -12,7 +12,7 @@ describe("AppConfigService", () => {
     authBaseUrl: "http://security-service.dev.finlevit.io/",
   };
   let dummyAPIEndPointUrls = {
-    authenticateUrl: "http://security-service.dev.finlevit.io//authenticate",
+    authenticateUrl: "http://security-service.dev.finlevit.io/authenticate",
     loginURL: "http://workflow-admin.dev.finlevit.io//userprofileservice/loginuserprofile",
     getBusinessGroupsURL: "http://workflow-admin.dev.finlevit.io//workflowadmin/rest/businessgroups",
     postBusinessGroupsURL: "http://workflow-admin.dev.finlevit.io//workflowadmin/rest/businessgroup",
