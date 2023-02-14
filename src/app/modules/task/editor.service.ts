@@ -646,7 +646,8 @@ export class EditorService extends BaseService {
 
   // update table row
   updateTableRowData = (payload, params): Observable<any> => {
-    const url = `${this.config.getApiUrls().updateTableRowDataURL}`;
+    const { transactionId = "", screenId = "" } = this.getTransactionDetails();
+    const url = `${this.config.getApiUrls().updateTableRowDataURL}/${transactionId}/advance-table-action`;
     return this.putData(url, payload, params);
   };
 
