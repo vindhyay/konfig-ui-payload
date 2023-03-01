@@ -181,9 +181,12 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
     }
   }
   ngAfterViewInit() {
-    // Apply conditions based on default value
+    // Apply conditions based on default value and validate using on load value
     setTimeout(() => {
       this.onChange(this.item?.value?.value);
+      if (this.item?.value?.value) {
+        this.validateField(null, this.item);
+      }
     });
   }
   editMode: boolean = false;
