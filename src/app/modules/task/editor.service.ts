@@ -404,7 +404,7 @@ export class EditorService extends BaseService {
                 showFieldRef.minItemCols = showFieldRef.metaData?.defaultMinItemCols;
                 showFieldRef.metaData.movement = "DOWN";
                 // showFieldRef.y = showFieldRef.metaData.originalY;
-                showFieldRef.metaData.hidden = false;
+                showFieldRef.metaData.isHidden = false;
                 this.widgetChange.next(showFieldRef);
               }
             });
@@ -435,17 +435,17 @@ export class EditorService extends BaseService {
             showFieldRef.minItemCols = showFieldRef.metaData?.defaultMinItemCols;
             showFieldRef.metaData.movement = "DOWN";
             // showFieldRef.y = showFieldRef.metaData.originalY;
-            showFieldRef.metaData.hidden = false;
+            showFieldRef.metaData.isHidden = false;
             this.widgetChange.next(showFieldRef);
           }
         });
         hideFields.forEach((hideField) => {
           const hideFieldRef = getFieldFromFields(allFields, hideField?.widgetId);
-          if (hideFieldRef && !hideFieldRef.metaData.hidden) {
+          if (hideFieldRef && !hideFieldRef.metaData.isHidden) {
             hideFieldRef.rows = hideFieldRef?.metaData?.hideRows || 0;
             hideFieldRef.minItemRows = hideFieldRef?.metaData?.hideRows || 0;
             hideFieldRef.metaData.movement = "UP";
-            hideFieldRef.metaData.hidden = true;
+            hideFieldRef.metaData.isHidden = true;
             this.widgetChange.next(hideFieldRef);
           }
         });
@@ -646,7 +646,8 @@ export class EditorService extends BaseService {
 
   // update table row
   updateTableRowData = (payload, params): Observable<any> => {
-    const url = `${this.config.getApiUrls().updateTableRowDataURL}`;
+    const { transactionId = "", screenId = "" } = this.getTransactionDetails();
+    const url = `${this.config.getApiUrls().updateTableRowDataURL}/${transactionId}/advance-table-action`;
     return this.putData(url, payload, params);
   };
 

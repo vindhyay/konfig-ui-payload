@@ -30,7 +30,7 @@ export class JwtInterceptor implements HttpInterceptor {
       return this.authService.getAccessToken({ refreshToken }).pipe(
         switchMap((authResponse) => {
           this.storage.saveTokensData(authResponse, this.config.getDomain());
-          this.authService.checkCurrentState()
+          this.authService.checkCurrentState();
           return next.handle(this.injectToken(request));
         })
       );
