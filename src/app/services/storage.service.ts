@@ -8,28 +8,26 @@ import { USER_DATA_KEY, ACCESS_TOKEN, REFRESH_TOKEN, ACCESS_TOKEN_EXPIRY } from 
   providedIn: "root",
 })
 export class StorageService {
-  setToken(tokenData: { type: string; token: string; expiryTime: number; domain: string }) {
-    this.setCookie(tokenData?.type, tokenData?.token, tokenData?.expiryTime * 1e3, tokenData?.domain);
+  setToken(tokenData: { type: string; token: string; expiryTime: number }) {
+    this.setCookie(tokenData?.type, tokenData?.token, tokenData?.expiryTime * 1e3);
   }
   getToken(type: string) {
     return this.getCookie(type);
   }
-  saveTokensData(data: Tokens, domain: string) {
+  saveTokensData(data: Tokens) {
     this.setToken({
       type: ACCESS_TOKEN,
       token: data?.accessToken,
       expiryTime: data?.accessTokenExpirationTime,
-      domain: domain,
     });
     this.setToken({
       type: REFRESH_TOKEN,
       token: data?.refreshToken,
       expiryTime: data?.refreshTokenExpirationTime,
-      domain: domain,
     });
 
     let time = Date.now() + data?.accessTokenExpirationTime * 1e3;
-    this.setCookie(ACCESS_TOKEN_EXPIRY, time.toString(), data?.accessTokenExpirationTime * 1e3, domain);
+    this.setCookie(ACCESS_TOKEN_EXPIRY, time.toString(), data?.accessTokenExpirationTime * 1e3);
   }
   getTimeToExpiration(name: string) {
     let timeLeft = Number(this.getCookie(ACCESS_TOKEN_EXPIRY)) - Date.now() - 5000;
@@ -45,23 +43,23 @@ export class StorageService {
     localStorage.setItem(USER_DATA_KEY, JSON.stringify(user));
   }
 
-  clear(domain: string) {
+  clear() {
     localStorage.removeItem(USER_DATA_KEY);
-    this.clearCookie(ACCESS_TOKEN, domain);
-    this.clearCookie(REFRESH_TOKEN, domain);
-    this.clearCookie(ACCESS_TOKEN_EXPIRY, domain);
+    this.clearCookie(ACCESS_TOKEN);
+    this.clearCookie(REFRESH_TOKEN);
+    this.clearCookie(ACCESS_TOKEN_EXPIRY);
   }
 
   // Cookie methods
-  setCookie(name, value, time, domain) {
+  setCookie(name, value, time) {
     let expires = "";
     if (time) {
       const date = new Date();
       date.setTime(date.getTime() + time);
       expires = "; expires=" + date.toUTCString();
     }
-    document.cookie = name + "=" + value + expires + "; domain=" + domain;
-    // document.cookie = name + "=" + value + +expires + "; path=/";
+    // document.cookie = name + "=" + value + expires + "; domain=" + domain;
+    document.cookie = name + "=" + value + expires + "; path=/";
   }
   getCookie(name) {
     const nameEQ = name + "=";
@@ -73,7 +71,7 @@ export class StorageService {
     }
     return null;
   }
-  clearCookie(name, domain) {
-    document.cookie = name + "=; domain=" + domain + "; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+  clearCookie(name) {
+    document.cookie = name + "=;  Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
   }
 }
