@@ -155,55 +155,57 @@ export class EditorService extends BaseService {
   }
 
   onBtnClick($event) {
-    if (!$event?.data?.metaData?.onClickConfigs?.length) {
-      return;
-    }
-    const {
-      data: {
-        metaData: { onClickConfigs = [] },
-        widgetId,
-      },
-    } = $event;
-    // checking if only action and that is NONE
-    const noneAction = onClickConfigs.find((item) => item.action === "none");
-    if (noneAction && onClickConfigs.length === 1) {
-      return;
-    }
-    // Filtering out UI actions
-    const uiActions = onClickConfigs.filter((item) => UI_ACTIONS.includes(item.action));
-    // Check only UI actions
-    if (uiActions.length === onClickConfigs.length) {
-      this.triggerUIActions(uiActions);
-      return;
-    }
-    const formFields = this.getFormFields();
-    this.setHiddenFieldValue(formFields);
-    // Checking the first action is populate action if yes validate require params
-    const populateActionIndex = onClickConfigs.findIndex((item) => item.action === ButtonActions.populate);
-    let error = false;
-    if (populateActionIndex === 0) {
-      error = this.validatePopulateParams(onClickConfigs[populateActionIndex], formFields);
-    }
-    if (error) {
-      return;
-    }
-    const triggerData = { triggerId: widgetId, data: $event?.data, uiActions: uiActions };
-    // If first action either submit or next screen action need to validate fields
-    const isValidationRequired =
-      onClickConfigs.length &&
-      (onClickConfigs[0].action === ButtonActions.submit || onClickConfigs[0].action === ButtonActions.next);
-    if (isValidationRequired) {
-      const { result, errorFields } = validateFields(formFields, true);
-      if (!result) {
-        let errorMsg = "Failed to validate: ";
-        if (errorFields.length) {
-          errorMsg = errorMsg + " " + errorFields[0]?.label;
-        }
-        this.notificationService.error(errorMsg, "Validation error");
+    setTimeout(() => {
+      if (!$event?.data?.metaData?.onClickConfigs?.length) {
         return;
       }
-    }
-    this.triggerButtonActionEvents(triggerData);
+      const {
+        data: {
+          metaData: { onClickConfigs = [] },
+          widgetId,
+        },
+      } = $event;
+      // checking if only action and that is NONE
+      const noneAction = onClickConfigs.find((item) => item.action === "none");
+      if (noneAction && onClickConfigs.length === 1) {
+        return;
+      }
+      // Filtering out UI actions
+      const uiActions = onClickConfigs.filter((item) => UI_ACTIONS.includes(item.action));
+      // Check only UI actions
+      if (uiActions.length === onClickConfigs.length) {
+        this.triggerUIActions(uiActions);
+        return;
+      }
+      const formFields = this.getFormFields();
+      this.setHiddenFieldValue(formFields);
+      // Checking the first action is populate action if yes validate require params
+      const populateActionIndex = onClickConfigs.findIndex((item) => item.action === ButtonActions.populate);
+      let error = false;
+      if (populateActionIndex === 0) {
+        error = this.validatePopulateParams(onClickConfigs[populateActionIndex], formFields);
+      }
+      if (error) {
+        return;
+      }
+      const triggerData = { triggerId: widgetId, data: $event?.data, uiActions: uiActions };
+      // If first action either submit or next screen action need to validate fields
+      const isValidationRequired =
+        onClickConfigs.length &&
+        (onClickConfigs[0].action === ButtonActions.submit || onClickConfigs[0].action === ButtonActions.next);
+      if (isValidationRequired) {
+        const { result, errorFields } = validateFields(formFields, true);
+        if (!result) {
+          let errorMsg = "Failed to validate: ";
+          if (errorFields.length) {
+            errorMsg = errorMsg + " " + errorFields[0]?.label;
+          }
+          this.notificationService.error(errorMsg, "Validation error");
+          return;
+        }
+      }
+      this.triggerButtonActionEvents(triggerData);
+    }, 600);
   }
 
   triggerButtonActionEvents(triggerData: { triggerId: string; data: any; uiActions: any[]; businessRuleIds?: [] }) {

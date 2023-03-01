@@ -1,15 +1,16 @@
 {
-  "workflowAdminBaseURL": "http://workflow-admin.dev.finlevit.io/admin",
-  "alternateWorkflowAdminBaseURL": "http://workflow-admin.dev.finlevit.io/admin",
-  "accountWorkflowBaseURL": "http://workflow-service.dev.finlevit.io/account",
-  "mapServiceBaseURL": "http://mapping-service.dev.finlevit.io/",
-  "aoWorkflowBaseURL": "http://workflow-service.dev.finlevit.io/account",
-  "authBaseUrl": "http://security-service.dev.finlevit.io/ss",
-  "transformationsUiURL": "http://transformations.dev.finlevit.io",
-  "serviceDetailerBaseURL": "http://service-detailer.dev.finlevit.io/service-detailer",
-  "socketBaseURL": "ws://workflow-service.dev.finlevit.io/account",
-  "appURL": "http://ui-fp.dev.finlevit.io",
+  "workflowAdminBaseURL": "https://wf-admin.pc.finlevit.us/admin",
+  "alternateWorkflowAdminBaseURL": "https://wf-admin.pc.finlevit.us/admin",
+  "accountWorkflowBaseURL": "https://workflow-service.pc.finlevit.us/account",
+  "mapServiceBaseURL": "https://mapping-service.pc.finlevit.us/mapping",
+  "aoWorkflowBaseURL": "https://workflow-service.pc.finlevit.us/account",
+  "authBaseUrl": "https://security-service.pc.finlevit.us/ss",
+  "transformationsUiURL": "https://transformations.pc.finlevit.us",
+  "serviceDetailerBaseURL": "https://service-detailer.pc.finlevit.us/resource",
+  "socketBaseURL": "ws://workflow-service.pc.finlevit.us/account",
+  "emailBaseUrl": "https://email-service.pc.finlevit.us/notification",
+  "appURL": "https://local-payload.dev.finlevit.io:4000",
   "currentEnv": "dev",
   "primaryEnv": "dev",
-  "domain": "dev.finlevit.io"
+  "domain": "pc.finlevit.us"
 }
