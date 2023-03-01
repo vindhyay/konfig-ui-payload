@@ -363,7 +363,7 @@
         [minDate]="item?.validators?.minDate"
         [maxDate]="item?.validators?.maxDate"
         [(ngModel)]="item.value.value"
-        (ngModelChange)="validateField($event, item); optionChange($event, item); calculateFormulaValue(item, true)"
+        (ngModelChange)="validateField($event, item); optionChange($event, item)"
         [yearNavigator]="true"
         [monthNavigator]="true"
         [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
