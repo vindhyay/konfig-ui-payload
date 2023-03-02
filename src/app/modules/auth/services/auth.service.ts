@@ -48,7 +48,7 @@ export class AuthService extends BaseService implements OnDestroy {
       );
     }
     this.authSubject.next(null);
-    this.storage.clear(this.config.getDomain());
+    this.storage.clear();
     this.activatedRoute.firstChild.queryParams.subscribe((params) => {
       const queryParams = params;
       const pathParams = this.activatedRoute.snapshot.firstChild.params;
@@ -60,7 +60,7 @@ export class AuthService extends BaseService implements OnDestroy {
   }
 
   public authenticate(loginData: LoginDataModel) {
-    this.storage.clear(this.config.getDomain());
+    this.storage.clear();
     const url = this.config.getApiUrls().authenticateUrl;
     return this.postData(url, loginData);
   }

@@ -4,5 +4,4 @@ export interface ConfigUrlsModel {
   accountWorkflowBaseURL: string;
   authBaseUrl: string;
   socketBaseURL: string;
-  domain: string;
 }
