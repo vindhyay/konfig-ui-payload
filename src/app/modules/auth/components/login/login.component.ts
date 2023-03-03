@@ -60,7 +60,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
       this.loading = true;
       this.authService.authenticate(this.authForm.value).subscribe(
         (tokenResponse) => {
-          this.storage.saveTokensData(tokenResponse, this.config.getDomain());
+          this.storage.saveTokensData(tokenResponse);
           this.getUserDetails();
         },
         (error) => this.handleError(error)
