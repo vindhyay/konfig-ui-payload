@@ -97,8 +97,9 @@ export class LoginComponent extends BaseComponent implements OnInit {
     }
   }
 
-  handleError(error: HttpErrorResponse | CustomError) {
+  handleError(error: HttpErrorResponse) {
     this.loading = false;
-    this.loginError = get(error, "error.error.errorMessage") || "Something went wrong, please try again";
+    console.log(error);
+    this.loginError = error?.error?.error || "Something went wrong, please try again";
   }
 }
