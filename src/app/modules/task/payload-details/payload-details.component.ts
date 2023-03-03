@@ -81,13 +81,11 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
       .createTransaction({ applicationId, ...(id && { id }) }, { sessionData: this.sessionFields })
       .subscribe(
         (result) => {
-          const { data: transactionDetails, error } = parseApiResponse(result);
-          if (transactionDetails && !error) {
+          const { data: transactionDetails } = parseApiResponse(result);
+          if (transactionDetails) {
             this.editorService.setTransactionDetails(transactionDetails);
             this.styleConfig = transactionDetails?.styleConfig;
             this.editorService.setConditionDetails(transactionDetails?.conditionRules);
-          } else {
-            this.notificationService.error(error.errorMessage);
           }
           this.loading = false;
         },
@@ -97,7 +95,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
             this.authService.logoff(false);
           }
           if (error.status === 500) {
-            this.notificationService.error(error?.error?.error?.errorMessage);
+            this.notificationService.error(error?.error?.error);
             this.authService.logoff(false);
           }
         }

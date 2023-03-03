@@ -108,7 +108,7 @@ export class EditorService extends BaseService {
     const { transactionId = "", screenId = "" } = this.getTransactionDetails();
     this.uniqueKeyTransaction(transactionId, { uniqueField }, { screenId }).subscribe(
       (result) => {
-        const { data, error } = parseApiResponse(result);
+        const { data } = parseApiResponse(result);
         this.showLoader(uniqueField?.widgetId);
         if (data) {
           this.setTransactionDetails(data);
@@ -116,7 +116,7 @@ export class EditorService extends BaseService {
       },
       (error) => {
         this.hideLoader();
-        this.notificationService.error(error.errorMessage);
+        this.notificationService.error(error?.error?.error);
       }
     );
   }
@@ -229,8 +229,8 @@ export class EditorService extends BaseService {
     this.showLoader(triggerData?.data?.id);
     this.saveTransaction({ transactionId, screenId }, formFields).subscribe(
       (result) => {
-        const { data, error } = parseApiResponse(result);
-        if (data && !error) {
+        const { data } = parseApiResponse(result);
+        if (data) {
           this.submitMultipleAction(
             data?.transactionId,
             {
@@ -241,8 +241,8 @@ export class EditorService extends BaseService {
           ).subscribe(
             (result) => {
               this.hideLoader();
-              const { data, error } = parseApiResponse(result);
-              if (data && !error) {
+              const { data } = parseApiResponse(result);
+              if (data) {
                 if (toastMsg) {
                   this.notificationService.success(toastMsg, "Success");
                 }
@@ -257,24 +257,22 @@ export class EditorService extends BaseService {
                 if (isNext || isPrev) {
                   scrollTo();
                 }
-              } else {
-                this.notificationService.error(error.errorMessage, "Error");
               }
             },
             (error) => {
               this.hideLoader();
-              this.notificationService.error(error?.error?.error?.errorMessage);
+              this.notificationService.error(error?.error?.error);
             }
           );
         } else {
           this.setTransactionDetails(data);
           this.hideLoader();
-          this.notificationService.error(error.errorMessage);
+          this.notificationService.error("Failed to save");
         }
       },
       (error) => {
         this.hideLoader();
-        this.notificationService.error(error?.error?.error?.errorMessage);
+        this.notificationService.error(error?.error?.error);
       }
     );
   }
@@ -610,7 +608,7 @@ export class EditorService extends BaseService {
     return this.postData(url, payload);
   };
   uploadFile = (formData, transactionId): Observable<any> => {
-    const url = `${this.config.getApiUrls().uploadFile}`.replace("{transactionId}", transactionId);;
+    const url = `${this.config.getApiUrls().uploadFile}`.replace("{transactionId}", transactionId);
     return this.postData(url, formData);
   };
   getTransactionTableData = (params): Observable<any> => {

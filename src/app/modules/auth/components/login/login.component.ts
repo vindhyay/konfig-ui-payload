@@ -72,8 +72,8 @@ export class LoginComponent extends BaseComponent implements OnInit {
     this.authService.getUserDetails(this.appId).subscribe(
       (response) => {
         this.loading = false;
-        const { data, error } = parseApiResponse(response);
-        if (data && !error) {
+        const { data } = parseApiResponse(response);
+        if (data) {
           const { userDetails = {} } = data;
           try {
             this.storage.user = userDetails;
@@ -82,8 +82,6 @@ export class LoginComponent extends BaseComponent implements OnInit {
           } catch (error) {
             this.loginError = "Failed to decode user details";
           }
-        } else {
-          this.notificationService.error(error.errorMessage);
         }
       },
       (error) => this.handleError(error)
