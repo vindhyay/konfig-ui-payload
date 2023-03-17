@@ -248,7 +248,7 @@ export class EditorService extends BaseService {
                 }
                 if (!toastMsg && isSubmit)
                   this.notificationService.success(
-                    "This transaction is in progress, Modifications not allowed",
+                    `This transaction - ${data?.transactionId} is in progress, Modifications not allowed`,
                     "Success"
                   );
                 this.setTransactionDetails(data);
