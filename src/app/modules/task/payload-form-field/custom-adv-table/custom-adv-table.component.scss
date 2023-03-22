@@ -137,7 +137,9 @@
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    flex: 1 0 auto;
+    &.auto-adjust {
+      flex: 1 0 auto;
+    }
     .f-tr {
       height: var(--body-row-height);
     }
@@ -148,7 +150,7 @@
     }
     &:last-of-type {
       .cell-container {
-        border-bottom: none !important;
+        //border-bottom: none !important;
       }
     }
     .cell-container {
