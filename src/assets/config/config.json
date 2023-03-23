@@ -1,15 +1,15 @@
 {
-  "workflowAdminBaseURL": "http://workflow-admin.dev.finlevit.io/admin",
-  "alternateWorkflowAdminBaseURL": "http://workflow-admin.dev.finlevit.io/admin",
-  "accountWorkflowBaseURL": "http://workflow-service.dev.finlevit.io/account",
-  "mapServiceBaseURL": "http://mapping-service.dev.finlevit.io/",
-  "aoWorkflowBaseURL": "http://workflow-service.dev.finlevit.io/account",
-  "authBaseUrl": "http://security-service.dev.finlevit.io/ss",
-  "transformationsUiURL": "http://transformations.dev.finlevit.io",
-  "serviceDetailerBaseURL": "http://service-detailer.dev.finlevit.io/service-detailer",
-  "socketBaseURL": "ws://workflow-service.dev.finlevit.io/account",
-  "appURL": "http://ui-fp.dev.finlevit.io",
+  "workflowAdminBaseURL": "http://konfig-admin.dev.finlevit.io/admin",
+  "alternateWorkflowAdminBaseURL": "http://konfig-admin.dev.finlevit.io/admin",
+  "accountWorkflowBaseURL": "http://konfig-account.dev.finlevit.io/account",
+  "mapServiceBaseURL": "http://konfig-mapping.dev.finlevit.io/mapping",
+  "aoWorkflowBaseURL": "http://konfig-account.dev.finlevit.io/account",
+  "authBaseUrl": "http://konfig-security.dev.finlevit.io/ss",
+  "serviceDetailerBaseURL": "http://konfig-resource.dev.finlevit.io/resource",
+  "socketBaseURL": "ws://konfig-account.dev.finlevit.io/account",
+  "emailBaseUrl": "http://konfig-notification.dev.finlevit.io/notification",
+  "appURL": "http://local-payload.dev.finlevit.io:4000",
+  "domain": "dev.finlevit.io",
   "currentEnv": "dev",
-  "primaryEnv": "dev",
-  "domain": "dev.finlevit.io"
+  "primaryEnv": "dev"
 }
