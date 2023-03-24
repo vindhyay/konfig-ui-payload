@@ -8,7 +8,7 @@
   "serviceDetailerBaseURL": "http://konfig-resource.dev.finlevit.io/resource",
   "socketBaseURL": "ws://konfig-account.dev.finlevit.io/account",
   "emailBaseUrl": "http://konfig-notification.dev.finlevit.io/notification",
-  "appURL": "http://local-payload.dev.finlevit.io:4000",
+  "appURL": "http://ui-fp.dev.finlevit.io",
   "domain": "dev.finlevit.io",
   "currentEnv": "dev",
   "primaryEnv": "dev"
