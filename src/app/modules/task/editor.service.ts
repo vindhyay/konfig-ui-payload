@@ -35,6 +35,7 @@ export class EditorService extends BaseService {
     super(http);
   }
   activeTabIndexes = {};
+  isTriggerInProgress: boolean = false;
 
   public widgetChange = new BehaviorSubject<any>(null);
   public widgetChange$ = this.widgetChange.asObservable();
@@ -154,56 +155,60 @@ export class EditorService extends BaseService {
     return error;
   }
 
-  onBtnClick($event) {
-    if (!$event?.data?.metaData?.onClickConfigs?.length) {
-      return;
-    }
-    const {
-      data: {
-        metaData: { onClickConfigs = [] },
-        widgetId,
-      },
-    } = $event;
-    // checking if only action and that is NONE
-    const noneAction = onClickConfigs.find((item) => item.action === "none");
-    if (noneAction && onClickConfigs.length === 1) {
-      return;
-    }
-    // Filtering out UI actions
-    const uiActions = onClickConfigs.filter((item) => UI_ACTIONS.includes(item.action));
-    // Check only UI actions
-    if (uiActions.length === onClickConfigs.length) {
-      this.triggerUIActions(uiActions);
-      return;
-    }
-    const formFields = this.getFormFields();
-    this.setHiddenFieldValue(formFields);
-    // Checking the first action is populate action if yes validate require params
-    const populateActionIndex = onClickConfigs.findIndex((item) => item.action === ButtonActions.populate);
-    let error = false;
-    if (populateActionIndex === 0) {
-      error = this.validatePopulateParams(onClickConfigs[populateActionIndex], formFields);
-    }
-    if (error) {
-      return;
-    }
-    const triggerData = { triggerId: widgetId, data: $event?.data, uiActions: uiActions };
-    // If first action either submit or next screen action need to validate fields
-    const isValidationRequired =
-      onClickConfigs.length &&
-      (onClickConfigs[0].action === ButtonActions.submit || onClickConfigs[0].action === ButtonActions.next);
-    if (isValidationRequired) {
-      const { result, errorFields } = validateFields(formFields, true);
-      if (!result) {
-        let errorMsg = "Failed to validate: ";
-        if (errorFields.length) {
-          errorMsg = errorMsg + " " + errorFields[0]?.label;
-        }
-        this.notificationService.error(errorMsg, "Validation error");
+  async onBtnClick($event) {
+    if (this.checkIfTriggerInProgress()) {
+      await this.waitTillTriggerIsComplete();
+    } else {
+      if (!$event?.data?.metaData?.onClickConfigs?.length) {
         return;
       }
+      const {
+        data: {
+          metaData: { onClickConfigs = [] },
+          widgetId,
+        },
+      } = $event;
+      // checking if only action and that is NONE
+      const noneAction = onClickConfigs.find((item) => item.action === "none");
+      if (noneAction && onClickConfigs.length === 1) {
+        return;
+      }
+      // Filtering out UI actions
+      const uiActions = onClickConfigs.filter((item) => UI_ACTIONS.includes(item.action));
+      // Check only UI actions
+      if (uiActions.length === onClickConfigs.length) {
+        this.triggerUIActions(uiActions);
+        return;
+      }
+      const formFields = this.getFormFields();
+      this.setHiddenFieldValue(formFields);
+      // Checking the first action is populate action if yes validate require params
+      const populateActionIndex = onClickConfigs.findIndex((item) => item.action === ButtonActions.populate);
+      let error = false;
+      if (populateActionIndex === 0) {
+        error = this.validatePopulateParams(onClickConfigs[populateActionIndex], formFields);
+      }
+      if (error) {
+        return;
+      }
+      const triggerData = { triggerId: widgetId, data: $event?.data, uiActions: uiActions };
+      // If first action either submit or next screen action need to validate fields
+      const isValidationRequired =
+        onClickConfigs.length &&
+        (onClickConfigs[0].action === ButtonActions.submit || onClickConfigs[0].action === ButtonActions.next);
+      if (isValidationRequired) {
+        const { result, errorFields } = validateFields(formFields, true);
+        if (!result) {
+          let errorMsg = "Failed to validate: ";
+          if (errorFields.length) {
+            errorMsg = errorMsg + " " + errorFields[0]?.label;
+          }
+          this.notificationService.error(errorMsg, "Validation error");
+          return;
+        }
+      }
+      this.triggerButtonActionEvents(triggerData);
     }
-    this.triggerButtonActionEvents(triggerData);
   }
 
   triggerButtonActionEvents(triggerData: { triggerId: string; data: any; uiActions: any[]; businessRuleIds?: [] }) {
@@ -223,6 +228,7 @@ export class EditorService extends BaseService {
       this.notificationService.error("Application not found", "Failed to submit");
       return;
     }
+    this.isTriggerInProgress = true;
     const isSubmit = onClickConfigs?.filter((item) => item.action === ButtonActions.submit)?.length > 0;
     const isNext = onClickConfigs?.filter((item) => item.action === ButtonActions.next)?.length > 0;
     const isPrev = onClickConfigs?.filter((item) => item.action === ButtonActions.previous)?.length > 0;
@@ -257,6 +263,7 @@ export class EditorService extends BaseService {
                 if (isNext || isPrev) {
                   scrollTo();
                 }
+                this.isTriggerInProgress = false;
               } else {
                 this.notificationService.error(error.errorMessage, "Error");
               }
@@ -610,7 +617,7 @@ export class EditorService extends BaseService {
     return this.postData(url, payload);
   };
   uploadFile = (formData, transactionId): Observable<any> => {
-    const url = `${this.config.getApiUrls().uploadFile}`.replace("{transactionId}", transactionId);;
+    const url = `${this.config.getApiUrls().uploadFile}`.replace("{transactionId}", transactionId);
     return this.postData(url, formData);
   };
   getTransactionTableData = (params): Observable<any> => {
@@ -947,6 +954,15 @@ export class EditorService extends BaseService {
         }
         item.value.value = formulaValue;
         return formulaValue;
+    }
+  }
+
+  checkIfTriggerInProgress() {
+    return this.isTriggerInProgress;
+  }
+  async waitTillTriggerIsComplete() {
+    while (this.checkIfTriggerInProgress()) {
+      await new Promise((resolve) => setTimeout(resolve, 100));
     }
   }
 }
