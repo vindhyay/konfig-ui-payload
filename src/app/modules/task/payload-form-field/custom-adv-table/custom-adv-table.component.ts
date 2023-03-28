@@ -161,6 +161,13 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
     this.tableId = getUniqueId("table");
   }
 
+  get tableRows() {
+    const tableRows = this.tableBody?.nativeElement?.querySelectorAll(".f-tr-group")?.length;
+    const bodyHeight = this.tableBody?.nativeElement?.offsetHeight;
+    const availableSpace = bodyHeight - tableRows * MIN_ROW_HEIGHT;
+    return MIN_ROW_HEIGHT > availableSpace;
+  }
+
   updateRowsLimit() {
     const bodyHeight = this.tableBody?.nativeElement?.offsetHeight;
     this.limitPerPage = Math.floor(bodyHeight / MIN_ROW_HEIGHT) || 1;

@@ -23,7 +23,7 @@ export class TransactionTableComponent extends BaseComponent implements OnInit {
     return this.item.metaData;
   }
   ngOnInit(): void {}
-  getTransactionTableData(params: {applicationId: string, widgetId: string, pageNo: number, recordNo: number}) {
+  getTransactionTableData(params: { applicationId: string; widgetId: string; pageNo: number; recordNo: number }) {
     this.editorService.getTransactionTableData(params).subscribe((result) => {
       const { data, error } = parseApiResponse(result);
       if (!error && data) {
@@ -58,11 +58,9 @@ export class TransactionTableComponent extends BaseComponent implements OnInit {
     this.loading = true;
     this.editorService.fetchTransactionDetails(id).subscribe(
       (result) => {
-        const { data: transactionDetails, error } = parseApiResponse(result);
-        if (transactionDetails && !error) {
+        const { data: transactionDetails } = parseApiResponse(result);
+        if (transactionDetails) {
           this.editorService.setTransactionDetails(transactionDetails);
-        } else {
-          this.notificationService.error(error.errorMessage);
         }
         this.loading = false;
       },
