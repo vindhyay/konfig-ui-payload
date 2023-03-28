@@ -374,6 +374,7 @@ export class EditorService extends BaseService {
     conditionsArray.forEach((element) => {
       let result = null;
       let conditions = element?.ifConditions;
+      // check for type whether its show and hide or conditional error message
       const isShowError = element?.type === "ShowError";
       if (!!conditions)
         for (let condition of conditions) {
@@ -396,7 +397,7 @@ export class EditorService extends BaseService {
             const showFields = condition?.mappingField?.showFields?.filter((item) => item?.["selected"] === false);
             showFields.forEach((showField) => {
               const showFieldRef = getFieldFromFields(allFields, showField?.widgetId);
-              if (showFieldRef) {
+              if (showFieldRef && (!showFieldRef?.rows || showFieldRef?.metaData?.isHidden)) {
                 showFieldRef.rows = showFieldRef.metaData?.defaultRows;
                 showFieldRef.minItemRows = showFieldRef.metaData?.defaultMinItemRows;
                 showFieldRef.minItemCols = showFieldRef.metaData?.defaultMinItemCols;
@@ -427,7 +428,7 @@ export class EditorService extends BaseService {
 
         showFields.forEach((showField) => {
           const showFieldRef = getFieldFromFields(allFields, showField?.widgetId);
-          if (showFieldRef) {
+          if (showFieldRef && (!showFieldRef?.rows || showFieldRef?.metaData?.isHidden)) {
             showFieldRef.rows = showFieldRef.metaData?.defaultRows;
             showFieldRef.minItemRows = showFieldRef.metaData?.defaultMinItemRows;
             showFieldRef.minItemCols = showFieldRef.metaData?.defaultMinItemCols;
