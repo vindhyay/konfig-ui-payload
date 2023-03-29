@@ -37,16 +37,14 @@ export class UploadComponent implements OnInit {
     if (transactionId) {
       this.loading = true;
       this.uploadStatus = "pending";
-      this.editorService.uploadFile(fileData,transactionId).subscribe(
+      this.editorService.uploadFile(fileData, transactionId).subscribe(
         (result) => {
           this.loading = false;
-          const { data, error } = parseApiResponse(result);
-          if (data && !error) {
+          const { data } = parseApiResponse(result);
+          if (data) {
             this.notificationService.success("File Uploaded Saved Successfully", "Success");
             this.item.value.value = data;
             this.uploadStatus = "completed";
-          } else {
-            this.notificationService.error(error.errorMessage);
           }
         },
         (error) => {

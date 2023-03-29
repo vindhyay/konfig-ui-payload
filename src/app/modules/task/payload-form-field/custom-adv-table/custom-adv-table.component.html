@@ -117,7 +117,11 @@
         </ng-container>
         <ng-template #bodyRow let-rowData let-rowIndex="rowIndex">
           <div
-            [ngClass]="{ 'f-tr-group': true, 'edit-row': isRowEditMode(rowIndex) || isNewRowEditMode(rowIndex) }"
+            [ngClass]="{
+              'f-tr-group': true,
+              'auto-adjust': tableRows,
+              'edit-row': isRowEditMode(rowIndex) || isNewRowEditMode(rowIndex)
+            }"
             (click)="onRowClick.emit(rowData)"
           >
             <div
