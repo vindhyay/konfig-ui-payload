@@ -265,21 +265,25 @@ export class EditorService extends BaseService {
                 }
                 this.isTriggerInProgress = false;
               } else {
+                this.isTriggerInProgress = false;
                 this.notificationService.error(error.errorMessage, "Error");
               }
             },
             (error) => {
+              this.isTriggerInProgress = false;
               this.hideLoader();
               this.notificationService.error(error?.error?.error?.errorMessage);
             }
           );
         } else {
+          this.isTriggerInProgress = false;
           this.setTransactionDetails(data);
           this.hideLoader();
           this.notificationService.error(error.errorMessage);
         }
       },
       (error) => {
+        this.isTriggerInProgress = false;
         this.hideLoader();
         this.notificationService.error(error?.error?.error?.errorMessage);
       }
