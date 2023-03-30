@@ -286,3 +286,11 @@ body {
   top: 0;
   z-index: 999999;
 }
+.toast-container {
+  .ngx-toastr {
+    width: 55% !important;
+  }
+  .toast-error {
+    background-color: var(--color-error);
+  }
+}
