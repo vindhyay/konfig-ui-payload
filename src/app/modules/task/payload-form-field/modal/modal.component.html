@@ -8,6 +8,9 @@
   styleType="button"
   size="custom"
   [isDisabled]="isDisabled"
+  [isPress]="styles?.properties?.press?.isActionEnabled"
+  [isHover]="styles?.properties?.hover?.isActionEnabled"
+  [isFocus]="styles?.properties?.focus?.isActionEnabled"
 ></finlevit-button>
 <p-dialog
   *ngIf="modalStatus"
