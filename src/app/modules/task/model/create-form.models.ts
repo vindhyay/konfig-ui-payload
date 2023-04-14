@@ -126,6 +126,7 @@ export class TableActions {
 
 export enum WidgetTypes {
   Text = "Text",
+  URL = "URL",
   Table = "Table",
   AdvTable = "AdvTable",
   ErrorContainer = "ErrorContainer",
@@ -1090,6 +1091,25 @@ export enum ContainerActions {
   externalLink = "externalLink",
 }
 
+export class URLMetaData extends MetaData {
+  horizontalAlign: AlignTypes;
+  verticalAlign: AlignTypes;
+  color: string;
+  fontWeight: number;
+  constructor(data) {
+    super(data);
+    const {
+      horizontalAlign = AlignTypes.LEFT,
+      verticalAlign = AlignTypes.CENTER,
+      color = "#373f51",
+      fontWeight = 600,
+    } = data;
+    this.color = color;
+    this.fontWeight = fontWeight;
+    this.horizontalAlign = horizontalAlign;
+    this.verticalAlign = verticalAlign;
+  }
+}
 export class ContainerMetaData extends MetaData {
   title: string;
   icon: string;
@@ -1586,7 +1606,8 @@ export class BaseWidget {
     | DividerMetaData
     | SpacerMetaData
     | AvatarMetaData
-    | AddressMetaData;
+    | AddressMetaData
+    | URLMetaData;
   name: string;
   displayName: string;
   label: string;
@@ -1712,6 +1733,9 @@ export class BaseWidget {
           break;
         case WidgetTypes.Address:
           this.metaData = new AddressMetaData(data);
+          break;
+        case WidgetTypes.URL:
+          this.metaData = new URLMetaData(data);
           break;
         default:
           this.metaData = null;

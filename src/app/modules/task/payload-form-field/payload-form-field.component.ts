@@ -26,6 +26,7 @@ import { NotificationService } from "../../../services/notification.service";
 export class PayloadFormFieldComponent extends BaseComponent implements OnInit, OnDestroy, OnChanges {
   _item: BaseWidget = {} as BaseWidget;
   Text: WidgetTypes = WidgetTypes.Text;
+  URL: WidgetTypes = WidgetTypes.URL;
   Table: WidgetTypes = WidgetTypes.Table;
   AdvTable: WidgetTypes = WidgetTypes.AdvTable;
   TransactionTable: WidgetTypes = WidgetTypes.TransactionTable;

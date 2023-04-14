@@ -175,6 +175,9 @@
       {{ item?.value?.value || item?.metaData?._value }}
     </div>
   </ng-container>
+  <ng-container *ngIf="item?.metaData?.widgetType === URL">
+    <app-url [item]="item"></app-url>
+  </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Button">
     <div class="input-container button-input" [ngStyle]="{ width: '100%' }">
       <finlevit-button
