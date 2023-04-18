@@ -763,7 +763,7 @@ export class SSNInputMetaData extends MetaData {
       selectedInput = "SSN",
       patterns = {
         SSN: "^(?!000|666)[0-9]{3}([ -]?)(?!00)[0-9]{2}\\1(?!0000)[0-9]{4}$",
-        ITIN: "^(9\\d{2})-([7]\\d|8[0-8])-(\\d{4})$",
+        ITIN: "^(9\\d{2})([ -]?)([7]\\d|8[0-8])([ -]?)(\\d{4})$",
       },
       errorMessage = "",
       showErrorMessage = true,
