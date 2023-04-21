@@ -348,6 +348,7 @@
         styleType="radioGroup"
         size="custom"
         [styleProperties]="item?.metaData?.styleProperties?.properties"
+        [isHover]="!item?.metaData?.readOnly && item?.metaData?.styleProperties?.properties?.hover?.isActionEnabled"
       ></finlevit-radio-group>
     </div>
   </ng-container>
