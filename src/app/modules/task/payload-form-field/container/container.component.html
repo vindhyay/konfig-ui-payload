@@ -24,5 +24,19 @@
     ></i
     >{{ item?.metaData?.title }}
   </div>
-  <finlevit-grid [parent]="item" [items]="item.children"></finlevit-grid>
+  <finlevit-grid
+    [parent]="item"
+    [items]="item.children"
+    [style.--border-radius-top-left]="
+      item?.metaData?.title ? '0px' : this.metaData?.styleProperties?.properties?.borderRadius
+    "
+    [style.--border-radius-top-right]="
+      item?.metaData?.title ? '0px' : this.metaData?.styleProperties?.properties?.borderRadius
+    "
+    [style.--border-radius-bottom-left]="this.metaData?.styleProperties?.properties?.borderRadius"
+    [style.--border-radius-bottom-right]="this.metaData?.styleProperties?.properties?.borderRadius"
+    [style.--background-color]="this.metaData?.styleProperties?.properties?.backgroundColor"
+    [style.--background-image-url]="'url(' + this.metaData?.styleProperties?.properties?.bgImageUrl + ')'"
+    [filter]="{ metaData: { isFooterContainer: false } }"
+  ></finlevit-grid>
 </div>

@@ -84,7 +84,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
           const { data: transactionDetails } = parseApiResponse(result);
           if (transactionDetails) {
             this.editorService.setTransactionDetails(transactionDetails);
-            this.styleConfig = transactionDetails?.styleConfig;
+            this.styleConfig = transactionDetails?.application?.styleConfig;
             this.editorService.setConditionDetails(transactionDetails?.conditionRules);
           }
           this.loading = false;

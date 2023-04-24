@@ -3,6 +3,7 @@
   applyStyle
   [filterStyles]="['borderStyles', 'boxShadowStyles']"
   [styleProperties]="this.item?.metaData?.styleProperties?.properties"
+  [style.--border-radius]="this.item?.metaData?.styleProperties?.properties?.borderRadius"
 >
   <p-tabView [activeIndex]="tabActiveIndex" (onChange)="onTabChange($event)">
     <ng-container *ngFor="let child of item.children; let i = index">
@@ -26,7 +27,11 @@
             'empty-child': !child.children.length
           }"
         >
-          <finlevit-grid [parent]="child" [items]="child.children"></finlevit-grid>
+          <finlevit-grid
+            [parent]="child"
+            [items]="child.children"
+            [style.--background-color]="this.item.metaData?.styleProperties?.properties?.backgroundColor"
+          ></finlevit-grid>
         </div>
       </p-tabPanel>
     </ng-container>
