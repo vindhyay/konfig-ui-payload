@@ -1,21 +1,36 @@
-<div [ngClass]="{ 'collapse-container': true }">
+<div
+  [ngClass]="{ 'collapse-container': true }"
+  applyStyle
+  [filterStyles]="['borderStyles', 'boxShadowStyles']"
+  [styleProperties]="JSON.parse(JSON.stringify(item?.metaData?.styleProperties?.properties))"
+  [style.--border-radius]="this.metaData?.styleProperties?.properties?.borderRadius"
+>
   <p-accordion expandIcon="" collapseIcon="" (onOpen)="onCollapse(true, item)" (onClose)="onCollapse(false, item)">
     <p-accordionTab [(selected)]="collapseContainerStatus">
       <ng-template pTemplate="header">
         <div
-          [ngStyle]="{
-            padding: '0.70rem 1.25rem',
-            color: item?.metaData?.header?.color,
-            width: '100%',
-            backgroundColor: item?.metaData?.header?.bgColor
-          }"
-          class="collapse-container-tab"
+          applyStyle
+          [filterStyles]="['titleStyles']"
+          [styleProperties]="JSON.parse(JSON.stringify(this.metaData?.styleProperties?.properties))"
+          [style.width]="'100%'"
+          [style.display]="'flex'"
+          [style.align-items]="'center'"
         >
-          <span [ngStyle]="{ marginRight: '0.5rem' }">
-            <i *ngIf="!collapseContainerStatus" class="pi pi-chevron-right"></i>
-            <i *ngIf="collapseContainerStatus" class="pi pi-chevron-down"></i>
+          <span>
+            <finlevit-icon-preview
+              *ngIf="!collapseContainerStatus"
+              class="p-pr-1 mr-2 d-flex"
+              [icon]="'pi pi-chevron-right'"
+            ></finlevit-icon-preview>
+            <finlevit-icon-preview
+              *ngIf="collapseContainerStatus"
+              class="p-pr-1 mr-2 d-flex"
+              [icon]="'pi pi-chevron-down'"
+            ></finlevit-icon-preview>
           </span>
-          {{ item?.metaData?.title }}
+          <span [style.flex-grow]="1">
+            {{ item?.metaData?.title }}
+          </span>
         </div>
       </ng-template>
       <div
@@ -28,7 +43,14 @@
           <i class="pi pi-plus"></i>
           <span>Drag and drop fields to container</span>
         </div>
-        <finlevit-grid [parent]="item" [items]="item.children"></finlevit-grid>
+        <finlevit-grid
+          [parent]="item"
+          [items]="item.children"
+          [style.--border-radius-bottom-left]="this.metaData?.styleProperties?.properties?.borderRadius"
+          [style.--border-radius-bottom-right]="this.metaData?.styleProperties?.properties?.borderRadius"
+          [style.--background-color]="this.metaData?.styleProperties?.properties?.backgroundColor"
+          [style.--background-image-url]="'url(' + this.metaData?.styleProperties?.properties?.bgImageUrl + ')'"
+        ></finlevit-grid>
       </div>
     </p-accordionTab>
   </p-accordion>

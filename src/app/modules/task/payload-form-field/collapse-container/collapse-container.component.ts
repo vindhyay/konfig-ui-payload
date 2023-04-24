@@ -9,6 +9,7 @@ import { BaseWidget, CollapseContainerMetaData } from "../../model/create-form.m
 })
 export class CollapseContainerComponent implements OnInit, AfterViewInit {
   collapseContainerStatus = true;
+  JSON = JSON;
   @Input() item: BaseWidget = {} as BaseWidget;
 
   ngOnInit() {}
