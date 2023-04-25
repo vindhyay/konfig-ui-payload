@@ -1,6 +1,6 @@
 # Stage-1 to Build the Application
 # base image
-FROM node:14-alpine AS builder
+FROM node:14-alpine AS builder-payload
 #Install Git and ssh tools
 RUN apk update && apk upgrade && \
     apk add --no-cache bash git openssh
@@ -30,7 +30,7 @@ RUN chmod g+rwx /var/cache/nginx /var/run /var/log/nginx /usr/share/nginx/html
 RUN sed -i.bak 's/listen\(.*\)80;/listen 8081;/' /etc/nginx/conf.d/default.conf
 
 #Add all the artifacts from builder image
-COPY --from=builder /app/dist/finlevit-payload/ /usr/share/nginx/html
+COPY --from=builder-payload /app/dist/finlevit-payload/ /usr/share/nginx/html
 
 #Expose the Application on specified port
 EXPOSE 8081
