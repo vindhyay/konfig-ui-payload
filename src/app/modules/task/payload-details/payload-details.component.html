@@ -2,7 +2,7 @@
   <app-loader [loading]="loading"></app-loader>
   <div *ngIf="formFields && formFields.length">
     <div class="editor gridster-container">
-      <finlevit-grid [style.--canvas-color]="styleConfig?.canvasColor" [items]="formFields"></finlevit-grid>
+      <finlevit-grid [style.--background-color]="styleConfig?.canvasColor" [items]="formFields"></finlevit-grid>
     </div>
   </div>
   <div *ngIf="!loading && !formFields.length" class="no-data-container">

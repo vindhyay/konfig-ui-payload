@@ -1,102 +1,40 @@
 :host {
-  --canvas-color: #f4f4f4;
+  --background-color: var(--grey-color-400);
+  --border-radius: 0px;
+  --border-radius-top-left: var(--border-radius);
+  --border-radius-top-right: var(--border-radius);
+  --border-radius-bottom-left: var(--border-radius);
+  --border-radius-bottom-right: var(--border-radius);
+  --background-image-url: "";
   height: 100%;
   ::ng-deep {
     .gridster-column {
       width: 2px !important;
       border: none;
-      border-left: 1px solid #eeeeee;
+      border-left: 1px solid var(--grey-color-600);
     }
     .gridster-row {
       border: none;
-      border-top: 1px solid #eeeeee;
+      border-top: 1px solid var(--grey-color-600);
     }
-    .gridster-preview {
-      position: absolute;
-      display: none;
-      background: rgba(0, 0, 0, 0.15);
-      background-color: #a7e1c4;
-      transition-property: height, width, transform;
-      transition-duration: 0.1s;
-      opacity: 0.3;
-    }
-    .gridster-item-moving {
-      will-change: transform;
-      z-index: 10000;
-      background-color: #add8f7;
-      opacity: 0.6;
-      transform-origin: top left;
-      box-shadow: none;
-    }
+  }
+  // To show box shadow
+  .card-container,
+  .tab-container,
+  .header-container,
+  .footer-container,
+  .button-container,
+  .modal-container {
+    overflow: visible;
   }
   gridster {
     display: flex;
     height: 100%;
-    flex-direction: column;
-    background: var(--canvas-color);
-  }
-  gridster-item {
-    &.display-border {
-      border: 1px dashed rgba(21, 1, 1, 0.15);
-    }
-    &.card-container {
-      border: none;
-    }
-    &.selected {
-      border: 1px solid orange;
-    }
-    &.error-container{
-      padding: 2rem 10rem;
-    }
-    &.header-container {
-      padding: 0;
-      border-radius: 0;
-    }
-    &.footer-container {
-      padding: 0;
-      color: var(--color-white);
-      border-radius: 0;
-    }
-    &.hidden-item{
-      border: 1px dashed #add8f7;
-      overflow: visible;
-      z-index: 2;
-      display: block;
-      .hide-item-field{
-        position: absolute;
-        top: -18px;
-        color: #add8f7;
-        border: 1px solid #add8f7;
-        line-height: 1;
-        padding: 0 5px;
-      }
-    }
-  }
-  .draggable {
-    padding: 13px;
-    margin-left: calc(var(--spacing-md) + 4px);
-    border-radius: var(--border-radius-sm);
-    text-align: center;
-    font-family: Arial, Helvetica, sans-serif;
-  }
-  gridster-item.button-container, gridster-item.card-container, gridster-item.tab-container{
-    overflow: visible;
-  }
-  gridster-item.tab-container  gridster-item.button-container{
-    overflow: hidden;
-  }
-  gridster-item.display-none{
-    opacity: 0;
-    visibility: hidden !important;
-  }
-  .dndDraggingSource {
-    display: none !important;
-  }
-  .gridster-preview-overlay {
-    background: #add8f7;
-    display: none;
-  }
-  .gridster-overflow {
+    background-color: var(--background-color);
+    border-radius: var(--border-radius-top-left) var(--border-radius-top-right) var(--border-radius-bottom-left)
+      var(--border-radius-bottom-right);
+    background-image: var(--background-image-url);
+    background-size: cover;
     overflow: auto;
   }
 }

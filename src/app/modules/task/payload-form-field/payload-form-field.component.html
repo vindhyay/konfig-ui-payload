@@ -432,42 +432,15 @@
       </app-avatar>
     </div>
   </ng-container>
-  <ng-container *ngIf="item?.metaData?.widgetType === Container">
+  <ng-container
+    *ngIf="
+      item?.metaData?.widgetType === Container ||
+      item?.metaData?.widgetType === Header ||
+      item?.metaData?.widgetType === Footer
+    "
+  >
     <div class="input-container">
       <app-container [item]="item" (click)="btnClick($event, item)"></app-container>
-    </div>
-  </ng-container>
-  <ng-container *ngIf="item?.metaData?.widgetType === Header || item?.metaData?.widgetType === Footer">
-    <div
-      [ngClass]="{
-        'nested-grid-container': true,
-        'header-container': item?.metaData?.widgetType === Header,
-        'footer-container': item?.metaData?.widgetType === Footer
-      }"
-    >
-      <div
-        *ngIf="item?.metaData?.title"
-        class="container-title"
-        [ngStyle]="{
-          'background-color': item?.metaData?.header?.bgColor,
-          color: item?.metaData?.header?.color,
-          'font-size': item?.metaData?.header?.fontSize + 'px',
-          height: item?.metaData?.header?.height + 'px'
-        }"
-      >
-        <i
-          *ngIf="item?.metaData?.header?.icon"
-          [class]="item?.metaData?.header?.icon"
-          [ngStyle]="{
-            color: item?.metaData?.header?.color,
-            'font-size': item?.metaData?.header?.fontSize + 'px',
-            'font-weight': 'inherit',
-            marginRight: '0.5rem'
-          }"
-        ></i
-        >{{ item?.metaData?.title }}
-      </div>
-      <finlevit-grid [parent]="item" [items]="item.children"></finlevit-grid>
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Address">

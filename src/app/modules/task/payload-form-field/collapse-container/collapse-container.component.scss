@@ -1,3 +1,49 @@
 @import "src/assets/scss/_mixins.scss";
 
+:host {
+  --border-radius: 4px;
+}
+
 @include nested-grid-container();
+//Collapse Container
+.collapse-container {
+  height: 100%;
+  ::ng-deep {
+    .p-accordion {
+      height: 100%;
+    }
+    .p-accordion-tab {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      border: none !important;
+    }
+    .p-toggleable-content {
+      height: 100%;
+    }
+    .p-accordion-content {
+      height: 100%;
+      padding: 0 !important;
+      border-bottom-right-radius: var(--border-radius) !important;
+      border-bottom-left-radius: var(--border-radius) !important;
+    }
+    .p-accordion .p-accordion-header {
+      width: 100%;
+    }
+    .p-accordion .p-accordion-header:not(.p-disabled) .p-accordion-header-link:focus {
+      box-shadow: none;
+    }
+    .p-accordion .p-accordion-header .p-accordion-header-link {
+      padding: 0 !important;
+      border-top-right-radius: var(--border-radius);
+      border-top-left-radius: var(--border-radius);
+      border: none;
+      &:hover {
+        text-decoration: none;
+      }
+    }
+    .p-accordion .p-accordion-header .p-accordion-header-link .p-accordion-toggle-icon {
+      margin-right: 0;
+    }
+  }
+}

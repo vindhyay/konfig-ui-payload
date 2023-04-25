@@ -228,41 +228,5 @@ $menuAnim: cubic-bezier(0.4, 0, 0.2, 1);
         }
       }
     }
-    .container-title {
-      height: 70px;
-      background-color: var(--grey-color-600);
-      font-style: normal;
-      font-weight: var(--font-weight-bolder);
-      font-size: var(--font-size-20);
-      display: flex;
-      align-items: center;
-      line-height: var(--font-line-height-30);
-      letter-spacing: 0.03em;
-      color: var(--grey-color-700);
-      padding-left: var(--spacing-md); //closest variable
-      padding-right: calc(var(--spacing-md) + 2px);
-      border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 0;
-    }
-    ::ng-deep {
-      gridster {
-        background: var(--ui-border-color-lighter);
-      }
-      .card-container {
-        height: 100%;
-        background: var(--color-white);
-        border: 1px solid var(--grey-color-500);
-        gridster {
-          background: var(--color-white);
-        }
-      }
-    }
-    &.footer-container {
-      ::ng-deep {
-        gridster {
-          background: var(--grey-color-900);
-          color: var(--color-white);
-        }
-      }
-    }
   }
 }

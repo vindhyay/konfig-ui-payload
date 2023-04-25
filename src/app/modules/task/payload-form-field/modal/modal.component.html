@@ -58,23 +58,18 @@
       <span><i class="pi pi-times cursor-pointer" (click)="toggleModal()"></i></span>
     </div>
   </ng-template>
-  <div
-    [class]="'modalcontent modal' + item?.widgetId"
-    [style]="{
-      'background-color': styles?.properties?.contentBackgroundColor
-    }"
-  >
+  <div [class]="'modal-content modal' + item?.widgetId">
     <finlevit-grid
       [parent]="item.children[selectedIndex]"
       [items]="item.children[selectedIndex].children"
+      [style.--background-color]="item?.metaData?.styleProperties?.properties?.contentBackgroundColor"
       [filter]="{ metaData: { isFooterContainer: false } }"
     ></finlevit-grid>
   </div>
   <ng-template pTemplate="footer">
     <div
-      [ngClass]="{ 'footer-content': true }"
+      class="footer-content"
       [style]="{
-        'background-color': styles?.properties?.footerBackgroundColor,
         height: metaData?.footerHeight + 'px'
       }"
     >
@@ -84,7 +79,9 @@
           [parent]="item.children[selectedIndex].children"
           [items]="item.children[selectedIndex]?.children[0].children"
           (onBtnClick)="onFooterClick($event)"
-          [style]="{ width: '100%', 'background-color': styles?.properties?.footerBackgroundColor }"
+          [style.--border-radius-bottom-left]="'4px'"
+          [style.--border-radius-bottom-right]="'4px'"
+          [style.--background-color]="item?.metaData?.styleProperties?.properties?.footerBackgroundColor"
         ></finlevit-grid>
       </ng-container>
     </div>

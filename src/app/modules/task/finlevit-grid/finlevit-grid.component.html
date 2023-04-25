@@ -2,44 +2,19 @@
   #gridsterComponent
   [options]="options"
   [ngClass]="{
-    'display-grid': false,
-    'gridster-overflow':
-      parent?.metaData?.widgetType === Container || parent?.metaData?.widgetType === CollapseContainer
-  }"
-  [ngStyle]="{
-    'background-color': parent?.metaData?.bgColor || parent?.metaData?.backgroundColor,
-    color: parent?.metaData?.color,
-    backgroundImage: parent?.metaData?.bgImageUrl ? 'url(' + parent?.metaData?.bgImageUrl + ')' : 'none',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    'border-bottom-left-radius': globalStyle?.independentBorder
-      ? globalStyle?.borderBottomLeftRadius
-      : globalStyle?.borderRadius,
-    'border-bottom-right-radius': globalStyle?.independentBorder
-      ? globalStyle?.borderBottomRightRadius
-      : globalStyle?.borderRadius,
-    'border-top-left-radius': parent?.metaData?.title
-      ? ''
-      : globalStyle?.independentBorder
-      ? globalStyle?.borderTopLeftRadius
-      : globalStyle?.borderRadius,
-    'border-top-right-radius': parent?.metaData?.title
-      ? ''
-      : globalStyle?.independentBorder
-      ? globalStyle?.borderTopRightRadius
-      : globalStyle?.borderRadius
+    'display-grid': false
   }"
 >
   <ng-container *ngFor="let item of items | searchFilter: filter; let i = index">
     <gridster-item
       [ngClass]="{
         'card-container': item?.metaData?.widgetType === Container,
-        'text-container': item?.metaData?.widgetType === Text,
         'tab-container': item?.metaData?.widgetType === TabContainer,
+        'text-container': item?.metaData?.widgetType === Text,
         'header-container': item?.metaData?.widgetType === Header,
         'footer-container': item?.metaData?.widgetType === Footer,
         'button-container': item?.metaData?.widgetType === Button,
-        'error-container': item?.metaData?.widgetType === ErrorContainer,
+        'modal-container': item?.metaData?.widgetType === Modal,
         'display-none': !item?.rows
       }"
       [item]="item"
