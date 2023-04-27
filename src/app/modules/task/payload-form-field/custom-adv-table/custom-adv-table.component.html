@@ -1,4 +1,7 @@
-<div class="table-widget">
+<div [ngClass]="{
+  'table-widget': true,
+  'empty-table-widget': !isLoading && !(tableFilters?.filtersEnabled ? filteredTableData.length : tableData.length)
+}">
   <div
     [ngClass]="{
       'finlevit-table': true,
