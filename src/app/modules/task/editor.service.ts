@@ -352,17 +352,34 @@ export class EditorService extends BaseService {
     const {
       data: {
         value: { value = null },
-        metaData: { businessRuleIds = [] } = {},
+        metaData: { businessRuleIds = [], conditionalErrorIds = [], showHideIds = [] } = {},
         widgetId,
       },
     } = $event;
-    if (businessRuleIds?.length) {
-      this.triggerButtonActionEvents({
-        triggerId: widgetId,
-        data: $event?.data,
-        uiActions: [],
-        businessRuleIds: businessRuleIds,
-      });
+    if (businessRuleIds?.length || conditionalErrorIds?.length || showHideIds?.length) {
+      const {
+        transactionId = "",
+        applicationVersionId = "",
+        screenId = "",
+        application: { appId = "" },
+      } = this.getTransactionDetails();
+      const formFields = this.getFormFields();
+      this.isTriggerInProgress = true;
+      this.showLoader($event?.data?.id);
+      this.executeRules({businessRuleIds, conditionalErrorIds, showHideIds, formFields},
+        {applicationVersionId, officeType: "FRONT_OFFICE", transactionId}).subscribe(
+          (result) => {
+            this.hideLoader();
+            const { data } = parseApiResponse(result);
+            if (data) {
+              this.setTransactionDetails(data);
+              this.isTriggerInProgress = false;
+            }
+            else {
+              this.isTriggerInProgress = false;
+            }
+          }
+        );
     }
   }
   evaluateFilter(filtersLogic, resultArray) {
@@ -662,6 +679,12 @@ export class EditorService extends BaseService {
     const url = `${this.config.getApiUrls().updateTableRowDataURL}/${transactionId}/advance-table-action`;
     return this.putData(url, payload, params);
   };
+
+  //Executing BRs, CEMs and SNH
+  executeRules = (payload, params) : Observable<any> => {
+    const url = `${this.config.getApiUrls().executeRulesURL}`;
+    return this.postData(url, payload, params);
+  }
 
   //Updating hidden field values based on formula --- work around
   setHiddenFieldValue(payloadFields) {

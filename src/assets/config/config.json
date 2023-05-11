@@ -5,6 +5,7 @@
   "mapServiceBaseURL": "http://konfig-mapping.dev1.konfig.io/mapping",
   "aoWorkflowBaseURL": "http://konfig-account.dev1.konfig.io/account",
   "authBaseUrl": "http://konfig-authenticator.dev1.konfig.io/ss",
+  "rulesBaseUrl": "http://konfig-conditions.dev1.konfig.io/conditions",
   "transformationsUiURL": "http://transformations.dev1.konfig.io",
   "serviceDetailerBaseURL": "http://konfig-resource.dev1.konfig.io/resource",
   "socketBaseURL": "ws://konfig-account.dev1.konfig.io/account",
