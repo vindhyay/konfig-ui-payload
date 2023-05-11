@@ -357,22 +357,18 @@ export class EditorService extends BaseService {
       },
     } = $event;
     if (businessRuleIds?.length || conditionalErrorIds?.length || showHideIds?.length) {
-      const {
-        transactionId = "",
-        applicationVersionId = "",
-        screenId = "",
-        application: { appId = "" },
-      } = this.getTransactionDetails();
+      let transactionDetails = this.getTransactionDetails();
       const formFields = this.getFormFields();
       this.isTriggerInProgress = true;
       this.showLoader($event?.data?.id);
       this.executeRules({businessRuleIds, conditionalErrorIds, showHideIds, payload: formFields},
-        {applicationVersionId, officeType: "FRONT_OFFICE", transactionId}).subscribe(
+        {applicationVersionId: transactionDetails.applicationVersionId, officeType: "FRONT_OFFICE", transactionId: transactionDetails.transactionId}).subscribe(
           (result) => {
             this.hideLoader();
             const { data } = parseApiResponse(result);
             if (data) {
-              this.setTransactionDetails(data);
+              transactionDetails.uiPayload = data;
+              this.setTransactionDetails(transactionDetails);
               this.isTriggerInProgress = false;
             }
             else {
