@@ -366,7 +366,7 @@ export class EditorService extends BaseService {
       const formFields = this.getFormFields();
       this.isTriggerInProgress = true;
       this.showLoader($event?.data?.id);
-      this.executeRules({businessRuleIds, conditionalErrorIds, showHideIds, formFields},
+      this.executeRules({businessRuleIds, conditionalErrorIds, showHideIds, payload: formFields},
         {applicationVersionId, officeType: "FRONT_OFFICE", transactionId}).subscribe(
           (result) => {
             this.hideLoader();
