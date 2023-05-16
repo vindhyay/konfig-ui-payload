@@ -366,8 +366,8 @@ export class EditorService extends BaseService {
           (result) => {
             this.hideLoader();
             const { data } = parseApiResponse(result);
-            if (data) {
-              transactionDetails.uiPayload = data;
+            if (data && data?.payload) {
+              transactionDetails.uiPayload = data.payload;
               this.setTransactionDetails(transactionDetails);
               this.isTriggerInProgress = false;
             }
@@ -405,7 +405,7 @@ export class EditorService extends BaseService {
           const { data } = parseApiResponse(result);
           if (data) {
             if (data?.payload) {
-              transactionDetails.uiPayload = data;
+              transactionDetails.uiPayload = data?.payload;
               this.setTransactionDetails(transactionDetails);
             }
             if (data?.errors && data?.errors?.length) {
