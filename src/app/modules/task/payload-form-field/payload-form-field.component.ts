@@ -184,8 +184,8 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
   ngAfterViewInit() {
     // Apply conditions based on default value and validate using on load value
     setTimeout(() => {
-      this.checkForConditions();
       if (this.item?.value?.value) {
+        this.checkForConditions();
         this.validateField(null, this.item);
       }
     });
@@ -255,13 +255,14 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
 
   optionChange($event: any, data: any) {
     const metaData = this.item.metaData;
-    if (!!metaData["onChangeConfigs"] && metaData["onChangeConfigs"]?.length) {
-      this.editorService.onOptionChange({ event: $event, data });
-    } else if (metaData?.businessRuleIds?.length) {
-      this.editorService.onRuleTrigger({ event: $event, data });
-    } else {
-      this.checkForConditions();
-    }
+    this.checkForConditions();
+    // if (!!metaData["onChangeConfigs"] && metaData["onChangeConfigs"]?.length) {
+    //   this.editorService.onOptionChange({ event: $event, data });
+    // } else if (metaData?.businessRuleIds?.length) {
+    //   this.editorService.onRuleTrigger({ event: $event, data });
+    // } else {
+    //   this.checkForConditions();
+    // }
   }
 
   onCollapse(status: boolean, item: any) {
