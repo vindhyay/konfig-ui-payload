@@ -357,12 +357,25 @@ export class EditorService extends BaseService {
       },
     } = $event;
     if (businessRuleIds?.length) {
-      this.triggerButtonActionEvents({
-        triggerId: widgetId,
-        data: $event?.data,
-        uiActions: [],
-        businessRuleIds: businessRuleIds,
-      });
+      let transactionDetails = this.getTransactionDetails();
+      const formFields = this.getFormFields();
+      this.isTriggerInProgress = true;
+      this.showLoader($event?.data?.id);
+      this.executeRules({businessRuleIds, conditionalErrorIds: [], showHideIds: [], payload: formFields},
+        {applicationVersionId: transactionDetails.applicationVersionId, officeType: "FRONT_OFFICE", transactionId: transactionDetails.transactionId}).subscribe(
+          (result) => {
+            this.hideLoader();
+            const { data } = parseApiResponse(result);
+            if (data && data?.payload) {
+              transactionDetails.uiPayload = data.payload;
+              this.setTransactionDetails(transactionDetails);
+              this.isTriggerInProgress = false;
+            }
+            else {
+              this.isTriggerInProgress = false;
+            }
+          }
+        );
     }
   }
   evaluateFilter(filtersLogic, resultArray) {
@@ -382,109 +395,37 @@ export class EditorService extends BaseService {
     });
     return eval(expression);
   }
-  checkCondition(conditionsArray) {
-    const allFields = this.getFormFields();
-    conditionsArray.forEach((element) => {
-      let result = null;
-      let conditions = element?.ifConditions;
-      // check for type whether its show and hide or conditional error message
-      const isShowError = element?.type === "ShowError";
-      if (!!conditions)
-        for (let condition of conditions) {
-          let condMatched = false;
-          let resultArray = [];
-          let expression = "";
-          condition.rules.forEach((rule, index) => {
-            const field = getFieldFromFields(allFields, rule?.field?.widgetId);
-            const fieldValue = field?.value?.value;
-            const targetField = null;
-            resultArray.push(this.conditionValidation(rule, fieldValue, targetField));
-          });
-          condMatched = this.evaluateFilter(condition.filtersLogic, resultArray);
-          if (condMatched) {
-            // result = condition.mappingField;
-            result = { ...condition.mappingField };
-            console.log("Success", result);
-            break;
-          } else if (!isShowError) {
-            const showFields = condition?.mappingField?.showFields?.filter((item) => item?.["selected"] === false);
-            showFields.forEach((showField) => {
-              const showFieldRef = getFieldFromFields(allFields, showField?.widgetId);
-              if (showFieldRef && (!showFieldRef?.rows || showFieldRef?.metaData?.isHidden)) {
-                showFieldRef.rows = showFieldRef.metaData?.defaultRows;
-                showFieldRef.minItemRows = showFieldRef.metaData?.defaultMinItemRows;
-                showFieldRef.minItemCols = showFieldRef.metaData?.defaultMinItemCols;
-                showFieldRef.metaData.movement = "DOWN";
-                // showFieldRef.y = showFieldRef.metaData.originalY;
-                showFieldRef.metaData.isHidden = false;
-                this.widgetChange.next(showFieldRef);
-              }
-            });
-          } else if (isShowError && condition?.mappingField?.targetField) {
-            const removeErrorObj = getFieldFromFields(allFields, condition?.mappingField?.targetField?.widgetId);
-            if (
-              removeErrorObj &&
-              removeErrorObj?.error &&
-              ((condition?.mappingField?.messageType === "fieldError" &&
-                removeErrorObj?.errorMessage == condition?.mappingField?.message) ||
-                (condition?.mappingField?.messageType === "pageError" && !removeErrorObj?.errorMessage) ||
-                removeErrorObj?.errorMessage?.length === 0)
-            ) {
-              removeErrorObj.error = false;
-              removeErrorObj.errorMessage = "";
+  checkCondition(conditions) {
+    const {showHideIds, conditionalErrorIds} = conditions;
+    let transactionDetails = this.getTransactionDetails();
+    this.isTriggerInProgress = true;
+    this.executeRules({businessRuleIds: [], conditionalErrorIds, showHideIds, payload: transactionDetails.uiPayload},
+      {applicationVersionId: transactionDetails.applicationVersionId, officeType: "FRONT_OFFICE", transactionId: transactionDetails.transactionId}).subscribe(
+        (result) => {
+          const { data } = parseApiResponse(result);
+          if (data) {
+            if (data?.payload) {
+              transactionDetails.uiPayload = data?.payload;
+              this.setTransactionDetails(transactionDetails);
             }
+            if (data?.errors && data?.errors?.length) {
+              data?.errors.forEach(error => {
+                switch (error?.errorType) {
+                  case 'error':
+                    this.notificationService.error(error?.message);
+                    break;
+                  case 'warning':
+                    this.notificationService.info(error?.message);
+                    break;
+                }
+              });
+            }
+          }
+          else {
+            this.isTriggerInProgress = false;
           }
         }
-      if (result && !result.messageType) {
-        const showFields = result?.showFields?.filter((item) => item?.["selected"] === true);
-        const hideFields = result?.showFields?.filter((item) => item?.["selected"] === false);
-
-        showFields.forEach((showField) => {
-          const showFieldRef = getFieldFromFields(allFields, showField?.widgetId);
-          if (showFieldRef && (!showFieldRef?.rows || showFieldRef?.metaData?.isHidden)) {
-            showFieldRef.rows = showFieldRef.metaData?.defaultRows;
-            showFieldRef.minItemRows = showFieldRef.metaData?.defaultMinItemRows;
-            showFieldRef.minItemCols = showFieldRef.metaData?.defaultMinItemCols;
-            showFieldRef.metaData.movement = "DOWN";
-            // showFieldRef.y = showFieldRef.metaData.originalY;
-            showFieldRef.metaData.isHidden = false;
-            this.widgetChange.next(showFieldRef);
-          }
-        });
-        hideFields.forEach((hideField) => {
-          const hideFieldRef = getFieldFromFields(allFields, hideField?.widgetId);
-          if (hideFieldRef && !hideFieldRef.metaData.isHidden) {
-            hideFieldRef.rows = hideFieldRef?.metaData?.hideRows || 0;
-            hideFieldRef.minItemRows = hideFieldRef?.metaData?.hideRows || 0;
-            hideFieldRef.metaData.movement = "UP";
-            hideFieldRef.metaData.isHidden = true;
-            this.widgetChange.next(hideFieldRef);
-          }
-        });
-        this.setContainerHeight(allFields);
-      } else if (result && result.messageType) {
-        const showMessageFieldRef = result?.targetField?.widgetId
-          ? getFieldFromFields(allFields, result.targetField.widgetId)
-          : null;
-        switch (result.messageType) {
-          case "fieldError":
-            if (showMessageFieldRef) {
-              showMessageFieldRef.errorMessage = result.message;
-              showMessageFieldRef.error = true;
-            }
-            break;
-          case "pageError":
-            if (showMessageFieldRef) {
-              showMessageFieldRef.error = true;
-            }
-            this.notificationService.error(result.message, null, { disableTimeOut: true });
-            break;
-          case "pageWarning":
-            this.notificationService.info(result.message);
-            break;
-        }
-      }
-    });
+      );
   }
   onPopulateTriggerCondition = (fields: any[]) => {
     fields.forEach((field: any) => {
@@ -662,6 +603,12 @@ export class EditorService extends BaseService {
     const url = `${this.config.getApiUrls().updateTableRowDataURL}/${transactionId}/advance-table-action`;
     return this.putData(url, payload, params);
   };
+
+  //Executing BRs, CEMs and SNH
+  executeRules = (payload, params) : Observable<any> => {
+    const url = `${this.config.getApiUrls().executeRulesURL}`;
+    return this.postData(url, payload, params);
+  }
 
   //Updating hidden field values based on formula --- work around
   setHiddenFieldValue(payloadFields) {

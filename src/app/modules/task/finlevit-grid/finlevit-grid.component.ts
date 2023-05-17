@@ -248,7 +248,8 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
     let widgetIds = widget?.metaData?.linkedWidetIds;
     let address: AddressDetails = addressDetails.address;
     let businessRuleIds = [];
-    let ifConditionsIds = [];
+    let showHideIds = [];
+    let conditionalErrorIds = [];
     if (address) {
       widget.value.value = address?.streetNumber + " " + address.streetName;
 
@@ -256,7 +257,8 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
         businessRuleIds.push(...widget.metaData?.businessRuleIds);
       }
       if (widget.metaData?.conditionRuleIds?.length) {
-        ifConditionsIds.push(...widget.metaData?.conditionRuleIds);
+        showHideIds.push(...widget.metaData?.showHideIds);
+        conditionalErrorIds.push(...widget.metaData?.conditionalErrorIds);
       }
       if (widgetIds) {
         Object.keys(widgetIds).forEach((element) => {
@@ -268,7 +270,8 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
               businessRuleIds.push(...widget.metaData?.businessRuleIds);
             }
             if (widget.metaData?.conditionRuleIds?.length) {
-              ifConditionsIds.push(...widget.metaData?.conditionRuleIds);
+              showHideIds.push(...widget.metaData?.showHideIds);
+              conditionalErrorIds.push(...widget.metaData?.conditionalErrorIds);
             }
           }
         });
@@ -279,11 +282,8 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
       this.editorService.onRuleTrigger({ event: addressDetails, data: addressWidget });
       //we need to validte the fields as we change the value of the field
       validateFields(ValidationFields);
-      if (ifConditionsIds?.length) {
-        const ifConditions = this.editorService.getConditions(ifConditionsIds);
-        if (ifConditions?.length) {
-          this.editorService.checkCondition(ifConditions);
-        }
+      if (conditionalErrorIds?.length || showHideIds?.length) {
+        this.editorService.checkCondition({conditionalErrorIds, showHideIds});
       }
     }
   }
