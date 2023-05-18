@@ -396,7 +396,7 @@ export class EditorService extends BaseService {
     return eval(expression);
   }
   checkCondition(conditions) {
-    const {showHideIds, conditionalErrorIds} = conditions;
+    const {showHideIds = [], conditionalErrorIds = []} = conditions;
     let transactionDetails = this.getTransactionDetails();
     this.isTriggerInProgress = true;
     this.executeRules({businessRuleIds: [], conditionalErrorIds, showHideIds, payload: transactionDetails.uiPayload},
