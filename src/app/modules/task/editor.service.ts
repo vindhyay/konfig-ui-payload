@@ -407,14 +407,19 @@ export class EditorService extends BaseService {
             if (data?.payload) {
               transactionDetails.uiPayload = data?.payload;
               this.setTransactionDetails(transactionDetails);
+              if (showHideIds?.length) {
+                transactionDetails.uiPayload.forEach(widget => {
+                  this.widgetChange.next(widget);
+                }); 
+              }
             }
             if (data?.errors && data?.errors?.length) {
               data?.errors.forEach(error => {
-                switch (error?.errorType) {
-                  case 'error':
+                switch (error?.type) {
+                  case 'PAGE_ERROR':
                     this.notificationService.error(error?.message);
                     break;
-                  case 'warning':
+                  case 'PAGE_WARNING':
                     this.notificationService.info(error?.message);
                     break;
                 }
