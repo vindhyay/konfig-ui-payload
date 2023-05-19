@@ -32,6 +32,7 @@ import { AddressAutocompleteDirective } from "./address-autocomplete.directive";
 import { BtnCommonComponent } from "./btn-common/btn-common.component";
 import { CustomFilterPipe } from "../../pipes/custom-filter.pipe";
 import { ValueToLabelPipe } from "src/app/pipes/value-to-label.pipe";
+import { ToUrlPipe } from "../../pipes/to-url.pipe";
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { ValueToLabelPipe } from "src/app/pipes/value-to-label.pipe";
     AddressAutocompleteDirective,
     CustomFilterPipe,
     ValueToLabelPipe,
+    ToUrlPipe,
   ],
   imports: [
     CommonModule,
@@ -105,6 +107,7 @@ import { ValueToLabelPipe } from "src/app/pipes/value-to-label.pipe";
     BtnCommonComponent,
     CustomFilterPipe,
     ValueToLabelPipe,
+    ToUrlPipe,
   ],
 })
 export class SharedModule {}

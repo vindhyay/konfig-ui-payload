@@ -14,7 +14,7 @@
       'text-decoration': 'underline',
       'font-size': '16px'
     }"
-    [href]="item?.value?.value"
+    [href]="item?.value?.value | toUrl"
     target="_blank"
     >{{ item?.label }}</a
   >
