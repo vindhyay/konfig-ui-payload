@@ -415,11 +415,6 @@ export class EditorService extends BaseService {
     fields.forEach((field: any) => {
       if (field?.children && field?.children?.length) {
         this.onPopulateTriggerCondition(field.children);
-      } else if (field) {
-        const ruleIds = field.metaData?.ruleIds;
-        if (ruleIds && ruleIds?.length) {
-          this.onRuleTrigger({event: {}, data: field});
-        }
       }
     });
   };
