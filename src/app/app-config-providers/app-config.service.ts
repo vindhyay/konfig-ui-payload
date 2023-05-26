@@ -164,7 +164,7 @@ export class AppConfigService {
       // Update row API
       updateTableRowDataURL: ACCOUNT_WORKFLOW_BASE_URL + "/transactions",
       //execute rules API
-      executeRulesURL: RULES_BASE_URL + "/execute"
+      executeRulesURL: RULES_BASE_URL + "/execute/rules"
     };
   }
 }

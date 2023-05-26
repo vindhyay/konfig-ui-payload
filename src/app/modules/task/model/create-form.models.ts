@@ -216,8 +216,7 @@ export class MetaData {
   isEnable?: boolean;
   styleProperties: any;
   businessRuleIds: any;
-  showHideIds?: any;
-  conditionalErrorIds?: any;
+  ruleIds?: any;
   conditionRuleIds?: any;
   constructor(data) {
     const {
@@ -240,8 +239,7 @@ export class MetaData {
       errorMessage = "",
       readOnly = false,
       businessRuleIds = [],
-      showHideIds = [],
-      conditionalErrorIds = [],
+      ruleIds = [],
       conditionRuleIds = [],
     } = data;
     // this.widgetId = widgetId || getUniqueId("widget");
@@ -263,8 +261,7 @@ export class MetaData {
     this.errorMessage = errorMessage;
     this.readOnly = readOnly;
     this.businessRuleIds = businessRuleIds;
-    this.showHideIds = showHideIds;
-    this.conditionalErrorIds = conditionalErrorIds;
+    this.ruleIds = ruleIds;
     this.conditionRuleIds = conditionRuleIds;
   }
 }
