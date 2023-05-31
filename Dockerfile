@@ -1,23 +1,23 @@
 # Stage-1 to Build the Application
 # base image
-FROM node:14-alpine AS builder-payload
+#FROM node:14-alpine AS builder-payload
 #Install Git and ssh tools
-RUN apk update && apk upgrade && \
-    apk add --no-cache bash git openssh
+#RUN apk update && apk upgrade && \
+#    apk add --no-cache bash git openssh
 # Working directory
-WORKDIR /app
+#WORKDIR /app
 
 #Copy the required package.json and lib directory
-COPY . /app
+#COPY . /app
 #COPY lib /app/lib
 
 #Remove the Package-lock.json file
 #RUN rm -rf /app/package-lock.json
 
 #Install all the required dependencies in the container and Compile Prod build
-RUN npm install && npm install @angular/cli@13.1.2 && npm install typescript@4.5.4 && \
-    node --max_old_space_size=8192
-RUN npm run build    
+#RUN npm install && npm install @angular/cli@13.1.2 && npm install typescript@4.5.4 && \
+#    node --max_old_space_size=8192
+#RUN npm run build    
 #RUN npm install @angular/cli@8.3.19
 #RUN npm install -g typescript@3.5.3
 
@@ -30,7 +30,7 @@ RUN chmod g+rwx /var/cache/nginx /var/run /var/log/nginx /usr/share/nginx/html
 RUN sed -i.bak 's/listen\(.*\)80;/listen 8081;/' /etc/nginx/conf.d/default.conf
 
 #Add all the artifacts from builder image
-COPY --from=builder-payload /app/dist/finlevit-payload/ /usr/share/nginx/html
+COPY ./dist/finlevit-payload/ /usr/share/nginx/html
 
 #Expose the Application on specified port
 EXPOSE 8081
