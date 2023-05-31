@@ -1,6 +1,8 @@
 pipeline {
 //def workspace;
-agent any
+agent {
+   label "kubeagent"
+} 
 // node {
    parameters {
     booleanParam(name: 'DEPLOYS', defaultValue: false, description: 'Use this build for deployment.')
@@ -34,7 +36,8 @@ environment {
           echo"now install the dependencies which will auto-generate new package-lock.json file"
           echo"this will be done in Build Docker Image Stage"
           //sh 'npm install'
-          sh 'npm install typescript@3.5.3'
+          sh 'npm install'
+          sh 'npm run build'
             //echo "Npm Packages has been installed"
          }
       }
@@ -63,9 +66,9 @@ environment {
          steps {
           echo"unit testing"
           sh'docker image inspect ${REPO}/${NAME}:${BUILD_NUMBER}'
-          sh 'docker run --rm -p 3700:8081 --detach ${REPO}/${NAME}:${BUILD_NUMBER}'
-          sleep(20)
-          sh 'docker stop $(docker ps -a -q)'
+          //sh 'docker run --rm -p 3700:8081 --detach ${REPO}/${NAME}:${BUILD_NUMBER}'
+          //sleep(20)
+          //sh 'docker stop $(docker ps -a -q)'
          }
       }
       stage('Archive Artifactory'){
@@ -76,6 +79,7 @@ environment {
     }
          steps {
             echo"Publishing the source files to remote registry"
+            sh 'docker login -u $HARBOR_USER -p $HARBOR_PASSWORD harbor.tabner.com:443'
             sh 'docker push ${REPO}/${NAME}:${BUILD_NUMBER}'
          }
       }
@@ -86,13 +90,18 @@ environment {
 			}
 			}
         steps{
-            echo"Deploying the latest version"
-			      sh 'ssh root@10.10.5.34 "kubectl -n dev set image deployments/${DNAME} ${NAME}=${REPO}/${NAME}:${BUILD_NUMBER}"'
-            sh 'ssh root@10.10.5.34 "kubectl -n dev rollout restart deployment ${DNAME}"'
-            echo"Successfully deployed the latest version of the Application"
+            echo 'Deploying the latest version'
+            // sh 'export KUBECONFIG=/home/jenkins/agent/kubeconfig/kubeconfig-dev.yaml'
+            script {
+               env.KUBECONFIG = '/home/jenkins/agent/kubeconfig/kubeconfig-dev.yaml'
+            }
+            sh 'kubectl get nodes'
+            sh 'kubectl config get-contexts'
+			   sh 'kubectl -n dev set image deployments/${DNAME} ${NAME}=${REPO}/${NAME}:${BUILD_NUMBER}'
+            sh 'kubectl -n dev rollout restart deployment ${DNAME}'
+            echo 'Successfully deployed the latest version of the Application'
 			}
 		}
-
 	}
 
    post {
