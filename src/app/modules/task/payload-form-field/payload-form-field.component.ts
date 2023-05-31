@@ -257,10 +257,8 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
     const metaData = this.item.metaData;
     if (!!metaData["onChangeConfigs"] && metaData["onChangeConfigs"]?.length) {
       this.editorService.onOptionChange({ event: $event, data });
-    } else if (metaData?.businessRuleIds?.length) {
+    } else if (metaData?.ruleIds?.length) {
       this.editorService.onRuleTrigger({ event: $event, data });
-    } else {
-      this.checkForConditions();
     }
   }
 
@@ -280,10 +278,9 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
   }
 
   checkForConditions() {
-    const conditionalErrorIds = this.item.metaData?.conditionalErrorIds;
-    const showHideIds = this.item.metaData?.showHideIds;
-    if (conditionalErrorIds?.length || showHideIds?.length) {
-      this.editorService.checkCondition({conditionalErrorIds, showHideIds});
+    const ruleIds = this.item?.metaData?.ruleIds;
+    if (ruleIds?.length) {
+      this.editorService.onRuleTrigger({event : {}, data: this.item});
     }
   }
 

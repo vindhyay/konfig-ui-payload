@@ -351,28 +351,44 @@ export class EditorService extends BaseService {
   onRuleTrigger($event) {
     const {
       data: {
-        value: { value = null },
-        metaData: { businessRuleIds = [] } = {},
-        widgetId,
+        metaData: { ruleIds = [] } = {},
       },
     } = $event;
-    if (businessRuleIds?.length) {
+    if (ruleIds?.length) {
       let transactionDetails = this.getTransactionDetails();
       const formFields = this.getFormFields();
       this.isTriggerInProgress = true;
       this.showLoader($event?.data?.id);
-      this.executeRules({businessRuleIds, conditionalErrorIds: [], showHideIds: [], payload: formFields},
+      this.executeRules({ruleIds, payload: formFields},
         {applicationVersionId: transactionDetails.applicationVersionId, officeType: "FRONT_OFFICE", transactionId: transactionDetails.transactionId}).subscribe(
           (result) => {
-            this.hideLoader();
             const { data } = parseApiResponse(result);
-            if (data && data?.payload) {
-              transactionDetails.uiPayload = data.payload;
-              this.setTransactionDetails(transactionDetails);
-              this.isTriggerInProgress = false;
+            if (data) {
+              if (data?.payload) {
+                transactionDetails.uiPayload = data.payload;
+                this.setTransactionDetails(transactionDetails);
+                transactionDetails.uiPayload.forEach(widget => {
+                  this.widgetChange.next(widget);
+                });
+                this.isTriggerInProgress = false;
+                this.hideLoader();
+              }
+              if (data?.errors && data?.errors?.length) {
+                data?.errors.forEach(error => {
+                  switch (error?.type) {
+                    case 'PAGE_ERROR':
+                      this.notificationService.error(error?.message);
+                      break;
+                    case 'PAGE_WARNING':
+                      this.notificationService.info(error?.message);
+                      break;
+                  }
+                });
+              }
             }
             else {
               this.isTriggerInProgress = false;
+              this.hideLoader();
             }
           }
         );
@@ -395,57 +411,10 @@ export class EditorService extends BaseService {
     });
     return eval(expression);
   }
-  checkCondition(conditions) {
-    const {showHideIds = [], conditionalErrorIds = []} = conditions;
-    let transactionDetails = this.getTransactionDetails();
-    this.isTriggerInProgress = true;
-    this.executeRules({businessRuleIds: [], conditionalErrorIds, showHideIds, payload: transactionDetails.uiPayload},
-      {applicationVersionId: transactionDetails.applicationVersionId, officeType: "FRONT_OFFICE", transactionId: transactionDetails.transactionId}).subscribe(
-        (result) => {
-          const { data } = parseApiResponse(result);
-          if (data) {
-            if (data?.payload) {
-              transactionDetails.uiPayload = data?.payload;
-              this.setTransactionDetails(transactionDetails);
-              if (showHideIds?.length) {
-                transactionDetails.uiPayload.forEach(widget => {
-                  this.widgetChange.next(widget);
-                }); 
-              }
-            }
-            if (data?.errors && data?.errors?.length) {
-              data?.errors.forEach(error => {
-                switch (error?.type) {
-                  case 'PAGE_ERROR':
-                    this.notificationService.error(error?.message);
-                    break;
-                  case 'PAGE_WARNING':
-                    this.notificationService.info(error?.message);
-                    break;
-                }
-              });
-            }
-          }
-          else {
-            this.isTriggerInProgress = false;
-          }
-        }
-      );
-  }
   onPopulateTriggerCondition = (fields: any[]) => {
     fields.forEach((field: any) => {
       if (field?.children && field?.children?.length) {
         this.onPopulateTriggerCondition(field.children);
-      } else if (field) {
-        const ifConditionsIds = field.metaData?.conditionRuleIds;
-        if (ifConditionsIds?.length) {
-          const ifConditions = this.getConditions(ifConditionsIds);
-          if (ifConditions?.length) {
-            this.checkCondition(ifConditions);
-          } else if (ifConditions && !ifConditions?.length) {
-            this.checkCondition([{ ...ifConditions }]);
-          }
-        }
       }
     });
   };
