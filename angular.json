@@ -81,11 +81,20 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
+            "sslKey": "dev.konfig.io.key",
+            "sslCert": "dev.konfig.io.crt",
+            "ssl": true,
             "browserTarget": "finlevit-payload:build"
           },
           "configurations": {
             "production": {
               "browserTarget": "finlevit-payload:build:production"
+            },
+            "dev": {
+              "browserTarget": "finlevit-payload:build:dev"
+            },
+            "sit": {
+              "browserTarget": "finlevit-payload:build:sit"
             }
           }
         },
@@ -102,13 +111,8 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
-            "styles": [
-              "src/styles.scss"
-            ],
+            "assets": ["src/favicon.ico", "src/assets"],
+            "styles": ["./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css", "src/styles.scss"],
             "scripts": []
           }
         },
@@ -127,10 +131,7 @@
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": [
-              "src/**/*.ts",
-              "src/**/*.html"
-            ]
+            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
           }
         }
       }
