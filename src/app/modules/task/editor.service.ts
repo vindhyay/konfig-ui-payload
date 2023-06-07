@@ -390,6 +390,10 @@ export class EditorService extends BaseService {
               this.isTriggerInProgress = false;
               this.hideLoader();
             }
+          },
+          (error) => {
+            this.isTriggerInProgress = false;
+            this.hideLoader();
           }
         );
     }
