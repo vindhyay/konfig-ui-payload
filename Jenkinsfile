@@ -10,24 +10,57 @@ agent {
  tools {
       nodejs "Node"
    }
-   triggers {
-        //cron('H 20 * * *') //regular builds
-        pollSCM('* * * * *') //polling for changes, here once a minute
-        //bitbucketPush()
+    triggers {
+        gitlab(triggerOnPush: true, triggerOnMergeRequest: true)
     }
 environment {
    NAME = "finlevit-payload"
    REPO = "harbor.tabner.com:443/konfig"
    //REPO = "10.10.5.17:443/finlevit"
    DNAME = "finlevit-payload"
-}
-  stages {
-     stage('Checkout Source')
-      {
-         steps {
-            checkout scm
-         }
-      }
+   LOC = "dev"
+    }
+
+    stages {
+        stage('Checkout Source') {
+            steps {
+                checkout scm
+            }
+        }
+        stage('Clone konfig-app-release') {
+            steps {
+                dir('konfig-app-release') {
+                    git(
+                        url: 'http://gitlab.tabner.com/fin/konfig-app-release.git',
+                        branch: 'dev',
+                        credentialsId: 'jenkinsgitlab'
+                    )
+                }
+            }
+        }
+
+    
+        stage('Clone Helm Repository') {
+            steps {
+                dir('konfig-helm-resources') {
+                    git(
+                        url: 'http://gitlab.tabner.com/fin/konfig-helm-resources.git',
+                        branch: 'develop',
+                        credentialsId: 'jenkinsgitlab'
+                    )
+                }
+            }
+        }
+
+        stage('Reading Values from Changelog and Service Versions') {
+            steps {
+                script {
+                    def json = readJSON file: 'konfig-app-release/config.json'
+                    env.service_version = json[NAME].toInteger().plus(1).toString()
+                }
+            }
+        }
+
      stage('Install dependencies'){
          steps {
           //sh 'npm config ls'
@@ -56,52 +89,79 @@ environment {
 //         }
 //     }
 // }
-      stage('Build Docker Image'){
-         steps {
-//		     echo "Running ${VERSION} on ${env.JENKINS_URL}"
-            sh 'docker build --force-rm=true -t ${REPO}/${NAME}:${BUILD_NUMBER} .'
-         }
-      }
-       stage('Docker Image Testing'){
-         steps {
-          echo"unit testing"
-          sh'docker image inspect ${REPO}/${NAME}:${BUILD_NUMBER}'
-          //sh 'docker run --rm -p 3700:8081 --detach ${REPO}/${NAME}:${BUILD_NUMBER}'
-          //sleep(20)
-          //sh 'docker stop $(docker ps -a -q)'
-         }
-      }
-      stage('Archive Artifactory'){
-         when {
-    expression {
-        return env.BRANCH_NAME == 'dev';
-        }
-    }
-         steps {
-            echo"Publishing the source files to remote registry"
-            sh 'docker login -u $HARBOR_USER -p $HARBOR_PASSWORD harbor.tabner.com:443'
-            sh 'docker push ${REPO}/${NAME}:${BUILD_NUMBER}'
-         }
-      }
-		stage('Deploy to Dev'){
-			when {
-			expression {
-			return env.BRANCH_NAME == 'dev';
-			}
-			}
-        steps{
-            echo 'Deploying the latest version'
-            // sh 'export KUBECONFIG=/home/jenkins/agent/kubeconfig/kubeconfig-dev.yaml'
-            script {
-               env.KUBECONFIG = '/home/jenkins/agent/kubeconfig/kubeconfig-dev.yaml'
+         stage('Building Docker Image') {
+            steps {
+                sh "docker build -t ${REPO}/${NAME} ."
+                sh "docker tag ${REPO}/${NAME}:latest ${REPO}/${NAME}:${env.service_version}"
             }
-            sh 'kubectl get nodes'
-            sh 'kubectl config get-contexts'
-			   sh 'kubectl -n dev set image deployments/${DNAME} ${NAME}=${REPO}/${NAME}:${BUILD_NUMBER}'
-            sh 'kubectl -n dev rollout restart deployment ${DNAME}'
-            echo 'Successfully deployed the latest version of the Application'
-			}
-		}
+        }
+
+        stage('Docker Image Testing') {
+            steps {
+                sh "docker image inspect ${REPO}/${NAME}:${env.service_version}"
+            }
+        }
+
+        stage('Push to Harbor Artifactory') {
+            steps {
+                echo "Pushing the Docker Image to Remote Registry(Harbor)"
+                sh "docker login -u $HARBOR_USER -p $HARBOR_PASSWORD harbor.tabner.com:443"
+            	sh "docker push ${REPO}/${NAME}:${env.service_version}"
+            }
+        }
+
+        stage('Deploy to Dev') {
+            when {
+                expression {
+                    return env.BRANCH_NAME == 'dev';
+                }
+            }
+            steps {
+                echo "Deploying the latest version"
+				script {
+                    def release_name = env.NAME
+                    def chartVersion = '0.1.0'
+                    def serviceVersion= env.service_version
+                    echo"Deploying the ${serviceVersion} version of ${release_name} in ${LOC}"
+                    sh """
+                    export KUBECONFIG='/home/jenkins/agent/kubeconfig/kubeconfig-${LOC}.yaml'
+                    chmod 600 /home/jenkins/agent/kubeconfig/kubeconfig-${LOC}.yaml
+                    cd konfig-helm-resources/helm-charts/${release_name}
+                    helm package .
+                    if helm list -n ${LOC} | grep -E '(^|[[:space:]])${release_name}([[:space:]]|\$)'; then
+                    helm upgrade ${release_name} ${release_name}-${chartVersion}.tgz --set namespace=${LOC},image.version=${serviceVersion},domain=${LOC}.konfig.io,env=${LOC} -n ${LOC}
+                    else
+                    helm install ${release_name} ${release_name}-${chartVersion}.tgz --set namespace=${LOC},image.version=${serviceVersion},domain=${LOC}.konfig.io,env=${LOC} -n ${LOC}
+                    fi
+                    """
+                    echo"Successfully deployed the ${serviceVersion} version of the Application ${release_name} in ${LOC}"
+            	}
+            }
+        }
+
+        stage('Push changes in the config.json to the dev branch of konfig-app-release') {
+            steps {
+                script {
+                    withCredentials([string(credentialsId: 'jenkins-fin-gitlab-token', variable: 'GITLAB_TOKEN')]) {
+                        dir('konfig-app-release') {
+                            sh """
+                                git config --global user.email "admin@finlevit.com"
+                                git config --global user.name "jenkins-fin"
+                                git pull http://oauth2:${GITLAB_TOKEN}@gitlab.tabner.com/fin/konfig-app-release.git dev
+                            """
+                            def json = readJSON file: 'config.json'
+                            json[NAME] = json[NAME].toInteger().plus(1).toString()
+                            writeFile file: 'config.json', text: groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(json))
+                            sh """
+                                git add config.json
+                                git commit -m "Upgraded ${NAME} version"
+                                git push http://oauth2:${GITLAB_TOKEN}@gitlab.tabner.com/fin/konfig-app-release.git dev
+                            """
+                        }
+                    }
+                }
+            }
+        }
 	}
 
    post {
