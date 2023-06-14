@@ -74,21 +74,18 @@ environment {
             //echo "Npm Packages has been installed"
          }
       }
-//       stage('Sonarqube Analysis') {
-//         environment {
-//         scannerHome = tool 'SonarQube'
-//          }
-//         steps {
-//          echo"Analysing the Code base in SonarQube"
-//          withSonarQubeEnv('sonar') {
-//          sh "${scannerHome}/bin/sonar-scanner"
-//         }
-//         sleep(30)
-//         timeout(time: 10, unit: 'MINUTES') {
-//             waitForQualityGate abortPipeline: true
-//         }
-//     }
-// }
+
+        stage('SonarQube Analysis') {
+            steps {
+                script {
+                    def scannerHome = tool 'SonarQube'
+                    withSonarQubeEnv('sonar_new') {
+                        sh "${scannerHome}/bin/sonar-scanner"
+                    }
+                }
+            }
+        }
+
          stage('Building Docker Image') {
             steps {
                 sh "docker build -t ${REPO}/${NAME} ."
@@ -144,30 +141,53 @@ environment {
                 script {
                     withCredentials([string(credentialsId: 'jenkins-fin-gitlab-token', variable: 'GITLAB_TOKEN')]) {
                         dir('konfig-app-release') {
-                            sh """
+                            sh '''
                                 git config --global user.email "admin@finlevit.com"
                                 git config --global user.name "jenkins-fin"
                                 git pull http://oauth2:${GITLAB_TOKEN}@gitlab.tabner.com/fin/konfig-app-release.git dev
-                            """
+                            '''
                             def json = readJSON file: 'config.json'
                             json[NAME] = json[NAME].toInteger().plus(1).toString()
                             writeFile file: 'config.json', text: groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(json))
-                            sh """
+                            sh '''
                                 git add config.json
                                 git commit -m "Upgraded ${NAME} version"
                                 git push http://oauth2:${GITLAB_TOKEN}@gitlab.tabner.com/fin/konfig-app-release.git dev
-                            """
+                            '''
                         }
                     }
                 }
             }
         }
-	}
+    }
 
-   post {
-      always {
+    post {
+        success {
+            script{
+                def message = "**Build SUCCESS** ✅ : ${currentBuild.fullDisplayName} \n[Build info](${env.BUILD_URL})"
+                def url = 'https://teams.tabner.us/hooks/sj3omweopfdydjezn4ngjh947w'
+                def payload = [
+                    text: message,
+                    username: "JENKINS-BOT",
+                    icon_url: "https://www.jenkins.io/images/logos/jenkins/jenkins.svg"
+                ]
+                httpRequest(url: url, contentType: 'APPLICATION_JSON', httpMode: 'POST', requestBody: groovy.json.JsonOutput.toJson(payload))
+            }
+        }
+        failure {
+            script{
+                def message = "**Build FAILURE** ❌ : ${currentBuild.fullDisplayName} \n[Build info](${env.BUILD_URL})"
+                def url = 'https://teams.tabner.us/hooks/sj3omweopfdydjezn4ngjh947w'
+                def payload = [
+                    text: message,
+                    username: "JENKINS-BOT",
+                    icon_url: "https://www.jenkins.io/images/logos/fire/fire.svg"
+                ]
+                httpRequest(url: url, contentType: 'APPLICATION_JSON', httpMode: 'POST', requestBody: groovy.json.JsonOutput.toJson(payload))
+            }
+        }
+        always {
             cleanWs()
         }
-   }
-
+    }
 }
