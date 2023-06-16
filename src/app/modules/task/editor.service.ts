@@ -367,9 +367,7 @@ export class EditorService extends BaseService {
               if (data?.payload) {
                 transactionDetails.uiPayload = data.payload;
                 this.setTransactionDetails(transactionDetails);
-                transactionDetails.uiPayload.forEach(widget => {
-                  this.widgetChange.next(widget);
-                });
+                this.executeShowHides(transactionDetails.uiPayload);
                 this.isTriggerInProgress = false;
                 this.hideLoader();
               }
@@ -397,6 +395,14 @@ export class EditorService extends BaseService {
           }
         );
     }
+  }
+  executeShowHides(widgetList) {
+    widgetList.forEach(widget => {
+      this.widgetChange.next(widget);
+      if (widget?.children && widget.children?.length) {
+        this.executeShowHides(widget?.children);
+      }
+    });
   }
   evaluateFilter(filtersLogic, resultArray) {
     const expressionArray = filtersLogic
