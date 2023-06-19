@@ -1,3 +1,8 @@
+[![Quality gate](http://10.10.5.156:9000/api/project_badges/quality_gate?project=fp&token=sqb_ea199a77cb4e87bf74ae616a12e2927a195faa98)](http://10.10.5.156:9000/dashboard?id=fp)
+
+[![Coverage](http://10.10.5.156:9000/api/project_badges/measure?project=fp&metric=coverage&token=sqb_ea199a77cb4e87bf74ae616a12e2927a195faa98)](http://10.10.5.156:9000/dashboard?id=fp)
+[![Security Hotspots](http://10.10.5.156:9000/api/project_badges/measure?project=fp&metric=security_hotspots&token=sqb_ea199a77cb4e87bf74ae616a12e2927a195faa98)](http://10.10.5.156:9000/dashboard?id=fp)
+[![Lines of Code](http://10.10.5.156:9000/api/project_badges/measure?project=fp&metric=ncloc&token=sqb_ea199a77cb4e87bf74ae616a12e2927a195faa98)](http://10.10.5.156:9000/dashboard?id=fp)
 # FinlevitPayload
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.1.
