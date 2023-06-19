@@ -22,11 +22,21 @@ environment {
     }
 
     stages {
-        stage('Checkout Source') {
+        stage('Checkout Source and find the author') {
             steps {
                 checkout scm
+                script {
+                    def buildcause = currentBuild.getBuildCauses()
+                    if (buildcause[0]._class == 'org.jenkinsci.plugins.workflow.support.steps.build.BuildUpstreamCause') {
+                        env.authorName = buildcause[0].upstreamProject
+                    } 
+                    else {
+                        env.authorName = sh(script: "git --no-pager show -s --format='%an' ${GIT_COMMIT}", returnStdout: true).trim()
+                    }
+                }
             }
         }
+
         stage('Clone konfig-app-release') {
             steps {
                 dir('konfig-app-release') {
@@ -164,7 +174,7 @@ environment {
     post {
         success {
             script{
-                def message = "**Build SUCCESS** ✅ : ${currentBuild.fullDisplayName} \n[Build info](${env.BUILD_URL})"
+                def message = "**Build SUCCESS** ✅ : ${currentBuild.fullDisplayName}\nTriggered By : ${env.authorName} \n[Build info](${env.BUILD_URL})"
                 def url = 'https://teams.tabner.us/hooks/sj3omweopfdydjezn4ngjh947w'
                 def payload = [
                     text: message,
@@ -176,7 +186,7 @@ environment {
         }
         failure {
             script{
-                def message = "**Build FAILURE** ❌ : ${currentBuild.fullDisplayName} \n[Build info](${env.BUILD_URL})"
+                def message = "**Build FAILURE** ❌ : ${currentBuild.fullDisplayName}\nTriggered By : ${env.authorName} \n[Build info](${env.BUILD_URL})"
                 def url = 'https://teams.tabner.us/hooks/sj3omweopfdydjezn4ngjh947w'
                 def payload = [
                     text: message,
