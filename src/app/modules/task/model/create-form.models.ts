@@ -218,6 +218,7 @@ export class MetaData {
   businessRuleIds: any;
   ruleIds?: any;
   conditionRuleIds?: any;
+  widgetEvent: string[];
   constructor(data) {
     const {
       // widgetId,
@@ -241,6 +242,7 @@ export class MetaData {
       businessRuleIds = [],
       ruleIds = [],
       conditionRuleIds = [],
+      widgetEvent = [],
     } = data;
     // this.widgetId = widgetId || getUniqueId("widget");
     this.widgetType = widgetType;
@@ -263,6 +265,7 @@ export class MetaData {
     this.businessRuleIds = businessRuleIds;
     this.ruleIds = ruleIds;
     this.conditionRuleIds = conditionRuleIds;
+    this.widgetEvent = widgetEvent;
   }
 }
 export class SubColumn {
