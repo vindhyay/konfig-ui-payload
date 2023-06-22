@@ -159,12 +159,15 @@ export class EditorService extends BaseService {
     if (this.checkIfTriggerInProgress()) {
       await this.waitTillTriggerIsComplete();
     } else {
-      if (!$event?.data?.metaData?.onClickConfigs?.length) {
+      if (!$event?.data?.metaData?.onClickConfigs?.length && !$event?.data?.metaData?.widgetEvent?.length) {
         return;
       }
       const {
         data: {
-          metaData: { onClickConfigs = [] },
+          metaData: {
+            onClickConfigs = [],
+            widgetEvent: [],
+          },
           widgetId,
         },
       } = $event;
@@ -350,50 +353,55 @@ export class EditorService extends BaseService {
 
   onRuleTrigger($event) {
     const {
-      data: {
-        metaData: { ruleIds = [] } = {},
-      },
+      data: { metaData: { ruleIds = [] } = {} },
     } = $event;
     if (ruleIds?.length) {
       let transactionDetails = this.getTransactionDetails();
       const formFields = this.getFormFields();
       this.isTriggerInProgress = true;
       this.showLoader($event?.data?.id);
-      this.executeRules({ruleIds, payload: formFields},
-        {applicationVersionId: transactionDetails.applicationVersionId, officeType: "FRONT_OFFICE", transactionId: transactionDetails.transactionId}).subscribe(
-          (result) => {
-            const { data } = parseApiResponse(result);
-            if (data) {
-              if (data?.payload) {
-                transactionDetails.uiPayload = data.payload;
-                this.setTransactionDetails(transactionDetails);
-                this.executeShowHides(transactionDetails.uiPayload);
-                this.isTriggerInProgress = false;
-                this.hideLoader();
-              }
-              if (data?.errors && data?.errors?.length) {
-                data?.errors.forEach(error => {
-                  switch (error?.type) {
-                    case 'PAGE_ERROR':
-                      this.notificationService.error(error?.message);
-                      break;
-                    case 'PAGE_WARNING':
-                      this.notificationService.info(error?.message);
-                      break;
-                  }
-                });
-              }
-            }
-            else {
+      this.executeRules(
+        { ruleIds, payload: formFields },
+        {
+          applicationVersionId: transactionDetails.applicationVersionId,
+          officeType: "FRONT_OFFICE",
+          transactionId: transactionDetails.transactionId,
+        }
+      ).subscribe(
+        (result) => {
+          const { data } = parseApiResponse(result);
+          if (data) {
+            if (data?.payload) {
+              transactionDetails.uiPayload = data.payload;
+              this.setTransactionDetails(transactionDetails);
+              transactionDetails.uiPayload.forEach((widget) => {
+                this.widgetChange.next(widget);
+              });
               this.isTriggerInProgress = false;
               this.hideLoader();
             }
-          },
-          (error) => {
+            if (data?.errors && data?.errors?.length) {
+              data?.errors.forEach((error) => {
+                switch (error?.type) {
+                  case "PAGE_ERROR":
+                    this.notificationService.error(error?.message);
+                    break;
+                  case "PAGE_WARNING":
+                    this.notificationService.info(error?.message);
+                    break;
+                }
+              });
+            }
+          } else {
             this.isTriggerInProgress = false;
             this.hideLoader();
           }
-        );
+        },
+        (error) => {
+          this.isTriggerInProgress = false;
+          this.hideLoader();
+        }
+      );
     }
   }
   executeShowHides(widgetList) {
@@ -589,10 +597,10 @@ export class EditorService extends BaseService {
   };
 
   //Executing BRs, CEMs and SNH
-  executeRules = (payload, params) : Observable<any> => {
+  executeRules = (payload, params): Observable<any> => {
     const url = `${this.config.getApiUrls().executeRulesURL}`;
     return this.postData(url, payload, params);
-  }
+  };
 
   //Updating hidden field values based on formula --- work around
   setHiddenFieldValue(payloadFields) {
