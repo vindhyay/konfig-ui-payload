@@ -404,6 +404,14 @@ export class EditorService extends BaseService {
       );
     }
   }
+  executeShowHides(widgetList) {
+    widgetList.forEach(widget => {
+      this.widgetChange.next(widget);
+      if (widget?.children && widget.children?.length) {
+        this.executeShowHides(widget?.children);
+      }
+    });
+  }
   evaluateFilter(filtersLogic, resultArray) {
     const expressionArray = filtersLogic
       .split(/[.\()&&||_]/)
