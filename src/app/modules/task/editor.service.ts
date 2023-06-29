@@ -361,7 +361,7 @@ export class EditorService extends BaseService {
       this.isTriggerInProgress = true;
       this.showLoader($event?.data?.id);
       this.executeRules(
-        { ruleIds, payload: formFields },
+        { screenId: transactionDetails.screenId, ruleIds, currentScreenPayload: formFields },
         {
           applicationVersionId: transactionDetails.applicationVersionId,
           officeType: "FRONT_OFFICE",
