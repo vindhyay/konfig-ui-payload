@@ -23,4 +23,7 @@ export class NotificationService {
   public info(message: string, title: string = "Info", option = this.defaultOption): ActiveToast<any> {
     return this.toast.info(message, title, { ...option, enableHtml: true });
   }
+  public warn(message: string, title: string = "Warning"): ActiveToast<any> {
+    return this.toast.warning(message, title, { enableHtml: true });
+  }
 }
