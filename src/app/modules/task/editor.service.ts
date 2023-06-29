@@ -371,8 +371,8 @@ export class EditorService extends BaseService {
         (result) => {
           const { data } = parseApiResponse(result);
           if (data) {
-            if (data?.payload) {
-              transactionDetails.uiPayload = data.payload;
+            if (data?.currentScreenPayload) {
+              transactionDetails.uiPayload = data.currentScreenPayload;
               this.setTransactionDetails(transactionDetails);
               transactionDetails.uiPayload.forEach((widget) => {
                 this.widgetChange.next(widget);
@@ -387,7 +387,7 @@ export class EditorService extends BaseService {
                     this.notificationService.error(error?.message);
                     break;
                   case "PAGE_WARNING":
-                    this.notificationService.info(error?.message);
+                    this.notificationService.warn(error?.message);
                     break;
                 }
               });
