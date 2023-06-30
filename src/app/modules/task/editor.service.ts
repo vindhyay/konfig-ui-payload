@@ -374,9 +374,7 @@ export class EditorService extends BaseService {
             if (data?.currentScreenPayload) {
               transactionDetails.uiPayload = data.currentScreenPayload;
               this.setTransactionDetails(transactionDetails);
-              transactionDetails.uiPayload.forEach((widget) => {
-                this.widgetChange.next(widget);
-              });
+              this.executeShowHides(transactionDetails.uiPayload)
               this.isTriggerInProgress = false;
               this.hideLoader();
             }
