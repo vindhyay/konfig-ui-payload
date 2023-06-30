@@ -92,6 +92,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
         (error) => {
           this.loading = false;
           if (error.status === 401) {
+            this.notificationService.error(error?.error?.error);
             this.authService.logoff(false);
           }
           if (error.status === 500) {
