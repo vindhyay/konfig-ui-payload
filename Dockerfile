@@ -23,7 +23,7 @@
 
 #Stage-2 to Run the application in Nginx Container
 FROM nginx:alpine
-
+RUN apk add --no-cache libx11=1.8.4-r1
 #Modify the permissions in the Nginx official Image to run it in the Openshift without any loopback errors
 RUN chmod g+rwx /var/cache/nginx /var/run /var/log/nginx /usr/share/nginx/html
 #Modify the listening port to something else other than 80 as it supposed to be run by super user and to avoid any permission issues.
