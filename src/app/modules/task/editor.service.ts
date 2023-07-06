@@ -173,7 +173,7 @@ export class EditorService extends BaseService {
       } = $event;
       // checking if only action and that is NONE
       const noneAction = onClickConfigs.find((item) => item.action === "none");
-      if (noneAction && onClickConfigs.length === 1) {
+      if (noneAction && onClickConfigs.length === 1 && !$event?.data?.metaData?.widgetEvent.length) {
         return;
       }
       // Filtering out UI actions
@@ -325,7 +325,7 @@ export class EditorService extends BaseService {
       data: {
         isUnique = false,
         value: { value = null },
-        metaData: { onChangeConfigs = [], businessRuleIds = [] } = {},
+        metaData: { widgetEvent = [], businessRuleIds = [] } = {},
         widgetId,
       },
     } = $event;
@@ -335,18 +335,16 @@ export class EditorService extends BaseService {
       this.onRuleTrigger($event);
       return;
     }
-    if (onChangeConfigs?.length) {
-      const { action: type = "" } = onChangeConfigs[0];
-      if (type === ButtonActions.populate) {
-        let error = this.validatePopulateParams(onChangeConfigs[0], formFields);
-        if (!error) {
-          this.triggerButtonActionEvents({
-            triggerId: widgetId,
-            data: $event?.data,
-            uiActions: [],
-            businessRuleIds: businessRuleIds,
-          });
-        }
+
+    if (widgetEvent?.length) {
+      let error = this.validatePopulateParams(widgetEvent[0], formFields);
+      if (!error) {
+        this.triggerButtonActionEvents({
+          triggerId: widgetId,
+          data: $event?.data,
+          uiActions: [],
+          businessRuleIds: businessRuleIds,
+        });
       }
     }
   }

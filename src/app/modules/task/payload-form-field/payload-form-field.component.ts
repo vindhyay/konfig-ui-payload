@@ -255,7 +255,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
 
   optionChange($event: any, data: any) {
     const metaData = this.item.metaData;
-    if (!!metaData["onChangeConfigs"] && metaData["onChangeConfigs"]?.length) {
+    if (!!metaData.widgetEvent && metaData.widgetEvent?.length) {
       this.editorService.onOptionChange({ event: $event, data });
     } else if (metaData?.ruleIds?.length) {
       this.editorService.onRuleTrigger({ event: $event, data });
@@ -280,7 +280,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
   checkForConditions() {
     const ruleIds = this.item?.metaData?.ruleIds;
     if (ruleIds?.length) {
-      this.editorService.onRuleTrigger({event : {}, data: this.item});
+      this.editorService.onRuleTrigger({ event: {}, data: this.item });
     }
   }
 
