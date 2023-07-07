@@ -1,24 +1,23 @@
 pipeline {
-//def workspace;
-agent {
-   label "kubeagent"
-} 
-// node {
-   parameters {
-    booleanParam(name: 'DEPLOYS', defaultValue: false, description: 'Use this build for deployment.')
-   }
- tools {
-      nodejs "Node"
-   }
-    triggers {
-        gitlab(triggerOnPush: true, triggerOnMergeRequest: true)
+    agent {
+    label "kubeagent"
+    } 
+    parameters {
+        booleanParam(name: 'Quality_Check', defaultValue: false, description: 'Use this for scanning the code with SonarQube and image with Trivy during deployment.')
     }
-environment {
-   NAME = "finlevit-payload"
-   REPO = "harbor.tabner.com:443/konfig"
-   //REPO = "10.10.5.17:443/finlevit"
-   DNAME = "finlevit-payload"
-   LOC = "dev"
+    tools {
+        nodejs "Node"
+    }
+    triggers {
+            gitlab(triggerOnPush: true, triggerOnMergeRequest: true)
+    }
+
+    environment {
+        NAME = "finlevit-payload"
+        REPO = "harbor.tabner.com:443/konfig"
+        AWS_REPO = "388868315655.dkr.ecr.us-east-1.amazonaws.com/konfig"
+        DNAME = "finlevit-payload"
+        LOC = "dev"
     }
 
     stages {
@@ -62,7 +61,7 @@ environment {
             }
         }
 
-        stage('Reading Values from Changelog and Service Versions') {
+        stage('Reading Service Versions') {
             steps {
                 script {
                     def json = readJSON file: 'konfig-app-release/config.json'
@@ -86,6 +85,9 @@ environment {
       }
 
         stage('SonarQube Analysis') {
+            when {
+                expression { params.Quality_Check }
+            }
             steps {
                 script {
                     def scannerHome = tool 'SonarQube'
@@ -96,10 +98,11 @@ environment {
             }
         }
 
-         stage('Building Docker Image') {
+        stage('Building Docker Image') {
             steps {
                 sh "docker build -t ${REPO}/${NAME} ."
                 sh "docker tag ${REPO}/${NAME}:latest ${REPO}/${NAME}:${env.service_version}"
+                sh "docker tag ${REPO}/${NAME}:${env.service_version} ${AWS_REPO}/${NAME}:${env.service_version}"
             }
         }
 
@@ -109,11 +112,13 @@ environment {
             }
         }
 
-        stage('Push to Harbor Artifactory') {
+        stage('Push to Harbor and ECR') {
             steps {
                 echo "Pushing the Docker Image to Remote Registry(Harbor)"
                 sh "docker login -u $HARBOR_USER -p $HARBOR_PASSWORD harbor.tabner.com:443"
             	sh "docker push ${REPO}/${NAME}:${env.service_version}"
+                sh "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 388868315655.dkr.ecr.us-east-1.amazonaws.com"
+                sh "docker push ${AWS_REPO}/${NAME}:${env.service_version}"
             }
         }
 
@@ -146,7 +151,35 @@ environment {
             }
         }
 
-        stage('Push changes in the config.json to the dev branch of konfig-app-release') {
+        stage('Deploy to Cloud Dev') {
+            when {
+                expression {
+                    return env.BRANCH_NAME == 'dev';
+                }
+            }
+            steps {
+                echo "Deploying the latest version"
+				script {
+                    def release_name = env.NAME
+                    def chartVersion = '0.1.0'
+                    def serviceVersion= env.service_version
+                    echo"Deploying the ${serviceVersion} version of ${release_name} in ${LOC}"
+                    sh """
+                    aws eks update-kubeconfig --region us-east-1 --name finlevit-dev
+                    cd konfig-helm-resources/helm-charts/${release_name}
+                    helm package .
+                    if helm list -n ${LOC} | grep -E '(^|[[:space:]])${release_name}([[:space:]]|\$)'; then
+                    helm upgrade ${release_name} ${release_name}-${chartVersion}.tgz --set namespace=${LOC},image.repository=${AWS_REPO},image.version=${serviceVersion},domain=${LOC}.finlevit.us,env=${LOC} -n ${LOC}
+                    else
+                    helm install ${release_name} ${release_name}-${chartVersion}.tgz --set namespace=${LOC},image.repository=${AWS_REPO},image.version=${serviceVersion},domain=${LOC}.finlevit.us,env=${LOC} -n ${LOC}
+                    fi
+                    """
+                    echo"Successfully deployed the ${serviceVersion} version of the Application ${release_name} in ${LOC}"
+            	}
+            }
+        }
+
+        stage('Push to konfig-app-release') {
             steps {
                 script {
                     withCredentials([string(credentialsId: 'jenkins-fin-gitlab-token', variable: 'GITLAB_TOKEN')]) {
