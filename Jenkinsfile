@@ -169,9 +169,9 @@ pipeline {
                     cd konfig-helm-resources/helm-charts/${release_name}
                     helm package .
                     if helm list -n ${LOC} | grep -E '(^|[[:space:]])${release_name}([[:space:]]|\$)'; then
-                    helm upgrade ${release_name} ${release_name}-${chartVersion}.tgz --set namespace=${LOC},image.repository=${AWS_REPO},image.version=${serviceVersion},domain=${LOC}.finlevit.us,env=${LOC} -n ${LOC}
+                    helm upgrade ${release_name} ${release_name}-${chartVersion}.tgz --set namespace=${LOC},vault.role=vault-${LOC}-auth,serviceaccount=vault-${LOC}-auth,image.repository=${AWS_REPO},image.version=${serviceVersion},domain=${LOC}.finlevit.us,env=${LOC} -n ${LOC}
                     else
-                    helm install ${release_name} ${release_name}-${chartVersion}.tgz --set namespace=${LOC},image.repository=${AWS_REPO},image.version=${serviceVersion},domain=${LOC}.finlevit.us,env=${LOC} -n ${LOC}
+                    helm install ${release_name} ${release_name}-${chartVersion}.tgz --set namespace=${LOC},vault.role=vault-${LOC}-auth,serviceaccount=vault-${LOC}-auth,image.repository=${AWS_REPO},image.version=${serviceVersion},domain=${LOC}.finlevit.us,env=${LOC} -n ${LOC}
                     fi
                     """
                     echo"Successfully deployed the ${serviceVersion} version of the Application ${release_name} in ${LOC}"
