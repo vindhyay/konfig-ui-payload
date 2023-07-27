@@ -138,12 +138,12 @@ pipeline {
                     sh """
                     export KUBECONFIG='/home/jenkins/agent/kubeconfig/kubeconfig-${LOC}.yaml'
                     chmod 600 /home/jenkins/agent/kubeconfig/kubeconfig-${LOC}.yaml
-                    cd konfig-helm-resources/helm-charts/${release_name}
+                    cd konfig-helm-resources/${release_name}
                     helm package .
                     if helm list -n ${LOC} | grep -E '(^|[[:space:]])${release_name}([[:space:]]|\$)'; then
-                    helm upgrade ${release_name} ${release_name}-${chartVersion}.tgz --set namespace=${LOC},image.version=${serviceVersion},domain=${LOC}.konfig.io,env=${LOC} -n ${LOC}
+                    helm upgrade ${release_name} ${release_name}-${chartVersion}.tgz --set namespace=${LOC},image.version=${serviceVersion},domain=${LOC}.tabner.konfig.io,env=${LOC} -n ${LOC}
                     else
-                    helm install ${release_name} ${release_name}-${chartVersion}.tgz --set namespace=${LOC},image.version=${serviceVersion},domain=${LOC}.konfig.io,env=${LOC} -n ${LOC}
+                    helm install ${release_name} ${release_name}-${chartVersion}.tgz --set namespace=${LOC},image.version=${serviceVersion},domain=${LOC}.tabner.konfig.io,env=${LOC} -n ${LOC}
                     fi
                     """
                     echo"Successfully deployed the ${serviceVersion} version of the Application ${release_name} in ${LOC}"
@@ -166,12 +166,12 @@ pipeline {
                     echo"Deploying the ${serviceVersion} version of ${release_name} in ${LOC}"
                     sh """
                     aws eks update-kubeconfig --region us-east-1 --name finlevit-dev
-                    cd konfig-helm-resources/helm-charts/${release_name}
+                    cd konfig-helm-resources/${release_name}
                     helm package .
                     if helm list -n ${LOC} | grep -E '(^|[[:space:]])${release_name}([[:space:]]|\$)'; then
-                    helm upgrade ${release_name} ${release_name}-${chartVersion}.tgz --set namespace=${LOC},vault.role=vault-${LOC}-auth,serviceaccount=vault-${LOC}-auth,image.repository=${AWS_REPO},image.version=${serviceVersion},domain=${LOC}.finlevit.us,env=${LOC} -n ${LOC}
+                    helm upgrade ${release_name} ${release_name}-${chartVersion}.tgz --set namespace=${LOC},vault.role=vault-${LOC}-auth,serviceaccount=vault-${LOC}-auth,image.repository=${AWS_REPO},image.version=${serviceVersion},domain=${LOC}.tabner.finlevit.us,env=${LOC} -n ${LOC}
                     else
-                    helm install ${release_name} ${release_name}-${chartVersion}.tgz --set namespace=${LOC},vault.role=vault-${LOC}-auth,serviceaccount=vault-${LOC}-auth,image.repository=${AWS_REPO},image.version=${serviceVersion},domain=${LOC}.finlevit.us,env=${LOC} -n ${LOC}
+                    helm install ${release_name} ${release_name}-${chartVersion}.tgz --set namespace=${LOC},vault.role=vault-${LOC}-auth,serviceaccount=vault-${LOC}-auth,image.repository=${AWS_REPO},image.version=${serviceVersion},domain=${LOC}.tabner.finlevit.us,env=${LOC} -n ${LOC}
                     fi
                     """
                     echo"Successfully deployed the ${serviceVersion} version of the Application ${release_name} in ${LOC}"
