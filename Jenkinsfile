@@ -61,28 +61,31 @@ pipeline {
             }
         }
 
-        stage('Reading Service Versions') {
+        stage('Service Versions') {
             steps {
                 script {
-                    def json = readJSON file: 'konfig-app-release/config.json'
-                    env.service_version = json[NAME].toInteger().plus(1).toString()
+                    def json = readJSON file: 'konfig-app-release/service.json'
+                    def versionnum = json[NAME]
+                    env.ENV_GIT_COMMIT = sh (script: 'git log -1 --pretty=format:%h',returnStdout: true).trim()
+                    env.ENV_CURRENT_DATE = sh (script: 'date +%d-%m-%Y""%H%M%S',returnStdout: true).trim()
+                    env.service_version = "${versionnum}-${ENV_CURRENT_DATE}-${ENV_GIT_COMMIT}"
                 }
             }
         }
 
-     stage('Install dependencies'){
-         steps {
-          //sh 'npm config ls'
-          echo"Let's remove the packge-lock.json to avoid any unnecessary issues"
-          sh 'rm -rf package-lock.json'
-          echo"now install the dependencies which will auto-generate new package-lock.json file"
-          echo"this will be done in Build Docker Image Stage"
-          //sh 'npm install'
-          sh 'npm install'
-          sh 'npm run build'
+        stage('Install dependencies'){
+            steps {
+            //sh 'npm config ls'
+            echo"Let's remove the packge-lock.json to avoid any unnecessary issues"
+            sh 'rm -rf package-lock.json'
+            echo"now install the dependencies which will auto-generate new package-lock.json file"
+            echo"this will be done in Build Docker Image Stage"
+            //sh 'npm install'
+            sh 'npm install'
+            sh 'npm run build'
             //echo "Npm Packages has been installed"
-         }
-      }
+            }
+        }
 
         stage('SonarQube Analysis') {
             when {
@@ -190,7 +193,7 @@ pipeline {
                                 git pull http://oauth2:${GITLAB_TOKEN}@gitlab.tabner.com/fin/konfig-app-release.git dev
                             '''
                             def json = readJSON file: 'config.json'
-                            json[NAME] = json[NAME].toInteger().plus(1).toString()
+                            json[NAME] = env.service_version.toString()
                             writeFile file: 'config.json', text: groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(json))
                             sh '''
                                 git add config.json
