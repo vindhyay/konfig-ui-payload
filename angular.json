@@ -81,8 +81,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "sslKey": "dev.konfig.io.key",
-            "sslCert": "dev.konfig.io.crt",
+            "sslKey": "dev.tabner.konfig.io.key",
+            "sslCert": "dev.tabner.konfig.io.crt",
             "ssl": true,
             "browserTarget": "finlevit-payload:build"
           },
