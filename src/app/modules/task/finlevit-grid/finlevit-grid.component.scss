@@ -26,6 +26,9 @@
   .button-container,
   .modal-container {
     overflow: visible;
+    &.hidden-container {
+      overflow: hidden;
+    }
   }
   gridster {
     display: flex;

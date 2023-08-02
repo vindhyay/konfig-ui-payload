@@ -13,9 +13,10 @@
         'text-container': item?.metaData?.widgetType === Text,
         'header-container': item?.metaData?.widgetType === Header,
         'footer-container': item?.metaData?.widgetType === Footer,
-        'button-container': item?.metaData?.widgetType === Button && !item?.metaData?.isHidden,
+        'button-container': item?.metaData?.widgetType === Button,
         'modal-container': item?.metaData?.widgetType === Modal,
-        'display-none': !item?.rows
+        'display-none': !item?.rows,
+        'hidden-container': item?.metaData?.isHidden
       }"
       [item]="item"
     >
