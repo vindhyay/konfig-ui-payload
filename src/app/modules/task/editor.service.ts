@@ -198,7 +198,7 @@ export class EditorService extends BaseService {
       // If first action either submit or next screen action need to validate fields
       const isValidationRequired =
         onClickConfigs.length &&
-        (onClickConfigs[0].action === ButtonActions.submit || onClickConfigs[0].action === ButtonActions.next);
+        (onClickConfigs[0].action === ButtonActions.submit || onClickConfigs[0].action === ButtonActions.next || onClickConfigs[0].action === ButtonActions.save);
       if (isValidationRequired) {
         const { result, errorFields } = validateFields(formFields, true);
         if (!result) {
