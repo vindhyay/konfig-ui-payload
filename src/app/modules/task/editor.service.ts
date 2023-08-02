@@ -372,7 +372,7 @@ export class EditorService extends BaseService {
             if (data?.currentScreenPayload) {
               transactionDetails.uiPayload = data.currentScreenPayload;
               this.setTransactionDetails(transactionDetails);
-              this.executeShowHides(transactionDetails.uiPayload)
+              this.executeShowHides(transactionDetails.uiPayload);
               this.isTriggerInProgress = false;
               this.hideLoader();
             }
@@ -401,7 +401,7 @@ export class EditorService extends BaseService {
     }
   }
   executeShowHides(widgetList) {
-    widgetList.forEach(widget => {
+    widgetList.forEach((widget) => {
       this.widgetChange.next(widget);
       if (widget?.children && widget.children?.length) {
         this.executeShowHides(widget?.children);
