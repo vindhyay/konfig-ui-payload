@@ -513,7 +513,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
     let streetName = $event?.streetName ? $event?.streetName : "";
     let locality = $event.locality?.value ? $event.locality?.value : "";
     let state = $event.state?.value ? $event.state?.value : "";
-    let postalCode = $event?.postalCode ? $event?.postalCode : "";
+    let postalCode = $event?.postalCode ? String($event?.postalCode) : "";
 
     let address = {
       streetNumber: streetNumber,
