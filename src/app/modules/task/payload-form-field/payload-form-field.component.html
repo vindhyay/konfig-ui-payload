@@ -118,6 +118,7 @@
         [autoResize]="item?.metaData?.autoResize"
         [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
         [showErrorMsg]="item?.errorMessage || item?.metaData?.showErrorMessage"
+        [trim]="item?.validators?.required"
         (onBlur)="optionChange($event, item)"
         size="custom"
       >
