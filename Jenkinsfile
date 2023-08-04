@@ -54,7 +54,7 @@ pipeline {
                 dir('konfig-helm-resources') {
                     git(
                         url: 'http://gitlab.tabner.com/fin/konfig-helm-resources.git',
-                        branch: 'develop',
+                        branch: 'develop_test',
                         credentialsId: 'jenkinsgitlab'
                     )
                 }
