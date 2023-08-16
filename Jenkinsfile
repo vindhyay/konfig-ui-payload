@@ -15,7 +15,7 @@ pipeline {
     
     environment {
         GIT_SSL_NO_VERIFY = 'true'
-        NAME = "finlevit-admin"
+        NAME = "finlevit-payload"
         REPO = "harbor.tabner.com:443/konfig"
         AWS_REPO = "388868315655.dkr.ecr.us-east-1.amazonaws.com/konfig"
         LOC = "dev"
