@@ -21,7 +21,6 @@
 # #RUN npm install @angular/cli@8.3.19
 # #RUN npm install -g typescript@3.5.3
 
-# Use the nginx:alpine image as base
 FROM nginx:alpine
 
 # Install necessary package and create a non-root user
@@ -35,8 +34,8 @@ RUN chown -R konfig:konfig /var/cache/nginx /var/run /var/log/nginx /usr/share/n
 # Copy the nginx configuration file
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 
-# Copy application artifacts from builder image
-COPY ./dist/finlevit-payload/ /usr/share/nginx/html
+# Add all the artifacts from the builder image
+COPY ./dist/finlevit-admin/ /usr/share/nginx/html
 
 # Expose the Application on specified port
 EXPOSE 8081
@@ -44,7 +43,7 @@ EXPOSE 8081
 # Change the user for nginx processes to non-root user
 RUN sed -i.bak 's/^user.*/user konfig;/' /etc/nginx/nginx.conf
 
-# Start the Application
+# Switch to the non-root user
+USER konfig
+
 CMD ["nginx", "-g", "daemon off;"]
-
-
