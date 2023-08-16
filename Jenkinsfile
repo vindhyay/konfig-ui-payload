@@ -187,8 +187,8 @@ pipeline {
                     withCredentials([string(credentialsId: 'jenkins-fin-gitlab-token', variable: 'GITLAB_TOKEN')]) {
                         dir('app-release') {
                             sh '''
-                                git config --global user.email "admin@finlevit.com"
-                                git config --global user.name "jenkins-fin"
+                                git config --global user.email "jenkins.konfig@tabnerglobal.com"
+                                git config --global user.name "jenkins-konfig"
                                 git pull http://oauth2:${GITLAB_TOKEN}@konfig-git.tabner.com/konfig/konfig-devops/app-release.git dev
                             '''
                             def json = readJSON file: 'config.json'
