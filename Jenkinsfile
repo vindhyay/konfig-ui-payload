@@ -16,7 +16,6 @@ pipeline {
         NAME = "finlevit-payload"
         REPO = "harbor.tabner.com:443/konfig"
         AWS_REPO = "388868315655.dkr.ecr.us-east-1.amazonaws.com/konfig"
-        DNAME = "finlevit-payload"
         LOC = "dev"
     }
 
@@ -36,13 +35,13 @@ pipeline {
             }
         }
 
-        stage('Clone konfig-app-release') {
+        stage('Clone app-release') {
             steps {
-                dir('konfig-app-release') {
+                dir('app-release') {
                     git(
-                        url: 'http://gitlab.tabner.com/fin/konfig-app-release.git',
+                        url: 'https://konfig-git.tabner.com/konfig/konfig-devops/app-release.git',
                         branch: 'dev',
-                        credentialsId: 'jenkinsgitlab'
+                        credentialsId: 'jenkins-konfig'
                     )
                 }
             }
@@ -51,11 +50,11 @@ pipeline {
     
         stage('Clone Helm Repository') {
             steps {
-                dir('konfig-helm-resources') {
+                dir('helm-resources') {
                     git(
-                        url: 'http://gitlab.tabner.com/fin/konfig-helm-resources.git',
+                        url: 'https://konfig-git.tabner.com/konfig/konfig-devops/helm-resources.git',
                         branch: 'develop',
-                        credentialsId: 'jenkinsgitlab'
+                        credentialsId: 'jenkins-konfig'
                     )
                 }
             }
@@ -141,7 +140,7 @@ pipeline {
                     sh """
                     export KUBECONFIG='/home/jenkins/agent/kubeconfig/kubeconfig-${LOC}.yaml'
                     chmod 600 /home/jenkins/agent/kubeconfig/kubeconfig-${LOC}.yaml
-                    cd konfig-helm-resources/${release_name}
+                    cd helm-resources/${release_name}
                     helm package .
                     if helm list -n ${LOC} | grep -E '(^|[[:space:]])${release_name}([[:space:]]|\$)'; then
                     helm upgrade ${release_name} ${release_name}-${chartVersion}.tgz --set namespace=${LOC},image.version=${serviceVersion},domain=${LOC}.tabner.konfig.io,env=${LOC} -n ${LOC}
@@ -169,7 +168,7 @@ pipeline {
                     echo"Deploying the ${serviceVersion} version of ${release_name} in ${LOC}"
                     sh """
                     aws eks update-kubeconfig --region us-east-1 --name finlevit-dev
-                    cd konfig-helm-resources/${release_name}
+                    cd helm-resources/${release_name}
                     helm package .
                     if helm list -n ${LOC} | grep -E '(^|[[:space:]])${release_name}([[:space:]]|\$)'; then
                     helm upgrade ${release_name} ${release_name}-${chartVersion}.tgz --set namespace=${LOC},vault.role=vault-${LOC}-auth,serviceaccount=vault-${LOC}-auth,image.repository=${AWS_REPO},image.version=${serviceVersion},domain=${LOC}.tabner.finlevit.us,env=${LOC} -n ${LOC}
@@ -182,15 +181,15 @@ pipeline {
             }
         }
 
-        stage('Push to konfig-app-release') {
+        stage('Push to app-release') {
             steps {
                 script {
                     withCredentials([string(credentialsId: 'jenkins-fin-gitlab-token', variable: 'GITLAB_TOKEN')]) {
-                        dir('konfig-app-release') {
+                        dir('app-release') {
                             sh '''
                                 git config --global user.email "admin@finlevit.com"
                                 git config --global user.name "jenkins-fin"
-                                git pull http://oauth2:${GITLAB_TOKEN}@gitlab.tabner.com/fin/konfig-app-release.git dev
+                                git pull http://oauth2:${GITLAB_TOKEN}@konfig-git.tabner.com/konfig/konfig-devops/app-release.git dev
                             '''
                             def json = readJSON file: 'config.json'
                             json[NAME] = env.service_version.toString()
@@ -198,7 +197,7 @@ pipeline {
                             sh '''
                                 git add config.json
                                 git commit -m "Upgraded ${NAME} version"
-                                git push http://oauth2:${GITLAB_TOKEN}@gitlab.tabner.com/fin/konfig-app-release.git dev
+                                git push http://oauth2:${GITLAB_TOKEN}@konfig-git.tabner.com/konfig/konfig-devops/app-release.git dev
                             '''
                         }
                     }
@@ -210,7 +209,7 @@ pipeline {
     post {
         success {
             script{
-                def message = "**Build SUCCESS** ✅ : ${currentBuild.fullDisplayName}\nTriggered By : ${env.authorName} \n[Build info](${env.BUILD_URL})"
+                def message = "**BUILD SUCCESS** ✅ : ${currentBuild.fullDisplayName}\nTriggered By : ${env.authorName} \n[Build info](${env.BUILD_URL})"
                 def url = 'https://teams.tabner.us/hooks/sj3omweopfdydjezn4ngjh947w'
                 def payload = [
                     text: message,
@@ -222,7 +221,7 @@ pipeline {
         }
         failure {
             script{
-                def message = "**Build FAILURE** ❌ : ${currentBuild.fullDisplayName}\nTriggered By : ${env.authorName} \n[Build info](${env.BUILD_URL})"
+                def message = "**BUILD FAILURE** ❌ : ${currentBuild.fullDisplayName}\nTriggered By : ${env.authorName} \n[Build info](${env.BUILD_URL})"
                 def url = 'https://teams.tabner.us/hooks/sj3omweopfdydjezn4ngjh947w'
                 def payload = [
                     text: message,
