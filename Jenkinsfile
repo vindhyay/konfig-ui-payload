@@ -3,7 +3,7 @@ pipeline {
     label "kubeagent"
     } 
     parameters {
-        booleanParam(name: 'Quality_Check', defaultValue: false, description: 'Use this for scanning the code with SonarQube and image with Trivy during deployment.')
+        booleanParam(name: 'Quality_Check', defaultValue: false, description: 'Use this for scanning the code with SonarQube Analysis and image with Trivy during deployment.')
     }
     tools {
         nodejs "Node"
