@@ -1,19 +1,21 @@
 pipeline {
+
     agent {
     label "kubeagent"
     } 
     parameters {
-        booleanParam(name: 'Quality_Check', defaultValue: false, description: 'Use this for scanning the code with SonarQube Analysis and image with Trivy during deployment.')
+        booleanParam(name: 'Quality_Check', defaultValue: false, description: 'Use this for scanning the code with SonarQube and image with Trivy during deployment.')
     }
     tools {
         nodejs "Node"
     }
     triggers {
             gitlab(triggerOnPush: true, triggerOnMergeRequest: true)
-    }
-
+        }
+    
     environment {
-        NAME = "finlevit-payload"
+        GIT_SSL_NO_VERIFY = 'true'
+        NAME = "finlevit-admin"
         REPO = "harbor.tabner.com:443/konfig"
         AWS_REPO = "388868315655.dkr.ecr.us-east-1.amazonaws.com/konfig"
         LOC = "dev"
@@ -53,7 +55,7 @@ pipeline {
                 dir('helm-resources') {
                     git(
                         url: 'https://konfig-git.tabner.com/konfig/konfig-devops/helm-resources.git',
-                        branch: 'develop',
+                        branch: 'dev',
                         credentialsId: 'jenkins-konfig'
                     )
                 }
@@ -189,7 +191,7 @@ pipeline {
                             sh '''
                                 git config --global user.email "jenkins.konfig@tabnerglobal.com"
                                 git config --global user.name "jenkins-konfig"
-                                git pull http://oauth2:${GITLAB_TOKEN}@konfig-git.tabner.com/konfig/konfig-devops/app-release.git dev
+                                git pull https://oauth2:${GITLAB_TOKEN}@konfig-git.tabner.com/konfig/konfig-devops/app-release.git dev
                             '''
                             def json = readJSON file: 'config.json'
                             json[NAME] = env.service_version.toString()
@@ -197,7 +199,7 @@ pipeline {
                             sh '''
                                 git add config.json
                                 git commit -m "Upgraded ${NAME} version"
-                                git push http://oauth2:${GITLAB_TOKEN}@konfig-git.tabner.com/konfig/konfig-devops/app-release.git dev
+                                git push https://oauth2:${GITLAB_TOKEN}@konfig-git.tabner.com/konfig/konfig-devops/app-release.git dev
                             '''
                         }
                     }
@@ -209,7 +211,7 @@ pipeline {
     post {
         success {
             script{
-                def message = "**BUILD SUCCESS** ✅ : ${currentBuild.fullDisplayName}\nTriggered By : ${env.authorName} \n[Build info](${env.BUILD_URL})"
+                def message = "**Build SUCCESS** ✅ : ${currentBuild.fullDisplayName}\nTriggered By : ${env.authorName} \n[Build info](${env.BUILD_URL})"
                 def url = 'https://teams.tabner.us/hooks/sj3omweopfdydjezn4ngjh947w'
                 def payload = [
                     text: message,
@@ -221,7 +223,7 @@ pipeline {
         }
         failure {
             script{
-                def message = "**BUILD FAILURE** ❌ : ${currentBuild.fullDisplayName}\nTriggered By : ${env.authorName} \n[Build info](${env.BUILD_URL})"
+                def message = "**Build FAILURE** ❌ : ${currentBuild.fullDisplayName}\nTriggered By : ${env.authorName} \n[Build info](${env.BUILD_URL})"
                 def url = 'https://teams.tabner.us/hooks/sj3omweopfdydjezn4ngjh947w'
                 def payload = [
                     text: message,
