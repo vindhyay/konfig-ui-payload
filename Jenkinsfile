@@ -63,7 +63,7 @@ pipeline {
         stage('Service Versions') {
             steps {
                 script {
-                    def json = readJSON file: 'konfig-app-release/service.json'
+                    def json = readJSON file: 'app-release/service.json'
                     def versionnum = json[NAME]
                     env.ENV_GIT_COMMIT = sh (script: 'git log -1 --pretty=format:%h',returnStdout: true).trim()
                     env.ENV_CURRENT_DATE = sh (script: 'date +%d-%m-%Y""%H%M%S',returnStdout: true).trim()
