@@ -562,8 +562,6 @@ export class TextInputMetaData extends MetaData {
   tooltip: string;
   leftIcon: string;
   rightIcon: string;
-  isFormulaField: boolean;
-  formula = [];
   errorMessage: string;
   showErrorMessage: boolean;
   styleProperties: { id: ""; properties: any };
@@ -581,8 +579,6 @@ export class TextInputMetaData extends MetaData {
       placeholder = "",
       leftIcon = "",
       rightIcon = "",
-      isFormulaField,
-      formula,
       errorMessage = "",
       showErrorMessage = true,
       styleProperties = {},
@@ -598,8 +594,6 @@ export class TextInputMetaData extends MetaData {
     this.placeholder = placeholder;
     this.leftIcon = leftIcon;
     this.rightIcon = rightIcon;
-    this.isFormulaField = isFormulaField;
-    this.formula = formula;
     this.errorMessage = errorMessage;
     this.showErrorMessage = showErrorMessage;
     this.styleProperties = styleProperties;
@@ -619,8 +613,6 @@ export class PasswordInputMetaData extends MetaData {
   rightIcon: string;
   showIcon: string;
   hideIcon: string;
-  isFormulaField: boolean;
-  formula = [];
   rules: {
     oneLowerCase: boolean;
     oneUpperCase: boolean;
@@ -647,8 +639,6 @@ export class PasswordInputMetaData extends MetaData {
       rightIcon = "",
       showIcon = "pi pi-eye",
       hideIcon = "pi pi-eye-slash",
-      isFormulaField,
-      formula,
       rules = {
         oneLowerCase: true,
         oneUpperCase: true,
@@ -673,8 +663,6 @@ export class PasswordInputMetaData extends MetaData {
     this.rightIcon = rightIcon;
     this.showIcon = showIcon;
     this.hideIcon = hideIcon;
-    this.isFormulaField = isFormulaField;
-    this.formula = formula;
     this.rules = rules;
     this.errorMessage = errorMessage;
     this.showErrorMessage = showErrorMessage;
@@ -739,8 +727,6 @@ export class SSNInputMetaData extends MetaData {
   rightIcon: string;
   showIcon: string;
   hideIcon: string;
-  isFormulaField: boolean;
-  formula = [];
   selectedInput: string;
   patterns: any;
   errorMessage: string;
@@ -764,8 +750,6 @@ export class SSNInputMetaData extends MetaData {
       rightIcon = "",
       showIcon = "pi pi-eye-slash",
       hideIcon = "pi pi-eye",
-      isFormulaField,
-      formula,
       selectedInput = "SSN",
       patterns = {
         SSN: "^(?!000|666)[0-9]{3}([ -]?)(?!00)[0-9]{2}\\1(?!0000)[0-9]{4}$",
@@ -788,8 +772,6 @@ export class SSNInputMetaData extends MetaData {
     this.rightIcon = rightIcon;
     this.showIcon = showIcon;
     this.hideIcon = hideIcon;
-    this.isFormulaField = isFormulaField;
-    this.formula = formula;
     this.selectedInput = selectedInput;
     this.patterns = patterns;
     this.showMask = showMask;
@@ -812,8 +794,6 @@ export class EmailMetaData extends MetaData {
   tooltip: string;
   leftIcon: string;
   rightIcon: string;
-  isFormulaField: boolean;
-  formula = [];
   errorMessage: string;
   showErrorMessage: boolean;
   adornmentBackgroundColor: string;
@@ -831,8 +811,6 @@ export class EmailMetaData extends MetaData {
       placeholder = "example@domain.com",
       leftIcon = "",
       rightIcon = "",
-      isFormulaField,
-      formula,
       errorMessage = "",
       showErrorMessage = true,
       styleProperties = {},
@@ -848,8 +826,6 @@ export class EmailMetaData extends MetaData {
     this.placeholder = placeholder;
     this.leftIcon = leftIcon;
     this.rightIcon = rightIcon;
-    this.isFormulaField = isFormulaField;
-    this.formula = formula;
     this.errorMessage = errorMessage;
     this.showErrorMessage = showErrorMessage;
     this.styleProperties = styleProperties;
@@ -868,8 +844,6 @@ export class PhonenumberInputMetaData extends MetaData {
   tooltip: string;
   leftIcon: string;
   rightIcon: string;
-  isFormulaField: boolean;
-  formula = [];
   errorMessage: string;
   showErrorMessage: boolean;
   styleProperties: { id: ""; properties: any };
@@ -887,8 +861,6 @@ export class PhonenumberInputMetaData extends MetaData {
       placeholder = "000-000-0000",
       leftIcon = "",
       rightIcon = "",
-      isFormulaField,
-      formula,
       errorMessage = "",
       showErrorMessage = true,
       styleProperties = {},
@@ -904,8 +876,6 @@ export class PhonenumberInputMetaData extends MetaData {
     this.placeholder = placeholder;
     this.leftIcon = leftIcon;
     this.rightIcon = rightIcon;
-    this.isFormulaField = isFormulaField;
-    this.formula = formula;
     this.errorMessage = errorMessage;
     this.showErrorMessage = showErrorMessage;
     this.styleProperties = styleProperties;
@@ -998,8 +968,6 @@ export class NumberMetaData extends MetaData {
   maxFractionDigits: number;
   placeholder: string;
   tooltip: string;
-  isFormulaField: boolean;
-  formula = [];
   errorMessage: string;
   showErrorMessage: boolean;
   showStepperButtons: boolean;
@@ -1024,8 +992,6 @@ export class NumberMetaData extends MetaData {
       maxFractionDigits,
       tooltip = "",
       placeholder = "",
-      isFormulaField,
-      formula,
       errorMessage = "",
       showErrorMessage = true,
       showStepperButtons = false,
@@ -1048,8 +1014,6 @@ export class NumberMetaData extends MetaData {
     this.maxFractionDigits = maxFractionDigits;
     this.tooltip = tooltip;
     this.placeholder = placeholder;
-    this.isFormulaField = isFormulaField;
-    this.formula = formula;
     this.errorMessage = errorMessage;
     this.showErrorMessage = showErrorMessage;
     this.showStepperButtons = showStepperButtons;
@@ -1513,8 +1477,6 @@ export class AddressMetaData extends MetaData {
   tooltip: string;
   leftIcon: string;
   rightIcon: string;
-  isFormulaField: boolean;
-  formula = [];
   errorMessage: string;
   showErrorMessage: boolean;
   styleProperties: { id: ""; properties: any };
@@ -1534,8 +1496,6 @@ export class AddressMetaData extends MetaData {
       placeholder = "",
       leftIcon = "",
       rightIcon = "",
-      isFormulaField,
-      formula,
       errorMessage = "",
       showErrorMessage = true,
       styleProperties = {},
@@ -1553,8 +1513,6 @@ export class AddressMetaData extends MetaData {
     this.placeholder = placeholder;
     this.leftIcon = leftIcon;
     this.rightIcon = rightIcon;
-    this.isFormulaField = isFormulaField;
-    this.formula = formula;
     this.errorMessage = errorMessage;
     this.showErrorMessage = showErrorMessage;
     this.styleProperties = styleProperties;

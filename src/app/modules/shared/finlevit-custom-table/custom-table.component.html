@@ -350,11 +350,7 @@
                               [tooltip]="col?.metaData?.tooltip"
                               [placeholder]="col?.metaData?.placeholder"
                               [isRequired]="col?.validators?.required"
-                              [(ngModel)]="
-                                col?.metaData?.isFormulaField
-                                  ? calculateCellValue(col, rowIndex)
-                                  : modifyingData[rowIndex][col.columnId]
-                              "
+                              [(ngModel)]="modifyingData[rowIndex][col.columnId]"
                               (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col.columnId)"
                               size="custom"
                               [showClearButton]="col?.metaData?.showClearButton"
@@ -381,11 +377,7 @@
                               [ngTemplateOutletContext]="{ row: rowData, column: col }"
                             ></ng-container>
                             <ng-template #generic>
-                              {{
-                                col?.metaData?.isFormulaField
-                                  ? calculateCellValue(col, rowIndex)
-                                  : rowData[col.columnId]
-                              }}
+                              {{ rowData[col.columnId] }}
                             </ng-template>
                           </ng-container>
                         </div>
@@ -424,11 +416,7 @@
                               [ngTemplateOutletContext]="{ row: rowData, column: col }"
                             ></ng-container>
                             <ng-template #generic>
-                              {{
-                                col?.metaData?.isFormulaField
-                                  ? calculateCellValue(col, rowIndex)
-                                  : rowData[col.columnId]
-                              }}
+                              {{ rowData[col.columnId] }}
                             </ng-template>
                           </ng-container>
                         </div>
@@ -455,11 +443,7 @@
                               [showClearButton]="col?.metaData?.showClearButton"
                               [step]="col?.metaData?.step"
                               [showButtons]="col?.metaData?.showStepperButtons"
-                              [(ngModel)]="
-                                col?.metaData?.isFormulaField
-                                  ? calculateCellValue(col, rowIndex)
-                                  : modifyingData[rowIndex][col.columnId]
-                              "
+                              [(ngModel)]="modifyingData[rowIndex][col.columnId]"
                               (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col.columnId)"
                               size="custom"
                               [showErrorMsg]="col?.metaData?.showErrorMessage"
