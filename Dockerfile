@@ -35,7 +35,7 @@ RUN chown -R konfig:konfig /var/cache/nginx /var/run /var/log/nginx /usr/share/n
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 
 # Add all the artifacts from the builder image
-COPY ./dist/finlevit-admin/ /usr/share/nginx/html
+COPY ./dist/finlevit-payload/ /usr/share/nginx/html
 
 # Expose the Application on specified port
 EXPOSE 8081
