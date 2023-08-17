@@ -9,7 +9,7 @@
         [tooltip]="item?.metaData?.tooltip"
         [placeholder]="item?.metaData?.placeholder"
         [(ngModel)]="item.value.value"
-        (ngModelChange)="validateField($event, item); calculateFormulaValue(item, true)"
+        (ngModelChange)="validateField($event, item)"
         [isRequired]="item?.validators?.required"
         [label]="item?.label"
         applyStyleVariables
@@ -42,7 +42,7 @@
         [tooltip]="item?.metaData?.tooltip"
         [placeholder]="item?.metaData?.placeholder"
         [(ngModel)]="item.value.value"
-        (ngModelChange)="validateField($event, item); calculateFormulaValue(item, true)"
+        (ngModelChange)="validateField($event, item)"
         [isRequired]="item?.validators?.required"
         [label]="item?.label"
         [showClearButton]="item?.metaData?.showClearButton"
@@ -80,7 +80,7 @@
     <div class="input-container">
       <app-ssninput-field
         [isDisabled]="readonlyMode || disable || item?.isMirrorField"
-        (onValueChange)="validateField($event, item); calculateFormulaValue(item, true)"
+        (onValueChange)="validateField($event, item)"
         (onBlurChange)="optionChange($event, item)"
         [item]="item"
       >
@@ -91,7 +91,7 @@
     <div class="input-container">
       <app-phonenumber-field
         [isDisabled]="readonlyMode || disable || item?.isMirrorField"
-        (onValueChange)="validateField($event, item); calculateFormulaValue(item, true)"
+        (onValueChange)="validateField($event, item)"
         (onBlurChange)="optionChange($event, item)"
         [item]="item"
       >
@@ -107,7 +107,7 @@
         [tooltip]="item?.metaData?.tooltip"
         [placeholder]="item?.metaData?.placeholder"
         [(ngModel)]="item.value.value"
-        (ngModelChange)="validateField($event, item); calculateFormulaValue(item, true)"
+        (ngModelChange)="validateField($event, item)"
         [isRequired]="item?.validators?.required"
         [label]="item?.label"
         applyStyleVariables
@@ -133,7 +133,7 @@
         [tooltip]="item?.metaData?.tooltip"
         [error]="isError(item)"
         [(ngModel)]="item.value.value"
-        (ngModelChange)="validateField($event, item); calculateFormulaValue(item, true)"
+        (ngModelChange)="validateField($event, item)"
         [label]="item?.label"
         [isRequired]="item?.validators?.required"
         (onBlur)="optionChange($event, item)"
@@ -457,7 +457,7 @@
         [tooltip]="item?.metaData?.tooltip"
         [placeholder]="item?.metaData?.placeholder"
         [(ngModel)]="item.value.value"
-        (ngModelChange)="validateField($event, item); calculateFormulaValue(item, true)"
+        (ngModelChange)="validateField($event, item)"
         [isRequired]="item?.validators?.required"
         [label]="item?.label"
         [showClearButton]="item?.metaData?.showClearButton"

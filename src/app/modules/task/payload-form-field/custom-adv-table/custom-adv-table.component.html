@@ -157,7 +157,7 @@
                     <ng-container [ngSwitch]="col?.metaData?.widgetType">
                       <div class="pl-1" *ngSwitchCase="TextInput">
                         <ng-container *ngIf="!isCellEditMode(col, rowIndex)">
-                          {{ col?.metaData?.isFormulaField ? calculateCellValue(col, rowIndex) : col?.value?.value }}
+                          {{ col?.value?.value }}
                         </ng-container>
                         <finlevit-text
                           *ngIf="isCellEditMode(col, rowIndex)"
@@ -165,11 +165,7 @@
                           styleType="input"
                           [isDisabled]="col?.metaData?.readOnly"
                           [styleProperties]="col?.metaData?.styleProperties?.properties"
-                          [(ngModel)]="
-                            col?.metaData?.isFormulaField
-                              ? calculateCellValue(col, rowIndex)
-                              : modifyingData[rowIndex][col.widgetId]
-                          "
+                          [(ngModel)]="modifyingData[rowIndex][col.widgetId]"
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
                           [leftIcon]="col?.metaData?.leftIcon"
                           [rightIcon]="col?.metaData?.rightIcon"
@@ -348,11 +344,7 @@
                           size="custom"
                           [isDisabled]="col?.metaData?.readOnly"
                           [styleProperties]="col?.metaData?.styleProperties?.properties"
-                          [(ngModel)]="
-                            col?.metaData?.isFormulaField
-                              ? calculateCellValue(col, rowIndex)
-                              : modifyingData[rowIndex][col.widgetId]
-                          "
+                          [(ngModel)]="modifyingData[rowIndex][col.widgetId]"
                           (ngModelChange)="validateRow(rowIndex, modifyingData[rowIndex], col)"
                           [placeholder]="col?.metaData?.placeholder"
                           [rightIcon]="col?.metaData?.rightIcon"
