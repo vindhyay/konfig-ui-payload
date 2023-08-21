@@ -16,9 +16,9 @@ pipeline {
     environment {
         GIT_SSL_NO_VERIFY = 'true'
         NAME = "finlevit-payload"
-        REPO = "harbor.tabner.com:443/konfig"
+        REPO = "harbor.tabner.com:443/konfig-sit"
         AWS_REPO = "388868315655.dkr.ecr.us-east-1.amazonaws.com/konfig"
-        LOC = "dev"
+        LOC = "sit"
     }
 
     stages {
@@ -42,7 +42,7 @@ pipeline {
                 dir('app-release') {
                     git(
                         url: 'https://konfig-git.tabner.com/konfig/konfig-devops/app-release.git',
-                        branch: 'dev',
+                        branch: env.LOC,
                         credentialsId: 'jenkins-konfig'
                     )
                 }
@@ -129,7 +129,7 @@ pipeline {
         stage('Deploy to Dev') {
             when {
                 expression {
-                    return env.BRANCH_NAME == 'dev';
+                    return env.BRANCH_NAME == env.LOC;
                 }
             }
             steps {
@@ -145,9 +145,9 @@ pipeline {
                     cd helm-resources/${release_name}
                     helm package .
                     if helm list -n ${LOC} | grep -E '(^|[[:space:]])${release_name}([[:space:]]|\$)'; then
-                    helm upgrade ${release_name} ${release_name}-${chartVersion}.tgz --set namespace=${LOC},image.version=${serviceVersion},domain=${LOC}.tabner.konfig.io,env=${LOC} -n ${LOC}
+                    helm upgrade ${release_name} ${release_name}-${chartVersion}.tgz --set namespace=${LOC},image.repository=${REPO},image.version=${serviceVersion},domain=${LOC}.tabner.konfig.io,env=${LOC} -n ${LOC}
                     else
-                    helm install ${release_name} ${release_name}-${chartVersion}.tgz --set namespace=${LOC},image.version=${serviceVersion},domain=${LOC}.tabner.konfig.io,env=${LOC} -n ${LOC}
+                    helm install ${release_name} ${release_name}-${chartVersion}.tgz --set namespace=${LOC},image.repository=${REPO},image.version=${serviceVersion},domain=${LOC}.tabner.konfig.io,env=${LOC} -n ${LOC}
                     fi
                     """
                     echo"Successfully deployed the ${serviceVersion} version of the Application ${release_name} in ${LOC}"
@@ -158,7 +158,7 @@ pipeline {
         stage('Deploy to Cloud Dev') {
             when {
                 expression {
-                    return env.BRANCH_NAME == 'dev';
+                    return env.BRANCH_NAME == env.LOC;
                 }
             }
             steps {
@@ -191,7 +191,7 @@ pipeline {
                             sh '''
                                 git config --global user.email "jenkins.konfig@tabnerglobal.com"
                                 git config --global user.name "jenkins-konfig"
-                                git pull https://oauth2:${GITLAB_TOKEN}@konfig-git.tabner.com/konfig/konfig-devops/app-release.git dev
+                                git pull https://oauth2:${GITLAB_TOKEN}@konfig-git.tabner.com/konfig/konfig-devops/app-release.git ${LOC}
                             '''
                             def json = readJSON file: 'config.json'
                             json[NAME] = env.service_version.toString()
@@ -199,7 +199,7 @@ pipeline {
                             sh '''
                                 git add config.json
                                 git commit -m "Upgraded ${NAME} version"
-                                git push https://oauth2:${GITLAB_TOKEN}@konfig-git.tabner.com/konfig/konfig-devops/app-release.git dev
+                                git push https://oauth2:${GITLAB_TOKEN}@konfig-git.tabner.com/konfig/konfig-devops/app-release.git ${LOC}
                             '''
                         }
                     }
