@@ -244,7 +244,6 @@ export class MetaData {
       conditionRuleIds = [],
       widgetEvent = [],
     } = data;
-    // this.widgetId = widgetId || getUniqueId("widget");
     this.widgetType = widgetType;
     this.level = level;
     this.configure = configure;
@@ -1576,7 +1575,6 @@ export class BaseWidget {
   displayName: string;
   label: string;
   dataType: DATA_TYPES;
-  // TODO duplicate remove later
   type?: DATA_TYPES;
   resourceType: ResourceType;
   isPrePopulated: boolean;
@@ -1613,7 +1611,6 @@ export class BaseWidget {
       maxItemCols,
       maxItemRows,
       width = 100,
-      widgetId,
     } = data;
     if (!metaData) {
       switch (widgetType) {

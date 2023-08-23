@@ -1,11 +1,11 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { DomSanitizer } from "@angular/platform-browser";
+import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
 import { BaseWidget, TextMetaData } from "../../model/create-form.models";
 
 @Component({
   selector: "app-text-field",
   templateUrl: "./text-field.component.html",
-  styleUrls: ["./text-field.component.scss"],
+  styleUrls: [],
 })
 export class TextFieldComponent implements OnInit {
   @Input() item: BaseWidget = {} as BaseWidget;
@@ -17,7 +17,7 @@ export class TextFieldComponent implements OnInit {
 
   constructor(private sanitizer: DomSanitizer) {}
 
-  html: any = "";
+  html: SafeHtml = "";
 
   ngOnInit(): void {
     this.html = this.sanitizer.bypassSecurityTrustHtml(this.metaData?._value);

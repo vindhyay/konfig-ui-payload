@@ -35,7 +35,6 @@ export class AppConfigService {
     const ACCOUNT_WORKFLOW_BASE_URL = config.accountWorkflowBaseURL || "";
     const SOCKET_BASE_URL = config.socketBaseURL || "";
     const AUTH_BASE_URL = config.authBaseUrl || "";
-    const RULES_BASE_URL = config.rulesBaseUrl || "";
     return {
       // Token Gen URL
       authenticateUrl: AUTH_BASE_URL + "/access-token",
@@ -164,7 +163,7 @@ export class AppConfigService {
       // Update row API
       updateTableRowDataURL: ACCOUNT_WORKFLOW_BASE_URL + "/transactions",
       //execute rules API
-      executeRulesURL: ACCOUNT_WORKFLOW_BASE_URL + "/transactions/execute/rules"
+      executeRulesURL: ACCOUNT_WORKFLOW_BASE_URL + "/transactions/execute/rules",
     };
   }
 }

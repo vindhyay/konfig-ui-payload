@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, AfterViewInit, Output, EventEmitter } from "@angular/core";
+import { Component, Input, AfterViewInit } from "@angular/core";
 import { EditorService } from "../../editor.service";
 import { BaseWidget, CollapseContainerMetaData } from "../../model/create-form.models";
 
@@ -7,12 +7,10 @@ import { BaseWidget, CollapseContainerMetaData } from "../../model/create-form.m
   templateUrl: "./collapse-container.component.html",
   styleUrls: ["./collapse-container.component.scss"],
 })
-export class CollapseContainerComponent implements OnInit, AfterViewInit {
+export class CollapseContainerComponent implements AfterViewInit {
   collapseContainerStatus = true;
   JSON = JSON;
   @Input() item: BaseWidget = {} as BaseWidget;
-
-  ngOnInit() {}
 
   ngAfterViewInit() {
     if (this.metaData?.movement === "UP") {

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { BaseWidget, TabContainerMetaData } from "../../model/create-form.models";
+import { BaseWidget } from "../../model/create-form.models";
 import { EditorService } from "../../editor.service";
 
 @Component({

@@ -4,7 +4,7 @@ import { BaseWidget, PasswordInputMetaData } from "../../model/create-form.model
 @Component({
   selector: "app-password-field",
   templateUrl: "./password-field.component.html",
-  styleUrls: ["./password-field.component.scss"],
+  styleUrls: [],
 })
 export class PasswordFieldComponent implements OnInit {
   _type: string = "password";
@@ -13,7 +13,6 @@ export class PasswordFieldComponent implements OnInit {
   @Output() onValueChange = new EventEmitter();
   @Output() onBlurChange = new EventEmitter();
 
-  constructor() {}
   get metaData(): PasswordInputMetaData {
     return this.item.metaData as PasswordInputMetaData;
   }

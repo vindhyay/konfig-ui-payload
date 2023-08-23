@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input } from "@angular/core";
 import { BaseWidget, ImageMetaData } from "../../model/create-form.models";
 import { EditorService } from "../../editor.service";
 
@@ -7,10 +7,8 @@ import { EditorService } from "../../editor.service";
   templateUrl: "./image.component.html",
   styleUrls: ["./image.component.scss"],
 })
-export class ImageComponent implements OnInit {
+export class ImageComponent {
   constructor(private editorService: EditorService) {}
-
-  ngOnInit() {}
 
   getImageUrl = this.editorService.getImageUrl();
   @Input() item: BaseWidget = {} as BaseWidget;

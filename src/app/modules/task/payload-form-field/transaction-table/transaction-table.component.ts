@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input } from "@angular/core";
 import { BaseWidget } from "../../model/create-form.models";
 import { parseApiResponse } from "../../../../utils";
 import { BaseComponent } from "../../../shared/base/base.component";
@@ -10,7 +10,7 @@ import { EditorService } from "../../editor.service";
   templateUrl: "./transaction-table.component.html",
   styleUrls: ["./transaction-table.component.scss"],
 })
-export class TransactionTableComponent extends BaseComponent implements OnInit {
+export class TransactionTableComponent extends BaseComponent {
   @Input() item: BaseWidget = {} as BaseWidget;
   @Input() isDisabled: boolean = false;
   tableData = [];
@@ -22,7 +22,7 @@ export class TransactionTableComponent extends BaseComponent implements OnInit {
   get metaData(): any {
     return this.item.metaData;
   }
-  ngOnInit(): void {}
+
   getTransactionTableData(params: { applicationId: string; widgetId: string; pageNo: number; recordNo: number }) {
     this.editorService.getTransactionTableData(params).subscribe((result) => {
       const { data, error } = parseApiResponse(result);
