@@ -33,7 +33,6 @@
               sort && !Object.keys(newRows).length && !Object.keys(editRows).length && !Object.keys(editCells).length
             "
             [ref]="col?.widgetId"
-            [align]="col?.metaData?.alignment"
             sortHeader
             #sortHeader
             [ngClass]="{
@@ -605,30 +604,7 @@
           </ng-container>
           <ng-template #zeroRecordsResult> Showing {{ pagination?.totalRecords }} results </ng-template>
         </div>
-        <ng-template #cellEditActions>
-          <!--          <div class="ml-2 mr-2">-->
-          <!--            <finlevit-button-->
-          <!--              label="Save"-->
-          <!--              applyStyleVariables-->
-          <!--              [styleProperties]="saveBtnProperties?.properties"-->
-          <!--              styleType="button"-->
-          <!--              (btnClick)="onColSave($event)"-->
-          <!--              isHover="true"-->
-          <!--              variant="custom"-->
-          <!--            ></finlevit-button>-->
-          <!--          </div>-->
-          <!--          <div class="ml-2 mr-2">-->
-          <!--            <finlevit-button-->
-          <!--              label="Cancel"-->
-          <!--              applyStyleVariables-->
-          <!--              [styleProperties]="cancelBtnProperties?.properties"-->
-          <!--              styleType="button"-->
-          <!--              (btnClick)="onColSaveCancel($event)"-->
-          <!--              isHover="true"-->
-          <!--              variant="custom"-->
-          <!--            ></finlevit-button>-->
-          <!--          </div>-->
-        </ng-template>
+        <ng-template #cellEditActions> </ng-template>
       </div>
       <div [ngClass]="{ '-center': true, 'show-pagination': isPaginationEnabled }">
         <div class="-previous">

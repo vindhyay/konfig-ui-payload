@@ -5,11 +5,9 @@ import { AuthService } from "../../services/auth.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { HttpErrorResponse } from "@angular/common/http";
 import { StorageService } from "../../../../services/storage.service";
-import { get } from "lodash";
 import { UserDataModel } from "../../models";
 import { NotificationService } from "src/app/services/notification.service";
 import { parseApiResponse } from "src/app/utils";
-import { CustomError } from "../../../../state/model";
 import { AppConfigService } from "src/app/app-config-providers/app-config.service";
 
 @Component({

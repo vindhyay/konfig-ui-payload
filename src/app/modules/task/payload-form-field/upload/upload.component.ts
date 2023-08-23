@@ -7,7 +7,7 @@ import { EditorService } from "../../editor.service";
 @Component({
   selector: "app-upload",
   templateUrl: "./upload.component.html",
-  styleUrls: ["./upload.component.scss"],
+  styleUrls: [],
 })
 export class UploadComponent implements OnInit {
   @Input() item: BaseWidget = {} as BaseWidget;

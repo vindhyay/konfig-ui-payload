@@ -1,16 +1,17 @@
 :host {
   --input-border-color: #ced4da;
   --input-background-color: var(--color-white);
-  --content-background-color:var(--color-white);
+  --content-background-color: var(--color-white);
   --footer-background-color: var(--color-white);
-  --current-step-color:#000000;
-  --completed-step-color:#185c07;
+  --current-step-color: #000000;
+  --completed-step-color: #185c07;
   --completed-bar-color: #185c07;
   --default-bar-color: #495057;
   --input-color: #495057;
   --input-label-color: #373f51;
   --validation-message-color: #dc3545;
-  --input-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  --input-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   --input-text-decoration: none;
   --input-text-align: left;
   --input-font-size: var(--font-size-40);
@@ -48,7 +49,7 @@
       height: 100%;
       background: white;
       box-shadow: 2px 0px 4px #c7c7c7;
-      .scrollView{
+      .scrollView {
         overflow-y: scroll;
         height: calc(100% - 70px);
         .content {
@@ -56,7 +57,7 @@
           height: 100%;
           position: relative;
         }
-        &>div{
+        & > div {
           background-color: var(--content-background-color) !important;
           height: 100%;
         }
@@ -79,20 +80,20 @@
   border-top: 1px solid #ddd;
 }
 
-.stepper-btn-container.alignEnd{
+.stepper-btn-container.alignEnd {
   justify-content: flex-end !important;
 }
 
-::ng-deep .stepper-btn-container .p-button{
+::ng-deep .stepper-btn-container .p-button {
   width: 100% !important;
 }
-::ng-deep{
-  .stepper-btn-container>finlevit-grid>gridster{
+::ng-deep {
+  .stepper-btn-container > finlevit-grid > .finlevit-grid {
     background-color: var(--footer-background-color) !important;
   }
-  .stepper-container{
-    .scrollView{
-      .content>finlevit-grid>gridster{
+  .stepper-container {
+    .scrollView {
+      .content > finlevit-grid > .finlevit-grid {
         background-color: var(--content-background-color) !important;
       }
     }
@@ -103,17 +104,16 @@
   width: 27%;
   padding-left: 0;
   box-shadow: 2px 0px 4px #c7c7c7;
-  background: white;
   max-width: 350px;
   overflow: hidden;
   background: var(--input-background-color);
-  .stepper-header{
+  .stepper-header {
     width: 100%;
     padding: var(--spacing-sm-md) var(--spacing-sm-md) 0 var(--spacing-sm-md);
     height: 99%;
     min-height: 100px;
   }
-  ul{
+  ul {
     padding: 0;
     padding-left: calc(var(--spacing-md) + 4px);
     padding-top: calc(var(--spacing-md) + 4px);
@@ -139,24 +139,23 @@
   position: relative;
   z-index: 1;
 }
-.stepper-body{
+.stepper-body {
   overflow-y: scroll;
   scroll-behavior: smooth;
 }
 .progressbar li span {
-    content: "";
-    height: 100%;
-    width: 2px;
-    background: linear-gradient(90deg, black, transparent);
-    background-size: 200% 100%;
-    background-position: right bottom;
-    transition: all 0.7s ease-out;
-    display: block;
-    margin-left: calc(var(--spacing-md) - 2px);
-    position: absolute;
-    z-index: 0;
-    top: 4px;
-    transition: background-color 1s cubic-bezier(0.55, 0.06, 0.68, 0.19);
+  content: "";
+  height: 100%;
+  width: 2px;
+  background: linear-gradient(90deg, black, transparent);
+  background-size: 200% 100%;
+  background-position: right bottom;
+  display: block;
+  margin-left: calc(var(--spacing-md) - 2px);
+  position: absolute;
+  z-index: 0;
+  top: 4px;
+  transition: background-color 1s cubic-bezier(0.55, 0.06, 0.68, 0.19);
 }
 .progressbar li:last-child span {
   display: none;
@@ -179,7 +178,7 @@ li .step-label {
   font-size: var(--font-size-30);
   padding-top: var(--spacing-xs-sm); //closest variable
 
-  &>p{
+  & > p {
     padding: 0;
     margin: 0;
     color: var(--input-color);
@@ -189,24 +188,23 @@ li .step-label {
     font-family: var(--input-font-family);
     font-size: var(--input-font-size);
   }
-  &>p.defaultColor{
+  & > p.defaultColor {
     color: var(--input-color);
   }
-  &>p.completedStep{
+  & > p.completedStep {
     color: var(--completed-step-color);
   }
-  &>p.currentStep{
+  & > p.currentStep {
     color: var(--current-step-color);
   }
 
-
-  &>p.sub-lable {
+  & > p.sub-lable {
     color: #808080;
     margin-top: 10px;
     min-height: 22px;
   }
 
-  &>h6 {
+  & > h6 {
     font-weight: bold;
   }
 }
@@ -230,7 +228,6 @@ li .indicator {
   border: 1px solid #c7c7c7;
   border-radius: 50%;
   position: relative;
-  display: block;
   line-height: 28px;
   font-size: var(--font-size-60); //closest variable
   margin-right: var(--spacing-sm-md); //closest variable
@@ -240,17 +237,16 @@ li .indicator {
   background: white;
   z-index: 1;
   transition: border 1s ease-in-out;
-  & > finlevit-icon-preview{
+  & > finlevit-icon-preview {
     visibility: hidden;
     opacity: 0;
-    transition: opacity .5s ease-in-out;
+    transition: opacity 0.5s ease-in-out;
   }
 }
 
 li.selected .indicator {
   border: 1px solid #3d3c3c;
 }
-
 
 li.completed .indicator {
   background: var(--indicator-bg-color);
@@ -261,14 +257,14 @@ li.completed .indicator {
     visibility: visible;
   }
 }
-li .indicator.box-pattern{
+li .indicator.box-pattern {
   border-radius: 0px;
 }
-.progressbar li span.completedBar{
+.progressbar li span.completedBar {
   background-color: var(--completed-bar-color);
 }
-.progressbar li span.currentBar{
-  background-color: var( --default-bar-color);
+.progressbar li span.currentBar {
+  background-color: var(--default-bar-color);
 }
 .disabled {
   pointer-events: none;
@@ -291,10 +287,10 @@ li .indicator.box-pattern{
   top: 0;
   z-index: 101;
 
-  &>div {
+  & > div {
     position: relative;
 
-    &>h5 {
+    & > h5 {
       position: absolute;
       top: -18px;
       left: 17px;
@@ -312,7 +308,7 @@ li .indicator.box-pattern{
   padding: 30px 10px 10px 20px;
   margin-top: var(--spacing-xxl); //closest variable
   min-height: 100px;
-  .content-container{
+  .content-container {
     width: 96%;
   }
   .edit-btn {
@@ -323,45 +319,45 @@ li .indicator.box-pattern{
   }
 }
 
-.hidden{
+.hidden {
   display: none;
 }
 
-.horizontal-stepper{
+.horizontal-stepper {
   flex-direction: column;
-  .progressbar{
+  .progressbar {
     width: 100%;
     max-width: unset;
     height: 130px;
-    .step-list{
+    .step-list {
       display: flex;
       flex-direction: row;
       padding-right: calc(var(--spacing-md) + 4px);
-      & >li{
+      & > li {
         min-height: unset;
         width: 100%;
-        & >.indicator{
+        & > .indicator {
           float: none;
         }
-        & >span{
+        & > span {
           height: 2px;
           width: 100%;
           top: 17px;
         }
       }
-      & >li:last-child{
+      & > li:last-child {
         width: auto;
       }
     }
   }
- .wrapper{
+  .wrapper {
     padding-left: 0px;
     width: 100%;
     height: calc(100% - 130px);
-    .inner-wrapper{
+    .inner-wrapper {
       box-shadow: none;
     }
- }
+  }
 }
 
 //stepper css end

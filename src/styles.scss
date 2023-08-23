@@ -38,6 +38,8 @@
 body {
   font-size: var(--font-size-30);
   color: var(--primary-text-color);
+  -webkit-font-smoothing: var(--font-smoothing-webkit);
+  -moz-osx-font-smoothing: var(--font-smoothing-moz);
 }
 /* Mat stepper widget css */
 .mat-stepper-horizontal {
@@ -205,11 +207,6 @@ body {
 }
 .p-cascadeselect-panel .p-cascadeselect-items {
   width: 100%;
-}
-
-body {
-  -webkit-font-smoothing: var(--font-smoothing-webkit);
-  -moz-osx-font-smoothing: var(--font-smoothing-moz);
 }
 
 // Global styles

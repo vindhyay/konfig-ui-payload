@@ -1,11 +1,11 @@
 import { Overlay, OverlayConfig, OverlayRef } from "@angular/cdk/overlay";
-import { TemplatePortalDirective } from "@angular/cdk/portal";
+import { CdkPortal } from "@angular/cdk/portal";
 import { Component, HostListener, Input, ViewChild } from "@angular/core";
 
 @Component({
-  selector: 'custom-dropdown',
+  selector: "custom-dropdown",
   // eslint-disable-next-line prettier/prettier
-  template: `<ng-template cdk-portal><ng-content></ng-content></ng-template>`
+  template: `<ng-template cdk-portal><ng-content></ng-content></ng-template>`,
 })
 export class CustomDropdownComponent {
   @Input()
@@ -20,8 +20,8 @@ export class CustomDropdownComponent {
   @Input()
   public backdropClickClose: boolean = true;
   // @ts-ignore
-  @ViewChild(TemplatePortalDirective)
-  public contentTemplate: TemplatePortalDirective;
+  @ViewChild(CdkPortal)
+  public contentTemplate: CdkPortal;
 
   protected overlayRef: OverlayRef;
 

@@ -121,7 +121,6 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
 
   getEligibleItems(items: any, baseGridItem: any) {
     const baseOriginalHeight = baseGridItem?.item?.metaData?.originalHeight;
-    const movement = baseGridItem?.item?.metaData?.movement;
     const eligibleItems = items.filter((eachItem: GridsterItem) => {
       const item = eachItem.item;
       const baseItem = baseGridItem.$item;
@@ -242,7 +241,7 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
     );
   }
 
-  fillAddressDetails(addressDetails: {widget: any, address: AddressDetails}) {
+  fillAddressDetails(addressDetails: { widget: any; address: AddressDetails }) {
     let ValidationFields = [];
     let widget = addressDetails.widget;
     let widgetIds = widget?.metaData?.linkedWidetIds;

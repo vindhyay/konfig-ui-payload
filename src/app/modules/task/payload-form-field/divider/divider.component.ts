@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input } from "@angular/core";
 import { BaseWidget, DividerMetaData } from "../../model/create-form.models";
 
 @Component({
@@ -6,14 +6,10 @@ import { BaseWidget, DividerMetaData } from "../../model/create-form.models";
   templateUrl: "./divider.component.html",
   styleUrls: ["./divider.component.scss"],
 })
-export class DividerComponent implements OnInit {
-  constructor() {}
-
+export class DividerComponent {
   @Input() item: BaseWidget = {} as BaseWidget;
 
   get metaData(): DividerMetaData {
     return this.item.metaData as DividerMetaData;
   }
-
-  ngOnInit() {}
 }

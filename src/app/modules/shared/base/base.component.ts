@@ -2,16 +2,15 @@ import { Component, OnDestroy } from "@angular/core";
 import { Observable, Subscription, TeardownLogic } from "rxjs";
 
 @Component({
-  selector: 'app-base',
-  template: 'NO BASE TEMPLATE',
-  styleUrls: []
+  selector: "app-base",
+  template: "NO BASE TEMPLATE",
+  styleUrls: [],
 })
 export class BaseComponent implements OnDestroy {
   private subscription = new Subscription();
   public loading = false;
   public error = false;
   public menuItems: string[] = ["Edit", "Delete"];
-  constructor() {}
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
@@ -34,7 +33,6 @@ export class BaseComponent implements OnDestroy {
 
   // default handlers
   errorHandler(error: any) {
-    // TODO: implement error handling in GUI
     console.log(error);
   }
 }

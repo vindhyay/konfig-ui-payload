@@ -1,10 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { Component, EventEmitter, Input, Output } from "@angular/core";
 import { ButtonVariants, Sizes } from "finlevit-library";
 
 @Component({
   selector: "app-icon-btn",
   templateUrl: "./btn-icon.component.html",
-  styleUrls: ["./btn-icon.component.scss"],
+  styleUrls: [],
 })
 export class BtnIconComponent {
   @Input() isDisabled: boolean = false;

@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable } from "rxjs";
-import { ButtonActions, WidgetTypes } from "./model/create-form.models";
+import { ButtonActions } from "./model/create-form.models";
 import { FormControl } from "@angular/forms";
 import {
   UI_ACTIONS,
@@ -10,14 +10,13 @@ import {
   getFieldFromFields,
   validateFields,
   scrollTo,
+  dynamicEvaluation,
 } from "../../utils";
 import { NotificationService } from "../../services/notification.service";
 import { AuthService } from "../auth/services/auth.service";
 import { BaseService } from "../../services/base.service";
 import { HttpClient } from "@angular/common/http";
 import { AppConfigService } from "../../app-config-providers/app-config.service";
-import { resourceType } from "./payload-form-field/payload-form-field.component";
-import * as moment from "moment";
 import { LoaderService } from "../../services/loader.service";
 import { isNull } from "lodash";
 
@@ -164,10 +163,7 @@ export class EditorService extends BaseService {
       }
       const {
         data: {
-          metaData: {
-            onClickConfigs = [],
-            widgetEvent: [],
-          },
+          metaData: { onClickConfigs = [], widgetEvent = [] },
           widgetId,
         },
       } = $event;
@@ -269,7 +265,6 @@ export class EditorService extends BaseService {
                 this.isTriggerInProgress = false;
               } else {
                 this.isTriggerInProgress = false;
-                // this.notificationService.error(error.errorMessage, "Error");
               }
             },
             (error) => {
@@ -410,7 +405,7 @@ export class EditorService extends BaseService {
   }
   evaluateFilter(filtersLogic, resultArray) {
     const expressionArray = filtersLogic
-      .split(/[.\()&&||_]/)
+      .split(/[.\()&|_]/)
       .filter(function (indexItem) {
         return indexItem != null && indexItem.length;
       })
@@ -423,7 +418,7 @@ export class EditorService extends BaseService {
         expression = expression.replaceAll(item, resultArray[item - 1]);
       }
     });
-    return eval(expression);
+    return dynamicEvaluation(expression);
   }
   onPopulateTriggerCondition = (fields: any[]) => {
     fields.forEach((field: any) => {
@@ -515,19 +510,16 @@ export class EditorService extends BaseService {
     result.setDate(result.getDate() + parseInt(days));
     return result;
   }
-  trim(stringToTrim) {
-    return stringToTrim.replace(/^\s+|\s+$/g, "");
-  }
-  ltrim(stringToTrim) {
-    return stringToTrim.replace(/^\s+/, "");
-  }
-  rtrim(stringToTrim) {
-    return stringToTrim.replace(/\s+$/, "");
-  }
 
   rulesConditionEvaluation = {
     convertCase: (stringValue): string => {
-      return stringValue ? stringValue?.toLowerCase() : isNull(stringValue) ? stringValue : "";
+      if (stringValue) {
+        return stringValue?.toLowerCase();
+      } else if (isNull(stringValue)) {
+        return stringValue;
+      } else {
+        return null;
+      }
     },
     isGreaterThan: (fieldValue: number, value: number): boolean => {
       return fieldValue > value;

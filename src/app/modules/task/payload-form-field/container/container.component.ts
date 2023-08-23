@@ -1,16 +1,13 @@
-import { Component, Input, OnInit } from "@angular/core";
-import { BaseWidget, ContainerActions, ContainerMetaData } from "../../model/create-form.models";
-import { EditorService } from "../../editor.service";
+import { Component, Input } from "@angular/core";
+import { BaseWidget, ContainerMetaData } from "../../model/create-form.models";
 
 @Component({
   selector: "app-container",
   templateUrl: "container.component.html",
   styleUrls: ["./container.component.scss"],
 })
-export class ContainerComponent implements OnInit {
+export class ContainerComponent {
   @Input() item: BaseWidget = {} as BaseWidget;
-
-  ngOnInit() {}
 
   get metaData(): ContainerMetaData {
     return this.item.metaData as ContainerMetaData;

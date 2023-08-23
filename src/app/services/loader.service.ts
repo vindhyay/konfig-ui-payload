@@ -7,7 +7,6 @@ import { Observable, Subject } from "rxjs";
 export class LoaderService {
   private isLoading = new Subject<boolean>();
   private loaderTimer = null;
-  constructor() {}
 
   public start(time = 0) {
     if (!time) {

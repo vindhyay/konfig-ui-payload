@@ -1,9 +1,9 @@
-export interface result {
+export interface Result {
   data: any;
-  error: error;
+  error: Error;
 }
 
-export interface error {
+export interface Error {
   errorCode: string;
   errorMessage: string;
 }

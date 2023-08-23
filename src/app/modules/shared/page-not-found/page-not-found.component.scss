@@ -1,22 +1,25 @@
-$gb: #F2EEE8;
+$gb: #f2eee8;
 $wh: var(--color-white);
-$dark: #383A41;
-$red: #EB6D6D;
-$blue: #5E7FDC;
+$dark: #383a41;
+$red: #eb6d6d;
+$blue: #5e7fdc;
 
 $break: 400px;
 
 :host {
-  html, body {
+  html,
+  body {
     margin: 0;
     padding: 0;
     width: 100%;
     min-height: 100vh;
     background-color: $gb;
-    font-family: 'Open Sans', sans-serif;
+    font-family: "Open Sans", sans-serif;
   }
 
-  *, *:before, *:after {
+  *,
+  *:before,
+  *:after {
     box-sizing: content-box;
     transform: translate3d(0, 0, 0);
   }
@@ -32,7 +35,7 @@ $break: 400px;
 
     @media screen and (max-width: $break) {
       margin-top: 40px;
-      transform: scale(.8);
+      transform: scale(0.8);
     }
 
     .band {
@@ -164,7 +167,7 @@ $break: 400px;
   .btn {
     font-weight: var(--font-weight-normal);
     padding: 20px;
-    background-color: rgba($blue, 1.0);
+    background-color: rgba($blue, 1);
     color: white;
     width: 320px;
     display: flex;
@@ -174,7 +177,7 @@ $break: 400px;
     border-radius: calc(var(--border-radius-sm) + 1px);
     cursor: pointer;
     margin: 80px auto 50px;
-    transition: all .2s linear;
+    transition: all 0.2s linear;
 
     @media screen and (max-width: $break) {
       margin: 60px auto 50px;
@@ -183,8 +186,7 @@ $break: 400px;
 
     &:hover {
       background-color: rgba($blue, 0.8);
-      transition: all .2s linear;
+      transition: all 0.2s linear;
     }
   }
-
 }

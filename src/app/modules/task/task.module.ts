@@ -16,7 +16,7 @@ import { ModalComponent } from "./payload-form-field/modal/modal.component";
 import { CollapseContainerComponent } from "./payload-form-field/collapse-container/collapse-container.component";
 import { PasswordFieldComponent } from "./payload-form-field/password-field/password-field.component";
 import { PhonenumberFieldComponent } from "./payload-form-field/phonenumber-field/phonenumber-field.component";
-import { ssnInputFieldComponent } from "./payload-form-field/ssninput-field/ssninput-field.component";
+import { SSNInputFieldComponent } from "./payload-form-field/ssninput-field/ssninput-field.component";
 import { VerticalStepperComponent } from "./payload-form-field/vertical-stepper/vertical-stepper.component";
 import { DividerComponent } from "./payload-form-field/divider/divider.component";
 import { SpacerComponent } from "./payload-form-field/spacer/spacer.component";
@@ -29,7 +29,7 @@ import { TooltipModule } from "primeng/tooltip";
 import { AvatarModule } from "primeng/avatar";
 import { AppTabContainerComponent } from "./payload-form-field/tab-container/tab-container.component";
 import { GetBorderShadowFilter } from "src/app/pipes/shadow-border.pipe";
-import { UrlComponent } from './payload-form-field/url/url.component';
+import { UrlComponent } from "./payload-form-field/url/url.component";
 
 @NgModule({
   declarations: [
@@ -44,7 +44,7 @@ import { UrlComponent } from './payload-form-field/url/url.component';
     ModalComponent,
     CollapseContainerComponent,
     PhonenumberFieldComponent,
-    ssnInputFieldComponent,
+    SSNInputFieldComponent,
     PasswordFieldComponent,
     VerticalStepperComponent,
     DividerComponent,

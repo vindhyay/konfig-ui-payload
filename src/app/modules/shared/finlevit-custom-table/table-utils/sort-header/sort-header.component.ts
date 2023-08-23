@@ -1,4 +1,4 @@
-import { Component, HostListener, Input, OnInit } from "@angular/core";
+import { Component, HostListener, Input } from "@angular/core";
 import { SorterDirective } from "../sorter.directive";
 import { CELL_ALIGNMENTS_TYPES } from "../../../../task/model/create-form.models";
 import { IconTypes, IIcon } from "finlevit-library";
@@ -8,7 +8,7 @@ import { IconTypes, IIcon } from "finlevit-library";
   templateUrl: "./sort-header.component.html",
   styleUrls: ["./sort-header.component.scss"],
 })
-export class SortHeaderComponent implements OnInit {
+export class SortHeaderComponent {
   @Input() sortEligible = true;
   @Input() align: CELL_ALIGNMENTS_TYPES = CELL_ALIGNMENTS_TYPES.LEFT;
   cellAlignmentTypes = CELL_ALIGNMENTS_TYPES;
@@ -25,5 +25,4 @@ export class SortHeaderComponent implements OnInit {
     }
   }
   constructor(public sorter: SorterDirective) {}
-  ngOnInit() {}
 }

@@ -3,8 +3,13 @@
     <p-avatar [label]="convertFallbackText()" shape="circle" class="avatar-icon" icon="pi pi-user"></p-avatar>
   </div>
   <div *ngIf="metaData?.source && (metaData?.imageUrl || metaData?.remoteKey)">
-    <img *ngIf="metaData?.imageUrl" [src]="metaData?.imageUrl" />
-    <img *ngIf="metaData?.remoteKey" [src]="getImageUrl + '/' + metaData?.remoteKey" crossorigin="use-credentials" />
+    <img *ngIf="metaData?.imageUrl" [src]="metaData?.imageUrl" alt="item.displayName" />
+    <img
+      *ngIf="metaData?.remoteKey"
+      [src]="getImageUrl + '/' + metaData?.remoteKey"
+      crossorigin="use-credentials"
+      alt="item.displayName"
+    />
   </div>
   <div class="avatar-text">
     <div class="avatar-label" [pTooltip]="metaData?.tooltip" tooltipPosition="top">

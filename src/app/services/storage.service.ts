@@ -2,8 +2,6 @@ import { Injectable } from "@angular/core";
 import { Tokens } from "../modules/auth/models";
 import { USER_DATA_KEY, ACCESS_TOKEN, REFRESH_TOKEN, ACCESS_TOKEN_EXPIRY } from "../state/constants";
 
-// TODO change to cookies
-
 @Injectable({
   providedIn: "root",
 })
@@ -58,15 +56,15 @@ export class StorageService {
       date.setTime(date.getTime() + time);
       expires = "; expires=" + date.toUTCString();
     }
-    // document.cookie = name + "=" + value + expires + "; domain=" + domain;
     document.cookie = name + "=" + value + expires + "; path=/";
   }
   getCookie(name) {
     const nameEQ = name + "=";
     const ca = document.cookie.split(";");
-    for (let i = 0; i < ca.length; i++) {
-      let c = ca[i];
-      while (c.charAt(0) == " ") c = c.substring(1, c.length);
+    for (let c of ca) {
+      while (c.charAt(0) == " ") {
+        c = c.substring(1, c.length);
+      }
       if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
     }
     return null;
