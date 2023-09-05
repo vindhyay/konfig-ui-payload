@@ -8,11 +8,15 @@ import { CONFIG_FILE_PATH } from "../state/constants";
 })
 export class AppConfigService {
   private apiUrls: Object = {};
+  googleMapsURL: string = null;
+  fontsURL: string = null;
   constructor(private http: HttpClient) {}
 
   public loadAppConfig(): Promise<any> {
     return this.getConfigFile().then((config) => {
       this.apiUrls = this.appendBaseUrls(config);
+      this.googleMapsURL = config.googleMapsURL;
+      this.fontsURL = config.fontsURL;
       return this.apiUrls;
     });
   }
