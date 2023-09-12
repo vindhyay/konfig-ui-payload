@@ -4,7 +4,7 @@ import { BaseWidget, URLMetaData } from "../../model/create-form.models";
 @Component({
   selector: "app-url",
   templateUrl: "./url.component.html",
-  styleUrls: ["./url.component.scss"],
+  styleUrls: [],
 })
 export class UrlComponent {
   @Input() item: BaseWidget = {} as BaseWidget;

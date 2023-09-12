@@ -4,7 +4,7 @@ import { AuthService } from "../../auth/services/auth.service";
 import { BaseComponent } from "../../shared/base/base.component";
 import { NotificationService } from "../../../services/notification.service";
 import { UserDataModel } from "../../auth/models";
-import { addOriginalPosition, getFieldFromFields, parseApiResponse, validateFields } from "../../../utils";
+import { addOriginalPosition, getFieldFromFields, parseApiResponse } from "../../../utils";
 import { EditorService } from "../editor.service";
 import { LoaderService } from "../../../services/loader.service";
 import { IStyleConfig, WidgetTypes } from "../model/create-form.models";
@@ -61,9 +61,6 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
             const newFormFields = transactionDetails.uiPayload || [];
             this.recursiveUpdateFieldProperties(this.formFields, newFormFields);
             this.editorService.onPopulateTriggerCondition(this.formFields);
-            // setTimeout(() => {
-            //   this.editorService.onPopulateTriggerCondition(this.formFields);
-            // }, 0);
           }
         } else {
           this.formFields = transactionDetails?.uiPayload || [];

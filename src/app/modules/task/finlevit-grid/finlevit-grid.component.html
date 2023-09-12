@@ -2,7 +2,8 @@
   #gridsterComponent
   [options]="options"
   [ngClass]="{
-    'display-grid': false
+    'display-grid': false,
+    'finlevit-grid': true
   }"
 >
   <ng-container *ngFor="let item of items | searchFilter: filter; let i = index">

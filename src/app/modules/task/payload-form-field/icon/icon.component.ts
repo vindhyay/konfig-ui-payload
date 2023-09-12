@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input } from "@angular/core";
 import { BaseWidget, IconMetaData } from "../../model/create-form.models";
 
 @Component({
@@ -6,11 +6,7 @@ import { BaseWidget, IconMetaData } from "../../model/create-form.models";
   templateUrl: "./icon.component.html",
   styleUrls: ["./icon.component.scss"],
 })
-export class IconComponent implements OnInit {
-  constructor() {}
-
-  ngOnInit() {}
-
+export class IconComponent {
   @Input() item: BaseWidget = {} as BaseWidget;
 
   get metaData(): IconMetaData {

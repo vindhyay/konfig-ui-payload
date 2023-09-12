@@ -10,10 +10,9 @@ import {
   SimpleChanges,
 } from "@angular/core";
 import { BaseWidget, Column, TableMetaData, WidgetTypes } from "../model/create-form.models";
-import { AddressDetails, DeepCopy, getFieldFromFields, parseApiResponse, validateFields } from "../../../utils";
+import { AddressDetails, DeepCopy, parseApiResponse, validateFields } from "../../../utils";
 import { AuthService } from "../../auth/services/auth.service";
 import { EditorService } from "../editor.service";
-import * as moment from "moment";
 import { LoaderService } from "../../../services/loader.service";
 import { BaseComponent } from "../../shared/base/base.component";
 import { NotificationService } from "../../../services/notification.service";
@@ -82,7 +81,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
     if (this.item?.metaData?.widgetType === WidgetTypes.Table) {
       this.item.value = {
         id: this.item?.value?.id,
-        value: optionsData?.length ? optionsData : this.item?.value?.value?.length ? this.item.value.value : [],
+        value: this.getValue(optionsData, this.item),
       };
     }
   }
@@ -98,7 +97,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
       const metaData = data.metaData as TableMetaData<Column>;
       data.value = {
         id: data?.value?.id,
-        value: metaData?.options?.length ? metaData.options : data?.value?.value?.length ? data.value.value : [],
+        value: this.getValue(metaData?.options, data),
       };
     }
     if (data?.metaData?.widgetType === WidgetTypes.Checkbox) {
@@ -112,6 +111,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
     }
     this._item = data;
   }
+
   allAvailableFields = [];
   private _payloadFields: any;
   get payloadFields(): any {
@@ -331,6 +331,13 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
       this.item.value.value = "";
     });
     this.notificationService.addressAutoComplete.next(details);
+  }
+
+  getValue(options, item) {
+    if (options.length) {
+      return options;
+    }
+    return item?.value?.value?.length ? item.value.value : [];
   }
 }
 

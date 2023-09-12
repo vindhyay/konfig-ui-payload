@@ -20,13 +20,17 @@ import {
   TableActions,
   WidgetTypes,
 } from "../../task/model/create-form.models";
-import { conditionValidation, getUniqueId, scrollToBottom, superClone } from "../../../utils";
+import {
+  getOrder,
+  conditionValidation,
+  getUniqueId,
+  scrollToBottom,
+  superClone,
+  dynamicEvaluation,
+} from "../../../utils";
 import { CustomTableFiltersComponent } from "./table-utils/custom-table-filters/custom-table-filters.component";
 import { PaginationDirective } from "./table-utils/pagination.directive";
 import { SelectionModel } from "@angular/cdk/collections";
-import { resourceType } from "../../task/payload-form-field/payload-form-field.component";
-import * as moment from "moment";
-
 const MIN_ROW_HEIGHT = 50;
 
 @Component({
@@ -184,11 +188,13 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
 
   /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
-    this.isAllSelected()
-      ? this.selection.clear()
-      : (this.tableFilters?.filtersEnabled ? this.filteredTableData : this.tableData).forEach((row) =>
-          this.selection.select(row)
-        );
+    if (this.isAllSelected) {
+      this.selection.clear();
+    } else {
+      (this.tableFilters?.filtersEnabled ? this.filteredTableData : this.tableData).forEach((row) =>
+        this.selection.select(row)
+      );
+    }
     this.selectedRows.emit(this.selection.selected);
   }
 
@@ -272,12 +278,6 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
     if (!this.modifyingData[rowIndex]) {
       this.modifyingData[rowIndex] = superClone(data);
     }
-    // if (!this.editCells[rowIndex]) {
-    //   this.editCells[rowIndex] = {};
-    // }
-    // this.columns.forEach(column => {
-    //   this.editCells[rowIndex][column?.columnId] = data[column?.columnId];
-    // });
   }
   onRowEditCancel(index, rowData) {
     this.tableData[index] = this.editRows[index];
@@ -310,7 +310,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
     }
   }
   onColSave($event) {
-    Object.keys(this.modifyingData).map((index) => {
+    Object.keys(this.modifyingData).forEach((index) => {
       if (this.validateRow(index, this.modifyingData[index])) {
         this.tableData[index] = { ...this.tableData[index], ...this.modifyingData[index] };
         if (this.newRows[index]) {
@@ -460,8 +460,9 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
     }
     return pages;
   }
+
   onSortChange($event: any) {
-    const order = $event.direction === "asc" ? 1 : $event.direction === "desc" ? -1 : 0;
+    const order = getOrder($event.direction);
     if (this.isServerSideSorting) {
       this.onSort.emit($event);
       return;
@@ -471,15 +472,19 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
       const value2 = row2[$event.column];
       let result = null;
       if (value1 == null && value2 != null) {
-        result = -1;
+        result = value2 != null ? -1 : 0;
       } else if (value1 != null && value2 == null) {
         result = 1;
-      } else if (value1 == null && value2 == null) {
-        result = 0;
       } else if (typeof value1 === "string" && typeof value2 === "string") {
         result = value1.localeCompare(value2);
       } else {
-        result = value1 < value2 ? -1 : value1 > value2 ? 1 : 0;
+        if (value1 < value2) {
+          result = -1;
+        } else if (value1 > value2) {
+          result = 1;
+        } else {
+          result = 0;
+        }
       }
       return order * result;
     });
@@ -512,12 +517,18 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
           const rule = rules[i];
           const fieldValue = rowData[rule?.fieldId];
           let result = conditionValidation(rule, fieldValue);
-          condMatched = i === 0 ? result : rule.operator === "AND" ? condMatched && result : condMatched || result;
+          if (i === 0) {
+            condMatched = result;
+          } else if (rule.operator === "AND") {
+            condMatched = condMatched && result;
+          } else {
+            condMatched = condMatched || result;
+          }
           filtersLogicCopy = filtersLogicCopy.replace(new RegExp(i + 1, "g"), result);
         }
         if (filtersLogicCopy) {
           try {
-            condMatched = eval(filtersLogicCopy);
+            condMatched = dynamicEvaluation(filtersLogicCopy);
           } catch (error) {
             console.log("error", error);
           }
