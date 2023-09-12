@@ -24,6 +24,7 @@
         [mask]="item?.metaData?.mask || null"
         [showMaxCharLimit]="item?.validators?.maxLength"
         [maxCharLimit]="item?.validators?.maxLength"
+        [minCharLimit]="item?.validators?.minLength"
         [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
         [errorMsg]="item?.errorMessage || item?.metaData?.errorMessage"
         [showErrorMsg]="item?.errorMessage || item?.metaData?.showErrorMessage"
@@ -156,6 +157,8 @@
         [maxFractionDigits]="item?.metaData?.maxFractionDigits"
         [maxLength]="item?.validators?.maxLength"
         [showMaxCharLimit]="item?.validators?.maxLength"
+        [maxValue]="item?.validators?.maxValue"
+        [minValue]="item?.validators?.minValue"
         size="custom"
       >
       </finlevit-number>

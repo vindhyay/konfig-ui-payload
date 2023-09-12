@@ -33,7 +33,6 @@
               flex: selectableConfig.width + ' 0 auto',
               'border-right-style': verticalBorder ? 'solid' : 'none'
             }"
-            [align]="selectableConfig.alignment"
           >
             <div class="f-resizable-header-content">
               <div
@@ -57,7 +56,6 @@
                 alignItems: 'center',
                 'border-right-style': verticalBorder ? 'solid' : 'none'
               }"
-              [align]="col.alignment"
             >
               <div class="f-resizable-header-content">
                 <div
@@ -148,7 +146,6 @@
               flex: selectableConfig.width + ' 0 auto',
               'border-right-style': verticalBorder ? 'solid' : 'none'
             }"
-            [align]="selectableConfig.alignment"
           >
             <div class="f-resizable-header-content">
               <div
@@ -190,7 +187,6 @@
               !Object.keys(editCells).length
             "
             [ref]="col.columnId"
-            [align]="col.alignment"
             sortHeader
             #sortHeader
           >
@@ -640,30 +636,7 @@
           </ng-container>
           <ng-template #zeroRecordsResult> Showing {{ pagination?.totalRecords }} results </ng-template>
         </div>
-        <ng-template #cellEditActions>
-          <!--          <div class="ml-2 mr-2">-->
-          <!--            <finlevit-button-->
-          <!--              label="Save"-->
-          <!--              applyStyleVariables-->
-          <!--              styleType="button"-->
-          <!--              variant="custom"-->
-          <!--              isHover="true"-->
-          <!--              [styleProperties]="saveBtnProperties?.properties"-->
-          <!--              (btnClick)="onColSave($event)"-->
-          <!--            ></finlevit-button>-->
-          <!--          </div>-->
-          <!--          <div class="ml-2 mr-2">-->
-          <!--            <finlevit-button-->
-          <!--              label="Cancel"-->
-          <!--              applyStyleVariables-->
-          <!--              styleType="button"-->
-          <!--              variant="custom"-->
-          <!--              isHover="true"-->
-          <!--              [styleProperties]="cancelBtnProperties?.properties"-->
-          <!--              (btnClick)="onColSaveCancel($event)"-->
-          <!--            ></finlevit-button>-->
-          <!--          </div>-->
-        </ng-template>
+        <ng-template #cellEditActions> </ng-template>
       </div>
       <div [ngClass]="{ '-center': true, 'show-pagination': isPaginationEnabled }">
         <div class="-page-limit">

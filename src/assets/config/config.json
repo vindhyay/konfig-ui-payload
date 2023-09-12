@@ -13,5 +13,7 @@
   "serviceDetailerBaseURL": "https://api.dev.tabner.konfig.io/resource",
   "socketBaseURL": "wss://api.dev.tabner.konfig.io/account",
   "transformationsUiURL": "https://api.dev.tabner.konfig.io",
-  "workflowAdminBaseURL": "https://api.dev.tabner.konfig.io/admin"
+  "workflowAdminBaseURL": "https://api.dev.tabner.konfig.io/admin",
+  "googleMapsURL": "https://maps.googleapis.com/maps/api/js?key=AIzaSyCX2VPAQs-GdUoDuQd0zqe_qWZXBrh5Ow0&libraries=places",
+  "fontsURL": "https://d1wv6qeupazne5.cloudfront.net/fonts.css"
 }

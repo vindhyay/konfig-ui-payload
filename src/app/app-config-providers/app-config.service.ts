@@ -8,11 +8,15 @@ import { CONFIG_FILE_PATH } from "../state/constants";
 })
 export class AppConfigService {
   private apiUrls: Object = {};
+  googleMapsURL: string = null;
+  fontsURL: string = null;
   constructor(private http: HttpClient) {}
 
   public loadAppConfig(): Promise<any> {
     return this.getConfigFile().then((config) => {
       this.apiUrls = this.appendBaseUrls(config);
+      this.googleMapsURL = config.googleMapsURL;
+      this.fontsURL = config.fontsURL;
       return this.apiUrls;
     });
   }
@@ -35,7 +39,6 @@ export class AppConfigService {
     const ACCOUNT_WORKFLOW_BASE_URL = config.accountWorkflowBaseURL || "";
     const SOCKET_BASE_URL = config.socketBaseURL || "";
     const AUTH_BASE_URL = config.authBaseUrl || "";
-    const RULES_BASE_URL = config.rulesBaseUrl || "";
     return {
       // Token Gen URL
       authenticateUrl: AUTH_BASE_URL + "/access-token",
@@ -164,7 +167,7 @@ export class AppConfigService {
       // Update row API
       updateTableRowDataURL: ACCOUNT_WORKFLOW_BASE_URL + "/transactions",
       //execute rules API
-      executeRulesURL: ACCOUNT_WORKFLOW_BASE_URL + "/transactions/execute/rules"
+      executeRulesURL: ACCOUNT_WORKFLOW_BASE_URL + "/transactions/execute/rules",
     };
   }
 }

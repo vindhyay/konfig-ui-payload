@@ -6,14 +6,13 @@ import { BaseWidget, SSNInputMetaData } from "../../model/create-form.models";
   templateUrl: "./ssninput-field.component.html",
   styleUrls: ["./ssninput-field.component.scss"],
 })
-export class ssnInputFieldComponent implements OnInit {
+export class SSNInputFieldComponent implements OnInit {
   _type_mask: string = "000-00-0000";
   @Input() item: BaseWidget = {} as BaseWidget;
   @Input() isDisabled = false;
   @Output() onValueChange = new EventEmitter();
   @Output() onBlurChange = new EventEmitter();
 
-  constructor() {}
   get metaData(): SSNInputMetaData {
     return this.item.metaData as SSNInputMetaData;
   }

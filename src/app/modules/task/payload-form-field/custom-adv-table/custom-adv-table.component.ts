@@ -19,13 +19,19 @@ import {
   WidgetTypes,
   Column,
 } from "../../model/create-form.models";
-import { conditionValidation, DeepCopy, getUniqueId, scrollToBottom, superClone } from "../../../../utils";
+import {
+  conditionValidation,
+  DeepCopy,
+  dynamicEvaluation,
+  getOrder,
+  getUniqueId,
+  scrollToBottom,
+  superClone,
+} from "../../../../utils";
 import { FormControl, Validators } from "@angular/forms";
 import { PaginationDirective } from "../../../shared/finlevit-custom-table/table-utils/pagination.directive";
 import { CustomTableFiltersComponent } from "../../../shared/finlevit-custom-table/table-utils/custom-table-filters/custom-table-filters.component";
-import { resourceType } from "../payload-form-field.component";
 import { ConfirmationService } from "primeng/api";
-import * as moment from "moment";
 
 const MIN_ROW_HEIGHT = 50;
 
@@ -99,7 +105,6 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
   set tableData(data) {
     this._tableData = data;
     this.filteredTableData = data;
-    // this.tableFilters?.onSearch();
     this.updateRowsLimit();
   }
   get tableData() {
@@ -312,7 +317,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
     }
   }
   onColSave($event) {
-    Object.keys(this.modifyingData).map((index) => {
+    Object.keys(this.modifyingData).forEach((index) => {
       const rowData = this.modifyingData[index];
       if (this.validateRow(index, rowData)) {
         const oldRowData = this.tableData[index];
@@ -479,7 +484,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
     return pages;
   }
   onSortChange($event) {
-    const order = $event.direction === "asc" ? 1 : $event.direction === "desc" ? -1 : 0;
+    const order = getOrder($event.direction);
     this.tableData.sort((data1, data2) => {
       const value1Data = data1.find((cellData) => cellData.widgetId === $event.column);
       const value2Data = data2.find((cellData) => cellData.widgetId === $event.column);
@@ -528,12 +533,18 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
           const rule = rules[i];
           const fieldValue = rowDataInObject[rule?.widgetId];
           let result = conditionValidation(rule, fieldValue);
-          condMatched = i === 0 ? result : rule.operator === "AND" ? condMatched && result : condMatched || result;
+          if (i === 0) {
+            condMatched = result;
+          } else if (rule.operator === "AND") {
+            condMatched = condMatched && result;
+          } else {
+            condMatched = condMatched || result;
+          }
           filtersLogicCopy = filtersLogicCopy.replace(new RegExp(i + 1, "g"), result);
         }
         if (filtersLogicCopy) {
           try {
-            condMatched = eval(filtersLogicCopy);
+            condMatched = dynamicEvaluation(filtersLogicCopy);
           } catch (error) {
             console.log("error", error);
           }

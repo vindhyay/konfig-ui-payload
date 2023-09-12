@@ -1,5 +1,5 @@
 import ShortUniqueId from "short-unique-id";
-import { result } from "./state/model/api-response";
+import { Result } from "./state/model/api-response";
 import { AbstractControl, FormControl, ValidationErrors, ValidatorFn, Validators } from "@angular/forms";
 import { ButtonActions, WidgetTypes } from "./modules/task/model/create-form.models";
 import { isNull } from "lodash";
@@ -57,7 +57,7 @@ export const getErrorMessages = (errors: any, label: any) => {
 export const toCapitalize = (string: string = "") => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
-export const parseApiResponse = (result: result): result => {
+export const parseApiResponse = (result: Result): Result => {
   const data = result;
   const error = null;
   return { data, error };
@@ -210,7 +210,7 @@ export const superClone = (object): any => {
   if (!object) {
     return null;
   }
-  Object.keys(object).map((prop) => {
+  Object.keys(object).forEach((prop) => {
     if (Array.isArray(object[prop])) {
       cloning[prop] = [].concat(object[prop]);
     } else if (typeof object[prop] === "object") {
@@ -226,12 +226,7 @@ export class DeepCopy {
   static copy(data: any) {
     let node;
     if (Array.isArray(data)) {
-      node = data.length > 0 ? data.slice(0) : [];
-      node.forEach((e, i) => {
-        if ((typeof e === "object" && e !== {}) || (Array.isArray(e) && e.length > 0)) {
-          node[i] = DeepCopy.copy(e);
-        }
-      });
+      node = getArrayNodes(data);
     } else if (data && typeof data === "object") {
       node = data instanceof Date ? data : Object.assign({}, data);
       Object.keys(node).forEach((key) => {
@@ -244,6 +239,17 @@ export class DeepCopy {
     }
     return node;
   }
+}
+
+export function getArrayNodes(data) {
+  let node;
+  node = data.length > 0 ? data.slice(0) : [];
+  node.forEach((e, i) => {
+    if ((typeof e === "object" && e !== {}) || (Array.isArray(e) && e.length > 0)) {
+      node[i] = DeepCopy.copy(e);
+    }
+  });
+  return node;
 }
 export const getValueFromField = (fields, widgetId) => {
   let paramField = null;
@@ -580,3 +586,35 @@ export class CustomValidators {
     };
   }
 }
+
+export function getOrder(direction) {
+  if (direction === "asc") {
+    return 1;
+  } else if (direction === "desc") {
+    return -1;
+  } else {
+    return 0;
+  }
+}
+
+// Regex to check possible attacks
+
+const sqlInjectionRegex = /(['";]+)|(--+\s*)/;
+
+// Regular expression to check for potential XSS attack
+const xssRegex = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/i;
+
+// Regular expression to check for potential path traversal attack
+const pathTraversalRegex = /\.\.\//;
+
+export const checkForSecurityConcerns = (text: string) => {
+  return sqlInjectionRegex.test(text) || pathTraversalRegex.test(text) || xssRegex.test(text);
+};
+
+export const dynamicEvaluation = (code: string) => {
+  if (checkForSecurityConcerns(code)) {
+    return code;
+  } else {
+    return dynamicEvaluation(code);
+  }
+};

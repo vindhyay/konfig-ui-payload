@@ -206,9 +206,7 @@
         }
       }
     }
-    &:last-of-type {
-      border-right: none;
-    }
+
     &:hover,
     &.sorted {
       background-color: var(--header-hover-cell-background-color);
@@ -343,8 +341,6 @@
       flex: 1.5;
       text-align: center;
       margin-bottom: 0;
-      display: -webkit-box;
-      display: -ms-flexbox;
       flex-direction: row;
       flex-wrap: wrap;
       align-items: center;

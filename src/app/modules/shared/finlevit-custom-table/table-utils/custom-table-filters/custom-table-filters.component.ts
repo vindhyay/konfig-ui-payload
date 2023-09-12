@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from "@angu
 import { FormArray, FormBuilder, Validators } from "@angular/forms";
 import { CustomDropdownComponent } from "../../../custom-dropdown.component";
 import { Column, WidgetTypes } from "../../../../task/model/create-form.models";
-import { conditions } from "src/app/utils";
+import { conditions, dynamicEvaluation } from "src/app/utils";
 import { IconTypes, IIcon } from "finlevit-library";
 
 @Component({
@@ -39,7 +39,7 @@ export class CustomTableFiltersComponent implements OnInit {
   advSearchForm: FormArray = this.fb.array([]);
   filtersLogic = "";
   filtersLogicError = "";
-  filtersPattern = new RegExp(/^[0-9 & ()|]*$/gm);
+  filtersPattern = new RegExp(/^[0-9&()|]*$/gm);
   functionIcon: IIcon = {
     type: IconTypes.MATERIAL_ICONS_OUTLINED,
     value: "functions",
@@ -124,7 +124,7 @@ export class CustomTableFiltersComponent implements OnInit {
     const numbers: any = this.filtersLogic.match(/[\d\.]+/g) || [];
     if (Math.min(...numbers) > 0 && Math.max(...numbers) <= this.advSearchForm.controls.length) {
       try {
-        eval(this.filtersLogic);
+        dynamicEvaluation(this.filtersLogic);
       } catch (error) {
         this.filtersLogicError = "Please enter valid filter";
       }

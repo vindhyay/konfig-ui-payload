@@ -5,4 +5,6 @@ export interface ConfigUrlsModel {
   accountWorkflowBaseURL: string;
   authBaseUrl: string;
   socketBaseURL: string;
+  googleMapsURL: string;
+  fontsURL: string;
 }
