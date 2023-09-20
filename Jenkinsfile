@@ -36,6 +36,9 @@ pipeline {
         }
 
         stage('SonarQube Analysis') {
+            when {
+                expression { params.Quality_Check }
+            }
             steps {
                 sonarCoverage "Scanning ${NAME}"
             }
