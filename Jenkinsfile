@@ -155,7 +155,7 @@ pipeline {
             }
         }
 
-        stage('Deploy to Cloud Dev') {
+        /*stage('Deploy to Cloud Dev') {
             when {
                 expression {
                     return env.BRANCH_NAME == 'dev';
@@ -181,7 +181,7 @@ pipeline {
                     echo"Successfully deployed the ${serviceVersion} version of the Application ${release_name} in ${LOC}"
             	}
             }
-        }
+        }*/
 
         stage('Push to app-release') {
             steps {
