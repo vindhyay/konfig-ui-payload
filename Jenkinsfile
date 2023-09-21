@@ -70,7 +70,7 @@ pipeline {
             	}
             }
         }
-/*
+
         stage('Deploy to cloud') {
             steps {
                 script {
@@ -79,7 +79,7 @@ pipeline {
             	}
             }
         }
-*/
+
         stage('Push to app-release') {
             steps {
                 updateJson "Updating the existing service version in the config.json file in app-release repo"
