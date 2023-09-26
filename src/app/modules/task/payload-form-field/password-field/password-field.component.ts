@@ -17,8 +17,8 @@ export class PasswordFieldComponent implements OnInit {
     return this.item.metaData as PasswordInputMetaData;
   }
   ngOnInit(): void {
-    if (!this.metaData.rightIcon) {
-      this.metaData.rightIcon = this.metaData.showIcon ? this.metaData.showIcon : null;
+    if (!this.metaData?.rightIcon) {
+      this.metaData.rightIcon = this.metaData?.showIcon ? this.metaData.showIcon : null;
     }
   }
 
