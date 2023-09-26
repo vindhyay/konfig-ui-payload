@@ -1,22 +1,20 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
-import { By } from "@angular/platform-browser";
-import { DebugElement } from "@angular/core";
 
-import { ssnInputFieldComponent } from "./ssninput-field.component";
+import { SSNInputFieldComponent } from "./ssninput-field.component";
 
 describe("ssnInputFieldComponent", () => {
-  let component: ssnInputFieldComponent;
-  let fixture: ComponentFixture<ssnInputFieldComponent>;
+  let component: SSNInputFieldComponent;
+  let fixture: ComponentFixture<SSNInputFieldComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ssnInputFieldComponent],
+      declarations: [SSNInputFieldComponent],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ssnInputFieldComponent);
+    fixture = TestBed.createComponent(SSNInputFieldComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

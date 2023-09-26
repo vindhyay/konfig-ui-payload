@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 
 import { BtnIconComponent } from "./btn-icon.component";
-import { SharedModule } from "../../shared.module";
+import { SharedModule } from "../shared.module";
 
 describe("BtnIconComponent", () => {
   let component: BtnIconComponent;
@@ -11,7 +11,7 @@ describe("BtnIconComponent", () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [SharedModule],
-        declarations: []
+        declarations: [],
       }).compileComponents();
     })
   );

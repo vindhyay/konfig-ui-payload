@@ -4,6 +4,7 @@ import { By } from "@angular/platform-browser";
 import { DebugElement } from "@angular/core";
 
 import { PasswordFieldComponent } from "./password-field.component";
+import {BaseWidget} from "../../model/create-form.models";
 
 describe("PasswordFieldComponent", () => {
   let component: PasswordFieldComponent;
@@ -18,6 +19,7 @@ describe("PasswordFieldComponent", () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(PasswordFieldComponent);
     component = fixture.componentInstance;
+    component.item = { value: { value: null, id: "" }, children: [], metaData: {} } as BaseWidget;
     fixture.detectChanges();
   });
 

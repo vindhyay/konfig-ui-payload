@@ -1,8 +1,9 @@
-import { AddressAutocompleteDirective } from './address-autocomplete.directive';
+import { AddressAutocompleteDirective } from "./address-autocomplete.directive";
 
-describe('AddressAutocompleteDirective', () => {
-  it('should create an instance', () => {
-    const directive = new AddressAutocompleteDirective();
+describe("AddressAutocompleteDirective", () => {
+  it("should create an instance", () => {
+    const elementRef: any = null;
+    const directive = new AddressAutocompleteDirective(elementRef);
     expect(directive).toBeTruthy();
   });
 });
