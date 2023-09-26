@@ -66,7 +66,7 @@ pipeline {
             steps {
                 script {
                     def chartVersion = '0.1.0'
-                    deployHelm.onprem  linkedLOC: "${LOC}", release_name: env.NAME, serviceVersion: env.service_version, linkedREPO: "${REPO}"
+                    deployHelm.onprem  linkedLOC: "${LOC}", property:"ui-properties", release_name: env.NAME, serviceVersion: env.service_version, linkedREPO: "${REPO}"
             	}
             }
         }
@@ -75,7 +75,7 @@ pipeline {
             steps {
                 script {
                     def chartVersion = '0.1.0'
-                    deployHelm.cloud  linkedLOC: "${LOC}", release_name: env.NAME, serviceVersion: env.service_version, linkedREPO: "${AWS_REPO}"
+                    deployHelm.cloud  linkedLOC: "${LOC}", property:"ui-properties", release_name: env.NAME, serviceVersion: env.service_version, linkedREPO: "${AWS_REPO}"
             	}
             }
         }
