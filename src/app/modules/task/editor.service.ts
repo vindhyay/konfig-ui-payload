@@ -167,29 +167,16 @@ export class EditorService extends BaseService {
           widgetId,
         },
       } = $event;
-      // checking if only action and that is NONE
-      const noneAction = onClickConfigs.find((item) => item.action === "none");
-      if (noneAction && onClickConfigs.length === 1 && !$event?.data?.metaData?.widgetEvent.length) {
-        return;
-      }
       // Filtering out UI actions
       const uiActions = onClickConfigs.filter((item) => UI_ACTIONS.includes(item.action));
-      // Check only UI actions
-      if (uiActions.length === onClickConfigs.length) {
+      if (uiActions.length) {
         this.triggerUIActions(uiActions);
+      }
+      if (!widgetEvent?.length) {
         return;
       }
       const formFields = this.getFormFields();
       this.setHiddenFieldValue(formFields);
-      // Checking the first action is populate action if yes validate require params
-      const populateActionIndex = onClickConfigs.findIndex((item) => item.action === ButtonActions.populate);
-      let error = false;
-      if (populateActionIndex === 0) {
-        error = this.validatePopulateParams(onClickConfigs[populateActionIndex], formFields);
-      }
-      if (error) {
-        return;
-      }
       const triggerData = { triggerId: widgetId, data: $event?.data, uiActions: uiActions };
       // If first action either submit or next screen action need to validate fields
       const isValidationRequired =
