@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { DropdownFieldComponent } from "./dropdown-field.component";
+import { BaseWidget } from "../../model/create-form.models";
 
 describe("DropdownFieldComponent", () => {
   let component: DropdownFieldComponent;
@@ -15,6 +16,7 @@ describe("DropdownFieldComponent", () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DropdownFieldComponent);
     component = fixture.componentInstance;
+    component.item = { value: { value: null, id: "" } } as BaseWidget;
     fixture.detectChanges();
   });
 

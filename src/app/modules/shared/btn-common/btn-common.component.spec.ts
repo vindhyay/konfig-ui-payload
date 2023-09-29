@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 
 import { BtnCommonComponent } from "./btn-common.component";
-import { SharedModule } from "../../shared.module";
 import { RouterTestingModule } from "@angular/router/testing";
+import { SharedModule } from "../shared.module";
 
 describe("BtnCommonComponent", () => {
   let component: BtnCommonComponent;
@@ -12,7 +12,7 @@ describe("BtnCommonComponent", () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [RouterTestingModule, SharedModule],
-        declarations: []
+        declarations: [],
       }).compileComponents();
     })
   );
