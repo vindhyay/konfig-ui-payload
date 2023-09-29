@@ -1,8 +1,8 @@
-import { WidgetTypeFilterPipe } from "./custom-filter.pipe";
+import { CustomFilterPipe } from "./custom-filter.pipe";
 
-describe("WidgetTypeFilterPipe", () => {
+describe("CustomFilterPipe", () => {
   it("create an instance", () => {
-    const pipe = new WidgetTypeFilterPipe();
+    const pipe = new CustomFilterPipe();
     expect(pipe).toBeTruthy();
   });
 });

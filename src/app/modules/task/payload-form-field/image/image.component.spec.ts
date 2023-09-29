@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
-import { ImageComponent } from "lib/rng-widgets/public-api";
+import { ImageComponent } from "./image.component";
 
 describe("ImageComponent", () => {
   let component: ImageComponent;

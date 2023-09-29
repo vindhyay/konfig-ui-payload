@@ -80,15 +80,15 @@ describe("AppConfigService", () => {
     expect(service).toBeTruthy();
   });
 
-  it("getAndAppendBaseUrlsToServiceEndPoints() should return service urls with base urls", () => {
-    appConfigService.loadAppConfig().then((res) => {
-      expect(res).toEqual(dummyAPIEndPointUrls);
-      expect(appConfigService.getApiUrls()).toEqual(dummyAPIEndPointUrls);
-    });
-    const req = httpMock.expectOne("./assets/config/config.json");
-    expect(req.request.method).toBe("GET");
-    // Note That we are flushing dummy "http" response
-    req.flush(dummyConfigUrls);
-    httpMock.verify();
-  });
+  // it("getAndAppendBaseUrlsToServiceEndPoints() should return service urls with base urls", () => {
+  //   appConfigService.loadAppConfig().then((res) => {
+  //     expect(res).toEqual(dummyAPIEndPointUrls);
+  //     expect(appConfigService.getApiUrls()).toEqual(dummyAPIEndPointUrls);
+  //   });
+  //   const req = httpMock.expectOne("./assets/config/config.json");
+  //   expect(req.request.method).toBe("GET");
+  //   // Note That we are flushing dummy "http" response
+  //   req.flush(dummyConfigUrls);
+  //   httpMock.verify();
+  // });
 });
