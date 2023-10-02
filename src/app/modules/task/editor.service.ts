@@ -172,7 +172,8 @@ export class EditorService extends BaseService {
       if (uiActions.length) {
         this.triggerUIActions(uiActions);
       }
-      if (!widgetEvent?.length) {
+      const isSubmitActionExists = onClickConfigs.find((item) => item.action === ButtonActions.submit);
+      if (!widgetEvent?.length && !isSubmitActionExists) {
         return;
       }
       const formFields = this.getFormFields();
