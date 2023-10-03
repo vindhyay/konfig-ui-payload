@@ -169,11 +169,11 @@ export class EditorService extends BaseService {
       } = $event;
       // Filtering out UI actions
       const uiActions = onClickConfigs.filter((item) => UI_ACTIONS.includes(item.action));
+      const backendActions = onClickConfigs.filter((item) => !UI_ACTIONS.includes(item.action));
       if (uiActions.length) {
         this.triggerUIActions(uiActions);
       }
-      const isSubmitActionExists = onClickConfigs.find((item) => item.action === ButtonActions.submit);
-      if (!widgetEvent?.length && !isSubmitActionExists) {
+      if (!widgetEvent?.length && !backendActions.length) {
         return;
       }
       const formFields = this.getFormFields();
