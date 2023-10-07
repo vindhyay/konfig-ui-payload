@@ -28,7 +28,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
   URL: WidgetTypes = WidgetTypes.URL;
   Table: WidgetTypes = WidgetTypes.Table;
   AdvTable: WidgetTypes = WidgetTypes.AdvTable;
-  TransactionTable: WidgetTypes = WidgetTypes.TransactionTable;
+  TransactionTable: WidgetTypes = WidgetTypes.SavedTable;
   Button: WidgetTypes = WidgetTypes.Button;
   CollapseContainer: WidgetTypes = WidgetTypes.CollapseContainer;
   Container: WidgetTypes = WidgetTypes.Container;
