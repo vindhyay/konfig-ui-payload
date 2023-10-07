@@ -36,7 +36,6 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
   Button: WidgetTypes = WidgetTypes.Button;
   Modal: WidgetTypes = WidgetTypes.Modal;
   CollapseContainer: WidgetTypes = WidgetTypes.CollapseContainer;
-  ErrorContainer: WidgetTypes = WidgetTypes.ErrorContainer;
   transactionId: any;
   taskId: any;
   allEligibleFields = [];
