@@ -243,7 +243,7 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
   fillAddressDetails(addressDetails: { widget: any; address: AddressDetails }) {
     let ValidationFields = [];
     let widget = addressDetails.widget;
-    let widgetIds = widget?.metaData?.linkedWidetIds;
+    let widgetIds = widget?.metaData?.linkedWidgetIds;
     let address: AddressDetails = addressDetails.address;
     let ruleIds = [];
     if (address) {
