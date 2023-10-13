@@ -6,12 +6,12 @@ import { isNull } from "lodash";
 import * as moment from "moment";
 
 export const UI_ACTIONS = [
-  ButtonActions.logout,
-  ButtonActions.nextStep,
-  ButtonActions.previousStep,
-  ButtonActions.openModals,
-  ButtonActions.closeModals,
-  ButtonActions.externalLink,
+  ButtonActions?.logout,
+  ButtonActions?.nextStep,
+  ButtonActions?.previousStep,
+  ButtonActions?.openModals,
+  ButtonActions?.closeModals,
+  ButtonActions?.externalLink,
 ];
 
 const uid = new ShortUniqueId();
@@ -164,16 +164,16 @@ export const getFieldFromFields = (fields, widgetId) => {
 };
 
 export const eligibileReviewField = [
-  WidgetTypes.TextArea,
-  WidgetTypes.TextInput,
-  WidgetTypes.PasswordInput,
-  WidgetTypes.SSNInput,
-  WidgetTypes.Email,
-  WidgetTypes.PhonenumberInput,
-  WidgetTypes.Dropdown,
-  WidgetTypes.Number,
-  WidgetTypes.DatePicker,
-  WidgetTypes.Checkbox,
+  WidgetTypes?.TextArea,
+  WidgetTypes?.TextInput,
+  WidgetTypes?.PasswordInput,
+  WidgetTypes?.SSNInput,
+  WidgetTypes?.Email,
+  WidgetTypes?.PhonenumberInput,
+  WidgetTypes?.Dropdown,
+  WidgetTypes?.Number,
+  WidgetTypes?.DatePicker,
+  WidgetTypes?.Checkbox,
 ];
 export const getAllFromFields = (fields, eligibileField) => {
   let paramField = [];
@@ -230,7 +230,7 @@ export class DeepCopy {
     } else if (data && typeof data === "object") {
       node = data instanceof Date ? data : Object.assign({}, data);
       Object.keys(node).forEach((key) => {
-        if ((typeof node[key] === "object" && node[key] !== {}) || (Array.isArray(node[key]) && node[key].length > 0)) {
+        if ((typeof node[key] === "object" && Object.keys(node[key]).length > 0) || (Array.isArray(node[key]) && node[key].length > 0)) {
           node[key] = DeepCopy.copy(node[key]);
         }
       });
@@ -245,7 +245,7 @@ export function getArrayNodes(data) {
   let node;
   node = data.length > 0 ? data.slice(0) : [];
   node.forEach((e, i) => {
-    if ((typeof e === "object" && e !== {}) || (Array.isArray(e) && e.length > 0)) {
+    if ((typeof e === "object" && Object.keys(e).length > 0) || (Array.isArray(e) && e.length > 0)) {
       node[i] = DeepCopy.copy(e);
     }
   });

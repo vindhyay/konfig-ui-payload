@@ -38,8 +38,8 @@ export class AvatarComponent implements OnInit {
 
   configureFromLoginData() {
     this.currentUser = this.authService.getCurrentUser();
-    this.item.label = this.currentUser.name;
-    this.metaData.fallbackText = this.currentUser.name;
-    this.metaData.caption = this.currentUser.emailId;
+    this.item.label = this.currentUser?.name;
+    this.metaData.fallbackText = this.currentUser?.name;
+    this.metaData.caption = this.currentUser?.emailId;
   }
 }

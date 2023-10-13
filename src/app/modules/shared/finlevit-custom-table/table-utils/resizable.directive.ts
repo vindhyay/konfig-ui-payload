@@ -8,7 +8,7 @@ import { fromEvent } from "rxjs";
 })
 export class ResizableDirective {
   @Output()
-  readonly resizable = fromEvent<MouseEvent>(this.elementRef.nativeElement, "mousedown").pipe(
+  readonly resizable = fromEvent<MouseEvent>(this.elementRef?.nativeElement, "mousedown").pipe(
     tap(e => e.preventDefault()),
     switchMap(() => {
       const { width, right } = this.elementRef.nativeElement.closest(".f-th")!.getBoundingClientRect();

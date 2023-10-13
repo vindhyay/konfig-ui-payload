@@ -26,4 +26,15 @@ describe("PasswordFieldComponent", () => {
   it("should create", () => {
     expect(component).toBeTruthy();
   });
+
+  it('should toggle between show and hide icon when rightIcon is equal to showIcon', () => {
+    const metaData = {
+      rightIcon: 'showIcon',
+      showIcon: 'eye',
+      hideIcon: 'eye-slash'
+    };
+    component.onRightIconClick(metaData);
+    expect(metaData.rightIcon).toEqual('eye');
+    expect(component._type).toEqual('password');
+  });
 });

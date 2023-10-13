@@ -8,7 +8,7 @@
   <div class="progressbar">
     <div
       class="stepper-header"
-      *ngIf="metaData.showHeader"
+      *ngIf="metaData?.showHeader"
       [ngStyle]="{
         height: metaData.headerHeight + 'px'
       }"
@@ -25,7 +25,7 @@
       <li
         *ngFor="let child of children; let i = index"
         [ngClass]="{
-          completed: selectedIndex > i || completedSteps[child.widgetId],
+          completed: selectedIndex > i || completedSteps[child?.widgetId],
           selected: selectedIndex === i
         }"
         (click)="onSelectIndexChange(i)"
@@ -66,10 +66,10 @@
   <div class="wrapper">
     <div class="inner-wrapper">
       <div class="scrollView">
-        <div [ngClass]="'content' + ' content' + metaData['widgetId']" #contentConatiner>
+        <div [ngClass]="'content' + ' content' + metaData?.['widgetId']" #contentConatiner>
           <finlevit-grid
             [parent]="children[selectedIndex]"
-            [items]="children[selectedIndex].children"
+            [items]="children[selectedIndex]?.children"
             [filter]="{ metaData: { isFooterContainer: false } }"
           ></finlevit-grid>
           <ng-container *ngIf="selectedIndex === children.length - 1 && reviewData.length">
@@ -79,7 +79,7 @@
                 <div class="personal-panel">
                   <button class="btn btn-info edit-btn" (click)="onSelectIndexChange(i)">Edit</button>
                   <div class="content-container">
-                    <p *ngFor="let item of child.children">
+                    <p *ngFor="let item of child?.children">
                       <strong>{{ item.label }}</strong
                       >&ngsp;:&ngsp;<span>{{ item.value }}</span>
                     </p>
@@ -96,8 +96,8 @@
         }"
       >
         <finlevit-grid
-          [parent]="children[selectedIndex].children[0]"
-          [items]="children[selectedIndex].children[0]?.children"
+          [parent]="children[selectedIndex]?.children[0]"
+          [items]="children[selectedIndex]?.children[0]?.children"
           [emitButtonEvent]="true"
           (onBtnClick)="setSelection($event)"
           [style]="{ width: '100%' }"

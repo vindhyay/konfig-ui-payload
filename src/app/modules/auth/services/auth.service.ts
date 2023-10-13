@@ -49,7 +49,7 @@ export class AuthService extends BaseService implements OnDestroy {
     }
     this.authSubject.next(null);
     this.storage.clear();
-    this.activatedRoute.firstChild.queryParams.subscribe((params) => {
+    this.activatedRoute.firstChild?.queryParams.subscribe((params) => {
       const queryParams = params;
       const pathParams = this.activatedRoute.snapshot.firstChild.params;
       this.router.navigate([pathParams?.applicationId + "/auth"], {

@@ -632,47 +632,6 @@ export class TableActions {
     this.alignment = align;
   }
 }
-
-export class AdvanceTableMetaData extends MetaData {
-  sort: boolean;
-  filter: boolean;
-  pagination: boolean;
-  addRows: boolean;
-  hideHeader: boolean;
-  actions: TableActions;
-  optionPopulateConfig: Array<any>;
-  rowActionConfig: Array<TableRowActionConfig>;
-  columns: Array<BaseWidget>;
-  constructor(data) {
-    super(data);
-    const {
-      sort = false,
-      filter = false,
-      pagination = false,
-      columns = [],
-      addRows = true,
-      hideHeader = false,
-      actions = {},
-      optionsPopulateConfig = [],
-      rowActionConfig = [],
-    } = data;
-    this.columns = columns;
-    this.sort = sort;
-    this.filter = filter;
-    this.pagination = pagination;
-    this.addRows = addRows;
-    this.hideHeader = hideHeader;
-    this.actions = new TableActions(actions);
-    this.optionPopulateConfig = optionsPopulateConfig;
-    this.rowActionConfig = rowActionConfig;
-  }
-}
-
-export enum RowActionTypes {
-  Edit = "edit",
-  Delete = "delete",
-}
-
 export class TableMetaData<T> extends MetaData {
   heading: string;
   sort: boolean;
@@ -1759,49 +1718,6 @@ export class ResponseMappingField {
     this.widgetType = widgetType;
   }
 }
-export class OnLoadTriggerConfig {
-  id?: string;
-  name: string;
-  description: string;
-  dataResourceId: string;
-  dataListId: string;
-  operationId: string;
-  params: Array<any>;
-  status: boolean;
-  officeType: OfficeTypes;
-  responseMappings: ResponseMappingField[];
-  optionsMapping: boolean;
-  responseMapping: boolean;
-  constructor(data) {
-    const {
-      name = "",
-      description = "",
-      dataResourceId = "",
-      dataListId = "",
-      params = [],
-      responseMappings = [],
-      status = true,
-      officeType,
-      operationId = "",
-      id,
-      optionsMapping = false,
-      responseMapping = false,
-    } = data;
-    this.operationId = operationId;
-    this.officeType = officeType;
-    this.name = name;
-    this.description = description;
-    this.dataListId = dataListId;
-    this.dataResourceId = dataResourceId;
-    this.params = params;
-    this.responseMappings = responseMappings;
-    this.status = status;
-    this.id = id;
-    this.optionsMapping = optionsMapping;
-    this.responseMapping = responseMapping;
-  }
-}
-
 const getDataTypeFromWidgetType = (type: WidgetTypes) => {
   switch (type) {
     case WidgetTypes.TextInput:
@@ -1848,55 +1764,6 @@ export class Column extends BaseWidget {
     this.populateResponsePath = populateResponsePath;
   }
 }
-
-export class EventConfig {
-  id: string;
-  name: string;
-  eventType: string;
-  widgetId: string;
-
-  widgetType: string;
-  officeType: string;
-
-  //populate Event
-  populateConfig: PopulateEvent;
-
-  //service provider event
-  serviceProviderConfig: ServiceProviderConfig;
-
-  //Table row actions
-  tableRowConfigs: RowActionConfig[];
-
-  //on-change config on drop downs
-  onChangeConfig: OptionPopulateConfig;
-
-  constructor(data) {
-    const {
-      name = "",
-      eventType = "",
-      widgetId = "",
-      widgetType = "",
-      officeType = "",
-      tableRowConfigs = [],
-      onChangeConfig = null,
-      populateConfig = null,
-      serviceProviderConfig = null,
-      id,
-    } = data;
-    this.officeType = officeType;
-    this.name = name;
-    this.eventType = eventType;
-    this.officeType = officeType;
-    this.widgetId = widgetId;
-    this.widgetType = widgetType;
-    this.populateConfig = populateConfig;
-    this.serviceProviderConfig = serviceProviderConfig;
-    this.tableRowConfigs = tableRowConfigs;
-    this.onChangeConfig = onChangeConfig;
-    this.id = id;
-  }
-}
-
 export class ServiceProviderConfig {
   dataResourceId: string;
   dataListId: string;
@@ -1970,38 +1837,5 @@ export class FieldMappings {
     this.optionLabel = optionLabel;
     this.optionValue = optionValue;
     this.defaultValueConfig = defaultValueConfig;
-  }
-}
-export class RowActionConfig {
-  name: string;
-
-  dataListId: string;
-
-  dataResourceId: string;
-  mappingId: string;
-  resourceId: string;
-  operationId: string;
-  tableRowConfigType: RowActionConfigOptionTypes;
-  parameters: ParamConfigs[];
-
-  constructor(data) {
-    const {
-      name = "",
-      tableRowConfigType = null,
-      parameters = [],
-      dataListId = null,
-      dataResourceId = null,
-      mappingId = "",
-      resourceId = "",
-      operationId = "",
-    } = data;
-    this.name = name;
-    this.tableRowConfigType = tableRowConfigType;
-    this.parameters = parameters;
-    this.dataListId = dataListId;
-    this.dataResourceId = dataResourceId;
-    this.mappingId = mappingId;
-    this.resourceId = resourceId;
-    this.operationId = operationId;
   }
 }

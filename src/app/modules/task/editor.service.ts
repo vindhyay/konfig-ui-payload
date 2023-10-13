@@ -140,10 +140,12 @@ export class EditorService extends BaseService {
             paramField.errorMessage = "";
           } else {
             paramField.error = true;
-            paramField.metaData.errorMessage = getErrorMessages(
-              tempFormControl.errors,
-              paramField?.label || paramField?.widgetName
-            )[0];
+            if(paramField.metaData){
+              paramField.metaData.errorMessage = getErrorMessages(
+                tempFormControl.errors,
+                paramField?.label || paramField?.widgetName
+              )[0];
+            }
           }
         } else {
           parameter.value = inputValue;
@@ -389,34 +391,12 @@ export class EditorService extends BaseService {
       }
     });
   }
-  evaluateFilter(filtersLogic, resultArray) {
-    const expressionArray = filtersLogic
-      .split(/[.\()&|_]/)
-      .filter(function (indexItem) {
-        return indexItem != null && indexItem.length;
-      })
-      .sort()
-      .reverse();
-    let expression = filtersLogic;
-
-    expressionArray.forEach((item) => {
-      if (!isNaN(item)) {
-        expression = expression.replaceAll(item, resultArray[item - 1]);
-      }
-    });
-    return dynamicEvaluation(expression);
-  }
-  onPopulateTriggerCondition = (fields: any[]) => {
+  onPopulateTriggerCondition(fields: any[]) {
     fields.forEach((field: any) => {
       if (field?.children && field?.children?.length) {
         this.onPopulateTriggerCondition(field.children);
       }
     });
-  };
-
-  getDataListValues = (payload): Observable<any> => {
-    const url = `${this.config.getApiUrls().getDataListValuesURL}`;
-    return this.postData(url, payload);
   };
   uploadFile = (formData, transactionId): Observable<any> => {
     const url = `${this.config.getApiUrls().uploadFile}`.replace("{transactionId}", transactionId);

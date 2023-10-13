@@ -124,7 +124,7 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
       const item = eachItem.item;
       const baseItem = baseGridItem.$item;
       const checkSameItem = (item, baseItem) => {
-        const isSame = item.widgetId !== baseGridItem.item.widgetId;
+        const isSame = item.widgetId !== baseGridItem.item?.widgetId;
         return isSame;
       };
       const checkIsBottom = (item, baseItem) => {

@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UrlComponent } from './url.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { ToUrlPipe } from 'src/app/pipes/to-url.pipe';
 
 describe('UrlComponent', () => {
   let component: UrlComponent;
@@ -8,7 +11,8 @@ describe('UrlComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ UrlComponent ]
+      declarations: [ UrlComponent, ToUrlPipe ],
+      imports: [HttpClientTestingModule, RouterTestingModule],
     })
     .compileComponents();
   });
