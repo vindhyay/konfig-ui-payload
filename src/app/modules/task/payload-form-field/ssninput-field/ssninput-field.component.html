@@ -5,7 +5,7 @@
   [error]="item?.error === true"
   [tooltip]="item?.metaData?.tooltip"
   [placeholder]="item?.metaData?.placeholder"
-  [ngModel]="item.value.value | toSSNFormat"
+  [ngModel]="item?.value?.value | toSSNFormat"
   (ngModelChange)="validateField($event)"
   [isRequired]="item?.validators?.required"
   [label]="item?.label"

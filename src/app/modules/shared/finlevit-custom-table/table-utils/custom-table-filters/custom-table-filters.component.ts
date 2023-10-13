@@ -36,7 +36,7 @@ export class CustomTableFiltersComponent implements OnInit {
 
   readonlyMode = false;
   filtersEnabled = false;
-  advSearchForm: FormArray = this.fb.array([]);
+  advSearchForm: FormArray = this.fb?.array([]);
   filtersLogic = "";
   filtersLogicError = "";
   filtersPattern = new RegExp(/^[0-9&()|]*$/gm);
@@ -77,7 +77,7 @@ export class CustomTableFiltersComponent implements OnInit {
     this.dropdown.show();
   }
   public hideDropdown() {
-    this.dropdown.hide();
+    this.dropdown?.hide();
   }
   onSearch() {
     this.advSearchForm.markAllAsTouched();
@@ -108,8 +108,8 @@ export class CustomTableFiltersComponent implements OnInit {
   }
 
   onColumnChange($event, condition) {
-    condition.controls.condition.setValue("");
-    condition.controls.value.setValue("");
+    condition.controls?.condition.setValue("");
+    condition.controls?.value.setValue("");
   }
 
   onFilterLogicChange($event) {

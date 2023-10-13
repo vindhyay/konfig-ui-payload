@@ -1,9 +1,21 @@
 import { TestBed } from "@angular/core/testing";
 
 import { NotificationService } from "./notification.service";
+import { ToastrModule } from "ngx-toastr";
 
 describe("NotificationService", () => {
-  beforeEach(() => TestBed.configureTestingModule({}));
+  beforeEach(() =>
+    TestBed.configureTestingModule({
+      imports: [
+        ToastrModule.forRoot({
+          timeOut: 3000,
+          positionClass: "toast-top-center",
+          preventDuplicates: true
+        })
+      ],
+      providers: [NotificationService]
+    })
+  );
 
   it("should be created", () => {
     const service: NotificationService = TestBed.get(NotificationService);

@@ -92,11 +92,11 @@ export class VerticalStepperComponent implements OnInit {
   }
   checkHeight(containerName?) {
     this.editorService.setAdjustableHeight(
-      this.children[this.selectedIndex].children,
-      ".content" + this.metaData["widgetId"]
+      this.children[this.selectedIndex]?.children,
+      ".content" + this.metaData?.["widgetId"]
     );
   }
-  onSelectIndexChange = (index: number) => {
+  onSelectIndexChange(index: number) {
     this.isInteract = true;
     if (this.metaData.isFreeFlow || this.selectedIndex > index) {
       this.selectedIndex = index;
@@ -113,5 +113,5 @@ export class VerticalStepperComponent implements OnInit {
         this.selectedIndex = index;
       }
     }
-  };
+  }
 }
