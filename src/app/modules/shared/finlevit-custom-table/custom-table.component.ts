@@ -522,12 +522,12 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
     return this.tableData[rowIndex][col?.columnId];
   }
 
-  columnFilterHiddenColumns = (column: Column) => {
+  columnFilterHiddenColumns(column: Column) {
     if (column?.metaData?.hasOwnProperty("isHidden")) {
       return !column?.metaData?.isHidden;
     }
     return true;
-  };
+  }
   columnFilterNoFilterColumns = (column: any) => {
     return column?.filter !== false;
   };

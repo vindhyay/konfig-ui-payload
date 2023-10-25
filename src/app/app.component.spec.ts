@@ -6,6 +6,7 @@ import { AppConfigService } from "./app-config-providers/app-config.service";
 import { AuthService } from "./modules/auth/services/auth.service";
 import { ScriptLoaderService } from "./services/script-loader.service";
 import { TokenRefreshService } from "./services/token-refresh.service";
+import { of } from "rxjs";
 
 describe("AppComponent", () => {
   let component: AppComponent;
@@ -41,6 +42,9 @@ describe("AppComponent", () => {
     spyOn(scriptLoaderService, "loadScript");
     spyOn(scriptLoaderService, "loadCss");
 
+    const authServiceMock = jasmine.createSpyObj("AuthService", ["onAuthChanged$", "getCurrentUser"]);
+    authServiceMock.onAuthChanged$ = of({});
+    const component = new AppComponent(authServiceMock, tokenRefresher, scriptLoaderService, config);
     component.ngOnInit();
 
     expect(scriptLoaderService.loadScript).toHaveBeenCalledWith(config.googleMapsURL);

@@ -10,11 +10,11 @@ import { ActiveToast, IndividualConfig, ToastrService } from "ngx-toastr";
 
 export class MockToastrService extends ToastrService {
   toasts: ActiveToast<any>[] = [];
- 
+
   constructor() {
     super(null, null, null, null, null);
   }
- 
+
   show(message?: string, title?: string, override?: Partial<IndividualConfig>, type?: string): ActiveToast<any> {
     return;
   }
@@ -136,5 +136,16 @@ describe("TransactionTableComponent", () => {
 
     expect(component.getTransactionDetails).not.toHaveBeenCalled();
     expect(notificationService.error).toHaveBeenCalledWith("Transaction not found");
+  });
+
+  it("should call getTransactionTableData from edit service if getTransactionTableData is called", () => {
+    spyOn(editorService, "getTransactionTableData").and.returnValue(
+      of({
+        totalRecordCount: 4,
+        data: [{transactionStatus: {id:1, name:""}}],
+      })
+    );
+    component.getTransactionTableData({} as any);
+    expect(editorService.getTransactionTableData).toHaveBeenCalled();
   });
 });
