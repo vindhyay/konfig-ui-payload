@@ -7,7 +7,7 @@ import { AuthService } from "../../services/auth.service";
 import { StorageService } from "../../../../services/storage.service";
 import { RouterTestingModule } from "@angular/router/testing";
 import { Router } from "@angular/router";
-import { of, Subject } from "rxjs";
+import { of, Subject, throwError } from "rxjs";
 import { APP_BASE_HREF, LocationStrategy, PathLocationStrategy } from "@angular/common";
 import { UserDataModel } from "../../models";
 import { FormBuilder } from "@angular/forms";
@@ -18,11 +18,11 @@ import { ActiveToast, IndividualConfig, ToastrService } from "ngx-toastr";
 
 export class MockToastrService extends ToastrService {
   toasts: ActiveToast<any>[] = [];
- 
+
   constructor() {
     super(null, null, null, null, null);
   }
- 
+
   show(message?: string, title?: string, override?: Partial<IndividualConfig>, type?: string): ActiveToast<any> {
     return;
   }
@@ -69,8 +69,8 @@ describe("LoginComponent", () => {
           { provide: APP_BASE_HREF, useValue: "/" },
           Location,
           { provide: LocationStrategy, useClass: PathLocationStrategy },
-          { provide: AuthService, useValue: mockAuthService },
-          { provide: StorageService, useValue: mockStorageService },
+          AuthService,
+          StorageService,
           // { provide: Router, useValue: mockRouter },
           FormBuilder,
           NotificationService,
@@ -164,5 +164,48 @@ describe("LoginComponent", () => {
 
     expect(component.loading).toBe(false);
     expect(component.loginError).toBe("Something went wrong, please try again");
+  });
+
+  it("should authenticate user and save token data when valid form data is submitted", () => {
+    spyOn(authService, "authenticate").and.returnValue(
+      of({ userName: "exampleUser", passWord: "examplePassword", remember: false })
+    );
+    spyOn(component, "getUserDetails");
+
+    component.authForm.setValue({
+      userName: "exampleUser",
+      passWord: "examplePassword",
+      remember: true,
+    });
+
+    component.onSubmit();
+
+    expect(component.authForm.valid).toBeTrue();
+    expect(authService.authenticate).toHaveBeenCalled();
+    expect(component.getUserDetails).toHaveBeenCalled();
+  });
+
+  it("should display error message when form is submitted with invalid username or password", () => {
+    spyOn(authService, "authenticate").and.returnValue(throwError({}));
+    spyOn(component, "getUserDetails");
+
+    component.authForm.setValue({
+      userName: "exampleUser",
+      passWord: "examplePassword",
+      remember: true,
+    });
+
+    component.onSubmit();
+
+    expect(component.authForm.valid).toBeTrue();
+    expect(authService.authenticate).toHaveBeenCalled();
+    expect(component.getUserDetails).not.toHaveBeenCalled();
+    expect(component.loginError).toBe("Something went wrong, please try again");
+  });
+
+  it("should call authService.getUserDetails with the correct appId", () => {
+    const authServiceSpy = spyOn(authService, "getUserDetails").and.returnValue(of({}));
+    component.getUserDetails();
+    expect(authServiceSpy).toHaveBeenCalledWith(component.appId);
   });
 });

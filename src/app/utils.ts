@@ -65,7 +65,7 @@ export const parseApiResponse = (result: Result): Result => {
 export const validateFields = (fields: any[], isPageSubmit = false) => {
   let result = true;
   let errorFields = [];
-  fields.forEach((field: any) => {
+  fields?.forEach((field: any) => {
     if (field.error && isPageSubmit && !field?.metaData?.isHidden) {
       result = false;
       errorFields.push(field);

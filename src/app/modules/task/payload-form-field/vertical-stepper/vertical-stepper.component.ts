@@ -104,7 +104,7 @@ export class VerticalStepperComponent implements OnInit {
       let isError = true;
       for (let i = this.selectedIndex; i < index; i++) {
         const child = this.children[i];
-        const { result: validate } = validateFields(child.children);
+        const { result: validate } = validateFields(child?.children);
         if (!validate) {
           isError = false;
         }

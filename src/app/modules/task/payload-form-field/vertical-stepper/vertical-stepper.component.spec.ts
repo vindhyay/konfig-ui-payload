@@ -56,6 +56,16 @@ describe("EditorStepperComponent", () => {
     expect(component.selectedIndex).toBe(2);
   });
 
+  it("should set selectedIndex to index when isFreeFlow is true", () => {
+    component.metaData = new StepperContainerMetaData({ isFreeFlow: true });
+    component.selectedIndex = 0;
+    component.metaData = { isFreeFlow: false } as any;
+    component.children = [{ children: [] }];
+
+    component.onSelectIndexChange(1);
+    expect(component.selectedIndex).toBe(0);
+  });
+
   it("should increase selectedIndex and call onBtnClick when all fields are valid and there are more steps", () => {
     component.children = [
       {

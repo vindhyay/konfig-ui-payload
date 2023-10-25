@@ -140,7 +140,7 @@ export class EditorService extends BaseService {
             paramField.errorMessage = "";
           } else {
             paramField.error = true;
-            if(paramField.metaData){
+            if (paramField.metaData) {
               paramField.metaData.errorMessage = getErrorMessages(
                 tempFormControl.errors,
                 paramField?.label || paramField?.widgetName
@@ -397,7 +397,7 @@ export class EditorService extends BaseService {
         this.onPopulateTriggerCondition(field.children);
       }
     });
-  };
+  }
   uploadFile = (formData, transactionId): Observable<any> => {
     const url = `${this.config.getApiUrls().uploadFile}`.replace("{transactionId}", transactionId);
     return this.postData(url, formData);

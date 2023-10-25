@@ -6,7 +6,7 @@ import { ChangeDetectorRef } from "@angular/core";
 import { RouterTestingModule } from "@angular/router/testing";
 import { PaginationFilterPipe } from "./table-utils/pagination-filter.pipe";
 import { CustomFilterPipe } from "src/app/pipes/custom-filter.pipe";
-import { TABLE_OVERFLOW, Validators, WidgetTypes } from "../../task/model/create-form.models";
+import { TABLE_OVERFLOW, WidgetTypes } from "../../task/model/create-form.models";
 import { SelectionModel } from "@angular/cdk/collections";
 
 describe("CustomTableComponent", () => {
@@ -567,5 +567,40 @@ describe("CustomTableComponent", () => {
     const result = component.getErrorMessages(errors, label);
 
     expect(result).toEqual([]);
+  });
+
+  it("should save the row data and emit handleRowSave event when the row data passes validation", () => {
+    const index = 0;
+    const rowData = { name: "John", age: 25, email: "john@example.com" };
+    const isNew = false;
+    let handleRowSaveEventEmitted = false;
+
+    component.handleRowSave.subscribe((event) => {
+      expect(event.index).toBe(index);
+      expect(event.rowData).toEqual(rowData);
+      handleRowSaveEventEmitted = true;
+    });
+    component.validateRow = () => true;
+    component.onRowSave(index, rowData, isNew);
+
+    expect(component.newRows[index]).toBeUndefined();
+    expect(component.editRows[index]).toBeUndefined();
+    expect(component.rowErrors[index]).toBeUndefined();
+    expect(component.modifyingData[index]).toBeUndefined();
+    expect(component.editCells[index]).toBeUndefined();
+    expect(component.tableData[index]).toEqual(rowData);
+    expect(handleRowSaveEventEmitted).toBe(true);
+  });
+
+  it("should validate a row with valid data and return true", () => {
+    const index = 0;
+    const rowData = {
+      column1: "value1",
+      column2: "value2",
+      column3: "value3",
+    };
+    component.getValidators = () => {};
+    const isValid = component.validateRow(index, rowData);
+    expect(isValid).toBe(true);
   });
 });
