@@ -41,7 +41,7 @@ pipeline {
                     catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
                         sh 'ng test --code-coverage --watch=false'
                     }
-                    sh "ls coverage/"
+                    sh "ls coverage/finlevit-payload"
                     sh "pwd"
                     sonarCoverage "Scanning ${NAME}"
                 }
