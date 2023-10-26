@@ -37,12 +37,15 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                try {
-                    sh 'ng test --code-coverage'
-                } catch (Exception e) {
-                    echo "Tests failed, but proceeding with the pipeline."
+                script {
+                    try {
+                        sh 'ng test --code-coverage'
+                    } 
+                    catch (Exception e) {
+                        echo "Tests failed, but proceeding with the pipeline."
+                    }
+                    sonarCoverage "Scanning ${NAME}"
                 }
-                sonarCoverage "Scanning ${NAME}"
             }
         }
 
