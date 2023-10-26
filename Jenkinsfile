@@ -44,6 +44,8 @@ pipeline {
                     catch (Exception e) {
                         echo "Tests failed, but proceeding with the pipeline."
                     }
+                    sh "ls"
+                    sh "pwd"
                     sonarCoverage "Scanning ${NAME}"
                 }
             }
