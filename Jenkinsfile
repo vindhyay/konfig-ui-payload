@@ -36,9 +36,6 @@ pipeline {
         }
 
         stage('SonarQube Analysis') {
-            when {
-                expression { params.Quality_Check }
-            }
             steps {
                 sh 'ng test --code-coverage' 
                 sonarCoverage "Scanning ${NAME}"
