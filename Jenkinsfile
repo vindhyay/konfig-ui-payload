@@ -39,7 +39,7 @@ pipeline {
             steps {
                 script {
                     catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
-                        sh 'ng test --code-coverage'
+                        sh 'ng test --code-coverage --watch=false'
                     }
                     sh "ls"
                     sh "pwd"
