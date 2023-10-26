@@ -38,11 +38,8 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 script {
-                    try {
+                    catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
                         sh 'ng test --code-coverage'
-                    } 
-                    catch (Exception e) {
-                        echo "Tests failed, but proceeding with the pipeline."
                     }
                     sh "ls"
                     sh "pwd"
