@@ -41,7 +41,7 @@ pipeline {
                     catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
                         sh 'ng test --code-coverage --watch=false'
                     }
-                    sh "ls"
+                    sh "ls coverage/"
                     sh "pwd"
                     sonarCoverage "Scanning ${NAME}"
                 }
