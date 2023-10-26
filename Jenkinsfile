@@ -2,7 +2,7 @@ library identifier: 'jenkinsfile-library@master', retriever: modernSCM([$class: 
 
 pipeline {
     agent {
-        label "kubeagent"
+        label "kubeagentc"
     } 
     parameters {
         booleanParam(name: 'Quality_Check', defaultValue: false, description: 'Use this for scanning the code with SonarQube and image with Trivy during deployment.')
@@ -36,11 +36,13 @@ pipeline {
         }
 
         stage('SonarQube Analysis') {
-            when {
-                expression { params.Quality_Check }
-            }
             steps {
-                sonarCoverage "Scanning ${NAME}"
+                script {
+                    catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
+                        sh 'ng test --code-coverage'
+                    }
+                    sonarCoverage "Scanning ${NAME}"
+                }
             }
         }
 
