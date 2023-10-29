@@ -2,7 +2,7 @@ pipeline {
 
     agent {
     label "kubeagent"
-    } 
+    }
     parameters {
         booleanParam(name: 'Quality_Check', defaultValue: false, description: 'Use this for scanning the code with SonarQube and image with Trivy during deployment.')
     }
@@ -12,7 +12,7 @@ pipeline {
     triggers {
             gitlab(triggerOnPush: true, triggerOnMergeRequest: true)
         }
-    
+
     environment {
         GIT_SSL_NO_VERIFY = 'true'
         NAME = "finlevit-payload"
@@ -29,7 +29,7 @@ pipeline {
                     def buildcause = currentBuild.getBuildCauses()
                     if (buildcause[0]._class == 'org.jenkinsci.plugins.workflow.support.steps.build.BuildUpstreamCause') {
                         env.authorName = buildcause[0].upstreamProject
-                    } 
+                    }
                     else {
                         env.authorName = sh(script: "git --no-pager show -s --format='%an' ${GIT_COMMIT}", returnStdout: true).trim()
                     }
@@ -49,7 +49,7 @@ pipeline {
             }
         }
 
-    
+
         stage('Clone Helm Repository') {
             steps {
                 dir('helm-resources') {

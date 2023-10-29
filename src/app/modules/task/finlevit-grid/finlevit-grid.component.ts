@@ -36,7 +36,6 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
   Button: WidgetTypes = WidgetTypes.Button;
   Modal: WidgetTypes = WidgetTypes.Modal;
   CollapseContainer: WidgetTypes = WidgetTypes.CollapseContainer;
-  ErrorContainer: WidgetTypes = WidgetTypes.ErrorContainer;
   transactionId: any;
   taskId: any;
   allEligibleFields = [];
@@ -125,7 +124,7 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
       const item = eachItem.item;
       const baseItem = baseGridItem.$item;
       const checkSameItem = (item, baseItem) => {
-        const isSame = item.widgetId !== baseGridItem.item.widgetId;
+        const isSame = item.widgetId !== baseGridItem.item?.widgetId;
         return isSame;
       };
       const checkIsBottom = (item, baseItem) => {
@@ -244,7 +243,7 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
   fillAddressDetails(addressDetails: { widget: any; address: AddressDetails }) {
     let ValidationFields = [];
     let widget = addressDetails.widget;
-    let widgetIds = widget?.metaData?.linkedWidetIds;
+    let widgetIds = widget?.metaData?.linkedWidgetIds;
     let address: AddressDetails = addressDetails.address;
     let ruleIds = [];
     if (address) {

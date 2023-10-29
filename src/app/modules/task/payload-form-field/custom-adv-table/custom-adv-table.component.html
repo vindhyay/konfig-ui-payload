@@ -55,7 +55,7 @@
             <div class="f-resizer" (resizable)="onResize($event, col)"></div>
           </div>
           <div
-            *ngIf="actions.editRow || actions.deleteRow"
+            *ngIf="actions?.editRow || actions?.deleteRow"
             class="f-th"
             [ngStyle]="{
               width: (actions?.width || 100) + 'px',

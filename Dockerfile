@@ -1,7 +1,7 @@
 FROM nginx:alpine
 
 # Install necessary package and create a non-root user
-RUN apk add --no-cache libx11=1.8.4-r4 && \
+RUN apk add --no-cache --repository https://dl-cdn.alpinelinux.org/alpine/v3.18/main  libx11=1.8.4-r4 && \
     adduser -D -u 1001 konfig
 
 # Change ownership and permissions

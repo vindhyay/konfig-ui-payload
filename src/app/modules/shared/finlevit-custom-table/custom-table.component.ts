@@ -256,7 +256,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
   }
   onDelete($event: any, index: any, rowData: any, isNew = false) {
     if ($event) {
-      $event.stopPropagation();
+      $event?.stopPropagation();
     }
     if (this.actions?.emitOnDelete && !isNew) {
       this.onRowDeleteClick.emit({ event: $event, data: rowData });
@@ -288,7 +288,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
   }
   onRowSave(index, rowData, isNew = false) {
     if (this.validateRow(index, rowData)) {
-      this.handleRowSave.emit({ index, rowData });
+      this.handleRowSave?.emit({ index, rowData });
       if (isNew) {
         delete this.newRows[index];
       } else {
@@ -300,40 +300,6 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
       this.tableData[index] = rowData;
     }
   }
-  onColEdit($event, column, rowIndex, rowData) {
-    if (!this.editCells[rowIndex]) {
-      this.editCells[rowIndex] = {};
-    }
-    this.editCells[rowIndex][column.columnId] = superClone(this.tableData[rowIndex][column.columnId]);
-    if (!this.modifyingData[rowIndex]) {
-      this.modifyingData[rowIndex] = superClone(rowData);
-    }
-  }
-  onColSave($event) {
-    Object.keys(this.modifyingData).forEach((index) => {
-      if (this.validateRow(index, this.modifyingData[index])) {
-        this.tableData[index] = { ...this.tableData[index], ...this.modifyingData[index] };
-        if (this.newRows[index]) {
-          delete this.newRows[index];
-        }
-        delete this.editRows[index];
-        delete this.editCells[index];
-        delete this.modifyingData[index];
-      }
-    });
-    this.handleColsSave.emit();
-  }
-  onColSaveCancel($event) {
-    this.editCells = {};
-    Object.keys(this.modifyingData).forEach((rowIndex) => {
-      if (this.newRows[rowIndex]) {
-        this.onDelete(null, rowIndex, this.modifyingData[rowIndex], true);
-      }
-    });
-    this.modifyingData = {};
-    this.editRows = {};
-    this.cdr.detectChanges();
-  }
   validateRow(index, rowData, columnId = "") {
     let valid = true;
     Object.keys(rowData).forEach((column) => {
@@ -342,7 +308,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
       }
       const columnValue = rowData[column];
       const columnConfig = this.columns.find((col) => col.columnId === column);
-      const tempFormControl = new FormControl(columnValue, this.getValidators(columnConfig.validators) || []);
+      const tempFormControl = new FormControl(columnValue, this.getValidators(columnConfig?.validators) || []);
       if (tempFormControl.valid) {
         if (!this.rowErrors[index]) {
           this.rowErrors[index] = {};
@@ -556,12 +522,12 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
     return this.tableData[rowIndex][col?.columnId];
   }
 
-  columnFilterHiddenColumns = (column: Column) => {
+  columnFilterHiddenColumns(column: Column) {
     if (column?.metaData?.hasOwnProperty("isHidden")) {
       return !column?.metaData?.isHidden;
     }
     return true;
-  };
+  }
   columnFilterNoFilterColumns = (column: any) => {
     return column?.filter !== false;
   };

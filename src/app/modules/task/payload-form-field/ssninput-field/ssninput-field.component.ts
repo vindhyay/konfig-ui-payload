@@ -18,15 +18,17 @@ export class SSNInputFieldComponent implements OnInit {
   }
 
   @Input() set value(value: any) {
-    if (value && this._type_mask === this.metaData.showMask) {
+    if (value && this._type_mask === this.metaData?.showMask) {
       this.changeIcon(this.metaData);
     }
   }
   ngOnInit(): void {
-    if (!this.metaData.rightIcon) {
-      this.metaData.rightIcon = this.metaData.showIcon ? this.metaData.showIcon : null;
+    if (!this.metaData?.rightIcon) {
+      if (this.metaData) {
+        this.metaData.rightIcon = this.metaData?.showIcon ? this.metaData.showIcon : null;
+      }
     }
-    if (this._type_mask === this.metaData.showMask) {
+    if (this._type_mask === this.metaData?.showMask) {
       this.changeIcon(this.metaData);
     }
   }
@@ -49,7 +51,7 @@ export class SSNInputFieldComponent implements OnInit {
   }
   optionChange($event: any) {
     setTimeout(() => {
-      this._type_mask = this.metaData.showMask;
+      this._type_mask = this.metaData?.showMask;
       this.changeIcon(this.metaData);
       this.onBlurChange.emit($event);
     }, 0);

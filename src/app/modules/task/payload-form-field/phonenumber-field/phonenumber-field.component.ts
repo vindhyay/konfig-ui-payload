@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from "@angular/core";
-import { BaseWidget, PhonenumberInputMetaData } from "../../model/create-form.models";
+import { BaseWidget, PhoneNumberMetaData } from "../../model/create-form.models";
 
 @Component({
   selector: "app-phonenumber-field",
@@ -12,8 +12,8 @@ export class PhonenumberFieldComponent {
   @Output() onValueChange = new EventEmitter();
   @Output() onBlurChange = new EventEmitter();
 
-  get metaData(): PhonenumberInputMetaData {
-    return this.item.metaData as PhonenumberInputMetaData;
+  get metaData(): PhoneNumberMetaData {
+    return this.item.metaData as PhoneNumberMetaData;
   }
 
   validateField($event: any) {
@@ -22,13 +22,5 @@ export class PhonenumberFieldComponent {
   }
   optionChange($event: any) {
     this.onBlurChange.emit($event);
-  }
-
-  setCursor() {
-    let tempValue = this.item.value.value;
-    this.item.value.value = "";
-    setTimeout(() => {
-      this.item.value.value = tempValue;
-    }, 0);
   }
 }
