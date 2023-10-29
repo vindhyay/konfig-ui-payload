@@ -25,12 +25,16 @@ export class CollapseContainerComponent implements AfterViewInit {
     if (!status) {
       this.item.rows = item?.metaData?.hideRows || 0;
       this.item.minItemRows = item?.metaData?.hideRows || 0;
-      this.item.metaData.movement = "UP";
+      if (this.item.metaData) {
+        this.item.metaData.movement = "UP";
+      }
     } else {
       this.item.rows = item.metaData?.defaultRows;
       this.item.minItemRows = item.metaData?.defaultMinItemRows;
       this.item.minItemCols = item.metaData?.defaultMinItemCols;
-      this.item.metaData.movement = "DOWN";
+      if (this.item.metaData) {
+        this.item.metaData.movement = "DOWN";
+      }
     }
     this.editorService.widgetChange.next(item);
     this.editorService.setContainerHeight(this.editorService.getFormFields());

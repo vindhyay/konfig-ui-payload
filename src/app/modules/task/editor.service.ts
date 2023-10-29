@@ -18,7 +18,6 @@ import { BaseService } from "../../services/base.service";
 import { HttpClient } from "@angular/common/http";
 import { AppConfigService } from "../../app-config-providers/app-config.service";
 import { LoaderService } from "../../services/loader.service";
-import { isNull } from "lodash";
 
 @Injectable({
   providedIn: "root",
@@ -141,10 +140,12 @@ export class EditorService extends BaseService {
             paramField.errorMessage = "";
           } else {
             paramField.error = true;
-            paramField.metaData.errorMessage = getErrorMessages(
-              tempFormControl.errors,
-              paramField?.label || paramField?.widgetName
-            )[0];
+            if (paramField.metaData) {
+              paramField.metaData.errorMessage = getErrorMessages(
+                tempFormControl.errors,
+                paramField?.label || paramField?.widgetName
+              )[0];
+            }
           }
         } else {
           parameter.value = inputValue;
@@ -177,7 +178,6 @@ export class EditorService extends BaseService {
         return;
       }
       const formFields = this.getFormFields();
-      this.setHiddenFieldValue(formFields);
       const triggerData = { triggerId: widgetId, data: $event?.data, uiActions: uiActions };
       // If first action either submit or next screen action need to validate fields
       const isValidationRequired =
@@ -391,35 +391,13 @@ export class EditorService extends BaseService {
       }
     });
   }
-  evaluateFilter(filtersLogic, resultArray) {
-    const expressionArray = filtersLogic
-      .split(/[.\()&|_]/)
-      .filter(function (indexItem) {
-        return indexItem != null && indexItem.length;
-      })
-      .sort()
-      .reverse();
-    let expression = filtersLogic;
-
-    expressionArray.forEach((item) => {
-      if (!isNaN(item)) {
-        expression = expression.replaceAll(item, resultArray[item - 1]);
-      }
-    });
-    return dynamicEvaluation(expression);
-  }
-  onPopulateTriggerCondition = (fields: any[]) => {
+  onPopulateTriggerCondition(fields: any[]) {
     fields.forEach((field: any) => {
       if (field?.children && field?.children?.length) {
         this.onPopulateTriggerCondition(field.children);
       }
     });
-  };
-
-  getDataListValues = (payload): Observable<any> => {
-    const url = `${this.config.getApiUrls().getDataListValuesURL}`;
-    return this.postData(url, payload);
-  };
+  }
   uploadFile = (formData, transactionId): Observable<any> => {
     const url = `${this.config.getApiUrls().uploadFile}`.replace("{transactionId}", transactionId);
     return this.postData(url, formData);
@@ -466,61 +444,6 @@ export class EditorService extends BaseService {
   executeRules = (payload, params): Observable<any> => {
     const url = `${this.config.getApiUrls().executeRulesURL}`;
     return this.postData(url, payload, params);
-  };
-
-  //Updating hidden field values based on formula --- work around
-  setHiddenFieldValue(payloadFields) {
-    payloadFields?.forEach((field) => {
-      if (field?.children && field?.children?.length) {
-        this.setHiddenFieldValue(field.children);
-      }
-    });
-  }
-
-  getConditions(ifConditionsIds: any): any {
-    return this.getConditionDetails()?.filter((item: any) => ifConditionsIds.includes(item?.id)) || [];
-  }
-  calcDate(date1, date2) {
-    const diff = Math.floor(date1.getTime() - date2.getTime());
-    const day = 1000 * 60 * 60 * 24;
-    const days = Math.floor(diff / day);
-    const months = Math.floor(days / 31);
-    const years = Math.floor(months / 12);
-    return { days: days, months: months, years: years };
-  }
-  addMonths(dateValue, months = 0) {
-    const result = new Date(dateValue);
-    result.setMonth(result.getMonth() + Number(months));
-    return result;
-  }
-  addDays(date, days) {
-    const result = new Date(date);
-    result.setDate(result.getDate() + parseInt(days));
-    return result;
-  }
-
-  rulesConditionEvaluation = {
-    convertCase: (stringValue): string => {
-      if (stringValue) {
-        return stringValue?.toLowerCase();
-      } else if (isNull(stringValue)) {
-        return stringValue;
-      } else {
-        return null;
-      }
-    },
-    isGreaterThan: (fieldValue: number, value: number): boolean => {
-      return fieldValue > value;
-    },
-    isGreaterThanEqual: (fieldValue: number, value: number): boolean => {
-      return fieldValue >= value;
-    },
-    isLessThan: (fieldValue: number, value: number): boolean => {
-      return fieldValue < value;
-    },
-    isLessThanEqual: (fieldValue: number, value: number): boolean => {
-      return fieldValue <= value;
-    },
   };
 
   checkIfTriggerInProgress() {

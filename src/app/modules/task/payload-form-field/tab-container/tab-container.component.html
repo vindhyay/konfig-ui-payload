@@ -6,7 +6,7 @@
   [style.--border-radius]="this.item?.metaData?.styleProperties?.properties?.borderRadius"
 >
   <p-tabView [activeIndex]="tabActiveIndex" (onChange)="onTabChange($event)">
-    <ng-container *ngFor="let child of item.children; let i = index">
+    <ng-container *ngFor="let child of item?.children; let i = index">
       <p-tabPanel *ngIf="!child?.metaData?.isHidden" [header]="child.label">
         <ng-template pTemplate="header">
           <finlevit-icon-preview
@@ -24,12 +24,12 @@
         <div
           [ngClass]="{
             'nested-grid-container': true,
-            'empty-child': !child.children.length
+            'empty-child': !child?.children.length
           }"
         >
           <finlevit-grid
             [parent]="child"
-            [items]="child.children"
+            [items]="child?.children"
             [style.--background-color]="this.item.metaData?.styleProperties?.properties?.backgroundColor"
           ></finlevit-grid>
         </div>

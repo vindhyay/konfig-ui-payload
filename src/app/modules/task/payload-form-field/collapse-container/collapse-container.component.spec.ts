@@ -28,4 +28,41 @@ describe("CollapseContainerComponent", () => {
   it("should create", () => {
     expect(component).toBeTruthy();
   });
+
+  it("should collapse the container when status is false", () => {
+    const item = {
+      metaData: {
+        hideRows: 2,
+        defaultRows: 4,
+        defaultMinItemRows: 2,
+        defaultMinItemCols: 2,
+        movement: null,
+      },
+    };
+    const status = false;
+
+    component.onCollapse(status, item);
+
+    expect(component.item.rows).toBe(item.metaData.hideRows);
+    expect(component.item.minItemRows).toBe(item.metaData.hideRows);
+  });
+
+  it("should expand the container when status is true", () => {
+    const item = {
+      metaData: {
+        hideRows: 2,
+        defaultRows: 4,
+        defaultMinItemRows: 2,
+        defaultMinItemCols: 2,
+        movement: null,
+      },
+    };
+    const status = true;
+
+    component.onCollapse(status, item);
+
+    expect(component.item.rows).toBe(item.metaData.defaultRows);
+    expect(component.item.minItemRows).toBe(item.metaData.defaultMinItemRows);
+    expect(component.item.minItemCols).toBe(item.metaData.defaultMinItemCols);
+  });
 });

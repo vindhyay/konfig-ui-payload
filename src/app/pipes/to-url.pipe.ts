@@ -5,6 +5,6 @@ import { Pipe, PipeTransform } from "@angular/core";
 })
 export class ToUrlPipe implements PipeTransform {
   transform(link: string, ...args: unknown[]): unknown {
-    return link.startsWith("http://") || link.startsWith("https://") ? link : `http://${link}`;
+    return link?.startsWith("http://") || link?.startsWith("https://") ? link : `http://${link}`;
   }
 }
