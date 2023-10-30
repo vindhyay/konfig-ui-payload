@@ -1,213 +1,94 @@
-pipeline {
+library identifier: 'jenkinsfile-library@master', retriever: modernSCM([$class: 'GitSCMSource', remote: 'https://konfig-git.tabner.com/konfig/konfig-devops/jenkinsfile-library.git', credentialsId: 'jenkins-konfig'])
 
+pipeline {
     agent {
-    label "kubeagent"
-    }
+        label "kubeagentc"
+    } 
     parameters {
-        booleanParam(name: 'Quality_Check', defaultValue: false, description: 'Use this for scanning the code with SonarQube and image with Trivy during deployment.')
+        booleanParam(name: 'Quality_Check', defaultValue: true, description: 'Use this for scanning the code with SonarQube and image with Trivy during deployment.')
     }
     tools {
         nodejs "Node"
     }
     triggers {
-            gitlab(triggerOnPush: true, triggerOnMergeRequest: true)
-        }
-
+        gitlab(triggerOnPush: true, triggerOnMergeRequest: true)
+    }
     environment {
         GIT_SSL_NO_VERIFY = 'true'
         NAME = "finlevit-payload"
-        REPO = "harbor.tabner.com:443/konfig-sit"
+        REPO = "harbor.tabner.com:443/konfig"
         AWS_REPO = "388868315655.dkr.ecr.us-east-1.amazonaws.com/konfig"
-        LOC = "sit"
+        LOC = "${env.BRANCH_NAME}"
     }
 
     stages {
-        stage('Checkout Source and find the author') {
+        stage('Checkout and author') {
             steps {
                 checkout scm
-                script {
-                    def buildcause = currentBuild.getBuildCauses()
-                    if (buildcause[0]._class == 'org.jenkinsci.plugins.workflow.support.steps.build.BuildUpstreamCause') {
-                        env.authorName = buildcause[0].upstreamProject
-                    }
-                    else {
-                        env.authorName = sh(script: "git --no-pager show -s --format='%an' ${GIT_COMMIT}", returnStdout: true).trim()
-                    }
-                }
+                preBuild linkedLOC:"${LOC}"
             }
         }
 
-        stage('Clone app-release') {
+        stage('Build') {
             steps {
-                dir('app-release') {
-                    git(
-                        url: 'https://konfig-git.tabner.com/konfig/konfig-devops/app-release.git',
-                        branch: env.LOC,
-                        credentialsId: 'jenkins-konfig'
-                    )
-                }
-            }
-        }
-
-
-        stage('Clone Helm Repository') {
-            steps {
-                dir('helm-resources') {
-                    git(
-                        url: 'https://konfig-git.tabner.com/konfig/konfig-devops/helm-resources.git',
-                        branch: 'dev',
-                        credentialsId: 'jenkins-konfig'
-                    )
-                }
-            }
-        }
-
-        stage('Service Versions') {
-            steps {
-                script {
-                    def json = readJSON file: 'app-release/service.json'
-                    def versionnum = json[NAME]
-                    env.ENV_GIT_COMMIT = sh (script: 'git log -1 --pretty=format:%h',returnStdout: true).trim()
-                    env.ENV_CURRENT_DATE = sh (script: 'date +%d-%m-%Y""%H%M%S',returnStdout: true).trim()
-                    env.service_version = "${versionnum}-${ENV_CURRENT_DATE}-${ENV_GIT_COMMIT}"
-                }
-            }
-        }
-
-        stage('Install dependencies'){
-            steps {
-            //sh 'npm config ls'
-            echo"Let's remove the packge-lock.json to avoid any unnecessary issues"
-            sh 'rm -rf package-lock.json'
-            echo"now install the dependencies which will auto-generate new package-lock.json file"
-            echo"this will be done in Build Docker Image Stage"
-            //sh 'npm install'
-            sh 'npm install'
-            sh 'npm run build'
-            //echo "Npm Packages has been installed"
+                buildNpm "Building ${NAME}"
             }
         }
 
         stage('SonarQube Analysis') {
-            when {
-                expression { params.Quality_Check }
-            }
             steps {
                 script {
-                    def scannerHome = tool 'SonarQube'
-                    withSonarQubeEnv('sonar_new') {
-                        sh "${scannerHome}/bin/sonar-scanner"
+                    catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
+                        sh 'ng test --code-coverage'
                     }
+                    sonarCoverage "Scanning ${NAME}"
                 }
             }
         }
 
         stage('Building Docker Image') {
             steps {
-                sh "docker build -t ${REPO}/${NAME} ."
-                sh "docker tag ${REPO}/${NAME}:latest ${REPO}/${NAME}:${env.service_version}"
-                sh "docker tag ${REPO}/${NAME}:${env.service_version} ${AWS_REPO}/${NAME}:${env.service_version}"
+                buildDocker "Building Docker image of ${NAME}"
             }
         }
 
         stage('Docker Image Testing') {
             steps {
-                sh "docker image inspect ${REPO}/${NAME}:${env.service_version}"
+                inspectDocker "Testing Docker image of ${NAME}"
             }
-        }
+        }  
 
         stage('Push to Harbor and ECR') {
             steps {
-                echo "Pushing the Docker Image to Remote Registry(Harbor)"
-                sh "docker login -u $HARBOR_USER -p $HARBOR_PASSWORD harbor.tabner.com:443"
-            	sh "docker push ${REPO}/${NAME}:${env.service_version}"
-                sh "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 388868315655.dkr.ecr.us-east-1.amazonaws.com"
-                sh "docker push ${AWS_REPO}/${NAME}:${env.service_version}"
+                publishDocker "Publishing Docker image of ${NAME} to Harbor and AWS ECR"
             }
         }
-
-        stage('Deploy to Dev') {
-            when {
-                expression {
-                    return env.BRANCH_NAME == env.LOC;
-                }
-            }
+        
+        stage('Deploy to onPrem') {
             steps {
-                echo "Deploying the latest version"
-				script {
-                    def release_name = env.NAME
+                script {
                     def chartVersion = '0.1.0'
-                    def serviceVersion= env.service_version
-                    echo"Deploying the ${serviceVersion} version of ${release_name} in ${LOC}"
-                    sh """
-                    export KUBECONFIG='/home/jenkins/agent/kubeconfig/kubeconfig-${LOC}.yaml'
-                    chmod 600 /home/jenkins/agent/kubeconfig/kubeconfig-${LOC}.yaml
-                    cd helm-resources/${release_name}
-                    helm package .
-                    if helm list -n ${LOC} | grep -E '(^|[[:space:]])${release_name}([[:space:]]|\$)'; then
-                    helm upgrade ${release_name} ${release_name}-${chartVersion}.tgz --set namespace=${LOC},image.repository=${REPO},image.version=${serviceVersion},domain=${LOC}.tabner.konfig.io,env=${LOC} -n ${LOC}
-                    else
-                    helm install ${release_name} ${release_name}-${chartVersion}.tgz --set namespace=${LOC},image.repository=${REPO},image.version=${serviceVersion},domain=${LOC}.tabner.konfig.io,env=${LOC} -n ${LOC}
-                    fi
-                    """
-                    echo"Successfully deployed the ${serviceVersion} version of the Application ${release_name} in ${LOC}"
+                    deployHelm.onprem  linkedLOC: "${LOC}", release_name: env.NAME, serviceVersion: env.service_version, linkedREPO: "${REPO}", helmchart: "ui-charts"
             	}
             }
         }
 
-        stage('Deploy to Cloud Dev') {
-            when {
-                expression {
-                    return env.BRANCH_NAME == env.LOC;
-                }
-            }
+        stage('Deploy to cloud') {
             steps {
-                echo "Deploying the latest version"
-				script {
-                    def release_name = env.NAME
+                script {
                     def chartVersion = '0.1.0'
-                    def serviceVersion= env.service_version
-                    echo"Deploying the ${serviceVersion} version of ${release_name} in ${LOC}"
-                    sh """
-                    aws eks update-kubeconfig --region us-east-1 --name finlevit-dev
-                    cd helm-resources/${release_name}
-                    helm package .
-                    if helm list -n ${LOC} | grep -E '(^|[[:space:]])${release_name}([[:space:]]|\$)'; then
-                    helm upgrade ${release_name} ${release_name}-${chartVersion}.tgz --set namespace=${LOC},vault.role=vault-${LOC}-auth,serviceaccount=vault-${LOC}-auth,image.repository=${AWS_REPO},image.version=${serviceVersion},domain=${LOC}.tabner.finlevit.us,env=${LOC} -n ${LOC}
-                    else
-                    helm install ${release_name} ${release_name}-${chartVersion}.tgz --set namespace=${LOC},vault.role=vault-${LOC}-auth,serviceaccount=vault-${LOC}-auth,image.repository=${AWS_REPO},image.version=${serviceVersion},domain=${LOC}.tabner.finlevit.us,env=${LOC} -n ${LOC}
-                    fi
-                    """
-                    echo"Successfully deployed the ${serviceVersion} version of the Application ${release_name} in ${LOC}"
+                    deployHelm.cloud  linkedLOC: "${LOC}", release_name: env.NAME, serviceVersion: env.service_version, linkedREPO: "${AWS_REPO}", helmchart: "ui-charts"
             	}
             }
         }
 
         stage('Push to app-release') {
             steps {
-                script {
-                    withCredentials([string(credentialsId: 'jenkins-fin-gitlab-token', variable: 'GITLAB_TOKEN')]) {
-                        dir('app-release') {
-                            sh '''
-                                git config --global user.email "jenkins.konfig@tabnerglobal.com"
-                                git config --global user.name "jenkins-konfig"
-                                git pull https://oauth2:${GITLAB_TOKEN}@konfig-git.tabner.com/konfig/konfig-devops/app-release.git ${LOC}
-                            '''
-                            def json = readJSON file: 'config.json'
-                            json[NAME] = env.service_version.toString()
-                            writeFile file: 'config.json', text: groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(json))
-                            sh '''
-                                git add config.json
-                                git commit -m "Upgraded ${NAME} version"
-                                git push https://oauth2:${GITLAB_TOKEN}@konfig-git.tabner.com/konfig/konfig-devops/app-release.git ${LOC}
-                            '''
-                        }
-                    }
-                }
+                updateJson "Updating the existing service version in the config.json file in app-release repo"
             }
         }
     }
-
+    
     post {
         success {
             script{
