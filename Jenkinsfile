@@ -41,6 +41,7 @@ pipeline {
                     catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
                         sh """ 
                         su chromium_user
+                        export CHROME_BIN=/usr/bin/chromium-browser
                         ng test --code-coverage
                         exit
                         """
