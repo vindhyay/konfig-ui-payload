@@ -8,6 +8,7 @@ import { PaginationFilterPipe } from "./table-utils/pagination-filter.pipe";
 import { CustomFilterPipe } from "src/app/pipes/custom-filter.pipe";
 import { TABLE_OVERFLOW, WidgetTypes } from "../../task/model/create-form.models";
 import { SelectionModel } from "@angular/cdk/collections";
+import { PaginationDirective } from "./table-utils/pagination.directive";
 
 describe("CustomTableComponent", () => {
   let component: CustomTableComponent;
@@ -15,7 +16,7 @@ describe("CustomTableComponent", () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CustomTableComponent, PaginationFilterPipe, CustomFilterPipe],
+      declarations: [CustomTableComponent, PaginationFilterPipe, CustomFilterPipe, PaginationDirective],
       imports: [HttpClientTestingModule, RouterTestingModule],
       providers: [ChangeDetectorRef],
     }).compileComponents();

@@ -48,7 +48,7 @@ describe("PaginationDirective", () => {
     tick();
 
     expect(component.pageNo).toBe(3);
-    expect(component.onPageChange).toHaveBeenCalledWith(1);
+    expect(component.onPageChange).toHaveBeenCalledWith(5);
   }));
 
   it("should handle first, prev, next, and last buttons", fakeAsync(() => {

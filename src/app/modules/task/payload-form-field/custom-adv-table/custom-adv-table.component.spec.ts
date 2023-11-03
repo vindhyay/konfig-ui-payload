@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, fakeAsync, tick } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { CustomAdvTableComponent } from "./custom-adv-table.component";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
@@ -7,6 +7,7 @@ import { ConfirmationService } from "primeng/api";
 import { PaginationFilterPipe } from "src/app/modules/shared/finlevit-custom-table/table-utils/pagination-filter.pipe";
 import { FilterPipe } from "src/app/pipes/filter.pipe";
 import { BaseWidget, CELL_ALIGNMENTS_TYPES, Column, WidgetTypes } from "../../model/create-form.models";
+import { PaginationDirective } from "../../../shared/finlevit-custom-table/table-utils/pagination.directive";
 
 describe("CustomAdvTableComponent", () => {
   let component: CustomAdvTableComponent;
@@ -14,7 +15,7 @@ describe("CustomAdvTableComponent", () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CustomAdvTableComponent, PaginationFilterPipe, FilterPipe],
+      declarations: [CustomAdvTableComponent, PaginationFilterPipe, FilterPipe, PaginationDirective],
       imports: [HttpClientTestingModule, RouterTestingModule],
       providers: [ConfirmationService],
     }).compileComponents();
