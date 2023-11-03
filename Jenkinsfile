@@ -39,7 +39,9 @@ pipeline {
             steps {
                 script {
                     catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
+                        sh 'su chromium_user'
                         sh 'ng test --code-coverage'
+                        sh 'exit'
                     }
                     sonarCoverage "Scanning ${NAME}"
                 }
