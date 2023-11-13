@@ -18,7 +18,7 @@ pipeline {
         NAME = "finlevit-payload"
         REPO = "harbor.tabner.com:443/konfig"
         AWS_REPO = "388868315655.dkr.ecr.us-east-1.amazonaws.com/konfig"
-        LOC = "dev"
+        LOC = "fix"
     }
 
     stages {
@@ -78,20 +78,33 @@ pipeline {
                     steps {
                         script { 
                             def chartVersion = '0.1.0'
-                            deployHelm.onprem  linkedLOC: "${LOC}", release_name: env.NAME, serviceVersion: env.service_version, linkedREPO: "${REPO}", helmchart: "ui-charts"
+                            echo"Deploying the ${env.service_version} version of ${env.NAME} in ${LOC}"
+                            sh """
+                            export KUBECONFIG='/home/jenkins/agent/kubeconfig/kubeconfig-dev.yaml'
+                            chmod 600 /home/jenkins/agent/kubeconfig/kubeconfig-dev.yaml
+                            cd helm-resources/ui-charts
+                            helm package .
+                            if helm list -n ${LOC} | grep -E '(^|[[:space:]])${env.NAME}([[:space:]]|\$)'; then
+                            helm upgrade ${NAME} ui-charts-${chartVersion}.tgz -f ../../helm-values-on-prem/${NAME}.yaml --set image.repository=${REPO},image.version=${env.service_version} -n ${LOC}
+                            else
+                            helm install ${NAME} ui-charts-${chartVersion}.tgz -f ../../helm-values-on-prem/${NAME}.yaml --set image.repository=${REPO},image.version=${env.service_version} -n ${LOC}
+                            fi
+                            unset KUBECONFIG
+                            """
+                            echo"Successfully deployed the ${env.service_version} version of the Application ${env.NAME} in ${LOC}"
                         }
                     }
                 }
-
+/*
                 stage('Deploy to cloud') {
                     steps {
                         script {
                             def chartVersion = '0.1.0'
-                            deployHelm.cloud  linkedLOC: "${LOC}", release_name: env.NAME, serviceVersion: env.service_version, linkedREPO: "${AWS_REPO}", helmchart: "ui-charts"
+                            deployHelm.cloud  linkedLOC: "${LOC}", release_name: env.NAME, serviceVersion: env.service_version, linkedREPO: "${AWS_REPO}",helmchart: "ui-charts"
                         }
                     }
                 }
-
+*/
                 stage('Push to app-release') {
                     steps {
                         updateJson "Updating the existing service version in the config.json file in app-release repo"
