@@ -65,7 +65,7 @@ pipeline {
          
         stage('Conditional Stages for dev and sit') {
             when {
-                expression { env.BRANCH_NAME == 'dev' || env.BRANCH_NAME == 'sit' }
+                expression { env.BRANCH_NAME == 'dev' || env.BRANCH_NAME == 'sit' || env.BRANCH_NAME == 'fix' }
             }
             stages {
                 stage('Push to Harbor and ECR') {
