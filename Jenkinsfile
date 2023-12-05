@@ -16,9 +16,9 @@ pipeline {
     environment {
         GIT_SSL_NO_VERIFY = 'true'
         NAME = "finlevit-payload"
-        REPO = "harbor.tabner.com:443/konfig"
+        REPO = "harbor.tabner.com:443/konfig-sit"
         AWS_REPO = "388868315655.dkr.ecr.us-east-1.amazonaws.com/konfig"
-        LOC = "${env.BRANCH_NAME}"
+        LOC = "sit"
     }
 
     stages {
@@ -58,33 +58,40 @@ pipeline {
             }
         }  
 
-        stage('Push to Harbor and ECR') {
-            steps {
-                publishDocker "Publishing Docker image of ${NAME} to Harbor and AWS ECR"
+        stage('Conditional Stages for dev and sit') {
+            when {
+                expression { env.BRANCH_NAME == 'dev' || env.BRANCH_NAME == 'sit' || env.BRANCH_NAME == 'fix' }
             }
-        }
+            stages {
+                stage('Push to Harbor and ECR') {
+                    steps {
+                        publishDocker "Publishing Docker image of ${NAME} to Harbor and AWS ECR"
+                    }
+                }
         
-        stage('Deploy to onPrem') {
-            steps {
-                script {
-                    def chartVersion = '0.1.0'
-                    deployHelm.onprem  linkedLOC: "${LOC}", release_name: env.NAME, serviceVersion: env.service_version, linkedREPO: "${REPO}", helmchart: "ui-charts"
-            	}
-            }
-        }
+                stage('Deploy to onPrem') {
+                    steps {
+                        script { 
+                            def chartVersion = '0.1.0'
+                            deployHelm.onprem  linkedLOC: "${LOC}", release_name: env.NAME, serviceVersion: env.service_version, linkedREPO: "${REPO}", helmchart: "ui-charts"
+                        }
+                    }
+                }
 
-        stage('Deploy to cloud') {
-            steps {
-                script {
-                    def chartVersion = '0.1.0'
-                    deployHelm.cloud  linkedLOC: "${LOC}", release_name: env.NAME, serviceVersion: env.service_version, linkedREPO: "${AWS_REPO}", helmchart: "ui-charts"
-            	}
-            }
-        }
+                stage('Deploy to cloud') {
+                    steps {
+                        script {
+                            def chartVersion = '0.1.0'
+                            deployHelm.cloud  linkedLOC: "${LOC}", release_name: env.NAME, serviceVersion: env.service_version, linkedREPO: "${AWS_REPO}", helmchart: "ui-charts"
+                        }
+                    }
+                }
 
-        stage('Push to app-release') {
-            steps {
-                updateJson "Updating the existing service version in the config.json file in app-release repo"
+                stage('Push to app-release') {
+                    steps {
+                        updateJson "Updating the existing service version in the config.json file in app-release repo"
+                    }
+                }
             }
         }
     }
