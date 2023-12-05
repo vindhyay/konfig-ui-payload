@@ -97,7 +97,7 @@ export class PaginationDirective implements OnChanges, OnInit {
   }
 
   private getParsedValue(val: string): string {
-    return val.replace(/(^0)|([^\D]+$)/, "");
+    return val.replace(/((0+)|([^0-9]+))/g, "");
   }
 
   private isOutOfRange(val: string): boolean {
