@@ -1,4 +1,4 @@
-FROM nginx:alpine
+FROM nginx:stable-alpine3.17
 
 # Install necessary package and create a non-root user
 RUN apk add --no-cache --repository https://dl-cdn.alpinelinux.org/alpine/v3.18/main  libx11=1.8.4-r4 && \
