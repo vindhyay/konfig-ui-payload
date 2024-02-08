@@ -2,10 +2,7 @@ library identifier: 'jenkinsfile-library@master', retriever: modernSCM([$class: 
 
 pipeline {
     agent {
-        label "kubeagentc"
-    } 
-    parameters {
-        booleanParam(name: 'Quality_Check', defaultValue: true, description: 'Use this for scanning the code with SonarQube and image with Trivy during deployment.')
+        label "kubeagent"
     }
     tools {
         nodejs "Node"
@@ -16,16 +13,16 @@ pipeline {
     environment {
         GIT_SSL_NO_VERIFY = 'true'
         NAME = "finlevit-payload"
-        REPO = "harbor.tabner.com:443/konfig-sit"
         AWS_REPO = "388868315655.dkr.ecr.us-east-1.amazonaws.com/konfig"
-        LOC = "sit"
+        DNAME = "finlevit-payload"
+        FAILED_STAGE = ''
     }
 
     stages {
         stage('Checkout and author') {
             steps {
                 checkout scm
-                preBuild linkedLOC:"${LOC}"
+                preBuild "Inititalizing Branch:${BRANCH_NAME} of ${NAME}"
             }
         }
 
@@ -39,7 +36,12 @@ pipeline {
             steps {
                 script {
                     catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
-                        sh 'ng test --code-coverage'
+                        sh """ 
+                        su chromium_user
+                        export CHROME_BIN=/usr/bin/chromium-browser
+                        ng test --code-coverage
+                        exit
+                        """
                     }
                     sonarCoverage "Scanning ${NAME}"
                 }
@@ -56,7 +58,7 @@ pipeline {
             steps {
                 inspectDocker "Testing Docker image of ${NAME}"
             }
-        }  
+        } 
 
         stage('Conditional Stages for dev and sit') {
             when {
@@ -66,15 +68,6 @@ pipeline {
                 stage('Push to Harbor and ECR') {
                     steps {
                         publishDocker "Publishing Docker image of ${NAME} to Harbor and AWS ECR"
-                    }
-                }
-        
-                stage('Deploy to onPrem') {
-                    steps {
-                        script { 
-                            def chartVersion = '0.1.0'
-                            deployHelm.onprem  linkedLOC: "${LOC}", release_name: env.NAME, serviceVersion: env.service_version, linkedREPO: "${REPO}", helmchart: "ui-charts"
-                        }
                     }
                 }
 
@@ -95,7 +88,7 @@ pipeline {
             }
         }
     }
-    
+
     post {
         success {
             script{

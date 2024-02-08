@@ -1,8 +1,8 @@
-FROM nginx:alpine
+FROM nginx:stable-alpine3.17
 
 # Install necessary package and create a non-root user
-RUN apk add --no-cache --repository https://dl-cdn.alpinelinux.org/alpine/v3.18/main  libx11=1.8.4-r4 && \
-    adduser -D -u 1001 konfig
+# RUN apk add --no-cache --repository https://dl-cdn.alpinelinux.org/alpine/v3.18/main  libx11=1.8.4-r4 && \
+RUN adduser -D -u 1001 konfig
 
 # Change ownership and permissions
 RUN chown -R konfig:konfig /var/cache/nginx /var/run /var/log/nginx /usr/share/nginx/html && \
