@@ -8,7 +8,7 @@
   [optionLabel]="item?.metaData?.isLabelAndValue ? item?.metaData?.optionLabel : 'name'"
   [optionValue]="item?.metaData?.isLabelAndValue ? item?.metaData?.optionValue : 'value'"
   [tooltip]="item?.metaData?.tooltip"
-  [(ngModel)]="item.value.value"
+  [(ngModel)]="item?.metaData?.isLabelAndValue ? item.value.value?.value : item.value.value"
   (ngModelChange)="onOptionChange($event)"
   [allowLabelWrapping]="item?.metaData?.allowLabelWrapping"
   [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
