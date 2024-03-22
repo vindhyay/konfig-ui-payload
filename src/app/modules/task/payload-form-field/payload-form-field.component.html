@@ -368,7 +368,7 @@
         [tooltip]="item?.metaData?.tooltip"
         [placeholder]="item?.metaData?.placeholder"
         [viewDateFormat]="item?.metaData?.viewDateFormat"
-        [returnDateFormat]="item?.metaData?.returnDateFormat"
+        [returnDateFormat]="item?.validators?.pattern"
         [minDate]="item?.validators?.minDate"
         [maxDate]="item?.validators?.maxDate"
         [(ngModel)]="item.value.value"
