@@ -6,6 +6,7 @@ pipeline {
     }
     tools {
         nodejs "Node"
+        jdk "javaagent"
     }
     triggers {
         gitlab(triggerOnPush: true, triggerOnMergeRequest: true)
@@ -35,6 +36,7 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 script {
+                    /*
                     catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
                         sh """ 
                         su chromium_user
@@ -43,6 +45,7 @@ pipeline {
                         exit
                         """
                     }
+                    */
                     sonarCoverage "Scanning ${NAME}"
                 }
             }
