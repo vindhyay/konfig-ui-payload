@@ -1,7 +1,7 @@
 import ShortUniqueId from "short-unique-id";
 import { Result } from "./state/model/api-response";
 import { AbstractControl, FormControl, ValidationErrors, ValidatorFn, Validators } from "@angular/forms";
-import { ButtonActions, WidgetTypes } from "./modules/task/model/create-form.models";
+import { ButtonActions, DATA_TYPES, WidgetTypes } from "./modules/task/model/create-form.models";
 import { isNull } from "lodash";
 import * as moment from "moment";
 
@@ -47,7 +47,6 @@ export const getErrorMessages = (errors: any, label: any) => {
         errorMessages.push(` ${errors.minDate}`);
         break;
       case "maxDate":
-        console.log(errors.maxDate);
         errorMessages.push(` ${errors.maxDate}`);
         break;
     }
@@ -87,6 +86,9 @@ export const validateFields = (fields: any[], isPageSubmit = false) => {
       if (field?.metaData?.widgetType === WidgetTypes.SSNInput) {
         value = toSSNFormat(field?.value?.value);
       }
+      //Checking for widget data type and value data type
+      const validators = field?.validators || {};
+      validators["dataType"] = true;
       const tempFormControl = new FormControl(value, getValidators(field?.validators || {}, field));
       if (field?.metaData?.widgetType == WidgetTypes.Checkbox) {
         if (field.validators?.required && !value) {
@@ -131,13 +133,25 @@ export const getValidators = (validators: any, field) => {
         validators[validator] && _validators.push(Validators.max(validators[validator]));
         break;
       case "maxLength":
-        validators[validator] && _validators.push(Validators.maxLength(validators[validator]));
+        if (field?.metaData?.widgetType === WidgetTypes.Number) {
+          validators[validator] && _validators.push(CustomValidators.maxLengthNumber(validators[validator]));
+        } else {
+          validators[validator] && _validators.push(Validators.maxLength(validators[validator]));
+        }
         break;
       case "pattern":
-        validators[validator] && _validators.push(Validators.pattern(validators[validator]));
+        if (field?.metaData?.widgetType === WidgetTypes.DatePicker) {
+          validators[validator] && _validators.push(CustomValidators.datePattern(validators[validator]));
+        } else {
+          validators[validator] && _validators.push(Validators.pattern(validators[validator]));
+        }
         break;
       case "required":
-        validators[validator] && _validators.push(Validators.required);
+        if (field?.metaData?.widgetType === WidgetTypes.Checkbox) {
+          validators[validator] && _validators.push(CustomValidators.mustBeTrue(field?.label));
+        } else {
+          validators[validator] && _validators.push(Validators.required);
+        }
         break;
       case "minDate":
         validators[validator] && _validators.push(CustomValidators.dateMinimum(field));
@@ -145,6 +159,12 @@ export const getValidators = (validators: any, field) => {
       case "maxDate":
         validators[validator] && _validators.push(CustomValidators.dateMaximum(field));
         break;
+      case "dataType":
+        let expectedDataType = field?.dataType;
+        if (field?.metaData?.widgetType === WidgetTypes.DatePicker || expectedDataType === DATA_TYPES.DATE) {
+          expectedDataType = field?.validators?.pattern === "utcTimestamp" ? "number" : "string";
+        }
+        validators[validator] && _validators.push(CustomValidators.dataTypeValidator(expectedDataType));
     }
   });
   return _validators;
@@ -230,7 +250,10 @@ export class DeepCopy {
     } else if (data && typeof data === "object") {
       node = data instanceof Date ? data : Object.assign({}, data);
       Object.keys(node).forEach((key) => {
-        if ((typeof node[key] === "object" && Object.keys(node[key]).length > 0) || (Array.isArray(node[key]) && node[key].length > 0)) {
+        if (
+          (typeof node[key] === "object" && Object.keys(node[key]).length > 0) ||
+          (Array.isArray(node[key]) && node[key].length > 0)
+        ) {
           node[key] = DeepCopy.copy(node[key]);
         }
       });
@@ -550,6 +573,55 @@ export interface AddressDetails {
 }
 
 export class CustomValidators {
+  static maxLengthNumber(maxNumberOfDigits: number): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (control.value == null) {
+        return null;
+      }
+      const lengthOfDigits = control.value?.toString()?.length;
+      return lengthOfDigits <= maxNumberOfDigits
+        ? null
+        : {
+            maxLength: `Expected max length is ${maxNumberOfDigits}, received  :${lengthOfDigits}`,
+          };
+    };
+  }
+  static mustBeTrue(label: string): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (control.value == null) {
+        return null;
+      }
+      return control.value === true
+        ? null
+        : {
+            required: `${label} is required`,
+          };
+    };
+  }
+
+  static datePattern(expectedPattern: string): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (control.value == null) {
+        return null;
+      }
+      let isValid = true;
+      if (expectedPattern === "utcTimestamp") {
+        isValid = true;
+      } else if (expectedPattern === "isoTimestamp") {
+        isValid = moment(control.value, moment.ISO_8601, true).isValid();
+      } else {
+        isValid = moment(control.value, expectedPattern).isValid();
+      }
+      if (isValid) {
+        return null;
+      }
+      return isValid
+        ? null
+        : {
+            pattern: `Invalid date format`,
+          };
+    };
+  }
   static dateMaximum(field: any): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       if (control.value == null) {
@@ -583,6 +655,22 @@ export class CustomValidators {
         : {
             minDate: `Min date is ${field.validators.minDate}`,
           };
+    };
+  }
+  static dataTypeValidator(expectedType: string): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      if (Validators.required(control) !== null) {
+        // If the control has no value, return null (no error)
+        return null;
+      }
+      const value = control.value;
+      const actualType = Array.isArray(value) ? "array" : typeof value;
+      // Check if the data type matches the expected type
+      if (actualType !== expectedType) {
+        return { dataType: `Invalid data type` };
+      }
+      // Return null if the validation passes
+      return null;
     };
   }
 }
