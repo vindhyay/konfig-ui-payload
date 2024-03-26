@@ -610,7 +610,7 @@ export class CustomValidators {
       } else if (expectedPattern === "isoTimestamp") {
         isValid = moment(control.value, moment.ISO_8601, true).isValid();
       } else {
-        isValid = moment(control.value, expectedPattern).isValid();
+        isValid = moment(control.value, expectedPattern, true).isValid();
       }
       if (isValid) {
         return null;
