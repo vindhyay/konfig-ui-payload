@@ -15,7 +15,7 @@
         applyStyleVariables
         styleType="input"
         size="custom"
-        [styleProperties]="item?.metaData?.styleProperties?.properties"
+        [styleProperties]="itemStyleProperties?.properties"
         [showClearButton]="item?.metaData?.showClearButton"
         [prefixText]="item?.metaData?.prefixText"
         [suffixText]="item?.metaData?.suffixText"
@@ -25,7 +25,7 @@
         [showMaxCharLimit]="item?.validators?.maxLength"
         [maxCharLimit]="item?.validators?.maxLength"
         [minCharLimit]="item?.validators?.minLength"
-        [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
+        [labelPos]="itemStyleProperties?.properties?.labelPosition"
         [errorMsg]="item?.errorMessage || item?.metaData?.errorMessage"
         [showErrorMsg]="item?.errorMessage || item?.metaData?.showErrorMessage"
         [trim]="item?.validators?.required"
@@ -57,8 +57,8 @@
         applyStyleVariables
         styleType="input"
         size="custom"
-        [styleProperties]="item?.metaData?.styleProperties?.properties"
-        [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
+        [styleProperties]="itemStyleProperties?.properties"
+        [labelPos]="itemStyleProperties?.properties?.labelPosition"
         [errorMsg]="item?.errorMessage || item?.metaData?.errorMessage"
         [showErrorMsg]="item?.errorMessage || item?.metaData?.showErrorMessage"
         [trim]="item?.validators?.required"
@@ -73,6 +73,7 @@
         (onValueChange)="validateField($event, item)"
         (onBlurChange)="optionChange($event, item)"
         [item]="item"
+        [itemStyleProperties]="itemStyleProperties"
       >
       </app-password-field>
     </div>
@@ -84,6 +85,7 @@
         (onValueChange)="validateField($event, item)"
         (onBlurChange)="optionChange($event, item)"
         [item]="item"
+        [itemStyleProperties]="itemStyleProperties"
       >
       </app-ssninput-field>
     </div>
@@ -95,6 +97,7 @@
         (onValueChange)="validateField($event, item)"
         (onBlurChange)="optionChange($event, item)"
         [item]="item"
+        [itemStyleProperties]="itemStyleProperties"
       >
       </app-phonenumber-field>
     </div>
@@ -113,11 +116,11 @@
         [label]="item?.label"
         applyStyleVariables
         styleType="input"
-        [styleProperties]="item?.metaData?.styleProperties?.properties"
+        [styleProperties]="itemStyleProperties?.properties"
         [errorMsg]="item?.errorMessage || item?.metaData?.errorMessage"
-        [showCharCount]="item?.metaData?.styleProperties?.properties?.showCharCount"
+        [showCharCount]="itemStyleProperties?.properties?.showCharCount"
         [autoResize]="item?.metaData?.autoResize"
-        [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
+        [labelPos]="itemStyleProperties?.properties?.labelPosition"
         [showErrorMsg]="item?.errorMessage || item?.metaData?.showErrorMessage"
         [trim]="item?.validators?.required"
         (onBlur)="optionChange($event, item)"
@@ -143,8 +146,8 @@
         [leftIcon]="item?.metaData?.leftIcon"
         applyStyleVariables
         styleType="input"
-        [styleProperties]="item?.metaData?.styleProperties?.properties"
-        [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
+        [styleProperties]="itemStyleProperties?.properties"
+        [labelPos]="itemStyleProperties?.properties?.labelPosition"
         [errorMsg]="item?.errorMessage || item?.metaData?.errorMessage"
         [showErrorMsg]="item?.errorMessage || item?.metaData?.showErrorMessage"
         [prefixText]="item?.metaData?.prefixText || item?.metaData?.currency?.currencySymbol"
@@ -193,16 +196,16 @@
         (btnClick)="btnClick($event, item)"
         applyStyleVariables
         styleType="button"
-        [styleProperties]="item?.metaData?.styleProperties?.properties"
-        [isPress]="!readonlyMode && item?.metaData?.styleProperties?.properties?.press?.isActionEnabled"
-        [isHover]="!readonlyMode && item?.metaData?.styleProperties?.properties?.hover?.isActionEnabled"
-        [isFocus]="!readonlyMode && item?.metaData?.styleProperties?.properties?.focus?.isActionEnabled"
+        [styleProperties]="itemStyleProperties?.properties"
+        [isPress]="!readonlyMode && itemStyleProperties?.properties?.press?.isActionEnabled"
+        [isHover]="!readonlyMode && itemStyleProperties?.properties?.hover?.isActionEnabled"
+        [isFocus]="!readonlyMode && itemStyleProperties?.properties?.focus?.isActionEnabled"
         size="custom"
       ></finlevit-button>
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === CollapseContainer">
-    <app-collapse-container [item]="item"></app-collapse-container>
+    <app-collapse-container [item]="item" [itemStyleProperties]="itemStyleProperties"></app-collapse-container>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Upload">
     <div class="input-container button-input">
@@ -239,7 +242,7 @@
         [verticalBorder]="item?.metaData?.verticalBorder"
         applyStyleVariables
         styleType="table"
-        [styleProperties]="item?.metaData?.styleProperties?.properties"
+        [styleProperties]="itemStyleProperties?.properties"
       >
       </finlevit-custom-table>
     </div>
@@ -275,7 +278,7 @@
         [onRowDelete]="onRowDelete"
         applyStyleVariables
         styleType="table"
-        [styleProperties]="item?.metaData?.styleProperties?.properties"
+        [styleProperties]="itemStyleProperties?.properties"
       ></finlevit-custom-adv-table>
     </div>
   </ng-container>
@@ -296,7 +299,7 @@
         applyStyleVariables
         styleType="checkbox"
         size="custom"
-        [styleProperties]="item?.metaData?.styleProperties?.properties"
+        [styleProperties]="itemStyleProperties?.properties"
       ></finlevit-lib-checkbox>
     </div>
   </ng-container>
@@ -304,6 +307,7 @@
     <div class="input-container">
       <app-checkbox-group
         [item]="item"
+        [itemStyleProperties]="itemStyleProperties"
         [isDisabled]="readonlyMode || disable || item?.isMirrorField"
         [columns]="item?.metaData?.columnsCount"
       ></app-checkbox-group>
@@ -313,6 +317,7 @@
     <div class="input-container">
       <app-dropdown-field
         [item]="item"
+        [itemStyleProperties]="itemStyleProperties"
         [isDisabled]="readonlyMode || disable || item?.isMirrorField"
         (optionChange)="optionChange($event, item); validateField($event, item)"
       ></app-dropdown-field>
@@ -320,7 +325,11 @@
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Modal">
     <div class="input-container">
-      <app-modal [item]="item" [isDisabled]="readonlyMode || disable || item?.isMirrorField"></app-modal>
+      <app-modal
+        [item]="item"
+        [isDisabled]="readonlyMode || disable || item?.isMirrorField"
+        [itemStyleProperties]="itemStyleProperties"
+      ></app-modal>
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === RadioGroup">
@@ -340,20 +349,18 @@
         [tooltip]="item?.metaData?.tooltip"
         [errorMsg]="item?.errorMessage || item?.metaData?.errorMessage"
         [showErrorMsg]="item?.errorMessage || item?.metaData?.showErrorMessage"
-        [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
-        [horizontalContentAlignment]="item?.metaData?.styleProperties?.properties?.horizontalOptionAlignment"
-        [verticalContentAlignment]="item?.metaData?.styleProperties?.properties?.verticalOptionAlignment"
+        [labelPos]="itemStyleProperties?.properties?.labelPosition"
+        [horizontalContentAlignment]="itemStyleProperties?.properties?.horizontalOptionAlignment"
+        [verticalContentAlignment]="itemStyleProperties?.properties?.verticalOptionAlignment"
         [buttonType]="
-          item?.metaData?.styleProperties?.properties?.buttonType
-            ? item?.metaData?.styleProperties?.properties?.buttonType
-            : 'radio'
+          itemStyleProperties?.properties?.buttonType ? itemStyleProperties?.properties?.buttonType : 'radio'
         "
-        [buttonAlignment]="item?.metaData?.styleProperties?.properties.radioAlign"
+        [buttonAlignment]="itemStyleProperties?.properties.radioAlign"
         applyStyleVariables
         styleType="radioGroup"
         size="custom"
-        [styleProperties]="item?.metaData?.styleProperties?.properties"
-        [isHover]="!item?.metaData?.readOnly && item?.metaData?.styleProperties?.properties?.hover?.isActionEnabled"
+        [styleProperties]="itemStyleProperties?.properties"
+        [isHover]="!item?.metaData?.readOnly && itemStyleProperties?.properties?.hover?.isActionEnabled"
       ></finlevit-radio-group>
     </div>
   </ng-container>
@@ -375,17 +382,17 @@
         (ngModelChange)="validateField($event, item); optionChange($event, item)"
         [yearNavigator]="true"
         [monthNavigator]="true"
-        [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
+        [labelPos]="itemStyleProperties?.properties?.labelPosition"
         [showErrorMsg]="item?.errorMessage || item?.metaData?.showErrorMessage"
         [showTime]="item?.metaData?.showTime"
         [hourFormat]="item?.metaData?.hourFormat"
         [stepMinute]="item?.metaData?.stepMinute"
         [stepHour]="item?.metaData?.stepHour"
-        [independentBorders]="item?.metaData?.styleProperties?.properties?.independentBorder"
+        [independentBorders]="itemStyleProperties?.properties?.independentBorder"
         applyStyleVariables
         styleType="stepper"
         size="custom"
-        [styleProperties]="item?.metaData?.styleProperties?.properties"
+        [styleProperties]="itemStyleProperties?.properties"
       >
       </finlevit-lib-datepicker>
     </div>
@@ -397,8 +404,8 @@
       [headerContent]="item?.metaData?.headerContent"
       applyStyleVariables
       styleType="stepper"
-      [styleProperties]="item?.metaData?.styleProperties?.properties"
-      [indicatorIconColor]="item?.metaData?.styleProperties?.properties?.indicatorIconColor"
+      [styleProperties]="itemStyleProperties?.properties"
+      [indicatorIconColor]="itemStyleProperties?.properties?.indicatorIconColor"
     >
     </app-vertical-stepper>
   </ng-container>
@@ -407,7 +414,8 @@
       [item]="item"
       applyStyleVariables
       styleType="tab"
-      [styleProperties]="item?.metaData?.styleProperties?.properties"
+      [styleProperties]="itemStyleProperties?.properties"
+      [itemStyleProperties]="itemStyleProperties"
     >
     </app-tab-container>
   </ng-container>
@@ -432,7 +440,7 @@
         [item]="item"
         applyStyleVariables
         styleType="avatar"
-        [styleProperties]="item?.metaData?.styleProperties?.properties"
+        [styleProperties]="itemStyleProperties?.properties"
       >
       </app-avatar>
     </div>
@@ -445,7 +453,11 @@
     "
   >
     <div class="input-container">
-      <app-container [item]="item" (click)="btnClick($event, item)"></app-container>
+      <app-container
+        [item]="item"
+        (click)="btnClick($event, item)"
+        [itemStyleProperties]="itemStyleProperties"
+      ></app-container>
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Address">
@@ -471,13 +483,13 @@
         [mask]="item?.metaData?.mask || null"
         [showMaxCharLimit]="item?.validators?.maxLength"
         [maxCharLimit]="item?.validators?.maxLength"
-        [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
+        [labelPos]="itemStyleProperties?.properties?.labelPosition"
         [errorMsg]="item?.errorMessage || item?.metaData?.errorMessage"
         [showErrorMsg]="item?.errorMessage || item?.metaData?.showErrorMessage"
         applyStyleVariables
         styleType="input"
         size="custom"
-        [styleProperties]="item?.metaData?.styleProperties?.properties"
+        [styleProperties]="itemStyleProperties?.properties"
       >
       </finlevit-text>
     </div>

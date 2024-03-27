@@ -1,6 +1,6 @@
 import { Component, Input, AfterViewInit } from "@angular/core";
 import { EditorService } from "../../editor.service";
-import { BaseWidget, CollapseContainerMetaData } from "../../model/create-form.models";
+import { BaseStyle, BaseWidget, CollapseContainerMetaData } from "../../model/create-form.models";
 
 @Component({
   selector: "app-collapse-container",
@@ -10,6 +10,7 @@ import { BaseWidget, CollapseContainerMetaData } from "../../model/create-form.m
 export class CollapseContainerComponent implements AfterViewInit {
   collapseContainerStatus = true;
   JSON = JSON;
+  @Input() itemStyleProperties = {} as BaseStyle;
   @Input() item: BaseWidget = {} as BaseWidget;
 
   ngAfterViewInit() {

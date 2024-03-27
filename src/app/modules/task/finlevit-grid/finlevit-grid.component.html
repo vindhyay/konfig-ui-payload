@@ -28,6 +28,7 @@
         [emitButtonEvent]="emitButtonEvent"
         (onBtnClick)="onBtnClick.emit($event)"
         (click)="widgetClickHandler($event, item)"
+        [itemStyleProperties]="allStyles | findStyles: { id: item?.metaData?.stylePropertiesId }"
       ></app-payload-form-field>
     </gridster-item>
   </ng-container>

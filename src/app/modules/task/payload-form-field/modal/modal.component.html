@@ -4,13 +4,13 @@
   [label]="item?.label"
   (btnClick)="toggleModal()"
   applyStyleVariables
-  [styleProperties]="styles?.properties"
+  [styleProperties]="itemStyleProperties?.properties"
   styleType="button"
   size="custom"
   [isDisabled]="isDisabled"
-  [isPress]="styles?.properties?.press?.isActionEnabled"
-  [isHover]="styles?.properties?.hover?.isActionEnabled"
-  [isFocus]="styles?.properties?.focus?.isActionEnabled"
+  [isPress]="itemStyleProperties?.properties?.press?.isActionEnabled"
+  [isHover]="itemStyleProperties?.properties?.hover?.isActionEnabled"
+  [isFocus]="itemStyleProperties?.properties?.focus?.isActionEnabled"
 ></finlevit-button>
 <p-dialog
   *ngIf="modalStatus"
@@ -45,13 +45,13 @@
       [class]="'header-content'"
       [style]="{
         height: metaData?.modalHeader[0]?.headerHeight + 'px',
-        'background-color': styles?.properties?.headerBackgroundColor,
-        'font-family': styles?.properties?.headerFontFamily,
-        color: styles?.properties?.headerLabelColor,
-        'font-size': styles?.properties?.headerFontSize,
-        'font-weight': styles?.properties?.labelFontWeight,
-        'font-style': styles?.properties?.labelStyle,
-        'text-decoration': styles?.properties?.labelTextDecoration
+        'background-color': itemStyleProperties?.properties?.headerBackgroundColor,
+        'font-family': itemStyleProperties?.properties?.headerFontFamily,
+        color: itemStyleProperties?.properties?.headerLabelColor,
+        'font-size': itemStyleProperties?.properties?.headerFontSize,
+        'font-weight': itemStyleProperties?.properties?.labelFontWeight,
+        'font-style': itemStyleProperties?.properties?.labelStyle,
+        'text-decoration': itemStyleProperties?.properties?.labelTextDecoration
       }"
     >
       {{ metaData?.modalHeader[selectedIndex]?.title }}
@@ -62,7 +62,7 @@
     <finlevit-grid
       [parent]="item.children[selectedIndex]"
       [items]="item.children[selectedIndex].children"
-      [style.--background-color]="item?.metaData?.styleProperties?.properties?.contentBackgroundColor"
+      [style.--background-color]="itemStyleProperties?.properties?.contentBackgroundColor"
       [filter]="{ metaData: { isFooterContainer: false } }"
     ></finlevit-grid>
   </div>
@@ -81,7 +81,7 @@
           (onBtnClick)="onFooterClick($event)"
           [style.--border-radius-bottom-left]="'4px'"
           [style.--border-radius-bottom-right]="'4px'"
-          [style.--background-color]="item?.metaData?.styleProperties?.properties?.footerBackgroundColor"
+          [style.--background-color]="itemStyleProperties?.properties?.footerBackgroundColor"
         ></finlevit-grid>
       </ng-container>
     </div>

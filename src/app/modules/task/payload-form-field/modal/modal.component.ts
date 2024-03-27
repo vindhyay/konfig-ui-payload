@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { BaseWidget, ButtonActions, ModalMetaData } from "../../model/create-form.models";
+import {BaseStyle, BaseWidget, ButtonActions, ModalMetaData} from "../../model/create-form.models";
 import { EditorService } from "../../editor.service";
 import { validateFields } from "../../../../utils";
 
@@ -10,9 +10,9 @@ import { validateFields } from "../../../../utils";
 })
 export class ModalComponent implements OnInit {
   @Input() item: BaseWidget = {} as BaseWidget;
+  @Input() itemStyleProperties = {} as BaseStyle;
   @Input() modalId: string = null;
   @Input() isDisabled: boolean = false;
-  styles = null;
   completedSteps = {};
   selectedIndex = 0;
   modalStatus = false;
@@ -70,7 +70,6 @@ export class ModalComponent implements OnInit {
         }
       }
     });
-    this.styles = this.item?.metaData?.styleProperties;
     if (!this.modalId) {
       this.modalId = this.item.widgetId;
     }

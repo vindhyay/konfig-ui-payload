@@ -205,6 +205,10 @@ $menuAnim: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @mixin nested-grid-container() {
+  .container-title{
+    display: flex;
+    align-items: center;
+  }
   .nested-grid-container {
     display: flex;
     flex-direction: column;

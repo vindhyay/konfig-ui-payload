@@ -9,7 +9,7 @@ import {
   Output,
   SimpleChanges,
 } from "@angular/core";
-import { BaseWidget, Column, TableMetaData, WidgetTypes } from "../model/create-form.models";
+import { BaseStyle, BaseWidget, Column, TableMetaData, WidgetTypes } from "../model/create-form.models";
 import { AddressDetails, DeepCopy, parseApiResponse, validateFields } from "../../../utils";
 import { AuthService } from "../../auth/services/auth.service";
 import { EditorService } from "../editor.service";
@@ -72,7 +72,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
   ) {
     super();
   }
-
+  @Input() itemStyleProperties: BaseStyle = {} as BaseStyle;
   @Input() emitButtonEvent: boolean = false;
   @Output() onBtnClick = new EventEmitter();
   @Input() value: any = { id: null, value: "" };

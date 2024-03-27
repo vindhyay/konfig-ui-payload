@@ -27,7 +27,7 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
   @Output() onBtnClick = new EventEmitter();
   @Input() filter: any = null;
   @ViewChild("gridsterComponent", { static: false }) gridsterRef: any;
-
+  allStyles = [];
   Text: WidgetTypes = WidgetTypes.Text;
   Container: WidgetTypes = WidgetTypes.Container;
   TabContainer: WidgetTypes = WidgetTypes.TabContainer;
@@ -39,7 +39,6 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
   transactionId: any;
   taskId: any;
   allEligibleFields = [];
-  globalStyle;
 
   constructor(
     private editorService: EditorService,
@@ -51,16 +50,12 @@ export class FinlevitGridComponent extends BaseComponent implements OnInit, OnDe
   }
 
   ngOnInit() {
+    this.allStyles = this.editorService.getStyles();
     this.subscribe(this.notificationService.addressAutoCompleteChanged$, (addressDetails) => {
       this.zone.run(() => {
         this.fillAddressDetails(addressDetails);
       });
     });
-    if (this.parent && this.parent.metaData && this.parent.metaData.widgetType === WidgetTypes.Container) {
-      this.globalStyle = this.parent?.metaData["styleProperties"]
-        ? this.parent?.metaData["styleProperties"]["properties"]
-        : {};
-    }
     this.options = {
       gridType: GridType.Fit,
       displayGrid: DisplayGrid.None,

@@ -133,6 +133,8 @@ export class AppConfigService {
       getAllTransactionsURL: ACCOUNT_WORKFLOW_BASE_URL + "/transaction/get-all-transactions",
       // get transaction details
       getTransactionURL: ACCOUNT_WORKFLOW_BASE_URL + "/transaction",
+      // get styles
+      getStylesURL: WORKFLOW_ADMIN_BASE_URL + "/widget-style",
       // Submit with files URL
       submitWithFilesURL: ACCOUNT_WORKFLOW_BASE_URL + "/transaction/submit-with-files",
       // save transaction URL
