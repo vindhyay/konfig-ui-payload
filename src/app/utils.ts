@@ -608,7 +608,7 @@ export class CustomValidators {
       if (expectedPattern === "utcTimestamp") {
         isValid = true;
       } else if (expectedPattern === "isoTimestamp") {
-        isValid = moment(control.value, moment.ISO_8601, true).isValid();
+        isValid = moment(control.value, "YYYY-MM-DDTHH:mm:ss.SSSZ", true).isValid();
       } else {
         isValid = moment(control.value, expectedPattern, true).isValid();
       }
@@ -618,7 +618,7 @@ export class CustomValidators {
       return isValid
         ? null
         : {
-            pattern: `Invalid date format`,
+            pattern: `Invalid date format, does not match the expected format.`,
           };
     };
   }
