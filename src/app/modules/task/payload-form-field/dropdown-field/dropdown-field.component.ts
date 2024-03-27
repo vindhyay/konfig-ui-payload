@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from "@angular/core";
-import { BaseWidget, DropdownMetaData } from "../../model/create-form.models";
+import {BaseStyle, BaseWidget, DropdownMetaData} from "../../model/create-form.models";
 
 @Component({
   selector: "app-dropdown-field",
@@ -8,6 +8,7 @@ import { BaseWidget, DropdownMetaData } from "../../model/create-form.models";
 })
 export class DropdownFieldComponent {
   @Input() item: BaseWidget = {} as BaseWidget;
+  @Input() itemStyleProperties = {} as BaseStyle;
   @Input() isDisabled: boolean = false;
   @Output() optionChange = new EventEmitter();
   get metaData(): DropdownMetaData {

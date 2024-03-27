@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { BaseWidget, SSNInputMetaData } from "../../model/create-form.models";
+import {BaseStyle, BaseWidget, SSNInputMetaData} from "../../model/create-form.models";
 
 @Component({
   selector: "app-ssninput-field",
@@ -9,6 +9,7 @@ import { BaseWidget, SSNInputMetaData } from "../../model/create-form.models";
 export class SSNInputFieldComponent implements OnInit {
   _type_mask: string = "000-00-0000";
   @Input() item: BaseWidget = {} as BaseWidget;
+  @Input() itemStyleProperties = {} as BaseStyle;
   @Input() isDisabled = false;
   @Output() onValueChange = new EventEmitter();
   @Output() onBlurChange = new EventEmitter();

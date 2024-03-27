@@ -33,6 +33,7 @@ import { BtnCommonComponent } from "./btn-common/btn-common.component";
 import { CustomFilterPipe } from "../../pipes/custom-filter.pipe";
 import { ValueToLabelPipe } from "src/app/pipes/value-to-label.pipe";
 import { ToUrlPipe } from "../../pipes/to-url.pipe";
+import { FindStylesPipe } from "../../pipes/find-styles.pipe";
 
 @NgModule({
   declarations: [
@@ -57,6 +58,7 @@ import { ToUrlPipe } from "../../pipes/to-url.pipe";
     CustomFilterPipe,
     ValueToLabelPipe,
     ToUrlPipe,
+    FindStylesPipe,
   ],
   imports: [
     CommonModule,
@@ -108,6 +110,7 @@ import { ToUrlPipe } from "../../pipes/to-url.pipe";
     CustomFilterPipe,
     ValueToLabelPipe,
     ToUrlPipe,
+    FindStylesPipe,
   ],
 })
 export class SharedModule {}

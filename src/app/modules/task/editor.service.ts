@@ -10,7 +10,6 @@ import {
   getFieldFromFields,
   validateFields,
   scrollTo,
-  dynamicEvaluation,
 } from "../../utils";
 import { NotificationService } from "../../services/notification.service";
 import { AuthService } from "../auth/services/auth.service";
@@ -49,6 +48,17 @@ export class EditorService extends BaseService {
   public transactionDetails$ = this.transactionDetails.asObservable();
   private conditionDetails = new BehaviorSubject(null);
   private formFields = new BehaviorSubject(null);
+
+  //styles
+  public allStyles = new BehaviorSubject<any>([]);
+  public allStyles$ = this.allStyles.asObservable();
+
+  public setStyles(data) {
+    this.allStyles.next(data);
+  }
+  public getStyles() {
+    return this.allStyles.value;
+  }
 
   public setTransactionDetails(transactionDetails: any) {
     this.transactionDetails.next(transactionDetails);
@@ -421,6 +431,11 @@ export class EditorService extends BaseService {
   submitMultipleAction = (transactionId, params, data = {}): Observable<any> => {
     const url = `${this.config.getApiUrls().submitMultipleAction}`.replace("{transactionId}", transactionId);
     return this.putData(url, data, params);
+  };
+  // Get All Styles
+  getApplicationStyles = (groupId: string) => {
+    const url = `${this.config.getApiUrls().getStylesURL}/${groupId}`;
+    return this.getData(url);
   };
   // Create Transaction
   createTransaction = (params, payload): Observable<any> => {

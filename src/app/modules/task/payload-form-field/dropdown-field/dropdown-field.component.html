@@ -11,11 +11,11 @@
   [tooltip]="item?.metaData?.tooltip"
   (ngModelChange)="onOptionChange($event)"
   [allowLabelWrapping]="item?.metaData?.allowLabelWrapping"
-  [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
+  [labelPos]="itemStyleProperties?.properties?.labelPosition"
   [errorMsg]="item?.errorMessage || item?.metaData?.errorMessage"
   [showErrorMsg]="item?.metaData?.showErrorMessage"
   applyStyleVariables
   styleType="input"
   size="custom"
-  [styleProperties]="item?.metaData?.styleProperties?.properties"
+  [styleProperties]="itemStyleProperties?.properties"
 ></finlevit-lib-select>

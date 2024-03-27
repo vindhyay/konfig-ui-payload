@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from "@angular/core";
-import { BaseWidget, PhoneNumberMetaData } from "../../model/create-form.models";
+import {BaseStyle, BaseWidget, PhoneNumberMetaData} from "../../model/create-form.models";
 
 @Component({
   selector: "app-phonenumber-field",
@@ -8,6 +8,7 @@ import { BaseWidget, PhoneNumberMetaData } from "../../model/create-form.models"
 })
 export class PhonenumberFieldComponent {
   @Input() item: BaseWidget = {} as BaseWidget;
+  @Input() itemStyleProperties = {} as BaseStyle;
   @Input() isDisabled = false;
   @Output() onValueChange = new EventEmitter();
   @Output() onBlurChange = new EventEmitter();

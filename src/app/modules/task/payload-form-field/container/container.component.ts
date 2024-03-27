@@ -7,9 +7,13 @@ import { BaseWidget, ContainerMetaData } from "../../model/create-form.models";
   styleUrls: ["./container.component.scss"],
 })
 export class ContainerComponent {
-  @Input() item: BaseWidget = {} as BaseWidget;
 
+  @Input() item: BaseWidget = {} as BaseWidget;
+  @Input() itemStyleProperties;
   get metaData(): ContainerMetaData {
     return this.item.metaData as ContainerMetaData;
+  }
+  constructor() {
+    console.log(this.itemStyleProperties);
   }
 }

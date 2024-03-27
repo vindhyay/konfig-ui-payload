@@ -2,8 +2,8 @@
   class="tab-container style-tab-container"
   applyStyle
   [filterStyles]="['borderStyles', 'boxShadowStyles']"
-  [styleProperties]="this.item?.metaData?.styleProperties?.properties"
-  [style.--border-radius]="this.item?.metaData?.styleProperties?.properties?.borderRadius"
+  [styleProperties]="itemStyleProperties?.properties"
+  [style.--border-radius]="itemStyleProperties?.properties?.borderRadius"
 >
   <p-tabView [activeIndex]="tabActiveIndex" (onChange)="onTabChange($event)">
     <ng-container *ngFor="let child of item?.children; let i = index">
@@ -30,7 +30,7 @@
           <finlevit-grid
             [parent]="child"
             [items]="child?.children"
-            [style.--background-color]="this.item.metaData?.styleProperties?.properties?.backgroundColor"
+            [style.--background-color]="itemStyleProperties?.properties?.backgroundColor"
           ></finlevit-grid>
         </div>
       </p-tabPanel>

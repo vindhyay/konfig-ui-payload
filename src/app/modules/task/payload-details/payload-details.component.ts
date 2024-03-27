@@ -25,6 +25,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
   ) {
     super();
   }
+  isStylesLoading = false;
   applicationId: string | null = "";
   transactionDetails: any = {};
   formFields: any = [];
@@ -80,8 +81,11 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
         (result) => {
           const { data: transactionDetails } = parseApiResponse(result);
           if (transactionDetails) {
+            if (transactionDetails?.application?.groupId) {
+              this.getStyles(transactionDetails?.application?.groupId);
+            }
             this.editorService.setTransactionDetails(transactionDetails);
-            this.styleConfig = transactionDetails?.application?.styleConfig;
+            this.styleConfig = transactionDetails?.styleConfig;
             this.editorService.setConditionDetails(transactionDetails?.conditionRules);
           }
           this.loading = false;
@@ -98,6 +102,23 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
           }
         }
       );
+  }
+
+  getStyles(groupId: string) {
+    this.isStylesLoading = true;
+    return this.editorService.getApplicationStyles(groupId).subscribe(
+      (result) => {
+        const { data, error } = parseApiResponse(result);
+        this.isStylesLoading = false;
+        if (data && !error) {
+          this.editorService.setStyles(data);
+        }
+      },
+      () => {
+        this.error = true;
+        this.isStylesLoading = false;
+      }
+    );
   }
 
   recursiveUpdateFieldProperties(formFields = [], newFormFields = []) {

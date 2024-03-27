@@ -6,37 +6,27 @@
   }"
   applyStyle
   [filterStyles]="['borderStyles', 'boxShadowStyles']"
-  [styleProperties]="this.metaData?.styleProperties?.properties"
+  [styleProperties]="itemStyleProperties?.properties"
 >
   <div
     *ngIf="item?.metaData?.title"
     class="container-title"
     applyStyle
     [filterStyles]="['titleStyles']"
-    [styleProperties]="this.metaData?.styleProperties?.properties"
+    [styleProperties]="itemStyleProperties?.properties"
   >
-    <i
-      *ngIf="item?.metaData?.header?.icon"
-      [class]="item?.metaData?.header?.icon"
-      [ngStyle]="{
-        marginRight: '0.5rem'
-      }"
-    ></i
-    >{{ item?.metaData?.title }}
+    <finlevit-icon-preview class="pr-2" [icon]="metaData.icon"></finlevit-icon-preview>
+    {{ item?.metaData?.title }}
   </div>
   <finlevit-grid
     [parent]="item"
     [items]="item.children"
-    [style.--border-radius-top-left]="
-      item?.metaData?.title ? '0px' : this.metaData?.styleProperties?.properties?.borderRadius
-    "
-    [style.--border-radius-top-right]="
-      item?.metaData?.title ? '0px' : this.metaData?.styleProperties?.properties?.borderRadius
-    "
-    [style.--border-radius-bottom-left]="this.metaData?.styleProperties?.properties?.borderRadius"
-    [style.--border-radius-bottom-right]="this.metaData?.styleProperties?.properties?.borderRadius"
-    [style.--background-color]="this.metaData?.styleProperties?.properties?.backgroundColor"
-    [style.--background-image-url]="'url(' + this.metaData?.styleProperties?.properties?.bgImageUrl + ')'"
+    [style.--border-radius-top-left]="item?.metaData?.title ? '0px' : itemStyleProperties?.properties?.borderRadius"
+    [style.--border-radius-top-right]="item?.metaData?.title ? '0px' : itemStyleProperties?.properties?.borderRadius"
+    [style.--border-radius-bottom-left]="itemStyleProperties?.properties?.borderRadius"
+    [style.--border-radius-bottom-right]="itemStyleProperties?.properties?.borderRadius"
+    [style.--background-color]="itemStyleProperties?.properties?.backgroundColor"
+    [style.--background-image-url]="'url(' + itemStyleProperties?.properties?.bgImageUrl + ')'"
     [filter]="{ metaData: { isFooterContainer: false } }"
   ></finlevit-grid>
 </div>

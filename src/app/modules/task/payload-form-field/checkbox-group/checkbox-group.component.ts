@@ -1,5 +1,5 @@
 import { Component, Input } from "@angular/core";
-import { BaseWidget, MetaData } from "../../model/create-form.models";
+import {BaseStyle, BaseWidget, MetaData} from "../../model/create-form.models";
 import { EditorService } from "../../editor.service";
 import { validateFields } from "../../../../utils";
 
@@ -10,6 +10,7 @@ import { validateFields } from "../../../../utils";
 })
 export class CheckboxGroupComponent {
   _value = [];
+  @Input() itemStyleProperties = {} as BaseStyle;
   @Input() item: BaseWidget = {} as BaseWidget;
   @Input() isDisabled = false;
   @Input() columns: number;

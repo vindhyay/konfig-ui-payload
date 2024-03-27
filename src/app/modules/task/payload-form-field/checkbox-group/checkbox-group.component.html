@@ -10,7 +10,7 @@
   [(ngModel)]="item.value.value"
   (ngModelChange)="onChange($event); validateField($event, item)"
   [alignOptions]="item?.metaData?.alignOptions"
-  [labelPos]="item?.metaData?.styleProperties?.properties?.labelPosition"
+  [labelPos]="itemStyleProperties?.properties?.labelPosition"
   [errorMsg]="item?.errorMessage || item?.metaData?.errorMessage"
   [showErrorMsg]="!!(item?.errorMessage || item?.metaData?.showErrorMessage)"
   [error]="item?.errorMessage?.length > 0 || item.error === true"
@@ -18,5 +18,5 @@
   applyStyleVariables
   styleType="checkboxGroup"
   size="custom"
-  [styleProperties]="item?.metaData?.styleProperties?.properties"
+  [styleProperties]="itemStyleProperties?.properties"
 ></finlevit-lib-checkbox-group>

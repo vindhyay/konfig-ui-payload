@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { BaseWidget, PasswordInputMetaData } from "../../model/create-form.models";
+import {BaseStyle, BaseWidget, PasswordInputMetaData} from "../../model/create-form.models";
 
 @Component({
   selector: "app-password-field",
@@ -8,6 +8,7 @@ import { BaseWidget, PasswordInputMetaData } from "../../model/create-form.model
 })
 export class PasswordFieldComponent implements OnInit {
   _type: string = "password";
+  @Input() itemStyleProperties = {} as BaseStyle;
   @Input() item: BaseWidget = {} as BaseWidget;
   @Input() isDisabled = false;
   @Output() onValueChange = new EventEmitter();

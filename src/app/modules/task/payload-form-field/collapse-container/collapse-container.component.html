@@ -2,8 +2,8 @@
   [ngClass]="{ 'collapse-container': true }"
   applyStyle
   [filterStyles]="['borderStyles', 'boxShadowStyles']"
-  [styleProperties]="JSON.parse(JSON.stringify(item?.metaData?.styleProperties?.properties))"
-  [style.--border-radius]="this.metaData?.styleProperties?.properties?.borderRadius"
+  [styleProperties]="itemStyleProperties?.properties"
+  [style.--border-radius]="itemStyleProperties?.properties?.borderRadius"
 >
   <p-accordion expandIcon="" collapseIcon="" (onOpen)="onCollapse(true, item)" (onClose)="onCollapse(false, item)">
     <p-accordionTab [(selected)]="collapseContainerStatus">
@@ -11,7 +11,7 @@
         <div
           applyStyle
           [filterStyles]="['titleStyles']"
-          [styleProperties]="JSON.parse(JSON.stringify(this.metaData?.styleProperties?.properties))"
+          [styleProperties]="itemStyleProperties?.properties"
           [style.width]="'100%'"
           [style.display]="'flex'"
           [style.align-items]="'center'"
@@ -46,10 +46,10 @@
         <finlevit-grid
           [parent]="item"
           [items]="item.children"
-          [style.--border-radius-bottom-left]="this.metaData?.styleProperties?.properties?.borderRadius"
-          [style.--border-radius-bottom-right]="this.metaData?.styleProperties?.properties?.borderRadius"
-          [style.--background-color]="this.metaData?.styleProperties?.properties?.backgroundColor"
-          [style.--background-image-url]="'url(' + this.metaData?.styleProperties?.properties?.bgImageUrl + ')'"
+          [style.--border-radius-bottom-left]="itemStyleProperties?.properties?.borderRadius"
+          [style.--border-radius-bottom-right]="itemStyleProperties?.properties?.borderRadius"
+          [style.--background-color]="itemStyleProperties?.properties?.backgroundColor"
+          [style.--background-image-url]="'url(' + itemStyleProperties?.properties?.bgImageUrl + ')'"
         ></finlevit-grid>
       </div>
     </p-accordionTab>

@@ -1,10 +1,12 @@
 <div class="details-container">
   <app-loader [loading]="loading"></app-loader>
-  <div *ngIf="formFields && formFields.length">
-    <div class="editor gridster-container">
-      <finlevit-grid [style.--background-color]="styleConfig?.canvasColor" [items]="formFields"></finlevit-grid>
+  <ng-container *ngIf="!isStylesLoading">
+    <div *ngIf="formFields && formFields.length">
+      <div class="editor gridster-container">
+        <finlevit-grid [style.--background-color]="styleConfig?.canvasColor" [items]="formFields"></finlevit-grid>
+      </div>
     </div>
-  </div>
+  </ng-container>
   <div *ngIf="!loading && !formFields.length" class="no-data-container">
     <img src="/assets/images/cross-platform-view.svg" alt="no-design-view" />
     <div class="help-text">Please design view or Contact Admin</div>
