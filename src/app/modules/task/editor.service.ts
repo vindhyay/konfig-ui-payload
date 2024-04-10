@@ -10,6 +10,7 @@ import {
   getFieldFromFields,
   validateFields,
   scrollTo,
+  convertTableDataToJson,
 } from "../../utils";
 import { NotificationService } from "../../services/notification.service";
 import { AuthService } from "../auth/services/auth.service";
@@ -226,11 +227,12 @@ export class EditorService extends BaseService {
       return;
     }
     this.isTriggerInProgress = true;
+    const updatedPayload = convertTableDataToJson(JSON.parse(JSON.stringify(formFields)));
     const isSubmit = onClickConfigs?.filter((item) => item.action === ButtonActions.submit)?.length > 0;
     const isNext = onClickConfigs?.filter((item) => item.action === ButtonActions.next)?.length > 0;
     const isPrev = onClickConfigs?.filter((item) => item.action === ButtonActions.previous)?.length > 0;
     this.showLoader(triggerData?.data?.id);
-    this.saveTransaction({ transactionId, screenId }, formFields).subscribe(
+    this.saveTransaction({ transactionId, screenId }, updatedPayload).subscribe(
       (result) => {
         const { data } = parseApiResponse(result);
         if (data) {

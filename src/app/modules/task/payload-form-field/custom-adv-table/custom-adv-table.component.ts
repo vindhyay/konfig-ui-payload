@@ -48,7 +48,9 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
   OverflowTypes = TABLE_OVERFLOW;
   Text: WidgetTypes = WidgetTypes.Text;
   Button: WidgetTypes = WidgetTypes.Button;
+  MultiPageModal: WidgetTypes = WidgetTypes.MultiPageModal;
   Modal: WidgetTypes = WidgetTypes.Modal;
+  AdvTable: WidgetTypes = WidgetTypes.AdvTable;
   TextInput: WidgetTypes = WidgetTypes.TextInput;
   Email: WidgetTypes = WidgetTypes.Email;
   TextArea: WidgetTypes = WidgetTypes.TextArea;
@@ -61,10 +63,12 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
   RadioGroup: WidgetTypes = WidgetTypes.RadioGroup;
   Upload: WidgetTypes = WidgetTypes.Upload;
   _columns: BaseWidget[] = [];
+  @Input() allStyles = [];
   @Input() isLoading = false;
   @Input() verticalBorder = true;
   @Input() horizontalBorder = true;
   @Input() tableBorder = true;
+  @Input() fixedRecordsPerPage = 0;
   @Input() isColumnEdit: boolean = false;
   @Input() dateFormat: string;
   @Input()
@@ -174,8 +178,12 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
   }
 
   updateRowsLimit() {
-    const bodyHeight = this.tableBody?.nativeElement?.offsetHeight;
-    this.limitPerPage = Math.floor(bodyHeight / MIN_ROW_HEIGHT) || 1;
+    if (!this.fixedRecordsPerPage) {
+      const bodyHeight = this.tableBody?.nativeElement?.offsetHeight;
+      this.limitPerPage = Math.floor(bodyHeight / MIN_ROW_HEIGHT) || 1;
+    } else {
+      this.limitPerPage = this.fixedRecordsPerPage;
+    }
   }
   ngAfterViewInit() {
     setTimeout(() => {
@@ -435,7 +443,7 @@ export class CustomAdvTableComponent implements OnInit, OnChanges, AfterViewInit
     const newRow: any = [];
     const newRowData = {};
     this.columns.forEach((eachColumn) => {
-      const column = DeepCopy.copy(eachColumn);
+      const column = JSON.parse(JSON.stringify(eachColumn));
       column.value.value = column?.value?.value || null;
       newRow.push(column);
       newRowData[eachColumn?.widgetId] = column?.value?.value;

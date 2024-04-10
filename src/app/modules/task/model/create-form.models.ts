@@ -112,6 +112,7 @@ export enum WidgetTypes {
   AdvTable = "AdvTable",
   SavedTable = "SavedTable",
   Button = "Button",
+  MultiPageModal = "MultiPageModal",
   Modal = "Modal",
   CollapseContainer = "CollapseContainer",
   TextInput = "TextInput",
@@ -185,7 +186,7 @@ export class MetaData {
   alignment?: CELL_ALIGNMENTS_TYPES;
   errorMessage: string;
   linkedWidgetIds: any;
-  styleProperties?: BaseStyle;
+  stylePropertiesId: string;
   widgetEvent: string[];
   hideRows: number;
   isAddressField: boolean;
@@ -206,10 +207,10 @@ export class MetaData {
       widgetEvent = [],
       hideRows,
       ruleIds = [],
-      styleProperties = new BaseStyle({}),
+      stylePropertiesId,
     } = data;
     this.ruleIds = ruleIds;
-    this.styleProperties = styleProperties;
+    this.stylePropertiesId = stylePropertiesId;
     this.hideRows = hideRows;
     this.widgetType = widgetType;
     this.isHidden = isHidden;
@@ -632,7 +633,58 @@ export class TableActions {
     this.alignment = align;
   }
 }
-export class TableMetaData<T> extends MetaData {
+export class MultiPageModalMetaData extends MetaData {
+  title: string;
+  leftIcon: IIcon;
+  rightIcon: IIcon;
+  height: string;
+  width: string;
+  footerHeight: number;
+  headerHeight: number;
+  modalHeader: any;
+
+  constructor(data) {
+    super(data);
+    const {
+      title = "",
+      leftIcon = "",
+      rightIcon = "",
+      height = "400px",
+      width = "500px",
+      footerHeight = 70,
+      headerHeight = 70,
+      modalHeader = [],
+    } = data;
+    this.title = title;
+    this.leftIcon = leftIcon;
+    this.rightIcon = rightIcon;
+    this.height = height;
+    this.width = width;
+    this.footerHeight = footerHeight;
+    this.headerHeight = headerHeight;
+    this.modalHeader = modalHeader;
+  }
+}
+export class ModalMetaData extends MetaData {
+  leftIcon: IIcon;
+  rightIcon: IIcon;
+  height: string;
+  width: string;
+  title: string;
+  headerHeight: number;
+
+  constructor(data) {
+    super(data);
+    const { title = "", leftIcon = "", rightIcon = "", height = "700px", width = "900px", headerHeight = 70 } = data;
+    this.title = title;
+    this.leftIcon = leftIcon;
+    this.rightIcon = rightIcon;
+    this.height = height;
+    this.width = width;
+    this.headerHeight = headerHeight;
+  }
+}
+export class TableMetaData<T> extends ModalMetaData {
   heading: string;
   sort: boolean;
   filter: boolean;
@@ -651,7 +703,7 @@ export class TableMetaData<T> extends MetaData {
   pagination: boolean;
   paginatorPosition: TABLE_PAGINATION_POSITIONS;
   hideFooter: boolean;
-
+  modalStylePropertiesId: string;
   constructor(data) {
     super(data);
     const {
@@ -672,8 +724,8 @@ export class TableMetaData<T> extends MetaData {
       overflow = TABLE_OVERFLOW.PAGINATION,
       paginatorPosition = TABLE_PAGINATION_POSITIONS.BOTTOM,
       hideFooter = false,
+      modalStylePropertiesId,
       options = [],
-      styleProperties,
     } = data;
     this.options = options;
     this.columns = columns;
@@ -694,6 +746,7 @@ export class TableMetaData<T> extends MetaData {
     this.pagination = paginatorPosition;
     this.paginatorPosition = paginatorPosition;
     this.hideFooter = hideFooter;
+    this.modalStylePropertiesId = modalStylePropertiesId;
   }
 }
 
@@ -996,40 +1049,6 @@ export class CollapseContainerMetaData extends ContainerMetaData {
     const { title = "", icon = "", styleProperties } = data;
     this.title = title;
     this.icon = icon;
-  }
-}
-
-export class ModalMetaData extends MetaData {
-  title: string;
-  leftIcon: IIcon;
-  rightIcon: IIcon;
-  height: string;
-  width: string;
-  footerHeight: number;
-  headerHeight: number;
-  modalHeader: any;
-
-  constructor(data) {
-    super(data);
-    const {
-      title = "",
-      leftIcon = "",
-      rightIcon = "",
-      height = "400px",
-      width = "500px",
-      footerHeight = 70,
-      headerHeight = 70,
-      modalHeader = [],
-      styleProperties,
-    } = data;
-    this.title = title;
-    this.leftIcon = leftIcon;
-    this.rightIcon = rightIcon;
-    this.height = height;
-    this.width = width;
-    this.footerHeight = footerHeight;
-    this.headerHeight = headerHeight;
-    this.modalHeader = modalHeader;
   }
 }
 
@@ -1478,6 +1497,7 @@ export class BaseWidget {
     | TableMetaData<Column>
     | UploadMetaData
     | ModalMetaData
+    | MultiPageModalMetaData
     | CollapseContainerMetaData
     | PhoneNumberMetaData
     | SSNInputMetaData
@@ -1605,6 +1625,9 @@ export class BaseWidget {
           break;
         case WidgetTypes.Upload:
           this.metaData = new UploadMetaData(data);
+          break;
+        case WidgetTypes.MultiPageModal:
+          this.metaData = new MultiPageModalMetaData(data);
           break;
         case WidgetTypes.Modal:
           this.metaData = new ModalMetaData(data);

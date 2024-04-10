@@ -82,7 +82,7 @@ export class CustomTableComponent implements OnInit, AfterViewInit, OnChanges {
   OverflowTypes = TABLE_OVERFLOW;
   Text: WidgetTypes = WidgetTypes.Text;
   Button: WidgetTypes = WidgetTypes.Button;
-  Modal: WidgetTypes = WidgetTypes.Modal;
+  MultiPageModal: WidgetTypes = WidgetTypes.MultiPageModal;
   TextInput: WidgetTypes = WidgetTypes.TextInput;
   TextArea: WidgetTypes = WidgetTypes.TextArea;
   Number: WidgetTypes = WidgetTypes.Number;

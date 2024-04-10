@@ -4,7 +4,12 @@ import { AuthService } from "../../auth/services/auth.service";
 import { BaseComponent } from "../../shared/base/base.component";
 import { NotificationService } from "../../../services/notification.service";
 import { UserDataModel } from "../../auth/models";
-import { addOriginalPosition, getFieldFromFields, parseApiResponse } from "../../../utils";
+import {
+  addOriginalPosition,
+  getFieldFromFields,
+  parseApiResponse,
+  updateTableDataToWidgetStructure,
+} from "../../../utils";
 import { EditorService } from "../editor.service";
 import { LoaderService } from "../../../services/loader.service";
 import { IStyleConfig, WidgetTypes } from "../model/create-form.models";
@@ -67,6 +72,7 @@ export class PayloadDetailsComponent extends BaseComponent implements OnInit {
           this.formFields = transactionDetails?.uiPayload || [];
         }
         addOriginalPosition(this.formFields);
+        updateTableDataToWidgetStructure(this.formFields);
         this.transactionDetails = transactionDetails;
         this.editorService.setFormFields(this.formFields);
         this.formFields = this.formFields.sort((a, b) => a?.y - b?.y);

@@ -12,7 +12,7 @@ import { ExtendedModule } from "@angular/flex-layout";
 import { UploadComponent } from "./payload-form-field/upload/upload.component";
 import { TransactionTableComponent } from "./payload-form-field/transaction-table/transaction-table.component";
 import { TextFieldComponent } from "./payload-form-field/text-field/text-field.component";
-import { ModalComponent } from "./payload-form-field/modal/modal.component";
+import { MultiPageModalComponent } from "./payload-form-field/multi-page-modal/multi-page-modal.component";
 import { CollapseContainerComponent } from "./payload-form-field/collapse-container/collapse-container.component";
 import { PasswordFieldComponent } from "./payload-form-field/password-field/password-field.component";
 import { PhonenumberFieldComponent } from "./payload-form-field/phonenumber-field/phonenumber-field.component";
@@ -30,6 +30,8 @@ import { AvatarModule } from "primeng/avatar";
 import { AppTabContainerComponent } from "./payload-form-field/tab-container/tab-container.component";
 import { GetBorderShadowFilter } from "src/app/pipes/shadow-border.pipe";
 import { UrlComponent } from "./payload-form-field/url/url.component";
+import { ModalComponent } from "./payload-form-field/modal/modal.component";
+import { ColTableComponent } from "./payload-form-field/col-table/col-table.component";
 
 @NgModule({
   declarations: [
@@ -41,7 +43,7 @@ import { UrlComponent } from "./payload-form-field/url/url.component";
     UploadComponent,
     TransactionTableComponent,
     TextFieldComponent,
-    ModalComponent,
+    MultiPageModalComponent,
     CollapseContainerComponent,
     PhonenumberFieldComponent,
     SSNInputFieldComponent,
@@ -57,6 +59,8 @@ import { UrlComponent } from "./payload-form-field/url/url.component";
     AppTabContainerComponent,
     GetBorderShadowFilter,
     UrlComponent,
+    ModalComponent,
+    ColTableComponent,
   ],
   imports: [CommonModule, GridsterModule, SharedModule, ExtendedModule, TooltipModule, AvatarModule],
   providers: [AuthService],

@@ -1,24 +1,25 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { BaseStyle, BaseWidget, ModalMetaData } from "../../model/create-form.models";
+import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import { BaseComponent } from "../../../shared/base/base.component";
+import { BaseStyle, BaseWidget, TableMetaData } from "../../model/create-form.models";
 import { EditorService } from "../../editor.service";
 
 @Component({
-  selector: "app-modal",
-  templateUrl: "./modal.component.html",
-  styleUrls: ["./modal.component.scss"],
+  selector: "app-col-table",
+  templateUrl: "./col-table.component.html",
+  styleUrls: ["./col-table.component.scss"],
 })
-export class ModalComponent extends BaseComponent implements OnInit {
+export class ColTableComponent extends BaseComponent implements OnInit {
   JSON = JSON;
   @Input() item: BaseWidget = {} as BaseWidget;
   @Input() itemStyleProperties = {} as BaseStyle;
+  @Input() modalStyleProperties = {} as BaseStyle;
   @Input() viewMode = false;
   @Output() onBtnClick = new EventEmitter();
+  @Input() allStyles = [];
   @Input() isDisabled: boolean = false;
   modalStatus = false;
-
-  get metaData(): ModalMetaData {
-    return this.item.metaData as ModalMetaData;
+  get metaData(): TableMetaData<BaseWidget> {
+    return this.item.metaData as TableMetaData<BaseWidget>;
   }
 
   constructor(private editorService: EditorService) {
@@ -28,24 +29,15 @@ export class ModalComponent extends BaseComponent implements OnInit {
   ngOnInit(): void {
     this.modalStatus = this.editorService.modalStatus[this.item.widgetId];
   }
-
   toggleModal() {
     this.modalStatus = !this.modalStatus;
     this.editorService.modalStatus[this.item.widgetId] = this.modalStatus;
   }
-
   onShow($event) {
     window.dispatchEvent(new Event("resize"));
   }
-
   onHide($event) {
     this.editorService.modalStatus[this.item.widgetId] = false;
-  }
-
-  checkHeight(containerName?) {
-    if (this.item.children?.length) {
-      this.editorService.setAdjustableHeight(this.item?.children, ".modal" + this.item?.widgetId);
-    }
   }
 
   onResizeEnd($event: any) {
