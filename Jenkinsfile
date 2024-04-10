@@ -6,7 +6,7 @@ pipeline {
     }
     tools {
         nodejs "Node"
-        jdk "javaagent"
+        jdk "konfigjava"
     }
     triggers {
         gitlab(triggerOnPush: true, triggerOnMergeRequest: true)
