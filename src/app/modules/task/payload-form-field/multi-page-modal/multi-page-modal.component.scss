@@ -1,0 +1,58 @@
+@import "scss/mixins";
+
+::ng-deep {
+  .activeModal {
+    .p-dialog-header,
+    .p-dialog-footer {
+      padding: 0 !important;
+    }
+  }
+  .header-content {
+    padding: 1rem;
+    flex: 1;
+    border-top-right-radius: 4px;
+    border-top-left-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .field-modal-content {
+    .modal-content {
+      height: 100%;
+      border: none;
+    }
+  }
+  .activeModal.p-dialog .p-dialog-content {
+    padding: 0;
+  }
+  .p-dialog-header-icons > button {
+    margin-right: var(--spacing-sm) !important;
+  }
+}
+.hidden {
+  display: none;
+}
+.stepsection-container {
+  position: absolute;
+  bottom: 48%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px;
+  z-index: 3;
+  &.prev-btn {
+    left: 0;
+  }
+  &.next-btn {
+    right: 0;
+  }
+  .icon {
+    border: 1px solid var(--ui-border-color);
+    padding: var(--spacing-xs-sm);
+    border-radius: 50%;
+    cursor: pointer;
+    @include font-title-fifth();
+    &:hover {
+      background: var(--ui-border-color);
+    }
+  }
+}

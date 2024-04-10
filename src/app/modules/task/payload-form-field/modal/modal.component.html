@@ -1,50 +1,42 @@
 <finlevit-button
-  [leftIcon]="metaData?.leftIcon"
-  [rightIcon]="metaData?.rightIcon"
+  [rightIcon]="item?.metaData?.rightIcon"
+  [leftIcon]="item?.metaData?.leftIcon"
   [label]="item?.label"
-  (btnClick)="toggleModal()"
   applyStyleVariables
-  [styleProperties]="itemStyleProperties?.properties"
+  (btnClick)="toggleModal()"
+  [styleProperties]="itemStyleProperties?.properties || {}"
   styleType="button"
+  [isPress]="!item?.metaData?.readOnly && itemStyleProperties?.properties?.press?.isActionEnabled"
+  [isHover]="!item?.metaData?.readOnly && itemStyleProperties?.properties?.hover?.isActionEnabled"
+  [isFocus]="!item?.metaData?.readOnly && itemStyleProperties?.properties?.focus?.isActionEnabled"
+  [style.--button-label-padding-left]="item?.metaData?.leftIcon ? '8px' : 0"
+  [style.--button-label-padding-right]="item?.metaData?.rightIcon ? '8px' : 0"
   size="custom"
-  [isDisabled]="isDisabled"
-  [isPress]="itemStyleProperties?.properties?.press?.isActionEnabled"
-  [isHover]="itemStyleProperties?.properties?.hover?.isActionEnabled"
-  [isFocus]="itemStyleProperties?.properties?.focus?.isActionEnabled"
 ></finlevit-button>
 <p-dialog
-  *ngIf="modalStatus"
   appendTo="body"
-  [blockScroll]="false"
-  [draggable]="false"
-  [resizable]="false"
+  [blockScroll]="true"
+  [keepInViewport]="true"
+  [draggable]="true"
+  [resizable]="true"
   [style]="{ height: metaData.height, width: metaData.width, 'flex-grow': 'inherit' }"
   [styleClass]="item?.widgetId + ' activeModal'"
+  [maskStyleClass]="'field-modal-mask'"
   contentStyleClass="field-modal-content"
-  [modal]="true"
+  [modal]="false"
+  (onHide)="onHide($event)"
   [(visible)]="modalStatus"
+  (onResizeEnd)="onResizeEnd($event)"
   [autoZIndex]="false"
-  [closeOnEscape]="true"
   (onShow)="onShow($event)"
+  [closeOnEscape]="true"
   [closable]="false"
 >
   <ng-template pTemplate="header">
-    <ng-container *ngIf="item.children.length > 1">
-      <div class="stepsection-container prev-btn" (click)="onPrevClick($event)" *ngIf="selectedIndex > 0">
-        <finlevit-icon-preview class="icon" icon="pi pi-chevron-left"></finlevit-icon-preview>
-      </div>
-      <div
-        class="stepsection-container next-btn"
-        (click)="onNextClick($event)"
-        *ngIf="selectedIndex < item.children.length - 1"
-      >
-        <finlevit-icon-preview class="icon" icon="pi pi-chevron-right"></finlevit-icon-preview>
-      </div>
-    </ng-container>
     <div
       [class]="'header-content'"
       [style]="{
-        height: metaData?.modalHeader[0]?.headerHeight + 'px',
+        height: metaData?.headerHeight + 'px',
         'background-color': itemStyleProperties?.properties?.headerBackgroundColor,
         'font-family': itemStyleProperties?.properties?.headerFontFamily,
         color: itemStyleProperties?.properties?.headerLabelColor,
@@ -54,36 +46,16 @@
         'text-decoration': itemStyleProperties?.properties?.labelTextDecoration
       }"
     >
-      {{ metaData?.modalHeader[selectedIndex]?.title }}
+      {{ metaData?.title }}
       <span><i class="pi pi-times cursor-pointer" (click)="toggleModal()"></i></span>
     </div>
   </ng-template>
   <div [class]="'modal-content modal' + item?.widgetId">
     <finlevit-grid
-      [parent]="item.children[selectedIndex]"
-      [items]="item.children[selectedIndex].children"
+      [emitButtonEvent]="true"
+      [parent]="item"
+      [items]="item.children"
       [style.--background-color]="itemStyleProperties?.properties?.contentBackgroundColor"
-      [filter]="{ metaData: { isFooterContainer: false } }"
     ></finlevit-grid>
   </div>
-  <ng-template pTemplate="footer">
-    <div
-      class="footer-content"
-      [style]="{
-        height: metaData?.footerHeight + 'px'
-      }"
-    >
-      <ng-container>
-        <finlevit-grid
-          [emitButtonEvent]="true"
-          [parent]="item.children[selectedIndex].children"
-          [items]="item.children[selectedIndex]?.children[0].children"
-          (onBtnClick)="onFooterClick($event)"
-          [style.--border-radius-bottom-left]="'4px'"
-          [style.--border-radius-bottom-right]="'4px'"
-          [style.--background-color]="itemStyleProperties?.properties?.footerBackgroundColor"
-        ></finlevit-grid>
-      </ng-container>
-    </div>
-  </ng-template>
 </p-dialog>

@@ -21,7 +21,7 @@ export class CustomTableFiltersComponent implements OnInit {
   filtersCount = 0;
   Text: WidgetTypes = WidgetTypes.Text;
   Button: WidgetTypes = WidgetTypes.Button;
-  Modal: WidgetTypes = WidgetTypes.Modal;
+  MultiPageModal: WidgetTypes = WidgetTypes.MultiPageModal;
   TextInput: WidgetTypes = WidgetTypes.TextInput;
   Email: WidgetTypes = WidgetTypes.Email;
   TextArea: WidgetTypes = WidgetTypes.TextArea;

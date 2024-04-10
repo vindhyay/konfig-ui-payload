@@ -48,6 +48,7 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
   TextArea: WidgetTypes = WidgetTypes.TextArea;
   Number: WidgetTypes = WidgetTypes.Number;
   Checkbox: WidgetTypes = WidgetTypes.Checkbox;
+  MultiPageModal: WidgetTypes = WidgetTypes.MultiPageModal;
   Modal: WidgetTypes = WidgetTypes.Modal;
   CheckboxGroup: WidgetTypes = WidgetTypes.CheckboxGroup;
   Upload: WidgetTypes = WidgetTypes.Upload;
@@ -62,6 +63,8 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
   hide = false;
   disable = false;
   readonlyMode = false;
+
+  allStyles = [];
 
   constructor(
     private authService: AuthService,
@@ -112,7 +115,6 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
     this._item = data;
   }
 
-  allAvailableFields = [];
   private _payloadFields: any;
   get payloadFields(): any {
     return this._payloadFields;
@@ -129,13 +131,13 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
   }
 
   ngOnInit() {
+    this.allStyles = this.editorService.getStyles();
     this.transactionDetailsSubscription = this.editorService.transactionDetails$.subscribe((value) => {
       if (value) {
         this._payloadFields = value.uiPayload;
         this.transactionStatus = value?.transactionStatus || null;
         this.submissionStatus = value?.submissionStatus || "";
         this.readonlyMode = this.readonlyMode || this.submissionStatus === "SUBMITTED";
-        this.getAllAvailableFields(this.payloadFields);
         const { id = "" } = this.authService.getAgentRole() || {};
         if (this.item.permissions && this.item?.permissions[id]) {
           this.hide = this.item?.permissions[id].hide
@@ -281,32 +283,6 @@ export class PayloadFormFieldComponent extends BaseComponent implements OnInit, 
 
   validateField($event: any, field: any) {
     validateFields([field]);
-  }
-
-  visitedFields = [];
-
-  getAllAvailableFields(fields: any) {
-    fields.forEach((field) => {
-      this.allAvailableFields.push(field);
-      if (field.children && field.children.length) {
-        this.getAllAvailableFields(field.children);
-      }
-    });
-  }
-
-  checkVisitedField(field: any): boolean {
-    if (this.visitedFields.indexOf(field) < 0) {
-      return false;
-    }
-    if (this.visitedFields.indexOf(field) > -1) {
-      return true;
-    }
-  }
-
-  checkHeight(child?) {
-    if (child.children?.length) {
-      this.editorService.setAdjustableHeight(child?.children, ".nested-grid-container");
-    }
   }
 
   onAutocompleteSelected($event: AddressDetails) {

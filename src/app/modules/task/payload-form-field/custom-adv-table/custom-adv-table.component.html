@@ -175,7 +175,6 @@
                           [showClearButton]="col?.metaData?.showClearButton"
                           [prefixText]="col?.metaData?.prefixText"
                           [suffixText]="col?.metaData?.suffixText"
-                          [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
                           [showErrorMsg]="col?.metaData?.showErrorMessage"
                           [error]="
                             rowErrors[rowIndex] && rowErrors[rowIndex][col?.widgetId]
@@ -215,7 +214,6 @@
                               ? col?.metaData?.optionValue
                               : 'value'
                           "
-                          [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
                           [showErrorMsg]="col?.metaData?.showErrorMessage"
                           [error]="
                             rowErrors[rowIndex] && rowErrors[rowIndex][col?.widgetId]
@@ -264,7 +262,6 @@
                           [showClearButton]="col?.metaData?.showClearButton"
                           [prefixText]="col?.metaData?.prefixText"
                           [suffixText]="col?.metaData?.suffixText"
-                          [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
                           [showErrorMsg]="col?.metaData?.showErrorMessage"
                         ></finlevit-text>
                       </div>
@@ -356,7 +353,6 @@
                           [maxLength]="col?.validators?.maxLength"
                           [showMaxCharLimit]="col?.validators?.maxLength"
                           [useGrouping]="col?.metaData?.thousandsSeparator"
-                          [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
                           [showErrorMsg]="col?.metaData?.showErrorMessage"
                           [prefixText]="col?.metaData?.prefixText || col?.metaData?.currency?.currencySymbol"
                           [suffixText]="col?.metaData?.suffixText"
@@ -393,7 +389,6 @@
                           [tooltip]="col?.metaData?.tooltip"
                           [placeholder]="col?.metaData?.placeholder"
                           [isRequired]="col?.validators?.required"
-                          [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
                           [showErrorMsg]="col?.metaData?.showErrorMessage"
                           [showCharCount]="col?.metaData?.styleProperties?.properties?.showCharCount"
                           [error]="
@@ -429,7 +424,6 @@
                           [columns]="col?.metaData?.columns"
                           [tooltip]="col?.metaData?.tooltip"
                           [showErrorMsg]="col?.metaData?.showErrorMessage"
-                          [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
                           [horizontalContentAlignment]="
                             col?.metaData?.styleProperties?.properties?.horizontalOptionAlignment
                           "
@@ -480,7 +474,6 @@
                           [maxDate]="col?.validators?.maxDate"
                           [yearNavigator]="true"
                           [monthNavigator]="true"
-                          [labelPos]="col?.metaData?.styleProperties?.properties?.labelPosition"
                           [showErrorMsg]="col?.metaData?.showErrorMessage"
                           [showTime]="col?.metaData?.showTime"
                           [hourFormat]="col?.metaData?.hourFormat"
@@ -498,12 +491,34 @@
                           "
                         ></finlevit-lib-datepicker>
                       </div>
-                      <div class="pl-1" *ngSwitchCase="Modal">
-                        <app-modal
+                      <div class="pl-1" *ngSwitchCase="MultiPageModal">
+                        <app-multi-page-modal
                           [modalId]="col?.widgetId + rowIndex"
                           [isDisabled]="isDisabled"
+                          [itemStyleProperties]="allStyles | findStyles: { id: col?.metaData?.stylePropertiesId }"
+                          [item]="col"
+                        ></app-multi-page-modal>
+                      </div>
+                      <div class="pl-1" *ngSwitchCase="Modal">
+                        <app-modal
+                          [isDisabled]="isDisabled"
+                          [itemStyleProperties]="allStyles | findStyles: { id: col?.metaData?.stylePropertiesId }"
                           [item]="col"
                         ></app-modal>
+                      </div>
+                      <div class="pl-1" *ngSwitchCase="AdvTable">
+                        <app-col-table
+                          [isDisabled]="isDisabled"
+                          [item]="col"
+                          [allStyles]="allStyles"
+                          [itemStyleProperties]="
+                            allStyles | findStyles: { id: columns[colIndex]?.metaData?.stylePropertiesId }
+                          "
+                          [modalStyleProperties]="
+                            allStyles | findStyles: { id: columns[colIndex]?.metaData?.modalStylePropertiesId }
+                          "
+                          [viewMode]="false"
+                        ></app-col-table>
                       </div>
                     </ng-container>
                   </div>

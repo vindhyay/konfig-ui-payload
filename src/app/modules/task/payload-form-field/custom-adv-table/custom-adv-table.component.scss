@@ -204,6 +204,9 @@
         &.center {
           text-align: center;
         }
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
       }
     }
 
@@ -237,6 +240,12 @@
     }
     &.center {
       text-align: center;
+    }
+
+    .cell-contents {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
   }
   .table-row-actions {
@@ -318,8 +327,8 @@
     background-color: var(--paginator-background-color);
     font-size: var(--paginator-font-size);
     font-weight: var(--paginator-font-weight);
-    line-height: var(--paginator-line-height);
     font-family: var(--paginator-font-family);
+    line-height: var(--paginator-line-height);
     height: var(--paginator-height);
     .table-results-counter {
       display: inline-flex;
@@ -435,7 +444,7 @@
 .no-data-container {
   background-image: url("/assets/images/nodata-found.png");
   height: 100%;
-  background-size: auto;
+  background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
 }

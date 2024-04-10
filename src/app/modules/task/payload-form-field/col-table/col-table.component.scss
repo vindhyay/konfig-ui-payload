@@ -1,0 +1,40 @@
+@import "scss/mixins";
+
+::ng-deep {
+  .table-modal {
+    .activeModal {
+      .p-dialog-header,
+      .p-dialog-footer {
+        padding: 0 !important;
+      }
+    }
+    .header-content {
+      padding: 1rem;
+      flex: 1;
+      border-top-right-radius: 4px;
+      border-top-left-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .field-modal-content {
+      .modal-content {
+        height: 100%;
+        border: none;
+        padding: var(--spacing-lg);
+      }
+    }
+    .activeModal.p-dialog .p-dialog-content {
+      padding: 0;
+    }
+    .p-dialog-header-icons > button {
+      margin-right: var(--spacing-sm) !important;
+    }
+  }
+}
+.table {
+  min-height: 300px;
+}
+.hidden {
+  display: none;
+}

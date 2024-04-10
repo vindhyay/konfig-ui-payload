@@ -1,7 +1,13 @@
 import ShortUniqueId from "short-unique-id";
 import { Result } from "./state/model/api-response";
 import { AbstractControl, FormControl, ValidationErrors, ValidatorFn, Validators } from "@angular/forms";
-import { ButtonActions, DATA_TYPES, WidgetTypes } from "./modules/task/model/create-form.models";
+import {
+  BaseWidget,
+  ButtonActions,
+  DATA_TYPES,
+  TableMetaData,
+  WidgetTypes,
+} from "./modules/task/model/create-form.models";
 import { isNull } from "lodash";
 import * as moment from "moment";
 
@@ -216,6 +222,16 @@ export const scrollToBottom = (element) => {
   }
   element.scroll({ top: element.scrollHeight, behavior: "smooth" });
 };
+export const updateTableDataToWidgetStructure = (fields: BaseWidget[]) => {
+  fields.forEach((field) => {
+    if (field.metaData.widgetType === WidgetTypes.AdvTable) {
+      field.children = convertJSONToTableData(field?.value?.value || [], field)?.children || [];
+      field.value.value = [];
+    } else if (field?.children?.length) {
+      updateTableDataToWidgetStructure(field.children);
+    }
+  });
+};
 export const addOriginalPosition = (fields) => {
   fields.forEach((field) => {
     field.metaData.originalHeight = field.rows + field.y;
@@ -251,7 +267,7 @@ export class DeepCopy {
       node = data instanceof Date ? data : Object.assign({}, data);
       Object.keys(node).forEach((key) => {
         if (
-          (typeof node[key] === "object" && Object.keys(node[key]).length > 0) ||
+          (node[key] && typeof node[key] === "object" && Object.keys(node[key]).length > 0) ||
           (Array.isArray(node[key]) && node[key].length > 0)
         ) {
           node[key] = DeepCopy.copy(node[key]);
@@ -705,4 +721,78 @@ export const dynamicEvaluation = (code: string) => {
   } else {
     return dynamicEvaluation(code);
   }
+};
+
+export const convertJSONToTableData = (jsonData: Array<any>, structure: BaseWidget): BaseWidget => {
+  if (!jsonData.length) {
+    return null;
+  }
+  const mappedStructure: BaseWidget = { ...structure };
+
+  function mapChild(item, columns: BaseWidget[]) {
+    return columns.map((column) => {
+      const metaData: TableMetaData<BaseWidget> = column.metaData as TableMetaData<BaseWidget>;
+      if (metaData.widgetType === "AdvTable" && Array.isArray(item[column.displayName])) {
+        return {
+          ...column,
+          children: mapChildren(item[column.displayName], metaData.columns),
+        };
+      } else if (metaData.widgetType === "Modal") {
+        return {
+          ...column,
+          children: mapChildren(item[column.displayName], column.children),
+        };
+      } else {
+        return {
+          ...column,
+          value: {
+            id: null,
+            value: item[column.displayName],
+          },
+        };
+      }
+    });
+  }
+  function mapChildren(data, columns) {
+    if (Array.isArray(data)) {
+      return data.map((item) => {
+        return mapChild(item, columns);
+      });
+    } else {
+      return mapChild(data, columns);
+    }
+  }
+  const metaData: TableMetaData<BaseWidget> = structure.metaData as TableMetaData<BaseWidget>;
+  mappedStructure.children = mapChildren(jsonData, metaData.columns);
+  return mappedStructure;
+};
+export const convertTableDataToJson = (fields: BaseWidget[]) => {
+  if (!fields.length) {
+    return fields;
+  }
+  function convertToValue(fields: BaseWidget[]) {
+    const jsonData = {};
+    fields.forEach((field) => {
+      if (field.metaData.widgetType === WidgetTypes.AdvTable) {
+        const tableRows: any = field.children;
+        jsonData[field.displayName] = tableRows.map((row: BaseWidget[]) => convertToValue(row));
+      } else if (field.children.length) {
+        jsonData[field.displayName] = convertToValue(field.children);
+      } else {
+        jsonData[field.displayName] = field.value.value;
+      }
+    });
+    return jsonData;
+  }
+  function mapValue(fields: BaseWidget[]) {
+    return fields.map((field) => {
+      if (field.metaData.widgetType === WidgetTypes.AdvTable) {
+        const tableRows: any = field.children;
+        field.value.value = tableRows.map((row: BaseWidget[]) => convertToValue(row));
+        field.children = [];
+      }
+      return field;
+    });
+  }
+  return mapValue(fields);
 };

@@ -1,0 +1,78 @@
+<finlevit-button
+  [label]="item?.label"
+  (btnClick)="toggleModal()"
+  applyStyleVariables
+  [styleProperties]="modalStyleProperties?.properties"
+  [isPress]="modalStyleProperties?.properties?.press?.isActionEnabled"
+  [isHover]="modalStyleProperties?.properties?.hover?.isActionEnabled"
+  [isFocus]="modalStyleProperties?.properties?.focus?.isActionEnabled"
+  [style.--button-label-padding-left]="item?.metaData?.leftIcon ? '8px' : 0"
+  [style.--button-label-padding-right]="item?.metaData?.rightIcon ? '8px' : 0"
+  styleType="button"
+  size="custom"
+></finlevit-button>
+<p-dialog
+  appendTo="body"
+  [blockScroll]="true"
+  [keepInViewport]="true"
+  [draggable]="true"
+  [resizable]="true"
+  [style]="{ height: metaData.height, width: metaData.width, 'flex-grow': 'inherit' }"
+  [styleClass]="item?.widgetId + ' activeModal'"
+  [maskStyleClass]="'table-modal'"
+  contentStyleClass="field-modal-content"
+  [modal]="false"
+  (onHide)="onHide($event)"
+  [(visible)]="modalStatus"
+  (onResizeEnd)="onResizeEnd($event)"
+  [autoZIndex]="false"
+  (onShow)="onShow($event)"
+  [closeOnEscape]="true"
+  [closable]="false"
+>
+  <ng-template pTemplate="header">
+    <div
+      [class]="'header-content'"
+      [style]="{
+        height: metaData?.headerHeight + 'px',
+        'background-color': modalStyleProperties?.properties?.headerBackgroundColor,
+        'font-family': modalStyleProperties?.properties?.headerFontFamily,
+        color: modalStyleProperties?.properties?.headerLabelColor,
+        'font-size': modalStyleProperties?.properties?.headerFontSize,
+        'font-weight': modalStyleProperties?.properties?.labelFontWeight,
+        'font-style': modalStyleProperties?.properties?.labelStyle,
+        'text-decoration': modalStyleProperties?.properties?.labelTextDecoration
+      }"
+    >
+      {{ metaData?.title }}
+      <span><i class="pi pi-times cursor-pointer" (click)="toggleModal()"></i></span>
+    </div>
+  </ng-template>
+  <div [class]="'modal-content modal' + item?.widgetId">
+    <finlevit-custom-adv-table
+      class="table"
+      [columns]="item?.metaData?.columns"
+      [actions]="item?.metaData?.actions"
+      [rows]="item?.rows"
+      [tableData]="item?.children"
+      [addRows]="item?.metaData?.addRows"
+      [filter]="item?.metaData?.filter"
+      [sort]="item?.metaData?.sort"
+      [allStyles]="allStyles"
+      [fixedRecordsPerPage]="10"
+      [overflowType]="item?.metaData?.overflow"
+      [paginatorPosition]="item?.metaData?.paginatorPosition"
+      [hideHeader]="item?.metaData?.hideHeader"
+      [hideFooter]="item?.metaData?.hideFooter"
+      [saveBtnProperties]="item?.metaData?.saveBtnProperties"
+      [cancelBtnProperties]="item?.metaData?.cancelBtnProperties"
+      applyStyleVariables
+      styleType="table"
+      [styleProperties]="JSON.stringify(itemStyleProperties?.properties)"
+      [horizontalBorder]="item?.metaData?.horizontalBorder"
+      [verticalBorder]="item?.metaData?.verticalBorder"
+      [isColumnEdit]="true"
+      [isDisabled]="isDisabled"
+    ></finlevit-custom-adv-table>
+  </div>
+</p-dialog>

@@ -200,6 +200,8 @@
         [isPress]="!readonlyMode && itemStyleProperties?.properties?.press?.isActionEnabled"
         [isHover]="!readonlyMode && itemStyleProperties?.properties?.hover?.isActionEnabled"
         [isFocus]="!readonlyMode && itemStyleProperties?.properties?.focus?.isActionEnabled"
+        [style.--button-label-padding-left]="item?.metaData?.leftIcon ? '8px' : 0"
+        [style.--button-label-padding-right]="item?.metaData?.rightIcon ? '8px' : 0"
         size="custom"
       ></finlevit-button>
     </div>
@@ -261,6 +263,7 @@
         [addRows]="item?.metaData?.addRows"
         [filter]="item?.metaData?.filter"
         [sort]="item?.metaData?.sort"
+        [allStyles]="allStyles"
         [overflowType]="item?.metaData?.overflow"
         [paginatorPosition]="item?.metaData?.paginatorPosition"
         [hideHeader]="item?.metaData?.hideHeader"
@@ -321,6 +324,15 @@
         [isDisabled]="readonlyMode || disable || item?.isMirrorField"
         (optionChange)="optionChange($event, item); validateField($event, item)"
       ></app-dropdown-field>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="item?.metaData?.widgetType === MultiPageModal">
+    <div class="input-container">
+      <app-multi-page-modal
+        [item]="item"
+        [isDisabled]="readonlyMode || disable || item?.isMirrorField"
+        [itemStyleProperties]="itemStyleProperties"
+      ></app-multi-page-modal>
     </div>
   </ng-container>
   <ng-container *ngIf="item?.metaData?.widgetType === Modal">
