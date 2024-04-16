@@ -737,7 +737,7 @@ export const convertJSONToTableData = (jsonData: Array<any>, structure: BaseWidg
           ...column,
           children: mapChildren(item[column.displayName], metaData.columns),
         };
-      } else if (metaData.widgetType === "Modal") {
+      } else if (column?.children?.length) {
         return {
           ...column,
           children: mapChildren(item[column.displayName], column.children),
