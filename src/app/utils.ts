@@ -790,6 +790,8 @@ export const convertTableDataToJson = (fields: BaseWidget[]) => {
         const tableRows: any = field.children;
         field.value.value = tableRows.map((row: BaseWidget[]) => convertToValue(row));
         field.children = [];
+      } else if (field?.children?.length) {
+        mapValue(field.children);
       }
       return field;
     });
