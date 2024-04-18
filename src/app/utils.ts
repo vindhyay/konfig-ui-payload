@@ -146,18 +146,9 @@ export const getValidators = (validators: any, field) => {
         }
         break;
       case "pattern":
-        if (field?.metaData?.widgetType === WidgetTypes.DatePicker) {
-          validators[validator] && _validators.push(CustomValidators.datePattern(validators[validator]));
-        } else {
-          validators[validator] && _validators.push(Validators.pattern(validators[validator]));
-        }
-        break;
       case "required":
-        if (field?.metaData?.widgetType === WidgetTypes.Checkbox) {
-          validators[validator] && _validators.push(CustomValidators.mustBeTrue(field?.label));
-        } else {
-          validators[validator] && _validators.push(Validators.required);
-        }
+      case "dataType":
+        validators[validator] && _validators.push(...widgetSpecificValidation(validator, field, validators));
         break;
       case "minDate":
         validators[validator] && _validators.push(CustomValidators.dateMinimum(field));
@@ -165,16 +156,41 @@ export const getValidators = (validators: any, field) => {
       case "maxDate":
         validators[validator] && _validators.push(CustomValidators.dateMaximum(field));
         break;
-      case "dataType":
-        let expectedDataType = field?.dataType;
-        if (field?.metaData?.widgetType === WidgetTypes.DatePicker || expectedDataType === DATA_TYPES.DATE) {
-          expectedDataType = field?.validators?.pattern === "utcTimestamp" ? "number" : "string";
-        }
-        validators[validator] && _validators.push(CustomValidators.dataTypeValidator(expectedDataType));
     }
   });
   return _validators;
 };
+
+export const widgetSpecificValidation = (validator: any, field, validators: any) => {
+  const _validators: any = [];
+  switch (validator) {
+    case "required":
+      if (field?.metaData?.widgetType === WidgetTypes.Checkbox) {
+        validators[validator] && _validators.push(CustomValidators.mustBeTrue(field?.label));
+      } else {
+        validators[validator] && _validators.push(Validators.required);
+      }
+      break;
+    case "pattern":
+      if (field?.metaData?.widgetType === WidgetTypes.DatePicker) {
+        validators[validator] && _validators.push(CustomValidators.datePattern(validators[validator]));
+      } else {
+        validators[validator] && _validators.push(Validators.pattern(validators[validator]));
+      }
+      break;
+    case "dataType":
+      let expectedDataType = field?.dataType;
+      if (field?.metaData?.widgetType === WidgetTypes.DatePicker || expectedDataType === DATA_TYPES.DATE) {
+        expectedDataType = field?.validators?.pattern === "utcTimestamp" ? "number" : "string";
+        validators[validator] && _validators.push(CustomValidators.dataTypeValidator(expectedDataType));
+      } else if (expectedDataType != DATA_TYPES.FILE) {
+        validators[validator] && _validators.push(CustomValidators.dataTypeValidator(expectedDataType));
+      }
+      break;
+  }
+  return _validators;
+};
+
 export const getFieldFromFields = (fields, widgetId) => {
   let paramField = null;
   fields.forEach((field) => {
